@@ -15,7 +15,7 @@ const index: React.FC = () => {
         <FaSignInAlt className='text-secondary' />
       </button>
 
-      <Image src={avatar} objectFit='contain' />
+      <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
     </div>
   );
 };

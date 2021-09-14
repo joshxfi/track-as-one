@@ -12,11 +12,15 @@ export const Footer: React.FC = () => {
   return (
     <footer className='absolute bottom-0'>
       <div className='relative overflow-hidden h-[250px] w-screen'>
-        <Image className='absolute bottom-0' src={doodle} />
+        <Image
+          className='absolute bottom-0'
+          src={doodle}
+          alt='doodle pattern'
+        />
         <div className='absolute bottom-0 h-[100px] w-full bg-primary text-xs text-secondary flex flex-col justify-center items-center'>
           <div className='flex text-base'>
             {socialIcons.map(Icon => (
-              <a className='mx-3' href='#'>
+              <a key={Icon.toString()} className='mx-3' href='#'>
                 <Icon />
               </a>
             ))}
