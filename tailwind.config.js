@@ -5,10 +5,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'bgwhite': '#F9F9F9',
+        'f9': '#F9F9F9',
         'primary': '#2B2B2B',
         'secondary': '#E3B04B' 
-      }
+      },
     },
   },
   variants: {

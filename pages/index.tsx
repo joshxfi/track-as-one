@@ -3,7 +3,7 @@ import React from 'react';
 const index: React.FC = () => {
   return (
     <div>
-      <h1>Hello World!</h1>
+      <h1>trackAsOne</h1>
     </div>
   );
 };
