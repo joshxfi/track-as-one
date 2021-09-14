@@ -17,8 +17,7 @@ const index: React.FC = () => {
         <p className='mr-2'>sign in with google</p>{' '}
         <FaSignInAlt className='text-secondary' />
       </button>
-
-      <div className='w-[350px]'>
+      <div>
         <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
       </div>
       <Footer />
