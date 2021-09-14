@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import { Navbar } from './Navbar';
-import { Footer } from './Footer';
 
 export const Layout: React.FC<Children> = ({ children }) => {
   return (
@@ -12,9 +11,7 @@ export const Layout: React.FC<Children> = ({ children }) => {
         <title>taskAsOne</title>
       </Head>
 
-      <Navbar />
       <main className='text-primary w-[85%] mx-auto'>{children}</main>
-      <Footer />
     </>
   );
 };
