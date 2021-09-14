@@ -13,7 +13,7 @@ export const Layout: React.FC<Children> = ({ children }) => {
       </Head>
 
       <Navbar />
-      <main className='text-primary'>{children}</main>
+      <main className='text-primary w-[85%] mx-auto'>{children}</main>
       <Footer />
     </>
   );

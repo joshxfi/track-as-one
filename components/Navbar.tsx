@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
           tAO<span className='text-f9'>.</span>
         </h1>
         <div className='flex items-center text-sm'>
-          <p className='font-medium mr-2'>sign in</p>
+          <p className='text-xs mr-2'>sign in</p>
           <FaSignInAlt className='text-secondary' />
         </div>
       </div>
