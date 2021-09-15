@@ -8,12 +8,12 @@ import { AiOutlineIdcard } from 'react-icons/ai';
 
 const Homepage: React.FC = () => {
   return (
-    <section>
+    <section className='wrap'>
       <Header />
       <Button name='create a room' link='/create' Icon={BiDoorOpen} />
       <Button name='join a room' link='/join' Icon={VscSignIn} />
       <Button name='my room list' link='/rooms' Icon={VscListOrdered} />
-      <button className='btn w-full'>
+      <button className='btn w-[250px]'>
         <p>copy user id</p> <AiOutlineIdcard className='icon' />
       </button>
     </section>
@@ -31,7 +31,7 @@ interface HomepageButtonProps {
 const Button: React.FC<HomepageButtonProps> = ({ name, link, Icon }) => {
   return (
     <Link href={link}>
-      <button className='btn w-full'>
+      <button className='btn w-[250px]'>
         <p>{name}</p>
         <Icon className='icon' />
       </button>

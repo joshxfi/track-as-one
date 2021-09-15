@@ -10,4 +10,8 @@
     .icon {
         @apply text-secondary text-lg;
     }
+
+    .wrap {
+        @apply flex flex-col items-center;
+    }
 }

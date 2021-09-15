@@ -6,7 +6,7 @@ import { Header } from '../components/Header';
 
 const index: React.FC = () => {
   return (
-    <div className='flex flex-col items-center'>
+    <div className='wrap'>
       <Header />
       <button className='btn'>
         <p className='mr-2'>sign in with google</p>{' '}
