@@ -1,9 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
 
 * {
-    font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-    background: #F9f9f9;
+  background: #f9f9f9;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #2b2b2b;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: #2b2b2b;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #e3b04b;
+  border-radius: 8px;
 }
