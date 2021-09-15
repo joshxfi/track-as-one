@@ -30,7 +30,7 @@ interface HomepageButtonProps {
 
 const Button: React.FC<HomepageButtonProps> = ({ name, link, Icon }) => {
   return (
-    <Link href={link}>
+    <Link href={link} passHref>
       <button className='btn w-[250px]'>
         <p>{name}</p>
         <Icon className='icon' />
