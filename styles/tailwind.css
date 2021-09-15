@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .btn {
+        @apply flex items-center justify-between text-f9 bg-primary rounded-[36px] text-sm h-[40px] px-[40px] mb-3;
+    }
+
+    .icon {
+        @apply text-secondary text-lg;
+    }
+}
