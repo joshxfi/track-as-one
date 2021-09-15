@@ -10,9 +10,9 @@ const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare];
 
 export const Footer: React.FC = () => {
   return (
-    <footer className='absolute bottom-0'>
-      <div className='relative overflow-hidden h-[200px] w-screen'>
-        {/* <Image src={doodle} alt='doodle pattern' /> */}
+    <footer className='absolute bottom-0 w-full'>
+      <div className='relative overflow-hidden h-[200px]'>
+        <Image src={doodle} alt='doodle pattern' />
         <div className='absolute bottom-0 h-[100px] w-full bg-primary text-xs text-secondary flex flex-col justify-center items-center'>
           <div className='flex text-base'>
             {socialIcons.map(Icon => (

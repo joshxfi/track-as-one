@@ -1,14 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
-import { Footer } from '../components/Footer';
 import { FaSignInAlt } from 'react-icons/fa';
 import avatar from '../public/assets/avatar.svg';
-import { Navbar } from '../components/Navbar';
 
 const index: React.FC = () => {
   return (
-    <div className='flex flex-col items-center leading-3 min-h-screen h-auto relative'>
-      <Navbar />
+    <div className='flex flex-col items-center leading-3'>
       <header className='mt-12 text-center mb-4'>
         <h1 className='text-5xl font-bold'>trackAsOne</h1>
         <i className='text-base'>organize your tasks as one</i>
@@ -20,7 +17,6 @@ const index: React.FC = () => {
       <div>
         <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
       </div>
-      <Footer />
     </div>
   );
 };
