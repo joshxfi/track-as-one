@@ -3,6 +3,7 @@ import { Header } from '../components/Header';
 import { BiDoorOpen } from 'react-icons/bi';
 import { BsEye } from 'react-icons/bs';
 import Link from 'next/link';
+import { Button } from '../components/Button';
 
 interface RoomListSchema {
   roomName: string;
@@ -36,10 +37,7 @@ const Rooms = () => {
       </div>
 
       <Link href='/invites' passHref>
-        <button className='btn'>
-          <p className='mr-4'>view invites</p>
-          <BsEye className='icon' />
-        </button>
+        <Button desc='view invites' Icon={BsEye} />
       </Link>
     </section>
   );

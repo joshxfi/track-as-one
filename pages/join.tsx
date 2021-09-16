@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { VscSignIn } from 'react-icons/vsc';
+import { Button } from '../components/Button';
 
 const Join = () => {
   return (
@@ -13,10 +14,7 @@ const Join = () => {
           placeholder='enter room id'
         />
         <div className='inline-block mx-auto mt-6'>
-          <button className='btn'>
-            <p className='mr-4'>join room</p>
-            <VscSignIn className='icon' />
-          </button>
+          <Button desc='join room' Icon={VscSignIn} />
         </div>
       </form>
     </section>

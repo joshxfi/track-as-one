@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from '../components/Header';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { RoomNav } from '../components/RoomNav';
+import { Button } from '../components/Button';
 
 const Invite = () => {
   return (
@@ -15,10 +16,7 @@ const Invite = () => {
           placeholder='enter user id'
         />
         <div className='inline-block mx-auto mt-6'>
-          <button className='btn'>
-            <p className='mr-4'>invite user</p>
-            <AiOutlineIdcard className='icon' />
-          </button>
+          <Button desc='invite user' Icon={AiOutlineIdcard} />
         </div>
       </form>
     </section>

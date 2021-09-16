@@ -1,8 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { FaSignInAlt } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = () => {
+  const { signIn, signOut } = useAuth();
+
   return (
     <nav className='w-full bg-primary py-3 text-f9'>
       <div className='flex justify-between items-center w-[85%] mx-auto'>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { BiDoorOpen } from 'react-icons/bi';
+import { Button } from '../components/Button';
 
 const Create = () => {
   return (
@@ -13,10 +14,7 @@ const Create = () => {
           placeholder='enter room name'
         />
         <div className='inline-block mx-auto mt-6'>
-          <button className='btn'>
-            <p className='mr-4'>create room</p>
-            <BiDoorOpen className='icon' />
-          </button>
+          <Button desc='create room' Icon={BiDoorOpen} />
         </div>
       </form>
     </section>
