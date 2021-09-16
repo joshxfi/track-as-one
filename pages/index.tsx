@@ -6,7 +6,7 @@ import { Header } from '../components/Header';
 
 const index: React.FC = () => {
   return (
-    <div className='wrap'>
+    <section className='wrap'>
       <Header />
       <button className='btn'>
         <p className='mr-2'>sign in with google</p>{' '}
@@ -15,7 +15,7 @@ const index: React.FC = () => {
       <div className='mt-12'>
         <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
       </div>
-    </div>
+    </section>
   );
 };
 

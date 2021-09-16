@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../../components/Header';
 import { BsPlusSquareFill, BsCalendarFill, BsTrashFill } from 'react-icons/bs';
+import { RoomNav } from '../../components/RoomNav';
 
 interface TaskSchema {
   description: string;
@@ -16,6 +17,7 @@ const roomList: TaskSchema[] = [
 const Room = () => {
   return (
     <section className='wrap'>
+      <RoomNav />
       <Header title='John Doe Room' desc='' />
       <form className='w-full'>
         <div className='flex justify-between items-center px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
