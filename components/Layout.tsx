@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { AuthProvider } from '../context/AuthContext';
 
 export const Layout: React.FC<Children> = ({ children }) => {
   return (
@@ -16,9 +17,11 @@ export const Layout: React.FC<Children> = ({ children }) => {
         <title>taskAsOne</title>
       </Head>
       <div className='min-h-screen relative pb-[240px]'>
-        <Navbar />
-        <main className='text-primary w-[85%] mx-auto'>{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          <main className='text-primary w-[85%] mx-auto'>{children}</main>
+          <Footer />
+        </AuthProvider>
       </div>
     </>
   );
