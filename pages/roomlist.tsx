@@ -24,7 +24,7 @@ const Rooms = () => {
           <div className='flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary'>
             <div className='leading-5'>
               <p className='text-f9'>{room.roomName}</p>
-              <p>members: {room.members}</p>
+              <p className='text-sm'>members: {room.members}</p>
             </div>
 
             <BiDoorOpen className='icon' />
