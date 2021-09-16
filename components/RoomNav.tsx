@@ -10,7 +10,7 @@ export const RoomNav: React.FC = () => {
 
       <p>members: 10</p>
 
-      <Link href='invite'>
+      <Link href='/invite'>
         <a>invite user</a>
       </Link>
     </nav>
