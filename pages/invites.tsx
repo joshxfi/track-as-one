@@ -10,7 +10,10 @@ const Invites: React.FC = () => {
       <Header title='Invitation' />
       <div className='w-full mb-4'>
         {roomName.map(room => (
-          <div className='flex justify-between items-center px-[30px] h-[70px] rounded-[36px] mb-2 bg-primary text-secondary'>
+          <div
+            key={room}
+            className='flex justify-between items-center px-[30px] h-[70px] rounded-[36px] mb-2 bg-primary text-secondary'
+          >
             <div className='leading-5'>
               <p className='text-f9'>{room}</p>
               <p className='text-sm'>Accept Invitation</p>

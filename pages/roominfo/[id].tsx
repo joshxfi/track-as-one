@@ -32,7 +32,10 @@ const RoomInfo: React.FC = () => {
 
       <div className='w-full mb-4'>
         {roomList.map(room => (
-          <div className='flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary'>
+          <div
+            key={room.roomName}
+            className='flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary'
+          >
             <div className='flex'>
               <div className='h-9 w-9 bg-secondary rounded-full mr-4'></div>
               <div className='leading-5'>

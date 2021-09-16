@@ -35,7 +35,10 @@ const Room = () => {
 
       <div className='w-full my-4'>
         {roomList.map(room => (
-          <div className='flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary'>
+          <div
+            key={room.description}
+            className='flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary'
+          >
             <div className='leading-5'>
               <p className='text-f9'>{room.description}</p>
               <p className='text-sm'>members: {room.due}</p>
