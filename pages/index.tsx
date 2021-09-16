@@ -1,22 +1,12 @@
 import React from 'react';
-import Image from 'next/image';
-import avatar from '../public/assets/avatar.svg';
-import { FaSignInAlt } from 'react-icons/fa';
-import { Header } from '../components/Header';
+import { Homepage } from '../components/Homepage';
+import { Welcome } from '../components/Welcome';
+import { useAuth } from '../context/AuthContext';
 
-const index: React.FC = () => {
-  return (
-    <section className='wrap'>
-      <Header />
-      <button className='btn'>
-        <p className='mr-2'>sign in with google</p>{' '}
-        <FaSignInAlt className='text-secondary' />
-      </button>
-      <div className='mt-12'>
-        <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
-      </div>
-    </section>
-  );
+const Index = () => {
+  const { authUser } = useAuth();
+
+  return <>{authUser ? <Homepage /> : <Welcome />}</>;
 };
 
-export default index;
+export default Index;
