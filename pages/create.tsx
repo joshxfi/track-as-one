@@ -14,7 +14,7 @@ const Create = () => {
         />
         <div className='inline-block mx-auto mt-6'>
           <button className='btn'>
-            <p className='mr-2'>create room</p>
+            <p className='mr-4'>create room</p>
             <BiDoorOpen className='icon' />
           </button>
         </div>

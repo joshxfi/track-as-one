@@ -14,7 +14,7 @@ const Join = () => {
         />
         <div className='inline-block mx-auto mt-6'>
           <button className='btn'>
-            <p className='mr-2'>join room</p>
+            <p className='mr-4'>join room</p>
             <VscSignIn className='icon' />
           </button>
         </div>
