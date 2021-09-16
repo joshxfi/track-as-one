@@ -1,10 +1,4 @@
 import React from 'react';
-import { IconType } from 'react-icons';
-
-interface ButtonProps {
-  desc: string;
-  Icon: IconType;
-}
 
 export const Button = ({ desc, Icon }: ButtonProps) => {
   return (

@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { IconType } from 'react-icons';
 import { Header } from './Header';
 import { BiDoorOpen } from 'react-icons/bi';
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc';
@@ -19,12 +18,6 @@ export const Homepage: React.FC = () => {
     </section>
   );
 };
-
-interface HomepageButtonProps {
-  name: string;
-  link: string;
-  Icon: IconType;
-}
 
 const Btn: React.FC<HomepageButtonProps> = ({ name, link, Icon }) => {
   return (

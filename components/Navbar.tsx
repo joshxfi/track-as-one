@@ -24,11 +24,6 @@ export const Navbar: React.FC = () => {
   );
 };
 
-interface NavBtnProps {
-  method: string;
-  onTap: () => void;
-}
-
 const NavBtn = ({ method, onTap }: NavBtnProps) => {
   return (
     <div onClick={onTap} className='flex items-center text-sm cursor-pointer'>

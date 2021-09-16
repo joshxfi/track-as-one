@@ -1,10 +1,5 @@
 import React from 'react';
 
-interface HeaderProps {
-  title?: string;
-  desc?: string;
-}
-
 export const Header: React.FC<HeaderProps> = ({ title, desc }) => {
   return (
     <header className='mt-12 text-center mb-4'>
