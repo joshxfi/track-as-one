@@ -1,4 +1,4 @@
-interface userList {
+interface UserList {
   uid: string;
   name: string;
   profilePicture: string;
@@ -7,7 +7,7 @@ interface userList {
   dateJoined: Date;
 }
 
-interface roomList {
+interface RoomList {
   name: string;
   roomID: string;
   creator: string;
@@ -16,7 +16,8 @@ interface roomList {
   dateAdded: Date;
 }
 
-interface taskList {
+interface TaskList {
+  id: string;
   roomID: string;
   description: string;
   addedBy: string;
