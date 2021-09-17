@@ -65,7 +65,9 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   // fetch tasks
   useEffect(() => {
-    const unsub = onSnapshot(taskRef, docs => {
+    const q = query(taskRef, orderBy('dateAdded'));
+
+    const unsub = onSnapshot(q, docs => {
       let newTasks: TaskList[] | any[] = [];
 
       docs.forEach(doc => {
