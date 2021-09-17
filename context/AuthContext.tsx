@@ -1,15 +1,7 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/router';
-import { User } from '@firebase/auth';
 import { auth } from '../config/firebase';
-
-interface AuthContextValues {
-  authUser: User | null;
-  uid: string | undefined;
-  signIn: () => void;
-  signOut: () => void;
-}
 
 const AuthContext = createContext<AuthContextValues>({} as AuthContextValues);
 

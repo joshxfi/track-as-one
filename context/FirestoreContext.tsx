@@ -1,21 +1,6 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
 import { onSnapshot, collection, query, orderBy } from 'firebase/firestore';
-import {
-  CollectionReference,
-  DocumentData,
-  Firestore,
-} from '@firebase/firestore';
 import { db } from '../config/firebase';
-
-interface FirestoreContextValues {
-  db: Firestore;
-  userList: UserList[];
-  roomList: RoomList[];
-  taskList: TaskList[];
-  userRef: CollectionReference<DocumentData>;
-  roomRef: CollectionReference<DocumentData>;
-  taskRef: CollectionReference<DocumentData>;
-}
 
 const FirestoreContext = createContext({});
 const useFirestore = () => {
