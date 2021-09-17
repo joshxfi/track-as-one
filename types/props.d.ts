@@ -21,5 +21,6 @@ interface HomepageButtonProps {
 interface ButtonProps {
   desc: string;
   href?: string;
+  type?: button;
   Icon: IconType;
 }

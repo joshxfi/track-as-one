@@ -1,6 +1,8 @@
 interface AuthContextValues {
   authUser: User | null;
   uid: string | undefined;
+  displayName: string | null | undefined;
+  photoURL: string | null | undefined;
   signIn: () => void;
   signOut: () => void;
 }

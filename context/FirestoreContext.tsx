@@ -2,7 +2,9 @@ import React, { useContext, createContext, useState, useEffect } from 'react';
 import { onSnapshot, collection, query, orderBy } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
-const FirestoreContext = createContext({});
+const FirestoreContext = createContext<FirestoreContextValues>(
+  {} as FirestoreContextValues
+);
 const useFirestore = () => {
   return useContext(FirestoreContext);
 };

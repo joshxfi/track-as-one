@@ -11,7 +11,7 @@ const useAuth = () => {
 
 const AuthProvider: React.FC = ({ children }) => {
   const [authUser, setAuthUser] = useState(() => auth.currentUser);
-  const { uid } = authUser || {};
+  const { uid, displayName, photoURL } = authUser || {};
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +48,8 @@ const AuthProvider: React.FC = ({ children }) => {
   const values: AuthContextValues = {
     authUser,
     uid,
+    displayName,
+    photoURL,
     signIn,
     signOut,
   };

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-export const Button = ({ desc, href, Icon }: ButtonProps) => {
+export const Button = ({ desc, href, type, Icon }: ButtonProps) => {
   const router = useRouter();
 
   return (
-    <button onClick={() => router.push(href || '')} className='btn'>
+    <button onClick={() => router.push(href || '')} className='btn' type={type}>
       <p className='mr-4'>{desc}</p>
       <Icon className='icon' />
     </button>
