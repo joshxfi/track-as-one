@@ -12,7 +12,7 @@ const Invites: React.FC = () => {
         {roomName.map(room => (
           <div
             key={room}
-            className='flex justify-between items-center px-[30px] h-[70px] rounded-[36px] mb-2 bg-primary text-secondary'
+            className='flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary'
           >
             <div className='leading-5'>
               <p className='text-f9'>{room}</p>

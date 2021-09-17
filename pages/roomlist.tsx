@@ -36,9 +36,7 @@ const Rooms = () => {
         ))}
       </div>
 
-      <Link href='/invites' passHref>
-        <Button desc='view invites' Icon={BsEye} />
-      </Link>
+      <Button desc='view invites' href='/invites' Icon={BsEye} />
     </section>
   );
 };

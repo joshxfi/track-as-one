@@ -1,5 +1,6 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useRouter } from 'next/router';
 import { User } from '@firebase/auth';
 import { auth } from '../config/firebase';
 
@@ -18,8 +19,12 @@ const useAuth = () => {
 
 const AuthProvider: React.FC = ({ children }) => {
   const [authUser, setAuthUser] = useState(() => auth.currentUser);
-
   const { uid } = authUser || {};
+  const router = useRouter();
+
+  useEffect(() => {
+    !authUser && router.push('/');
+  }, [authUser]);
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(user => {
