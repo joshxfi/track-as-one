@@ -1,9 +1,9 @@
 import React from 'react';
-import { Header } from '../components/Header';
+import { Header } from '../components/global/Header';
 import { BiDoorOpen } from 'react-icons/bi';
 import { BsEye } from 'react-icons/bs';
 import Link from 'next/link';
-import { Button } from '../components/Button';
+import { Button } from '../components/global/Button';
 
 interface RoomListSchema {
   roomName: string;
