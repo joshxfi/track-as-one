@@ -1,72 +1,72 @@
-import React, { useContext, createContext, useState, useEffect } from 'react';
-import { onSnapshot, collection, query, orderBy } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import React, { useContext, createContext, useState, useEffect } from 'react'
+import { onSnapshot, collection, query, orderBy } from 'firebase/firestore'
+import { db } from '../config/firebase'
 
 const FirestoreContext = createContext<FirestoreContextValues>(
   {} as FirestoreContextValues
-);
+)
 const useFirestore = () => {
-  return useContext(FirestoreContext);
-};
+  return useContext(FirestoreContext)
+}
 
 const FirestoreProvider: React.FC = ({ children }) => {
-  const [userList, setUserList] = useState<UserList[]>([]);
-  const [roomList, setRoomList] = useState<RoomList[]>([]);
-  const [taskList, setTaskList] = useState<TaskList[]>([]);
+  const [userList, setUserList] = useState<UserList[]>([])
+  const [roomList, setRoomList] = useState<RoomList[]>([])
+  const [taskList, setTaskList] = useState<TaskList[]>([])
 
-  const userRef = collection(db, 'userList');
-  const roomRef = collection(db, 'roomList');
-  const taskRef = collection(db, 'taskList');
+  const userRef = collection(db, 'userList')
+  const roomRef = collection(db, 'roomList')
+  const taskRef = collection(db, 'taskList')
 
   // fetch users
   useEffect(() => {
-    const unsub = onSnapshot(userRef, docs => {
-      let newUsers: UserList[] | any[] = [];
+    const unsub = onSnapshot(userRef, (docs) => {
+      let newUsers: UserList[] | any[] = []
 
-      docs.forEach(doc => {
-        let task = { ...doc.data(), id: doc.id };
-        newUsers = [task, ...newUsers];
-      });
+      docs.forEach((doc) => {
+        let task = { ...doc.data(), id: doc.id }
+        newUsers = [task, ...newUsers]
+      })
 
-      setUserList(newUsers);
-    });
+      setUserList(newUsers)
+    })
 
-    return unsub;
-  }, [db]);
+    return unsub
+  }, [db])
 
   // fetch rooms
   useEffect(() => {
-    const unsub = onSnapshot(roomRef, docs => {
-      let newRooms: RoomList[] | any[] = [];
+    const unsub = onSnapshot(roomRef, (docs) => {
+      let newRooms: RoomList[] | any[] = []
 
-      docs.forEach(doc => {
-        let task = { ...doc.data(), id: doc.id };
-        newRooms = [task, ...newRooms];
-      });
+      docs.forEach((doc) => {
+        let task = { ...doc.data(), id: doc.id }
+        newRooms = [task, ...newRooms]
+      })
 
-      setRoomList(newRooms);
-    });
+      setRoomList(newRooms)
+    })
 
-    return unsub;
-  }, [db]);
+    return unsub
+  }, [db])
 
   // fetch tasks
   useEffect(() => {
-    const q = query(taskRef, orderBy('dateAdded'));
+    const q = query(taskRef, orderBy('dateAdded'))
 
-    const unsub = onSnapshot(q, docs => {
-      let newTasks: TaskList[] | any[] = [];
+    const unsub = onSnapshot(q, (docs) => {
+      let newTasks: TaskList[] | any[] = []
 
-      docs.forEach(doc => {
-        let task = { ...doc.data(), id: doc.id };
-        newTasks = [task, ...newTasks];
-      });
+      docs.forEach((doc) => {
+        let task = { ...doc.data(), id: doc.id }
+        newTasks = [task, ...newTasks]
+      })
 
-      setTaskList(newTasks);
-    });
+      setTaskList(newTasks)
+    })
 
-    return unsub;
-  }, [db]);
+    return unsub
+  }, [db])
 
   const values: FirestoreContextValues = {
     db,
@@ -76,13 +76,13 @@ const FirestoreProvider: React.FC = ({ children }) => {
     userRef,
     roomRef,
     taskRef,
-  };
+  }
 
   return (
     <FirestoreContext.Provider value={values}>
       {children}
     </FirestoreContext.Provider>
-  );
-};
+  )
+}
 
-export { useFirestore, FirestoreProvider };
+export { useFirestore, FirestoreProvider }

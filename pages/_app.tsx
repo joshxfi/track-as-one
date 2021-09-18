@@ -1,8 +1,8 @@
-import '../styles/tailwind.css';
-import '../styles/global.css';
-import type { AppProps } from 'next/app';
-import { Layout } from '../components/Layout';
-import { FirestoreProvider } from '../context/FirestoreContext';
+import '../styles/tailwind.css'
+import '../styles/global.css'
+import type { AppProps } from 'next/app'
+import { Layout } from '../components/Layout'
+import { FirestoreProvider } from '../context/FirestoreContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,6 +11,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </FirestoreProvider>
     </Layout>
-  );
+  )
 }
-export default MyApp;
+export default MyApp
