@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Header } from '../../components/global/Header'
-import { BsPlusSquareFill, BsCalendarFill, BsTrashFill } from 'react-icons/bs'
+import { BsPlusSquareFill, BsCalendarFill } from 'react-icons/bs'
 import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
 import { addDoc, serverTimestamp } from 'firebase/firestore'
+import { RoomTask } from '../../components/room/RoomTask'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
@@ -51,19 +52,12 @@ const Room = () => {
                 </button>
               </div>
             </div>
-            <div className="w-full my-4">
-              {roomTask.map((task) => (
-                <div className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary">
-                  <div className="leading-5">
-                    <p className="text-f9">{task.description}</p>
-                    <p className="text-sm">due: {task.roomID}</p>
-                  </div>
-
-                  <BsTrashFill className="icon" />
-                </div>
-              ))}
-            </div>
           </form>
+          <div className="w-full my-4">
+            {roomTask.map((task) => (
+              <RoomTask key={task.id} task={task} />
+            ))}
+          </div>
         </section>
       ) : (
         <p>room not found</p>

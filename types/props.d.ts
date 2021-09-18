@@ -24,3 +24,8 @@ interface ButtonProps {
   type?: button;
   Icon: IconType;
 }
+
+
+interface RoomTaskProps {
+  task: TaskList;
+}
