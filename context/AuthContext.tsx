@@ -50,6 +50,7 @@ const AuthProvider: React.FC = ({ children }) => {
     uid,
     displayName,
     photoURL,
+    email,
     signIn,
     signOut,
   }
