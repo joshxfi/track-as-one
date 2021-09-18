@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from '../components/Header';
+import { Header } from '../components/global/Header';
 import { BiDoorOpen } from 'react-icons/bi';
 
 const roomName = ['John Doe Room', 'Some random kid room', 'a nobody room'];

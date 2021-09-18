@@ -1,7 +1,7 @@
 import React from 'react';
-import { Header } from '../components/Header';
+import { Header } from '../components/global/Header';
 import { VscSignIn } from 'react-icons/vsc';
-import { Button } from '../components/Button';
+import { Button } from '../components/global/Button';
 
 const Join = () => {
   return (

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Header } from '../components/Header';
+import { Header } from '../components/global/Header';
 import { AiOutlineIdcard } from 'react-icons/ai';
-import { RoomNav } from '../components/RoomNav';
-import { Button } from '../components/Button';
+import { RoomNav } from '../components/room/RoomNav';
+import { Button } from '../components/global/Button';
 
 const Invite = () => {
   return (

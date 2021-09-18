@@ -1,8 +1,8 @@
 import React from 'react';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { BsCalendarFill } from 'react-icons/bs';
-import { Header } from '../../components/Header';
-import { RoomNav } from '../../components/RoomNav';
+import { Header } from '../../components/global/Header';
+import { RoomNav } from '../../components/room/RoomNav';
 
 interface RoomListSchema {
   roomName: string;

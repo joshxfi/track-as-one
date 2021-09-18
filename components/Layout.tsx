@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import { Navbar } from './Navbar';
-import { Footer } from './Footer';
+import { Navbar } from './global/Navbar';
+import { Footer } from './global/Footer';
 import { AuthProvider } from '../context/AuthContext';
 
 export const Layout: React.FC<Children> = ({ children }) => {

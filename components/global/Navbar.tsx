@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { FaSignInAlt } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar: React.FC = () => {
   const { authUser, signIn, signOut } = useAuth();

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Header } from './Header';
+import { Header } from './global/Header';
 import { BiDoorOpen } from 'react-icons/bi';
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc';
 import { AiOutlineIdcard } from 'react-icons/ai';

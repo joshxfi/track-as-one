@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import avatar from '../public/assets/avatar.svg';
 import { FaSignInAlt } from 'react-icons/fa';
-import { Header } from './Header';
+import { Header } from './global/Header';
 import { useAuth } from '../context/AuthContext';
 
 export const Welcome: React.FC = () => {

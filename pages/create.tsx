@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { Header } from '../components/Header';
+import { Header } from '../components/global/Header';
 import { BiDoorOpen } from 'react-icons/bi';
-import { Button } from '../components/Button';
+import { Button } from '../components/global/Button';
 import { useAuth } from '../context/AuthContext';
 import { useFirestore } from '../context/FirestoreContext';
 import { addDoc, serverTimestamp } from 'firebase/firestore';

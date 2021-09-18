@@ -14,9 +14,9 @@ const AuthProvider: React.FC = ({ children }) => {
   const { uid, displayName, photoURL } = authUser || {};
   const router = useRouter();
 
-  useEffect(() => {
-    !authUser && router.push('/');
-  }, [authUser]);
+  // useEffect(() => {
+  //   !authUser && router.push('/');
+  // }, [authUser]);
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(user => {

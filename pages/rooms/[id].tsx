@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Header } from '../../components/global/Header';
 import { BsPlusSquareFill, BsCalendarFill, BsTrashFill } from 'react-icons/bs';
-import { RoomNav } from '../../components/RoomNav';
+import { RoomNav } from '../../components/room/RoomNav';
 import { useFirestore } from '../../context/FirestoreContext';
 import { addDoc, serverTimestamp } from 'firebase/firestore';
 
