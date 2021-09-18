@@ -29,3 +29,8 @@ interface ButtonProps {
 interface RoomTaskProps {
   task: TaskList;
 }
+
+
+interface RoomNavProps {
+  room?: RoomList;
+}

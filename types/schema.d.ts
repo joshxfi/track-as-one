@@ -4,7 +4,7 @@ interface UserList {
   profilePicture: string;
   roomsCreated: string;
   roomsJoined: string;
-  dateJoined: Date;
+  dateJoined: any;
 }
 
 interface RoomList {
@@ -13,7 +13,7 @@ interface RoomList {
   creator: string;
   admin: string;
   members: string;
-  dateAdded: Date;
+  dateAdded: any;
 }
 
 interface TaskList {
@@ -21,6 +21,6 @@ interface TaskList {
   roomID: string;
   description: string;
   addedBy: string;
-  dateAdded: Date;
-  dueDate: Date;
+  dateAdded: any;
+  dueDate: any;
 }

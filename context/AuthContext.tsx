@@ -11,7 +11,7 @@ const useAuth = () => {
 
 const AuthProvider: React.FC = ({ children }) => {
   const [authUser, setAuthUser] = useState(() => auth.currentUser)
-  const { uid, displayName, photoURL } = authUser || {}
+  const { uid, displayName, photoURL, email } = authUser || {}
   const router = useRouter()
 
   // useEffect(() => {
@@ -24,7 +24,7 @@ const AuthProvider: React.FC = ({ children }) => {
     })
 
     return unsub
-  })
+  }, [])
 
   const signIn = async () => {
     const provider = new GoogleAuthProvider()

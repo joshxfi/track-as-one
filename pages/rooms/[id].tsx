@@ -35,7 +35,7 @@ const Room = () => {
     <>
       {roomInfo ? (
         <section className="wrap">
-          <RoomNav />
+          <RoomNav room={roomInfo} />
           <Header title={roomInfo.name} desc={roomInfo.roomID} />
           <form onSubmit={addTask} className="w-full">
             <div className="flex justify-between items-center px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2">
