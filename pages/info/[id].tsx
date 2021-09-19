@@ -1,6 +1,6 @@
 import React from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { nanoid } from 'nanoid'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
 import { Header } from '../../components/global/Header'
@@ -8,12 +8,16 @@ import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
 
 const RoomInfo: React.FC = () => {
-  const { roomList } = useFirestore()
+  const { roomList, userList } = useFirestore()
 
   const router = useRouter()
   const { id } = router.query
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const dateCreated = currentRoom?.dateAdded.toDate().toString()
+  const roomCreator = userList.find((user) => user.uid === currentRoom?.creator)
+  const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
+
+  const defaultPic =
+    'https://lh3.googleusercontent.com/a-/AOh14Gg0-BgMxN9qRwfVx_Sr59TtL0mH5eJhcuKIRYj1=s96-c'
 
   return (
     <section className="wrap">
@@ -30,24 +34,24 @@ const RoomInfo: React.FC = () => {
       </div>
 
       <div className="w-full mb-4">
-        {roomList
-          .filter((room) => room.roomID === id)
-          .map((room) => (
-            <div
-              key={nanoid(10)}
-              className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary"
-            >
-              <div className="flex">
-                <div className="h-9 w-9 bg-secondary rounded-full mr-4"></div>
-                <div className="leading-5">
-                  <p className="text-f9">{room.name}</p>
-                  <p className="text-sm">members:</p>
-                </div>
-              </div>
-
-              <AiOutlineIdcard className="icon text-xl" />
+        <div className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary">
+          <div className="flex">
+            <div className="h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden">
+              <Image
+                src={roomCreator?.photoURL ? roomCreator?.photoURL : defaultPic}
+                height={36}
+                width={36}
+                alt="creator profile picture"
+              />
             </div>
-          ))}
+            <div className="leading-5">
+              <p className="text-f9">{roomCreator?.displayName}</p>
+              <p className="text-sm">creator</p>
+            </div>
+          </div>
+
+          <AiOutlineIdcard className="icon text-xl" />
+        </div>
       </div>
     </section>
   )

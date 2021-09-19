@@ -1,7 +1,8 @@
 interface UserList {
   uid: string;
-  name: string;
-  profilePicture: string;
+  displayName: string;
+  photoURL: string;
+  email: string;
   roomsCreated: string;
   roomsJoined: string;
   dateJoined: any;
