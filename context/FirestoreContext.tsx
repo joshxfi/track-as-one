@@ -29,70 +29,62 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   // fetch users
   useEffect(() => {
-    if (authUser) {
-      const unsub = onSnapshot(userRef, async (docs) => {
-        let newUsers: UserList[] | any[] = []
+    const unsub = onSnapshot(userRef, async (docs) => {
+      let newUsers: UserList[] | any[] = []
 
-        docs.forEach((doc) => {
-          let task = { ...doc.data(), id: doc.id }
-          newUsers = [task, ...newUsers]
-        })
+      docs.forEach((doc) => {
+        let task = { ...doc.data(), id: doc.id }
+        newUsers = [task, ...newUsers]
+      })
 
-        const userExists = newUsers.some((user) => uid === user.uid)
-        if (!userExists && authUser !== null) {
-          const payload = {
-            uid,
-            displayName,
-            photoURL,
-            email,
-          }
-
-          await addDoc(userRef, payload)
+      const userExists = newUsers.some((user) => uid === user.uid)
+      if (!userExists && authUser !== null) {
+        const payload = {
+          uid,
+          displayName,
+          photoURL,
+          email,
         }
 
-        setUserList(newUsers)
-      })
-      return unsub
-    }
+        await addDoc(userRef, payload)
+      }
+
+      setUserList(newUsers)
+    })
+    return unsub
   }, [authUser])
 
   // fetch rooms
   useEffect(() => {
-    if (authUser) {
-      const unsub = onSnapshot(roomRef, (docs) => {
-        let newRooms: RoomList[] | any[] = []
+    const unsub = onSnapshot(roomRef, (docs) => {
+      let newRooms: RoomList[] | any[] = []
 
-        docs.forEach((doc) => {
-          let task = { ...doc.data(), id: doc.id }
-          newRooms = [task, ...newRooms]
-        })
-
-        setRoomList(newRooms)
+      docs.forEach((doc) => {
+        let task = { ...doc.data(), id: doc.id }
+        newRooms = [task, ...newRooms]
       })
-      return unsub
-    }
-    return
+
+      setRoomList(newRooms)
+    })
+    return unsub
   }, [db])
 
   // fetch tasks
   useEffect(() => {
-    if (authUser) {
-      const q = query(taskRef, orderBy('dateAdded'))
+    const q = query(taskRef, orderBy('dateAdded'))
 
-      const unsub = onSnapshot(q, (docs) => {
-        let newTasks: TaskList[] | any[] = []
+    const unsub = onSnapshot(q, (docs) => {
+      let newTasks: TaskList[] | any[] = []
 
-        docs.forEach((doc) => {
-          let task = { ...doc.data(), id: doc.id }
-          newTasks = [task, ...newTasks]
-        })
-
-        setTaskList(newTasks)
+      docs.forEach((doc) => {
+        let task = { ...doc.data(), id: doc.id }
+        newTasks = [task, ...newTasks]
       })
 
-      return unsub
-    }
-    return
+      setTaskList(newTasks)
+    })
+
+    return unsub
   }, [db])
 
   const values: FirestoreContextValues = {
