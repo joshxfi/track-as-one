@@ -13,7 +13,9 @@ const RoomInfo: React.FC = () => {
   const router = useRouter()
   const { id } = router.query
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const roomCreator = userList.find((user) => user.uid === currentRoom?.creator)
+  const roomCreator = userList.find(
+    (user) => user.userTag === currentRoom?.creator
+  )
   const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
 
   const defaultPic =

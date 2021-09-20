@@ -1,4 +1,5 @@
 import React, { useContext, createContext, useState, useEffect } from 'react'
+import { nanoid } from 'nanoid'
 import {
   onSnapshot,
   collection,
@@ -40,6 +41,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
       const userExists = newUsers.some((user) => uid === user.uid)
       if (!userExists && authUser !== null) {
         const payload = {
+          userTag: `user:${nanoid(5)}`,
           uid,
           displayName,
           photoURL,
@@ -52,7 +54,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
       setUserList(newUsers)
     })
     return unsub
-  }, [authUser])
+  }, [db, authUser])
 
   // fetch rooms
   useEffect(() => {

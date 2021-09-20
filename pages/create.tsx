@@ -13,15 +13,16 @@ const Create = () => {
   const router = useRouter()
 
   const { uid } = useAuth()
-  const { roomRef } = useFirestore()
+  const { roomRef, userList } = useFirestore()
+  const user = userList.find((user) => user.uid === uid)
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const payload = {
       roomID: nanoid(5),
+      creator: user?.userTag,
       name: roomName,
-      creator: uid,
       dateAdded: serverTimestamp(),
     }
 

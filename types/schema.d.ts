@@ -1,5 +1,6 @@
 interface UserList {
   uid: string;
+  userTag: string;
   displayName: string;
   photoURL: string;
   email: string;
