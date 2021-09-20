@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
 import { Header } from '../components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
@@ -9,6 +10,7 @@ import { addDoc, serverTimestamp } from 'firebase/firestore'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
+  const router = useRouter()
 
   const { uid } = useAuth()
   const { roomRef } = useFirestore()
@@ -17,14 +19,17 @@ const Create = () => {
     e.preventDefault()
 
     const payload = {
-      roomID: nanoid(9),
+      roomID: nanoid(5),
       name: roomName,
       creator: uid,
       dateAdded: serverTimestamp(),
     }
 
     setRoomName('')
-    roomName && (await addDoc(roomRef, payload))
+    if (roomName) {
+      await addDoc(roomRef, payload)
+      router.push(`/rooms/${payload.roomID}`)
+    }
   }
 
   return (
