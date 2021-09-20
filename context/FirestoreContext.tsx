@@ -5,7 +5,8 @@ import {
   collection,
   query,
   orderBy,
-  addDoc,
+  setDoc,
+  doc,
 } from 'firebase/firestore'
 import { db } from '../config/firebase'
 import { useAuth } from './AuthContext'
@@ -31,24 +32,28 @@ const FirestoreProvider: React.FC = ({ children }) => {
   // fetch users
   useEffect(() => {
     const unsub = onSnapshot(userRef, async (docs) => {
+      const userID = `user:${nanoid(5)}`
       let newUsers: UserList[] | any[] = []
 
       docs.forEach((doc) => {
-        let task = { ...doc.data(), id: doc.id }
-        newUsers = [task, ...newUsers]
+        let user = { ...doc.data() }
+        newUsers = [user, ...newUsers]
       })
 
       const userExists = newUsers.some((user) => uid === user.uid)
       if (!userExists && authUser !== null) {
-        const payload = {
-          userTag: `user:${nanoid(5)}`,
+        const payload: UserList = {
+          userTag: userID,
+          roomsCreated: [],
+          roomsJoined: [],
           uid,
           displayName,
           photoURL,
           email,
         }
 
-        await addDoc(userRef, payload)
+        await setDoc(doc(db, 'userList', userID), payload)
+        newUsers = [payload, ...newUsers]
       }
 
       setUserList(newUsers)
@@ -62,8 +67,8 @@ const FirestoreProvider: React.FC = ({ children }) => {
       let newRooms: RoomList[] | any[] = []
 
       docs.forEach((doc) => {
-        let task = { ...doc.data(), id: doc.id }
-        newRooms = [task, ...newRooms]
+        let room = { ...doc.data(), id: doc.id }
+        newRooms = [room, ...newRooms]
       })
 
       setRoomList(newRooms)

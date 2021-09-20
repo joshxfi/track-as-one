@@ -1,12 +1,11 @@
 interface UserList {
-  uid: string;
-  userTag: string;
-  displayName: string;
-  photoURL: string;
-  email: string;
-  roomsCreated: string;
-  roomsJoined: string;
-  dateJoined: any;
+  uid: string | undefined;
+  userTag: string | undefined | null;
+  displayName: string | undefined | null;
+  photoURL: string | undefined | null;
+  email: string | undefined | null;
+  roomsCreated: string[];
+  roomsJoined: string[];
 }
 
 interface RoomList {

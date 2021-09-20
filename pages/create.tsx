@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
 import { Header } from '../components/global/Header'
@@ -6,30 +6,41 @@ import { BiDoorOpen } from 'react-icons/bi'
 import { Button } from '../components/global/Button'
 import { useAuth } from '../context/AuthContext'
 import { useFirestore } from '../context/FirestoreContext'
-import { addDoc, serverTimestamp } from 'firebase/firestore'
+import { addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
   const router = useRouter()
 
   const { uid } = useAuth()
-  const { roomRef, userList } = useFirestore()
+  const { roomRef, db, userList } = useFirestore()
+
   const user = userList.find((user) => user.uid === uid)
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const roomID = nanoid(5)
 
     const payload = {
-      roomID: nanoid(5),
+      roomID,
       creator: user?.userTag,
       name: roomName,
       dateAdded: serverTimestamp(),
     }
 
     setRoomName('')
+    const updateUserRef = doc(db, 'userList', `${user?.userTag}`)
+
     if (roomName) {
       await addDoc(roomRef, payload)
-      router.push(`/rooms/${payload.roomID}`)
+
+      if (user?.roomsCreated) {
+        await updateDoc(updateUserRef, {
+          roomsCreated: [payload.roomID, ...user?.roomsCreated],
+        })
+
+        router.push(`/rooms/${roomID}`)
+      }
     }
   }
 
