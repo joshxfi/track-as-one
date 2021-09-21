@@ -21,7 +21,7 @@ const Room = () => {
   const { uid } = useAuth()
   const { id } = router.query
 
-  const roomInfo = roomList.find((room) => room.roomID === id)
+  const currentRoom = roomList.find((room) => room.roomID === id)
   const currentUser = userList.find((user) => user.uid === uid)
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,21 +36,21 @@ const Room = () => {
     }
 
     setDesc('')
-    const roomDocRef = doc(db, 'roomList', `${roomInfo?.roomID}`)
+    const roomDocRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
 
-    if (roomInfo?.tasks) {
+    if (currentRoom?.tasks) {
       await updateDoc(roomDocRef, {
-        tasks: [payload, ...roomInfo?.tasks],
+        tasks: [payload, ...currentRoom?.tasks],
       })
     }
   }
 
   return (
     <>
-      {roomInfo ? (
+      {currentRoom ? (
         <section className="wrap">
-          <RoomNav room={roomInfo} />
-          <Header title={roomInfo.name} desc={roomInfo.roomID} />
+          <RoomNav room={currentRoom} />
+          <Header title={currentRoom.name} desc={currentRoom.roomID} />
           <form onSubmit={addTask} className="w-full">
             <div className="flex justify-between items-center px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2">
               <input
@@ -74,9 +74,9 @@ const Room = () => {
             />
           </form>
           <div className="w-full my-4">
-            {/* {roomTask.map((task) => (
+            {currentRoom.tasks.map((task) => (
               <RoomTask key={task.id} task={task} />
-            ))} */}
+            ))}
           </div>
         </section>
       ) : (

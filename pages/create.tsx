@@ -15,7 +15,7 @@ const Create = () => {
   const { uid } = useAuth()
   const { db, userList } = useFirestore()
 
-  const user = userList.find((user) => user.uid === uid)
+  const currentUser = userList.find((user) => user.uid === uid)
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -25,25 +25,32 @@ const Create = () => {
       roomID,
       name: roomName,
       tasks: [],
-      creator: user?.userTag,
+      creator: currentUser?.userTag,
       admin: [],
       members: [],
       dateAdded: serverTimestamp(),
     }
 
     setRoomName('')
-    const updateUserRef = doc(db, 'userList', `${user?.userTag}`)
+    const updateUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
 
     if (roomName) {
       const roomDocRef = doc(db, 'roomList', roomID)
       await setDoc(roomDocRef, payload)
 
-      if (user?.roomsCreated) {
+      const roomOwner = () => {
+        currentUser?.roomsCreated.forEach((room) => {
+          if (room === roomID) return true
+        })
+      }
+
+      if (currentUser?.roomsCreated && roomOwner) {
+        router.push(`/rooms/${roomID}`)
+        
         await updateDoc(updateUserRef, {
-          roomsCreated: [payload.roomID, ...user?.roomsCreated],
+          roomsCreated: [payload.roomID, ...currentUser?.roomsCreated],
         })
 
-        router.push(`/rooms/${roomID}`)
       }
     }
   }
