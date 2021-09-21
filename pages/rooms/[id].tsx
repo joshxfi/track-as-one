@@ -10,6 +10,7 @@ import { RoomTask } from '../../components/room/RoomTask'
 import { nanoid } from 'nanoid'
 import { useAuth } from '../../context/AuthContext'
 import { dateToday } from '../../config/misc'
+import { NotFound } from '../../components/NotFound'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
@@ -79,7 +80,7 @@ const Room = () => {
           </div>
         </section>
       ) : (
-        <p>room not found</p>
+        <NotFound />
       )}
     </>
   )
