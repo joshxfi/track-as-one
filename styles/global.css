@@ -2,8 +2,12 @@
 
 * {
   font-family: 'Poppins', sans-serif;
-  user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #E3B04B;
+  color: #2b2b2b
 }
 
 body {
