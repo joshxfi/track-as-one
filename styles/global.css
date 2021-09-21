@@ -2,6 +2,8 @@
 
 * {
   font-family: 'Poppins', sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -19,4 +21,8 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: #e3b04b;
   border-radius: 8px;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
 }
