@@ -1,34 +1,47 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import { BsPlusSquareFill, BsCalendarFill } from 'react-icons/bs'
+import { BsPlusSquareFill } from 'react-icons/bs'
 import { useFirestore } from '../../context/FirestoreContext'
-import { addDoc, serverTimestamp } from 'firebase/firestore'
+import { addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore'
 
 import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
 import { RoomTask } from '../../components/room/RoomTask'
+import { nanoid } from 'nanoid'
+import { useAuth } from '../../context/AuthContext'
+import { dateToday } from '../../config/misc'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
+  const [dueDate, setDueDate] = useState<string>(dateToday)
 
   const router = useRouter()
-  const { taskList, roomList, taskRef } = useFirestore()
+  const { roomList, taskRef, roomRef, userList, db } = useFirestore()
+  const { uid } = useAuth()
   const { id } = router.query
 
   const roomInfo = roomList.find((room) => room.roomID === id)
-  const roomTask = taskList.filter((task) => task.roomID === id)
+  const currentUser = userList.find((user) => user.uid === uid)
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const payload = {
-      roomID: id,
+    const payload: TaskList = {
+      id: nanoid(9),
       description: desc,
-      dateAdded: serverTimestamp(),
+      addedBy: currentUser?.userTag,
+      dateAdded: dateToday,
+      dueDate: dueDate,
     }
 
     setDesc('')
-    await addDoc(taskRef, payload)
+    const roomDocRef = doc(db, 'roomList', `${roomInfo?.roomID}`)
+
+    if (roomInfo?.tasks) {
+      await updateDoc(roomDocRef, {
+        tasks: [payload, ...roomInfo?.tasks],
+      })
+    }
   }
 
   return (
@@ -47,17 +60,22 @@ const Room = () => {
                 className="bg-inputbg h-[45px] outline-none w-full pr-4"
               />
               <div className="text-primary text-2xl flex">
-                <BsCalendarFill className="mr-2" />
                 <button type="submit">
                   <BsPlusSquareFill />
                 </button>
               </div>
             </div>
+            <input
+              type="date"
+              className="outline-none w-full px-[30px] h-[45px] rounded-lg bg-primary text-secondary mt-2"
+              onChange={(e) => setDueDate(e.target.value)}
+              value={dueDate}
+            />
           </form>
           <div className="w-full my-4">
-            {roomTask.map((task) => (
+            {/* {roomTask.map((task) => (
               <RoomTask key={task.id} task={task} />
-            ))}
+            ))} */}
           </div>
         </section>
       ) : (
