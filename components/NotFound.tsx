@@ -9,7 +9,7 @@ export const NotFound = () => {
         <Image src={mascot} objectFit="contain" />
       </div>
       <h1 className="font-bold text-7xl">404</h1>
-      <p className="text-lg">room not found</p>
+      <p className="text-lg">page not found</p>
     </section>
   )
 }
