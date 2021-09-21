@@ -14,10 +14,6 @@ const AuthProvider: React.FC = ({ children }) => {
   const { uid, displayName, photoURL, email } = authUser || {}
   const router = useRouter()
 
-  // useEffect(() => {
-  //   !authUser && router.push('/');
-  // }, [authUser]);
-
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {
       user ? setAuthUser(user) : setAuthUser(null)
@@ -40,6 +36,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const signOut = async () => {
     try {
       await auth.signOut()
+      router.push('/')
     } catch (err) {
       console.log(err)
     }
