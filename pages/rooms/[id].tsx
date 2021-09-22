@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { BsPlusSquareFill } from 'react-icons/bs'
 import { useFirestore } from '../../context/FirestoreContext'
-import { addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore'
+import { updateDoc, doc } from 'firebase/firestore'
 
 import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
@@ -17,12 +17,14 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<string>(dateToday)
 
   const router = useRouter()
-  const { roomList, taskRef, roomRef, userList, db } = useFirestore()
+  const { roomList, userList, db } = useFirestore()
   const { uid } = useAuth()
   const { id } = router.query
 
   const currentRoom = roomList.find((room) => room.roomID === id)
   const currentUser = userList.find((user) => user.uid === uid)
+
+  const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -43,6 +45,15 @@ const Room = () => {
         tasks: [payload, ...currentRoom?.tasks],
       })
     }
+  }
+
+  const delTask = async (id: string) => {
+    console.log('clicked')
+    const newTasks = currentRoom?.tasks.filter((task) => task.id !== id)
+
+    await updateDoc(currentRoomRef, {
+      tasks: newTasks,
+    })
   }
 
   return (
@@ -68,6 +79,7 @@ const Room = () => {
             </div>
             <input
               type="date"
+              min={dateToday}
               className="outline-none w-full px-[30px] h-[45px] rounded-lg bg-primary text-secondary mt-2"
               onChange={(e) => setDueDate(e.target.value)}
               value={dueDate}
@@ -75,7 +87,7 @@ const Room = () => {
           </form>
           <div className="w-full my-4">
             {currentRoom.tasks.map((task) => (
-              <RoomTask key={task.id} task={task} />
+              <RoomTask key={task.id} task={task} delTask={delTask} />
             ))}
           </div>
         </section>
