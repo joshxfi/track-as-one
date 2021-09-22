@@ -8,7 +8,9 @@ export const RoomTask: React.FC<RoomTaskProps> = ({ task, delTask }) => {
     <div className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary">
       <div className="leading-5">
         <p className="text-f9">{task.description}</p>
-        <p className="text-sm">due → {deadline}</p>
+        <p className="text-sm">
+          due → {deadline === 'Invalid Date' ? 'none' : deadline}
+        </p>
       </div>
 
       <BsTrashFill

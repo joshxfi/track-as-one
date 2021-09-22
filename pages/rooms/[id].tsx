@@ -34,13 +34,13 @@ const Room = () => {
       description: desc,
       addedBy: currentUser?.userTag,
       dateAdded: dateToday,
-      dueDate: dueDate,
+      dueDate: dueDate ? dueDate : 'none',
     }
 
     setDesc('')
     const roomDocRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
 
-    if (currentRoom?.tasks) {
+    if (currentRoom?.tasks && desc !== '') {
       await updateDoc(roomDocRef, {
         tasks: [payload, ...currentRoom?.tasks],
       })
@@ -77,15 +77,24 @@ const Room = () => {
                 </button>
               </div>
             </div>
-            <input
-              type="date"
-              min={dateToday}
-              className="outline-none w-full px-[30px] h-[45px] rounded-lg bg-primary text-secondary mt-2"
-              onChange={(e) => setDueDate(e.target.value)}
-              value={dueDate}
-            />
+
+            <div className="flex items-center mt-2">
+              <input
+                type="button"
+                className="dueBtn mr-2"
+                value="no due date"
+                onClick={() => setDueDate('')}
+              />
+              <input
+                type="date"
+                min={dateToday}
+                className="dueBtn"
+                onChange={(e) => setDueDate(e.target.value)}
+                value={dueDate}
+              />
+            </div>
           </form>
-          <div className="w-full my-4">
+          <div className="w-full my-2">
             {currentRoom.tasks.map((task) => (
               <RoomTask key={task.id} task={task} delTask={delTask} />
             ))}
