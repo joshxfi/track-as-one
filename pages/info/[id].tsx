@@ -6,9 +6,10 @@ import { BsCalendarFill } from 'react-icons/bs'
 import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
 const RoomInfo: React.FC = () => {
-  const { roomList, userList } = useFirestore()
+  const { db, roomList, userList } = useFirestore()
 
   const router = useRouter()
   const { id } = router.query
@@ -17,6 +18,23 @@ const RoomInfo: React.FC = () => {
     (user) => user.userTag === currentRoom?.creator
   )
   const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
+
+  const deleteRoom = async () => {
+    const delRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+    const creatorRef = doc(db, 'userList', `${roomCreator?.userTag}`)
+
+    await deleteDoc(delRoomRef)
+
+    const filterRoom = roomCreator?.roomsCreated.filter(
+      (room) => room !== currentRoom?.roomID
+    )
+
+    router.push('/')
+
+    await updateDoc(creatorRef, {
+      roomsCreated: filterRoom,
+    })
+  }
 
   const defaultPic =
     'https://lh3.googleusercontent.com/a-/AOh14Gg0-BgMxN9qRwfVx_Sr59TtL0mH5eJhcuKIRYj1=s96-c'
@@ -54,6 +72,12 @@ const RoomInfo: React.FC = () => {
 
           <AiOutlineIdcard className="icon text-xl" />
         </div>
+        <button
+          onClick={deleteRoom}
+          className="bg-primary text-secondary w-full px-[30px] h-[50px] rounded-lg outline-none hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset focus:ring-current"
+        >
+          DELETE ROOM
+        </button>
       </div>
     </section>
   )
