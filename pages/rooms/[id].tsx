@@ -1,20 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { BsPlusSquareFill } from 'react-icons/bs'
+import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
 import { useFirestore } from '../../context/FirestoreContext'
 import { updateDoc, doc } from 'firebase/firestore'
+
+import DatePicker, { ReactDatePicker } from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
 import { RoomTask } from '../../components/room/RoomTask'
 import { nanoid } from 'nanoid'
 import { useAuth } from '../../context/AuthContext'
-import { dateToday } from '../../config/misc'
 import { NotFound } from '../../components/NotFound'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
-  const [dueDate, setDueDate] = useState<string>(dateToday)
+  const [dueDate, setDueDate] = useState<Date | null>(new Date())
 
   const router = useRouter()
   const { roomList, userList, db } = useFirestore()
@@ -23,8 +25,8 @@ const Room = () => {
 
   const currentRoom = roomList.find((room) => room.roomID === id)
   const currentUser = userList.find((user) => user.uid === uid)
-
   const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+  const dateInputRef = useRef<ReactDatePicker>(null)
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -33,8 +35,8 @@ const Room = () => {
       id: nanoid(9),
       description: desc,
       addedBy: currentUser?.userTag,
-      dateAdded: dateToday,
-      dueDate: dueDate ? dueDate : 'none',
+      dateAdded: new Date(),
+      dueDate: dueDate ? dueDate?.toDateString() : 'none',
     }
 
     setDesc('')
@@ -71,27 +73,27 @@ const Room = () => {
                 placeholder="task description"
                 className="bg-inputbg h-[45px] outline-none w-full pr-4"
               />
-              <div className="text-primary text-2xl flex">
-                <button type="submit">
-                  <BsPlusSquareFill />
-                </button>
-              </div>
+              <button type="submit">
+                <BsPlusSquareFill className="text-2xl" />
+              </button>
             </div>
 
-            <div className="flex items-center mt-2">
-              <input
-                type="button"
-                className="dueBtn mr-2"
-                value="no due date"
-                onClick={() => setDueDate('')}
+            <div className="flex dueBtn items-center mt-2">
+              <DatePicker
+                selected={dueDate}
+                onChange={(date: Date) => setDueDate(date)}
+                minDate={new Date()}
+                ref={dateInputRef}
+                className="bg-primary w-full outline-none"
               />
-              <input
-                type="date"
-                min={dateToday}
-                className="dueBtn"
-                onChange={(e) => setDueDate(e.target.value)}
-                value={dueDate}
-              />
+
+              <div className=" flex text-2xl mr-[3px]">
+                <BsCalendarFill
+                  className="mr-2"
+                  onClick={() => dateInputRef.current?.setFocus()}
+                />
+                <BsXSquareFill onClick={() => setDueDate(null)} />
+              </div>
             </div>
           </form>
           <div className="w-full my-2">

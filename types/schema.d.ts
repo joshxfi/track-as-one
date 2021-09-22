@@ -22,6 +22,6 @@ interface TaskList {
   id: string;
   description: string;
   addedBy: string | undefined | null;
-  dateAdded: any;
-  dueDate: string;
+  dateAdded: Date;
+  dueDate: string | undefined;
 }

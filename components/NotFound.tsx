@@ -6,7 +6,7 @@ export const NotFound = () => {
   return (
     <section className="wrap">
       <div className="w-[200px] mt-10">
-        <Image src={mascot} objectFit="contain" />
+        <Image src={mascot} objectFit="contain" alt="404 cat mascot" />
       </div>
       <h1 className="font-bold text-7xl">404</h1>
       <p className="text-lg">page not found</p>
