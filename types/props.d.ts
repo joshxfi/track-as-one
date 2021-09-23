@@ -35,3 +35,12 @@ interface RoomTaskProps {
 interface RoomNavProps {
   room?: RoomList;
 }
+
+interface ListRoomsProps {
+  room: RoomList;
+}
+
+interface NoRoomsProps {
+  desc: string;
+  href: string;
+}

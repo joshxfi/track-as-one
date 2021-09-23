@@ -74,7 +74,7 @@ const RoomInfo: React.FC = () => {
         </div>
         <button
           onClick={deleteRoom}
-          className="bg-primary text-secondary w-full px-[30px] h-[50px] rounded-lg outline-none hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset focus:ring-current"
+          className="bg-primary text-secondary w-full px-[30px] h-[50px] rounded-lg outline-none btnEffect"
         >
           DELETE ROOM
         </button>

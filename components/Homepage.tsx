@@ -11,7 +11,7 @@ export const Homepage: React.FC = () => {
       <Header />
       <Btn name="create a room" link="/create" Icon={BiDoorOpen} />
       <Btn name="join a room" link="/join" Icon={VscSignIn} />
-      <Btn name="my room list" link="/roomlist" Icon={VscListOrdered} />
+      <Btn name="my room list" link="/list" Icon={VscListOrdered} />
       <button className="btn w-[250px]">
         <p>copy user id</p> <AiOutlineIdcard className="icon" />
       </button>
