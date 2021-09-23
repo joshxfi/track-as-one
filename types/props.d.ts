@@ -33,7 +33,7 @@ interface RoomTaskProps {
 
 
 interface RoomNavProps {
-  room?: RoomList;
+  room: RoomList;
 }
 
 interface ListRoomsProps {

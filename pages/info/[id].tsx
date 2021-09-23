@@ -41,7 +41,7 @@ const RoomInfo: React.FC = () => {
 
   return (
     <section className="wrap">
-      <RoomNav room={currentRoom} />
+      <RoomNav room={currentRoom as RoomList} />
       <Header title="Room Info" desc={`room id → ${currentRoom?.roomID}`} />
 
       <div className="card flex-between h-[70px] mb-2 w-full">

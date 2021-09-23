@@ -10,7 +10,7 @@ export const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
 
       <p>members: 10</p>
 
-      <Link href="/invite">
+      <Link href={`/invite/${room?.roomID}`}>
         <a>invite user</a>
       </Link>
     </nav>
