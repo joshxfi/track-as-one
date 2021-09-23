@@ -6,6 +6,8 @@ interface UserList {
   email: string | undefined | null;
   roomsCreated: string[];
   roomsJoined: string[];
+  invites: string[];
+  dateJoined: Date;
 }
 
 interface RoomList {

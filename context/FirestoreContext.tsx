@@ -46,6 +46,8 @@ const FirestoreProvider: React.FC = ({ children }) => {
           userTag: userID,
           roomsCreated: [],
           roomsJoined: [],
+          invites: [],
+          dateJoined: new Date(),
           uid,
           displayName,
           photoURL,
