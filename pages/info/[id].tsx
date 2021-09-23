@@ -23,13 +23,13 @@ const RoomInfo: React.FC = () => {
     const delRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
     const creatorRef = doc(db, 'userList', `${roomCreator?.userTag}`)
 
+    router.push('/')
     await deleteDoc(delRoomRef)
 
     const filterRoom = roomCreator?.roomsCreated.filter(
       (room) => room !== currentRoom?.roomID
     )
 
-    router.push('/')
 
     await updateDoc(creatorRef, {
       roomsCreated: filterRoom,
