@@ -18,7 +18,11 @@ const Join = () => {
           placeholder="enter room id"
         />
         <div className="inline-block mx-auto mt-6">
-          <Button desc="join room" href={`rooms/${roomID}`} Icon={VscSignIn} />
+          <Button
+            desc="join room"
+            href={roomID && `rooms/${roomID}`}
+            Icon={VscSignIn}
+          />
         </div>
       </div>
     </section>

@@ -29,7 +29,9 @@ const List = () => {
         </div>
 
         {createdRooms.length ? (
-          createdRooms.map((room) => <ListRooms room={room} />)
+          createdRooms.map((room) => (
+            <ListRooms key={room.roomID} room={room} />
+          ))
         ) : (
           <NoRooms desc="Create a Room" href="/create" />
         )}
@@ -39,7 +41,7 @@ const List = () => {
         </div>
 
         {joinedRooms.length ? (
-          joinedRooms.map((room) => <ListRooms room={room} />)
+          joinedRooms.map((room) => <ListRooms key={room.roomID} room={room} />)
         ) : (
           <NoRooms desc="Join a Room" href="/join" />
         )}
@@ -57,9 +59,8 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
 
   return (
     <button
-      key={room.roomID}
       onClick={() => router.push(`/rooms/${room.roomID}`)}
-      className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary btnEffect w-full text-left"
+      className="card flex-between h-[70px] mb-2 btnEffect w-full text-left"
     >
       <div className="leading-5">
         <p className="text-f9">{room.name}</p>

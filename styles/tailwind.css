@@ -22,4 +22,12 @@
     .btnEffect {
         @apply hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset-1 focus:ring-secondary;
     }
+
+    .card {
+        @apply bg-primary text-secondary px-[30px] rounded-lg;
+    }
+
+    .flex-between {
+        @apply flex justify-between items-center;
+    }
 }

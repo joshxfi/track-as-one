@@ -65,7 +65,7 @@ const Room = () => {
           <RoomNav room={currentRoom} />
           <Header title={currentRoom.name} desc={currentRoom.roomID} />
           <form onSubmit={addTask} className="w-full">
-            <div className="flex justify-between items-center px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2">
+            <div className="flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2">
               <input
                 onChange={(e) => setDesc(e.target.value)}
                 value={desc}

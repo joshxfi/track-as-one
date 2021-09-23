@@ -44,7 +44,7 @@ const RoomInfo: React.FC = () => {
       <RoomNav room={currentRoom} />
       <Header title="Room Info" desc={`room id → ${currentRoom?.roomID}`} />
 
-      <div className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary w-full">
+      <div className="card flex-between h-[70px] mb-2 w-full">
         <div className="leading-5">
           <p className="text-f9 text-sm">{dateCreated}</p>
           <p className="text-sm">room created</p>
@@ -54,7 +54,7 @@ const RoomInfo: React.FC = () => {
       </div>
 
       <div className="w-full mb-4">
-        <div className="flex justify-between items-center px-[30px] h-[70px] rounded-lg mb-2 bg-primary text-secondary">
+        <div className="flex-between card h-[70px] mb-2">
           <div className="flex">
             <div className="h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden">
               <Image
@@ -74,7 +74,7 @@ const RoomInfo: React.FC = () => {
         </div>
         <button
           onClick={deleteRoom}
-          className="bg-primary text-secondary w-full px-[30px] h-[50px] rounded-lg outline-none btnEffect"
+          className="card w-full h-[50px] outline-none btnEffect"
         >
           DELETE ROOM
         </button>
