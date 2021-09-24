@@ -7,6 +7,7 @@ import { Button } from '../components/global/Button'
 import { useAuth } from '../context/AuthContext'
 import { useFirestore } from '../context/FirestoreContext'
 import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
+import { Input } from '../components/Input'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
@@ -46,31 +47,28 @@ const Create = () => {
 
       if (currentUser?.roomsCreated && roomOwner) {
         router.push(`/rooms/${roomID}`)
-        
+
         await updateDoc(updateUserRef, {
           roomsCreated: [payload.roomID, ...currentUser?.roomsCreated],
         })
-
       }
     }
   }
 
   return (
-    <section className="wrap">
-      <Header title="Create a Room" />
+    <section className='wrap'>
+      <Header title='Create a Room' />
       <form
         onSubmit={createRoom}
-        className="w-full flex justify-center flex-col"
+        className='w-full flex justify-center flex-col'
       >
-        <input
-          onChange={(e) => setRoomName(e.target.value)}
+        <Input
+          handleChange={(e) => setRoomName(e.target.value)}
           value={roomName}
-          className="h-[36px] bg-inputbg rounded-[36px] px-[20px] text-sm outline-none border-2 focus:border-primary"
-          type="text"
-          placeholder="enter room name"
+          placeholder='enter room name'
         />
-        <div className="inline-block mx-auto mt-6">
-          <Button desc="create room" type="submit" Icon={BiDoorOpen} />
+        <div className='inline-block mx-auto mt-6'>
+          <Button desc='create room' type='submit' Icon={BiDoorOpen} />
         </div>
       </form>
     </section>

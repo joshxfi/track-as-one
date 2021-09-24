@@ -6,6 +6,7 @@ import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useAuth } from '../../context/AuthContext'
+import { Input } from '../../components/Input'
 
 const Invite = () => {
   const [userTag, setUserTag] = useState<string>('')
@@ -40,27 +41,25 @@ const Invite = () => {
   }
 
   return (
-    <section className="wrap">
+    <section className='wrap'>
       <RoomNav room={currentRoom as RoomList} />
-      <Header title="Invite a User" desc={currentRoom?.roomID} />
-      <form spellCheck="false" className="w-full flex justify-center flex-col">
-        <input
-          className="h-[36px] bg-inputbg rounded-[36px] px-[20px] text-sm outline-none border-2 focus:border-primary"
-          type="text"
-          placeholder="enter user tag"
-          onChange={(e) => setUserTag(e.target.value)}
+      <Header title='Invite a User' desc={currentRoom?.roomID} />
+      <form spellCheck='false' className='w-full flex justify-center flex-col'>
+        <Input
+          handleChange={(e) => setUserTag(e.target.value)}
           value={userTag}
+          placeholder='enter user tag'
         />
         <div
           style={{ opacity: error === 'blank' ? '0' : '1' }}
-          className="text-center font-bold text-sm mt-2"
+          className='text-center font-bold text-sm mt-2'
         >
           <p>{error}</p>
         </div>
-        <div className="inline-block mx-auto mt-2">
-          <button onClick={inviteUser} className="btn btnEffect" type="button">
-            <p className="mr-4">invite user</p>
-            <AiOutlineIdcard className="icon" />
+        <div className='inline-block mx-auto mt-2'>
+          <button onClick={inviteUser} className='btn btnEffect' type='button'>
+            <p className='mr-4'>invite user</p>
+            <AiOutlineIdcard className='icon' />
           </button>
         </div>
       </form>
