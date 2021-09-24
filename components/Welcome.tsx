@@ -15,7 +15,7 @@ export const Welcome: React.FC = () => {
         <p className="mr-2">sign in with google</p>{' '}
         <FaSignInAlt className="text-secondary" />
       </button>
-      <div className="mt-12">
+      <div className="mt-12 md:w-[400px]">
         <Image src={avatar} objectFit="contain" alt="trackAsOne avatar" />
       </div>
     </section>
