@@ -29,7 +29,7 @@ export const Welcome: React.FC = () => {
               </div>
 
               <h1 className='text-2xl font-semibold lg:font-medium lg:text-4xl'>
-                Life's hard, don't make it harder.
+                Life&apos;s hard, don&apos;t make it harder.
               </h1>
 
               <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
