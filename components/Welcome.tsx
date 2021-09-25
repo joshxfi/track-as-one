@@ -5,6 +5,7 @@ import avatar2 from '../public/assets/avatar2.svg'
 import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
 import { WcButton } from './global/WcButton'
+import { wcpage1, wcpage2 } from '../static/text'
 
 export const Welcome: React.FC = () => {
   const { signIn } = useAuth()
@@ -28,15 +29,12 @@ export const Welcome: React.FC = () => {
                 />
               </div>
 
-              <h1 className='text-2xl font-semibold lg:font-medium lg:text-4xl'>
-                Life&apos;s hard, don&apos;t make it harder.
+              <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl'>
+                Life&apos;s already difficult, don&apos;t make it harder.
               </h1>
 
-              <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
-                With our current situation, there is no time to compete with
-                each other. This platform helps students to unite and
-                collaborate. Create rooms, invite your friends, and track tasks
-                together, so nobody gets left behind!
+              <p className='mt-2 text-lg lg:w-[490px] xl:w-[650px] xl:text-xl'>
+                {wcpage1}
               </p>
             </div>
 
@@ -59,9 +57,7 @@ export const Welcome: React.FC = () => {
             Built by a student for students.
           </h1>
           <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
-            trackAsOne is a collaborative cross-platform app that enables
-            students to track homework, activities, and more together with their
-            friends or classmates.
+            {wcpage2}
           </p>
           <div className='flex flex-col lg:flex-row items-center'>
             <WcButton
