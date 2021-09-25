@@ -10,7 +10,7 @@ const Join = () => {
   return (
     <section className='wrap'>
       <Header title='Join a Room' />
-      <div className='w-full flex justify-center flex-col'>
+      <div className='w-full flex justify-center items-center flex-col'>
         <Input
           handleChange={(e) => setRoomID(e.target.value)}
           value={roomID}
