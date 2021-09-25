@@ -11,6 +11,10 @@ module.exports = {
         'inputbg': '#E7E7E7',
         'inputfg': '#B5B3B1'
       },
+
+      screens: {
+        'lg': '1080px' 
+      }
     },
   },
   variants: {
