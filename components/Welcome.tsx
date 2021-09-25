@@ -2,7 +2,6 @@ import React from 'react'
 import Image from 'next/image'
 import avatar from '../public/assets/avatar.svg'
 import { FaSignInAlt } from 'react-icons/fa'
-import { Header } from './global/Header'
 import { useAuth } from '../context/AuthContext'
 
 export const Welcome: React.FC = () => {
@@ -10,32 +9,46 @@ export const Welcome: React.FC = () => {
 
   return (
     <>
-      <section className='lg:h-screen wrap lg:items-start lg:container lg:pt-16'>
-        <div className='lg:flex lg:justify-between lg:w-full lg:items-center'>
-          <div className='flex flex-col items-center lg:items-baseline lg:justify-start'>
-            <header className='mt-12 text-center mb-4 lg:text-left'>
-              <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl'>
-                trackAs
-                <span className='text-transparent bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text'>
-                  One
-                </span>
-              </h1>
-              <i className='lg:hidden'>organize your tasks as one</i>
-              <p className='text-xl hidden lg:block xl:w-[600px] lg:w-[490px]'>
-                a collaborative cross-platform app that enables <b>students</b>{' '}
-                to track homework, activities, and more <b>together</b> with
-                their <b>friends</b> or <b>classmates</b>.
-              </p>
-            </header>
+      <section className='wrap h-screen lg:container lg:items-start lg:pt-16 lg:flex-row lg:justify-between'>
+        <div className='mt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
+          <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
+            trackAs
+            <span className='gradient-text'>One</span>
+          </h1>
 
-            <button onClick={signIn} className='btn btnEffect w-[250px]'>
-              <p className='mr-2'>join now with google</p>{' '}
-              <FaSignInAlt className='text-secondary' />
+          <div className='wrap lg:items-start lg:container lg:pl-2'>
+            <div className='text-center lg:text-left'>
+              <div className='my-8 w-[300px] mx-auto lg:hidden'>
+                <Image
+                  src={avatar}
+                  objectFit='contain'
+                  alt='trackAsOne avatar'
+                />
+              </div>
+
+              <h1 className='text-2xl font-semibold lg:font-medium lg:text-4xl'>
+                Life's hard, don't make it harder.
+              </h1>
+
+              <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
+                With our current situation, there is no time to compete with
+                each other. This platform helps students to unite and
+                collaborate. Create rooms, invite your friends, and track tasks
+                together, so nobody gets left behind!
+              </p>
+            </div>
+
+            <button
+              onClick={signIn}
+              className='rounded-[36px] bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 px-[50px] font-semibold mt-4 btnEffect flex-between'
+            >
+              <p className='mr-4'>get started</p> <FaSignInAlt />
             </button>
           </div>
-          <div className='mt-12 w-[400px] mx-auto lg:mx-0'>
-            <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
-          </div>
+        </div>
+
+        <div className='w-[400px] hidden lg:block pt-12'>
+          <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
         </div>
       </section>
     </>

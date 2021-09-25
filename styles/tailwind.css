@@ -30,4 +30,8 @@
     .flex-between {
         @apply flex justify-between items-center;
     }
+
+    .gradient-text {
+        @apply text-transparent bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text;
+    }
 }
