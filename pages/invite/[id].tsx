@@ -44,7 +44,10 @@ const Invite = () => {
     <section className='wrap'>
       <RoomNav room={currentRoom as RoomList} />
       <Header title='Invite a User' desc={currentRoom?.roomID} />
-      <form spellCheck='false' className='w-full flex justify-center flex-col'>
+      <form
+        spellCheck='false'
+        className='w-full flex justify-center items-center flex-col'
+      >
         <Input
           handleChange={(e) => setUserTag(e.target.value)}
           value={userTag}

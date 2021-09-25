@@ -46,7 +46,7 @@ const Create = () => {
       }
 
       if (currentUser?.roomsCreated && roomOwner) {
-        router.push(`/rooms/${roomID}`)
+        router.push(`/list`)
 
         await updateDoc(updateUserRef, {
           roomsCreated: [payload.roomID, ...currentUser?.roomsCreated],
