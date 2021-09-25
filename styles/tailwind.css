@@ -12,7 +12,7 @@
     }
 
     .wrap {
-        @apply flex flex-col items-center max-w-screen-md md:mx-auto;
+        @apply flex flex-col items-center max-w-screen-md mx-auto;
     }
 
     .dueBtn {

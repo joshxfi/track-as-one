@@ -60,7 +60,7 @@ const Create = () => {
       <Header title='Create a Room' />
       <form
         onSubmit={createRoom}
-        className='w-full flex justify-center flex-col'
+        className='w-full flex justify-center flex-col items-center'
       >
         <Input
           handleChange={(e) => setRoomName(e.target.value)}

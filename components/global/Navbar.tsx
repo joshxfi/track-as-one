@@ -7,17 +7,17 @@ export const Navbar: React.FC = () => {
   const { authUser, signIn, signOut } = useAuth()
 
   return (
-    <nav className="w-full bg-primary py-3 text-f9">
-      <div className="flex-between w-[85%] mx-auto">
-        <Link href="/" passHref>
-          <h1 className="text-secondary font-bold text-3xl cursor-pointer">
-            tAO<span className="text-f9">.</span>
+    <nav className='w-full bg-primary py-3 text-f9'>
+      <div className='flex-between w-[85%] container mx-auto'>
+        <Link href='/' passHref>
+          <h1 className='text-secondary font-bold text-3xl cursor-pointer'>
+            tAO<span className='text-f9'>.</span>
           </h1>
         </Link>
         {authUser ? (
-          <NavBtn method="sign out" onTap={signOut} />
+          <NavBtn method='sign out' onTap={signOut} />
         ) : (
-          <NavBtn method="sign in" onTap={signIn} />
+          <NavBtn method='sign in' onTap={signIn} />
         )}
       </div>
     </nav>
