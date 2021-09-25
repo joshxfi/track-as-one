@@ -4,6 +4,7 @@ import avatar from '../public/assets/avatar.svg'
 import avatar2 from '../public/assets/avatar2.svg'
 import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
+import { WcButton } from './global/WcButton'
 
 export const Welcome: React.FC = () => {
   const { signIn } = useAuth()
@@ -39,12 +40,11 @@ export const Welcome: React.FC = () => {
               </p>
             </div>
 
-            <button
-              onClick={signIn}
-              className='rounded-[36px] bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 px-[50px] font-semibold mt-4 btnEffect flex-between'
-            >
-              <p className='mr-4'>get started</p> <FaSignInAlt />
-            </button>
+            <WcButton
+              desc='get started'
+              Icon={FaSignInAlt}
+              handleClick={signIn}
+            />
           </div>
         </div>
 
@@ -64,13 +64,13 @@ export const Welcome: React.FC = () => {
             friends or classmates.
           </p>
           <div className='flex flex-col lg:flex-row items-center'>
-            <button className='lg:mr-5 rounded-[36px] bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-semibold mt-4 btnEffect flex-between'>
-              <p className='mr-4'>contribute</p>{' '}
-              <FaHandHoldingHeart className='text-lg' />
-            </button>
-            <button className='rounded-[36px] bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-semibold mt-4 btnEffect flex-between'>
-              <p className='mr-4'>contact me</p> <FaPhone />
-            </button>
+            <WcButton
+              style='lg:mr-5'
+              desc='contribute'
+              Icon={FaHandHoldingHeart}
+              iconSize='text-lg'
+            />
+            <WcButton desc='contact me' Icon={FaPhone} />
           </div>
         </div>
 

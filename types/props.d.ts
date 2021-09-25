@@ -51,3 +51,11 @@ interface InputProps {
   value: string;
   placeholder: string;
 }
+
+interface WcButtonProps {
+  style?: string;
+  desc: string;
+  Icon: Icon;
+  iconSize?: string;
+  handleClick?: () => void;
+}
