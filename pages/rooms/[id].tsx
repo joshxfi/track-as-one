@@ -1,17 +1,17 @@
 import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
-import { useFirestore } from '../../context/FirestoreContext'
+import { useFirestore } from '../../src/context/FirestoreContext'
 import { updateDoc, doc } from 'firebase/firestore'
 
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { Header } from '../../components/global/Header'
-import { RoomNav } from '../../components/room/RoomNav'
-import { RoomTask } from '../../components/room/RoomTask'
+import { Header } from '../../src/components/global/Header'
+import { RoomNav } from '../../src/components/room/RoomNav'
+import { RoomTask } from '../../src/components/room/RoomTask'
 import { nanoid } from 'nanoid'
-import { NotFound } from '../../components/NotFound'
+import { NotFound } from '../../src/components/NotFound'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')

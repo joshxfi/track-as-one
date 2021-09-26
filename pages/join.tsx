@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Header } from '../components/global/Header'
+import { Header } from '../src/components/global/Header'
 import { VscSignIn } from 'react-icons/vsc'
-import { Button } from '../components/global/Button'
-import { Input } from '../components/Input'
+import { Button } from '../src/components/global/Button'
+import { Input } from '../src/components/Input'
 
 const Join = () => {
   const [roomID, setRoomID] = useState<string>('')

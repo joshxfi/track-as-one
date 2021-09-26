@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Header } from '../../components/global/Header'
+import { Header } from '../../src/components/global/Header'
 import { AiOutlineIdcard } from 'react-icons/ai'
-import { RoomNav } from '../../components/room/RoomNav'
-import { useFirestore } from '../../context/FirestoreContext'
+import { RoomNav } from '../../src/components/room/RoomNav'
+import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
-import { Input } from '../../components/Input'
+import { Input } from '../../src/components/Input'
 
 const Invite = () => {
   const [userTag, setUserTag] = useState<string>('')

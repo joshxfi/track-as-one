@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
-import { Header } from '../components/global/Header'
+import { Header } from '../src/components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
-import { Button } from '../components/global/Button'
-import { useFirestore } from '../context/FirestoreContext'
+import { Button } from '../src/components/global/Button'
+import { useFirestore } from '../src/context/FirestoreContext'
 import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
-import { Input } from '../components/Input'
+import { Input } from '../src/components/Input'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')

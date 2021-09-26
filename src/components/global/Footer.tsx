@@ -1,5 +1,5 @@
 import React from 'react'
-import doodle from '../../public/assets/doodle.svg'
+import doodle from '../../../public/assets/doodle.svg'
 import Image from 'next/image'
 import { FaGithub } from 'react-icons/fa'
 import { FaLinkedin } from 'react-icons/fa'

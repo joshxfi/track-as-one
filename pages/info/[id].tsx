@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
-import { Header } from '../../components/global/Header'
-import { RoomNav } from '../../components/room/RoomNav'
-import { useFirestore } from '../../context/FirestoreContext'
+import { Header } from '../../src/components/global/Header'
+import { RoomNav } from '../../src/components/room/RoomNav'
+import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { InfoBtn } from '../../components/global/InfoBtn'
+import { InfoBtn } from '../../src/components/global/InfoBtn'
 
 const RoomInfo: React.FC = () => {
   const { db, roomList, userList, currentUser } = useFirestore()

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Header } from '../components/global/Header'
+import { Header } from '../src/components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn } from 'react-icons/vsc'
 import { BsEye } from 'react-icons/bs'
-import { Button } from '../components/global/Button'
-import { useFirestore } from '../context/FirestoreContext'
+import { Button } from '../src/components/global/Button'
+import { useFirestore } from '../src/context/FirestoreContext'
 import { useRouter } from 'next/router'
 
 const List = () => {

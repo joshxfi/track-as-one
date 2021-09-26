@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import mascot from '../public/assets/404cat.svg'
+import mascot from '../../public/assets/404cat.svg'
 
 export const NotFound = () => {
   return (

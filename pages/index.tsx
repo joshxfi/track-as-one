@@ -1,7 +1,7 @@
 import React from 'react'
-import { Homepage } from '../components/Homepage'
-import { Welcome } from '../components/Welcome'
-import { useAuth } from '../context/AuthContext'
+import { Homepage } from '../src/components/Homepage'
+import { Welcome } from '../src/components/Welcome'
+import { useAuth } from '../src/context/AuthContext'
 
 const Index = () => {
   const { authUser } = useAuth()
