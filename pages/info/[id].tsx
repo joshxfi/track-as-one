@@ -17,6 +17,9 @@ const RoomInfo: React.FC = () => {
   const roomCreator = userList.find(
     (user) => user.userTag === currentRoom?.creator
   )
+  const roomMembers = userList.filter(
+    (user) => user.userTag && currentRoom?.members.includes(user?.userTag)
+  )
   const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
 
   const deleteRoom = async () => {
@@ -30,7 +33,6 @@ const RoomInfo: React.FC = () => {
       (room) => room !== currentRoom?.roomID
     )
 
-
     await updateDoc(creatorRef, {
       roomsCreated: filterRoom,
     })
@@ -40,41 +42,60 @@ const RoomInfo: React.FC = () => {
     'https://lh3.googleusercontent.com/a-/AOh14Gg0-BgMxN9qRwfVx_Sr59TtL0mH5eJhcuKIRYj1=s96-c'
 
   return (
-    <section className="wrap">
+    <section className='wrap'>
       <RoomNav room={currentRoom as RoomList} />
-      <Header title="Room Info" desc={`room id → ${currentRoom?.roomID}`} />
+      <Header title='Room Info' desc={`room id → ${currentRoom?.roomID}`} />
 
-      <div className="card flex-between h-[70px] mb-2 w-full">
-        <div className="leading-5">
-          <p className="text-f9 text-sm">{dateCreated}</p>
-          <p className="text-sm">room created</p>
+      <div className='card flex-between h-[70px] mb-2 w-full'>
+        <div className='leading-5'>
+          <p className='text-f9 text-sm'>{dateCreated}</p>
+          <p className='text-sm'>room created</p>
         </div>
 
-        <BsCalendarFill className="icon" />
+        <BsCalendarFill className='icon' />
       </div>
 
-      <div className="w-full mb-4">
-        <div className="flex-between card h-[70px] mb-2">
-          <div className="flex">
-            <div className="h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden">
+      <div className='w-full mb-4'>
+        <div className='flex-between card h-[70px] mb-2'>
+          <div className='flex'>
+            <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
               <Image
                 src={roomCreator?.photoURL ? roomCreator?.photoURL : defaultPic}
                 height={36}
                 width={36}
-                alt="creator profile picture"
+                alt='creator profile picture'
               />
             </div>
-            <div className="leading-5">
-              <p className="text-f9">{roomCreator?.displayName}</p>
-              <p className="text-sm">creator</p>
+            <div className='leading-5'>
+              <p className='text-f9'>{roomCreator?.displayName}</p>
+              <p className='text-sm'>creator</p>
             </div>
           </div>
-
-          <AiOutlineIdcard className="icon text-xl" />
+          <AiOutlineIdcard className='icon text-xl' />
         </div>
+
+        {roomMembers.map((member) => (
+          <div key={member.userTag} className='flex-between card h-[70px] mb-2'>
+            <div className='flex'>
+              <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
+                <Image
+                  src={member?.photoURL ? member?.photoURL : defaultPic}
+                  height={36}
+                  width={36}
+                  alt='creator profile picture'
+                />
+              </div>
+              <div className='leading-5'>
+                <p className='text-f9'>{member?.displayName}</p>
+                <p className='text-sm'>member</p>
+              </div>
+            </div>
+            <AiOutlineIdcard className='icon text-xl' />
+          </div>
+        ))}
         <button
           onClick={deleteRoom}
-          className="card w-full h-[50px] outline-none btnEffect"
+          className='card w-full h-[50px] outline-none btnEffect'
         >
           DELETE ROOM
         </button>
