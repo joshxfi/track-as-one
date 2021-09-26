@@ -7,13 +7,17 @@ import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { useAuth } from '../../context/AuthContext'
+import { InfoBtn } from '../../components/global/InfoBtn'
 
 const RoomInfo: React.FC = () => {
   const { db, roomList, userList } = useFirestore()
 
   const router = useRouter()
   const { id } = router.query
+  const { uid } = useAuth()
   const currentRoom = roomList.find((room) => room.roomID === id)
+  const currentUser = userList.find((user) => user.uid === uid)
   const roomCreator = userList.find(
     (user) => user.userTag === currentRoom?.creator
   )
@@ -36,6 +40,30 @@ const RoomInfo: React.FC = () => {
     await updateDoc(creatorRef, {
       roomsCreated: filterRoom,
     })
+  }
+
+  const leaveRoom = async () => {
+    const removeMemberRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+    const updateUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
+
+    const updatedRoomMembers = currentRoom?.members.filter(
+      (member) => member !== currentUser?.userTag
+    )
+    const updatedUserRooms = currentUser?.roomsJoined.filter(
+      (room) => room !== id
+    )
+
+    if (currentUser?.userTag !== currentRoom?.creator) {
+      await updateDoc(removeMemberRef, {
+        members: updatedRoomMembers,
+      })
+
+      router.push('/')
+
+      await updateDoc(updateUserRef, {
+        roomsJoined: updatedUserRooms,
+      })
+    }
   }
 
   const defaultPic =
@@ -93,12 +121,12 @@ const RoomInfo: React.FC = () => {
             <AiOutlineIdcard className='icon text-xl' />
           </div>
         ))}
-        <button
-          onClick={deleteRoom}
-          className='card w-full h-[50px] outline-none btnEffect'
-        >
-          DELETE ROOM
-        </button>
+
+        {currentRoom?.creator === currentUser?.userTag ? (
+          <InfoBtn desc='DELETE' handleClick={deleteRoom} />
+        ) : (
+          <InfoBtn desc='LEAVE' handleClick={leaveRoom} />
+        )}
       </div>
     </section>
   )

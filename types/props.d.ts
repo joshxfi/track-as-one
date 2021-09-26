@@ -59,3 +59,8 @@ interface WcButtonProps {
   iconSize?: string;
   handleClick?: () => void;
 }
+
+interface InfoBtnProps {
+  desc: string;
+  handleClick: () => void;
+}

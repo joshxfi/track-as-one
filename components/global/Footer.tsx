@@ -11,7 +11,7 @@ const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare]
 export const Footer: React.FC = () => {
   return (
     <footer className='absolute bottom-0 w-full'>
-      <div className='relative overflow-hidden h-[200px] '>
+      <div className='relative overflow-hidden h-[200px] lg:h-[100px]'>
         <div className='lg:hidden w-full'>
           <Image src={doodle} alt='doodle pattern' objectFit='contain' />
         </div>
