@@ -31,7 +31,9 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   // fetch users
   useEffect(() => {
-    const unsub = onSnapshot(userRef, async (docs) => {
+    const orderUsers = query(userRef, orderBy('dateJoined'))
+
+    const unsub = onSnapshot(orderUsers, async (docs) => {
       const userID = `user:${nanoid(5)}`
       let newUsers: UserList[] | any[] = []
 
