@@ -25,6 +25,8 @@ const FirestoreProvider: React.FC = ({ children }) => {
   const [roomList, setRoomList] = useState<RoomList[]>([])
   const [taskList, setTaskList] = useState<TaskList[]>([])
 
+  const currentUser = userList.find((user) => user.uid === uid)
+
   const userRef = collection(db, 'userList')
   const roomRef = collection(db, 'roomList')
   const taskRef = collection(db, 'taskList')
@@ -106,6 +108,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
     userRef,
     roomRef,
     taskRef,
+    currentUser,
   }
 
   return (

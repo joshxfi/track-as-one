@@ -11,7 +11,6 @@ import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
 import { RoomTask } from '../../components/room/RoomTask'
 import { nanoid } from 'nanoid'
-import { useAuth } from '../../context/AuthContext'
 import { NotFound } from '../../components/NotFound'
 
 const Room = () => {
@@ -19,12 +18,10 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<Date | null>(new Date())
 
   const router = useRouter()
-  const { roomList, userList, db } = useFirestore()
-  const { uid } = useAuth()
+  const { roomList, currentUser, db } = useFirestore()
   const { id } = router.query
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const currentUser = userList.find((user) => user.uid === uid)
   const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
   const dateInputRef = useRef<ReactDatePicker>(null)
 
@@ -61,42 +58,42 @@ const Room = () => {
   return (
     <>
       {currentRoom ? (
-        <section className="wrap">
+        <section className='wrap'>
           <RoomNav room={currentRoom} />
           <Header title={currentRoom.name} desc={currentRoom.roomID} />
-          <form onSubmit={addTask} className="w-full">
-            <div className="flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2">
+          <form onSubmit={addTask} className='w-full'>
+            <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
               <input
                 onChange={(e) => setDesc(e.target.value)}
                 value={desc}
-                type="text"
-                placeholder="task description"
-                className="bg-inputbg h-[45px] outline-none w-full pr-4"
+                type='text'
+                placeholder='task description'
+                className='bg-inputbg h-[45px] outline-none w-full pr-4'
               />
-              <button type="submit">
-                <BsPlusSquareFill className="text-2xl" />
+              <button type='submit'>
+                <BsPlusSquareFill className='text-2xl' />
               </button>
             </div>
 
-            <div className="flex dueBtn items-center mt-2">
+            <div className='flex dueBtn items-center mt-2'>
               <DatePicker
                 selected={dueDate}
                 onChange={(date: Date) => setDueDate(date)}
                 minDate={new Date()}
                 ref={dateInputRef}
-                className="bg-primary w-full outline-none"
+                className='bg-primary w-full outline-none'
               />
 
-              <div className=" flex text-2xl mr-[3px]">
+              <div className=' flex text-2xl mr-[3px]'>
                 <BsCalendarFill
-                  className="mr-2"
+                  className='mr-2'
                   onClick={() => dateInputRef.current?.setFocus()}
                 />
                 <BsXSquareFill onClick={() => setDueDate(null)} />
               </div>
             </div>
           </form>
-          <div className="w-full my-2">
+          <div className='w-full my-2'>
             {currentRoom.tasks.map((task) => (
               <RoomTask key={task.id} task={task} delTask={delTask} />
             ))}

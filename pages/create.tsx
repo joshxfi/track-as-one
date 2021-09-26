@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid'
 import { Header } from '../components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { Button } from '../components/global/Button'
-import { useAuth } from '../context/AuthContext'
 import { useFirestore } from '../context/FirestoreContext'
 import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
 import { Input } from '../components/Input'
@@ -13,10 +12,7 @@ const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
   const router = useRouter()
 
-  const { uid } = useAuth()
-  const { db, userList } = useFirestore()
-
-  const currentUser = userList.find((user) => user.uid === uid)
+  const { db, currentUser } = useFirestore()
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

@@ -16,4 +16,5 @@ interface FirestoreContextValues {
   userRef: CollectionReference<DocumentData>;
   roomRef: CollectionReference<DocumentData>;
   taskRef: CollectionReference<DocumentData>;
+  currentUser: UserList | undefined;
 }

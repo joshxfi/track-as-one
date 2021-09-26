@@ -7,17 +7,14 @@ import { Header } from '../../components/global/Header'
 import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { useAuth } from '../../context/AuthContext'
 import { InfoBtn } from '../../components/global/InfoBtn'
 
 const RoomInfo: React.FC = () => {
-  const { db, roomList, userList } = useFirestore()
+  const { db, roomList, userList, currentUser } = useFirestore()
 
   const router = useRouter()
   const { id } = router.query
-  const { uid } = useAuth()
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const currentUser = userList.find((user) => user.uid === uid)
   const roomCreator = userList.find(
     (user) => user.userTag === currentRoom?.creator
   )

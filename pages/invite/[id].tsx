@@ -5,7 +5,6 @@ import { AiOutlineIdcard } from 'react-icons/ai'
 import { RoomNav } from '../../components/room/RoomNav'
 import { useFirestore } from '../../context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
-import { useAuth } from '../../context/AuthContext'
 import { Input } from '../../components/Input'
 
 const Invite = () => {
@@ -14,11 +13,9 @@ const Invite = () => {
 
   const router = useRouter()
   const { id } = router.query
-  const { uid } = useAuth()
-  const { db, roomList, userList } = useFirestore()
+  const { db, roomList, userList, currentUser } = useFirestore()
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const currentUser = userList.find((user) => user.uid === uid)
   const userToInv = userList.find((user) => user.userTag === userTag)
 
   const inviteUser = async () => {

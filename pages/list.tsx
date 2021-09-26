@@ -5,14 +5,11 @@ import { VscSignIn } from 'react-icons/vsc'
 import { BsEye } from 'react-icons/bs'
 import { Button } from '../components/global/Button'
 import { useFirestore } from '../context/FirestoreContext'
-import { useAuth } from '../context/AuthContext'
 import { useRouter } from 'next/router'
 
 const List = () => {
-  const { uid } = useAuth()
-  const { userList, roomList } = useFirestore()
+  const { currentUser, roomList } = useFirestore()
 
-  const currentUser = userList.find((user) => user.uid === uid)
   const createdRooms = roomList.filter((room) =>
     currentUser?.roomsCreated.includes(room.roomID)
   )
@@ -21,10 +18,10 @@ const List = () => {
   )
 
   return (
-    <section className="wrap">
-      <Header title="My Rooms" />
-      <div className="w-full mb-4">
-        <div className="w-full bg-secondary text-primary text-center mb-2 rounded-lg py-1 text-sm">
+    <section className='wrap'>
+      <Header title='My Rooms' />
+      <div className='w-full mb-4'>
+        <div className='w-full bg-secondary text-primary text-center mb-2 rounded-lg py-1 text-sm'>
           <h2>rooms created {createdRooms.length}/3</h2>
         </div>
 
@@ -33,21 +30,21 @@ const List = () => {
             <ListRooms key={room.roomID} room={room} />
           ))
         ) : (
-          <NoRooms desc="Create a Room" href="/create" />
+          <NoRooms desc='Create a Room' href='/create' />
         )}
 
-        <div className="w-full bg-secondary text-primary text-center my-2 rounded-lg py-1 text-sm">
+        <div className='w-full bg-secondary text-primary text-center my-2 rounded-lg py-1 text-sm'>
           <h2>rooms joined {joinedRooms.length}/∞</h2>
         </div>
 
         {joinedRooms.length ? (
           joinedRooms.map((room) => <ListRooms key={room.roomID} room={room} />)
         ) : (
-          <NoRooms desc="Join a Room" href="/join" />
+          <NoRooms desc='Join a Room' href='/join' />
         )}
       </div>
 
-      <Button desc="view invites" href="/invites" Icon={BsEye} />
+      <Button desc='view invites' href='/invites' Icon={BsEye} />
     </section>
   )
 }
