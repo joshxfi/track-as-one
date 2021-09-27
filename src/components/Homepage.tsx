@@ -3,8 +3,7 @@ import { Header } from './global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
-import { WcButton } from './global/WcButton'
-import router from 'next/router'
+import { HomeBtn } from './buttons/HomeBtn'
 
 export const Homepage: React.FC = () => {
   return (
@@ -17,17 +16,5 @@ export const Homepage: React.FC = () => {
         <HomeBtn link='/profile' desc='view profile' Icon={AiOutlineIdcard} />
       </div>
     </section>
-  )
-}
-
-const HomeBtn: React.FC<HomepageButtonProps> = ({ desc, link, Icon }) => {
-  return (
-    <WcButton
-      handleClick={() => router.push(link)}
-      desc={desc}
-      style='w-[270px] border-primary'
-      iconSize='text-xl'
-      Icon={Icon}
-    />
   )
 }
