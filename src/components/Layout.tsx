@@ -15,7 +15,7 @@ export const Layout: React.FC<Children> = ({ children }) => {
         />
         <title>taskAsOne</title>
       </Head>
-      <div className='min-h-screen bg-gradient-to-tr from-[#F2F1DD] to-f9 relative pb-[240px] lg:pb-0'>
+      <div className='min-h-screen bg-gradient-to-tr from-[#F2F1DD] to-f9 relative pb-[450px] md:pb-[350px] lg:pb-0'>
         <AuthProvider>
           <Navbar />
           <main className='text-primary w-[85%] mx-auto'>{children}</main>
