@@ -29,7 +29,7 @@ export const Welcome: React.FC = () => {
                 />
               </div>
 
-              <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl'>
+              <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl lg:w-[500px] xl:w-auto'>
                 Life&apos;s already difficult, don&apos;t make it harder.
               </h1>
 
@@ -51,9 +51,9 @@ export const Welcome: React.FC = () => {
         </div>
       </section>
 
-      <section className='lg:flex lg:justify-between lg:h-[80vh]'>
+      <section className='mx-auto lg:container lg:flex lg:justify-between h-screen mt-36 xs:mt-0'>
         <div className='text-center lg:text-left lg:pl-2'>
-          <h1 className='text-2xl font-semibold lg:font-medium lg:text-4xl'>
+          <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl'>
             Built by a student for students.
           </h1>
           <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
