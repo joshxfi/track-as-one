@@ -1,31 +1,33 @@
 import React from 'react'
-import Link from 'next/link'
 import { Header } from './global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
+import { WcButton } from './global/WcButton'
+import router from 'next/router'
 
 export const Homepage: React.FC = () => {
   return (
-    <section className="wrap">
+    <section className='wrap'>
       <Header />
-      <Btn name="create a room" link="/create" Icon={BiDoorOpen} />
-      <Btn name="join a room" link="/join" Icon={VscSignIn} />
-      <Btn name="my room list" link="/list" Icon={VscListOrdered} />
-      <button className="btn w-[250px] btnEffect">
-        <p>copy user id</p> <AiOutlineIdcard className="icon" />
-      </button>
+      <div className='md:grid grid-cols-2 gap-x-2'>
+        <HomeBtn link='/create' desc='create room' Icon={BiDoorOpen} />
+        <HomeBtn link='/join' desc='join room' Icon={VscSignIn} />
+        <HomeBtn link='/list' desc='my rooms' Icon={VscListOrdered} />
+        <HomeBtn link='/profile' desc='view profile' Icon={AiOutlineIdcard} />
+      </div>
     </section>
   )
 }
 
-const Btn: React.FC<HomepageButtonProps> = ({ name, link, Icon }) => {
+const HomeBtn: React.FC<HomepageButtonProps> = ({ desc, link, Icon }) => {
   return (
-    <Link href={link} passHref>
-      <button className="btn w-[250px] btnEffect">
-        <p>{name}</p>
-        <Icon className="icon" />
-      </button>
-    </Link>
+    <WcButton
+      handleClick={() => router.push(link)}
+      desc={desc}
+      style='w-[270px] border-primary'
+      iconSize='text-xl'
+      Icon={Icon}
+    />
   )
 }

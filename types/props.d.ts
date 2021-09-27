@@ -13,7 +13,7 @@ interface HeaderProps {
 }
 
 interface HomepageButtonProps {
-  name: string;
+  desc: string;
   link: string;
   Icon: IconType;
 }
