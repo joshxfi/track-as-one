@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
 import { Header } from '../src/components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
-import { Button } from '../src/components/global/Button'
+import { Button } from '../src/components/buttons/Button'
 import { useFirestore } from '../src/context/FirestoreContext'
 import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
 import { Input } from '../src/components/Input'
@@ -64,7 +64,7 @@ const Create = () => {
           placeholder='enter room name'
         />
         <div className='inline-block mx-auto mt-6'>
-          <Button desc='create room' type='submit' Icon={BiDoorOpen} />
+          <Button desc='C room' type='submit' Icon={BiDoorOpen} />
         </div>
       </form>
     </section>

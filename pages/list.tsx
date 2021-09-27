@@ -3,7 +3,7 @@ import { Header } from '../src/components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn } from 'react-icons/vsc'
 import { BsEye } from 'react-icons/bs'
-import { Button } from '../src/components/global/Button'
+import { Button } from '../src/components/buttons/Button'
 import { useFirestore } from '../src/context/FirestoreContext'
 import { useRouter } from 'next/router'
 

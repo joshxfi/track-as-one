@@ -4,7 +4,7 @@ import avatar from '../../public/assets/avatar.svg'
 import avatar2 from '../../public/assets/avatar2.svg'
 import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
-import { WcButton } from './global/WcButton'
+import { WcButton } from './buttons/WcButton'
 import { wcpage1, wcpage2 } from '../static/text'
 
 export const Welcome: React.FC = () => {

@@ -7,9 +7,9 @@ import { Header } from '../../src/components/global/Header'
 import { RoomNav } from '../../src/components/room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { InfoBtn } from '../../src/components/global/InfoBtn'
+import { InfoBtn } from '../../src/components/buttons/InfoBtn'
 
-const RoomInfo: React.FC = () => {
+const Info: React.FC = () => {
   const { db, roomList, userList, currentUser } = useFirestore()
 
   const router = useRouter()
@@ -129,4 +129,4 @@ const RoomInfo: React.FC = () => {
   )
 }
 
-export default RoomInfo
+export default Info

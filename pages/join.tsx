@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Header } from '../src/components/global/Header'
 import { VscSignIn } from 'react-icons/vsc'
-import { Button } from '../src/components/global/Button'
+import { Button } from '../src/components/buttons/Button'
 import { Input } from '../src/components/Input'
 
 const Join = () => {

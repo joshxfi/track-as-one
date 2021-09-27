@@ -7,11 +7,11 @@ export const Button = ({ desc, href, type, Icon }: ButtonProps) => {
   return (
     <button
       onClick={() => router.push(href || '')}
-      className="btn btnEffect"
+      className='btn btnEffect'
       type={type}
     >
-      <p className="mr-4">{desc}</p>
-      <Icon className="icon" />
+      <p className='mr-4'>{desc}</p>
+      <Icon className='icon' />
     </button>
   )
 }
