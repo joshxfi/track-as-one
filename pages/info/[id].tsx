@@ -19,8 +19,8 @@ const Info: React.FC = () => {
   const roomCreator = userList.find(
     (user) => user.userTag === currentRoom?.creator
   )
-  const roomMembers = userList.filter(
-    (user) => user.userTag && currentRoom?.members.includes(user?.userTag)
+  const roomMembers = userList.filter((user) =>
+    currentRoom?.members.includes(user?.userTag as string)
   )
   const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
 
