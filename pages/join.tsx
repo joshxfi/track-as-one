@@ -1,11 +1,32 @@
 import React, { useState } from 'react'
 import { Header } from '../src/components/global/Header'
 import { VscSignIn } from 'react-icons/vsc'
-import { Button } from '../src/components/buttons/Button'
 import { Input } from '../src/components/Input'
+import { doc, updateDoc } from 'firebase/firestore'
+import { useFirestore } from '../src/context/FirestoreContext'
 
 const Join = () => {
+  const { currentUser, roomList, db } = useFirestore()
   const [roomID, setRoomID] = useState<string>('')
+  const targetRoom = roomList.find((room) => room.roomID === roomID)
+  const userTag = currentUser?.userTag as string
+
+  const requestJoin = async () => {
+    setRoomID('')
+
+    if (
+      targetRoom &&
+      !targetRoom.members.includes(userTag) &&
+      !targetRoom.requests.includes(userTag) &&
+      targetRoom.creator !== userTag
+    ) {
+      const requestRoomRef = doc(db, 'roomList', roomID)
+
+      await updateDoc(requestRoomRef, {
+        requests: [currentUser?.userTag, ...targetRoom.requests],
+      })
+    }
+  }
 
   return (
     <section className='wrap'>
@@ -17,11 +38,10 @@ const Join = () => {
           placeholder='enter room id'
         />
         <div className='inline-block mx-auto mt-6'>
-          <Button
-            desc='join room'
-            href={roomID && `rooms/${roomID}`}
-            Icon={VscSignIn}
-          />
+          <button onClick={requestJoin} className='btn btnEffect'>
+            <p className='mr-4'>request join</p>
+            <VscSignIn className='icon' />
+          </button>
         </div>
       </div>
     </section>

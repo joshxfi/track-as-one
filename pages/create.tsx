@@ -26,6 +26,7 @@ const Create = () => {
       admin: [],
       members: [],
       dateAdded: serverTimestamp(),
+      requests: [],
     }
 
     setRoomName('')

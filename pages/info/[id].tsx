@@ -118,9 +118,17 @@ const Info: React.FC = () => {
         ))}
 
         {currentRoom?.creator === currentUser?.userTag ? (
-          <InfoBtn desc='DELETE' handleClick={deleteRoom} />
+          <div className='flex'>
+            <InfoBtn desc='DELETE ROOM' handleClick={deleteRoom} />
+            <InfoBtn
+              desc={`VIEW REQUESTS (${currentRoom?.requests.length})`}
+              handleClick={() =>
+                router.push(`/requests/${currentRoom?.roomID}`)
+              }
+            />
+          </div>
         ) : (
-          <InfoBtn desc='LEAVE' handleClick={leaveRoom} />
+          <InfoBtn desc='LEAVE ROOM' handleClick={leaveRoom} />
         )}
       </div>
     </section>

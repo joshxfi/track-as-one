@@ -18,6 +18,7 @@ interface RoomList {
   admin: string[];
   members: string[];
   dateAdded: any;
+  requests: string[];
 }
 
 interface TaskList {
