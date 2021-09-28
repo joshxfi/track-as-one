@@ -64,7 +64,7 @@ const Create = () => {
           placeholder='enter room name'
         />
         <div className='inline-block mx-auto mt-6'>
-          <Button desc='C room' type='submit' Icon={BiDoorOpen} />
+          <Button desc='Create room' type='submit' Icon={BiDoorOpen} />
         </div>
       </form>
     </section>

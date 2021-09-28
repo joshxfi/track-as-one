@@ -32,7 +32,7 @@ const Room = () => {
       id: nanoid(9),
       description: desc,
       addedBy: currentUser?.userTag,
-      dateAdded: new Date(),
+      dateAdded: new Date().toDateString(),
       dueDate: dueDate ? dueDate?.toDateString() : 'none',
     }
 

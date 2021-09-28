@@ -8,6 +8,7 @@ import { RoomNav } from '../../src/components/room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { InfoBtn } from '../../src/components/buttons/InfoBtn'
+import { defaultPic } from '../../src/static/utils'
 
 const Info: React.FC = () => {
   const { db, roomList, userList, currentUser } = useFirestore()
@@ -62,9 +63,6 @@ const Info: React.FC = () => {
       })
     }
   }
-
-  const defaultPic =
-    'https://lh3.googleusercontent.com/a-/AOh14Gg0-BgMxN9qRwfVx_Sr59TtL0mH5eJhcuKIRYj1=s96-c'
 
   return (
     <section className='wrap'>

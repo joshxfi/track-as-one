@@ -7,7 +7,7 @@ interface UserList {
   roomsCreated: string[];
   roomsJoined: string[];
   invites: string[];
-  dateJoined: Date;
+  dateJoined: string;
 }
 
 interface RoomList {
@@ -24,6 +24,6 @@ interface TaskList {
   id: string;
   description: string;
   addedBy: string | undefined | null;
-  dateAdded: Date;
+  dateAdded: string;
   dueDate: string | undefined;
 }
