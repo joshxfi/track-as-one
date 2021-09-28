@@ -35,6 +35,10 @@
         @apply text-transparent bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text;
     }
 
+    .primary-gradient {
+        @apply bg-gradient-to-tr from-secondary to-[#FFDC54];
+    }
+
     .footer-h1 {
         @apply font-semibold text-secondary mb-2;
     }
