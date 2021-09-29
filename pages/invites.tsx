@@ -2,10 +2,9 @@ import React from 'react'
 import { Header } from '../src/components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { useFirestore } from '../src/context/FirestoreContext'
-import Image from 'next/image'
-import mascot from '../public/assets/404cat.svg'
 import { doc, updateDoc } from 'firebase/firestore'
 import router from 'next/router'
+import { Error } from '../src/components/global/Error'
 
 const Invites: React.FC = () => {
   const { db, currentUser, roomList } = useFirestore()
@@ -55,12 +54,7 @@ const Invites: React.FC = () => {
             </button>
           ))
         ) : (
-          <div className='flex flex-col items-center leading-5'>
-            <div className='w-[150px] mt-10'>
-              <Image src={mascot} alt='404 cat mascot' />
-            </div>
-            <h2 className='font-bold text-xl'>why so empty?</h2>
-          </div>
+          <Error code='204' info='why so empty?' />
         )}
       </div>
     </section>

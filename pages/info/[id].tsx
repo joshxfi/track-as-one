@@ -9,6 +9,7 @@ import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { InfoBtn } from '../../src/components/buttons/InfoBtn'
 import { defaultPic } from '../../src/static/utils'
+import { Error } from '../../src/components/global/Error'
 
 const Info: React.FC = () => {
   const { db, roomList, userList, currentUser } = useFirestore()
@@ -66,71 +67,82 @@ const Info: React.FC = () => {
 
   return (
     <section className='wrap'>
-      <RoomNav room={currentRoom as RoomList} />
-      <Header title='Room Info' desc={`room id → ${currentRoom?.roomID}`} />
+      {currentRoom ? (
+        <>
+          <RoomNav room={currentRoom as RoomList} />
+          <Header title='Room Info' desc={`room id → ${currentRoom?.roomID}`} />
 
-      <div className='card flex-between h-[70px] mb-2 w-full'>
-        <div className='leading-5'>
-          <p className='text-f9 text-sm'>{dateCreated}</p>
-          <p className='text-sm'>room created</p>
-        </div>
-
-        <BsCalendarFill className='icon' />
-      </div>
-
-      <div className='w-full mb-4'>
-        <div className='flex-between card h-[70px] mb-2'>
-          <div className='flex'>
-            <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
-              <Image
-                src={roomCreator?.photoURL ? roomCreator?.photoURL : defaultPic}
-                height={36}
-                width={36}
-                alt='creator profile picture'
-              />
-            </div>
+          <div className='card flex-between h-[70px] mb-2 w-full'>
             <div className='leading-5'>
-              <p className='text-f9'>{roomCreator?.displayName}</p>
-              <p className='text-sm'>creator</p>
+              <p className='text-f9 text-sm'>{dateCreated}</p>
+              <p className='text-sm'>room created</p>
             </div>
-          </div>
-          <AiOutlineIdcard className='icon text-xl' />
-        </div>
 
-        {roomMembers.map((member) => (
-          <div key={member.userTag} className='flex-between card h-[70px] mb-2'>
-            <div className='flex'>
-              <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
-                <Image
-                  src={member?.photoURL ? member?.photoURL : defaultPic}
-                  height={36}
-                  width={36}
-                  alt='creator profile picture'
+            <BsCalendarFill className='icon' />
+          </div>
+
+          <div className='w-full mb-4'>
+            <div className='flex-between card h-[70px] mb-2'>
+              <div className='flex'>
+                <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
+                  <Image
+                    src={
+                      roomCreator?.photoURL ? roomCreator?.photoURL : defaultPic
+                    }
+                    height={36}
+                    width={36}
+                    alt='creator profile picture'
+                  />
+                </div>
+                <div className='leading-5'>
+                  <p className='text-f9'>{roomCreator?.displayName}</p>
+                  <p className='text-sm'>creator</p>
+                </div>
+              </div>
+              <AiOutlineIdcard className='icon text-xl' />
+            </div>
+
+            {roomMembers.map((member) => (
+              <div
+                key={member.userTag}
+                className='flex-between card h-[70px] mb-2'
+              >
+                <div className='flex'>
+                  <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
+                    <Image
+                      src={member?.photoURL ? member?.photoURL : defaultPic}
+                      height={36}
+                      width={36}
+                      alt='creator profile picture'
+                    />
+                  </div>
+                  <div className='leading-5'>
+                    <p className='text-f9'>{member?.displayName}</p>
+                    <p className='text-sm'>member</p>
+                  </div>
+                </div>
+                <AiOutlineIdcard className='icon text-xl' />
+              </div>
+            ))}
+
+            {currentRoom?.creator === currentUser?.userTag ? (
+              <div className='flex'>
+                <InfoBtn desc='DELETE ROOM' handleClick={deleteRoom} />
+                <InfoBtn
+                  desc={`VIEW REQUESTS (${currentRoom?.requests.length})`}
+                  handleClick={() =>
+                    router.push(`/requests/${currentRoom?.roomID}`)
+                  }
                 />
               </div>
-              <div className='leading-5'>
-                <p className='text-f9'>{member?.displayName}</p>
-                <p className='text-sm'>member</p>
-              </div>
-            </div>
-            <AiOutlineIdcard className='icon text-xl' />
+            ) : (
+              <InfoBtn desc='LEAVE ROOM' handleClick={leaveRoom} />
+            )}
           </div>
-        ))}
-
-        {currentRoom?.creator === currentUser?.userTag ? (
-          <div className='flex'>
-            <InfoBtn desc='DELETE ROOM' handleClick={deleteRoom} />
-            <InfoBtn
-              desc={`VIEW REQUESTS (${currentRoom?.requests.length})`}
-              handleClick={() =>
-                router.push(`/requests/${currentRoom?.roomID}`)
-              }
-            />
-          </div>
-        ) : (
-          <InfoBtn desc='LEAVE ROOM' handleClick={leaveRoom} />
-        )}
-      </div>
+        </>
+      ) : (
+        <Error />
+      )}
     </section>
   )
 }

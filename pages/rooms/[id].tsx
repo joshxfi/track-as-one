@@ -11,7 +11,7 @@ import { Header } from '../../src/components/global/Header'
 import { RoomNav } from '../../src/components/room/RoomNav'
 import { RoomTask } from '../../src/components/room/RoomTask'
 import { nanoid } from 'nanoid'
-import { NotFound } from '../../src/components/NotFound'
+import { Error } from '../../src/components/global/Error'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
@@ -100,7 +100,7 @@ const Room = () => {
           </div>
         </section>
       ) : (
-        <NotFound />
+        <Error />
       )}
     </>
   )

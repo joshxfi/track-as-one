@@ -64,3 +64,8 @@ interface InfoBtnProps {
   desc: string;
   handleClick: () => void;
 }
+
+interface ErrorProps {
+  code?: string;
+  info?: string;
+}

@@ -1,10 +1,10 @@
 import React from 'react'
-import { NotFound } from '../src/components/NotFound'
+import { Error } from '../src/components/global/Error'
 
 const Error404 = () => {
   return (
     <>
-      <NotFound />
+      <Error code='404' info='page not found' />
     </>
   )
 }
