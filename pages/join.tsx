@@ -4,6 +4,7 @@ import { VscSignIn } from 'react-icons/vsc'
 import { Input } from '../src/components/Input'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useFirestore } from '../src/context/FirestoreContext'
+import Container from '../src/components/Container'
 
 const Join = () => {
   const { currentUser, roomList, db } = useFirestore()
@@ -29,7 +30,7 @@ const Join = () => {
   }
 
   return (
-    <section className='wrap'>
+    <Container>
       <Header title='Join a Room' />
       <div className='w-full flex justify-center items-center flex-col'>
         <Input
@@ -44,7 +45,7 @@ const Join = () => {
           </button>
         </div>
       </div>
-    </section>
+    </Container>
   )
 }
 

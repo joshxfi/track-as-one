@@ -6,6 +6,7 @@ import { BsEye } from 'react-icons/bs'
 import { Button } from '../src/components/buttons/Button'
 import { useFirestore } from '../src/context/FirestoreContext'
 import { useRouter } from 'next/router'
+import Container from '../src/components/Container'
 
 const List = () => {
   const { currentUser, roomList } = useFirestore()
@@ -18,7 +19,7 @@ const List = () => {
   )
 
   return (
-    <section className='wrap'>
+    <Container>
       <Header title='My Rooms' />
       <div className='w-full mb-4'>
         <div className='w-full bg-secondary text-primary text-center mb-2 rounded-lg py-1 text-sm'>
@@ -45,7 +46,7 @@ const List = () => {
       </div>
 
       <Button desc='view invites' href='/invites' Icon={BsEye} />
-    </section>
+    </Container>
   )
 }
 

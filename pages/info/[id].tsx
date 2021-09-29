@@ -10,6 +10,7 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { InfoBtn } from '../../src/components/buttons/InfoBtn'
 import { defaultPic } from '../../src/static/utils'
 import { Error } from '../../src/components/global/Error'
+import Container from '../../src/components/Container'
 
 const Info: React.FC = () => {
   const { db, roomList, userList, currentUser } = useFirestore()
@@ -66,7 +67,7 @@ const Info: React.FC = () => {
   }
 
   return (
-    <section className='wrap'>
+    <Container>
       {currentRoom ? (
         <>
           <RoomNav room={currentRoom as RoomList} />
@@ -143,7 +144,7 @@ const Info: React.FC = () => {
       ) : (
         <Error />
       )}
-    </section>
+    </Container>
   )
 }
 

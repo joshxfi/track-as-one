@@ -5,6 +5,7 @@ import { useFirestore } from '../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import router from 'next/router'
 import { Error } from '../src/components/global/Error'
+import Container from '../src/components/Container'
 
 const Invites: React.FC = () => {
   const { db, currentUser, roomList } = useFirestore()
@@ -35,7 +36,7 @@ const Invites: React.FC = () => {
   }
 
   return (
-    <section className='wrap'>
+    <Container>
       <Header title='Invitation' />
       <div className='w-full mb-4'>
         {matchInvites.length ? (
@@ -57,7 +58,7 @@ const Invites: React.FC = () => {
           <Error code='204' info='why so empty?' />
         )}
       </div>
-    </section>
+    </Container>
   )
 }
 

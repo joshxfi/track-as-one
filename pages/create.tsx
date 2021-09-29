@@ -7,6 +7,7 @@ import { Button } from '../src/components/buttons/Button'
 import { useFirestore } from '../src/context/FirestoreContext'
 import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
 import { Input } from '../src/components/Input'
+import Container from '../src/components/Container'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
@@ -53,7 +54,7 @@ const Create = () => {
   }
 
   return (
-    <section className='wrap'>
+    <Container>
       <Header title='Create a Room' />
       <form
         onSubmit={createRoom}
@@ -68,7 +69,7 @@ const Create = () => {
           <Button desc='Create room' type='submit' Icon={BiDoorOpen} />
         </div>
       </form>
-    </section>
+    </Container>
   )
 }
 

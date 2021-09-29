@@ -7,6 +7,7 @@ import { AiOutlineIdcard } from 'react-icons/ai'
 import { defaultPic } from '../../src/static/utils'
 import { doc, updateDoc } from 'firebase/firestore'
 import mascot from '../../public/assets/404cat.svg'
+import Container from '../../src/components/Container'
 
 const Requests = () => {
   const { db, roomList, userList } = useFirestore()
@@ -37,7 +38,7 @@ const Requests = () => {
   }
 
   return (
-    <section className='wrap'>
+    <Container>
       <Header title='Invitation' />
       <div className='w-full mb-4'>
         {currentRoom?.requests.length ? (
@@ -76,7 +77,7 @@ const Requests = () => {
           </div>
         )}
       </div>
-    </section>
+    </Container>
   )
 }
 

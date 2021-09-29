@@ -6,6 +6,7 @@ import { RoomNav } from '../../src/components/room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import { Input } from '../../src/components/Input'
+import Container from '../../src/components/Container'
 
 const Invite = () => {
   const [userTag, setUserTag] = useState<string>('')
@@ -38,7 +39,7 @@ const Invite = () => {
   }
 
   return (
-    <section className='wrap'>
+    <Container>
       <RoomNav room={currentRoom as RoomList} />
       <Header title='Invite a User' desc={currentRoom?.roomID} />
       <form
@@ -63,7 +64,7 @@ const Invite = () => {
           </button>
         </div>
       </form>
-    </section>
+    </Container>
   )
 }
 
