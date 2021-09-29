@@ -1,18 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
+import { AnimatePresence, motion } from 'framer-motion'
+
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
+
 import { HomeBtn } from './buttons/HomeBtn'
 import { useFirestore } from '../context/FirestoreContext'
 import { defaultPic } from '../static/utils'
 
 export const Homepage: React.FC = () => {
+  const [copied, setCopied] = useState<boolean>(false)
+
   const { currentUser } = useFirestore()
   const { userTag, displayName, email, photoURL } = currentUser || {}
 
   const copyTag = () => {
     navigator.clipboard.writeText(userTag || '')
+    setCopied(true)
+
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
   }
 
   return (
@@ -39,17 +49,31 @@ export const Homepage: React.FC = () => {
       <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-8 w-full'></div>
 
       <div className='md:grid grid-cols-2 gap-x-2'>
-        <button
+        <motion.button
+          whileHover={{ scale: 0.96 }}
           onClick={copyTag}
           className='rounded-[36px] bg-primary text-f9 p-2 w-[300px] px-[50px] mt-4 btnEffect flex-between'
         >
           <p className='mr-4'>copy user tag</p>{' '}
           <AiOutlineIdcard className='text-xl text-secondary' />
-        </button>
+        </motion.button>
         <HomeBtn link='/create' desc='create room' Icon={BiDoorOpen} />
         <HomeBtn link='/join' desc='join room' Icon={VscSignIn} />
         <HomeBtn link='/list' desc='my rooms' Icon={VscListOrdered} />
       </div>
+
+      <AnimatePresence>
+        {copied && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='mt-4 font-bold'
+          >
+            copied to clipboard!
+          </motion.p>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
