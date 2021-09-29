@@ -62,6 +62,7 @@ interface WcButtonProps {
 
 interface InfoBtnProps {
   desc: string;
+  style?: string;
   handleClick: () => void;
 }
 

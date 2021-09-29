@@ -66,6 +66,10 @@ const Info: React.FC = () => {
     }
   }
 
+  const copyRoomID = () => {
+    navigator.clipboard.writeText(currentRoom?.roomID || '')
+  }
+
   return (
     <Container>
       {currentRoom ? (
@@ -127,17 +131,50 @@ const Info: React.FC = () => {
             ))}
 
             {currentRoom?.creator === currentUser?.userTag ? (
-              <div className='flex'>
-                <InfoBtn desc='DELETE ROOM' handleClick={deleteRoom} />
+              <>
+                <div className='flex'>
+                  <InfoBtn
+                    desc='DELETE ROOM'
+                    style='mr-2'
+                    handleClick={deleteRoom}
+                  />
+                  <InfoBtn
+                    desc='GO BACK'
+                    handleClick={() =>
+                      router.push(`/rooms/${currentRoom.roomID}`)
+                    }
+                  />
+                </div>
                 <InfoBtn
+                  style='mt-2'
                   desc={`VIEW REQUESTS (${currentRoom?.requests.length})`}
                   handleClick={() =>
                     router.push(`/requests/${currentRoom?.roomID}`)
                   }
                 />
-              </div>
+                <InfoBtn
+                  desc='COPY ROOM ID'
+                  style='mt-2'
+                  handleClick={copyRoomID}
+                />
+              </>
             ) : (
-              <InfoBtn desc='LEAVE ROOM' handleClick={leaveRoom} />
+              <>
+                <div className='flex'>
+                  <InfoBtn desc='LEAVE ROOM' handleClick={leaveRoom} />
+                  <InfoBtn
+                    desc='GO BACK'
+                    handleClick={() =>
+                      router.push(`/rooms/${currentRoom.roomID}`)
+                    }
+                  />
+                </div>
+                <InfoBtn
+                  desc='COPY ROOM ID'
+                  style='mt-2'
+                  handleClick={copyRoomID}
+                />
+              </>
             )}
           </div>
         </>
