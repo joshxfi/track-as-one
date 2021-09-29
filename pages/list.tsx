@@ -1,12 +1,11 @@
 import React from 'react'
 import { Header } from '../src/components/global/Header'
-import { BiDoorOpen } from 'react-icons/bi'
-import { VscSignIn } from 'react-icons/vsc'
 import { BsEye } from 'react-icons/bs'
 import { Button } from '../src/components/buttons/Button'
 import { useFirestore } from '../src/context/FirestoreContext'
-import { useRouter } from 'next/router'
 import Container from '../src/components/Container'
+import { ListRooms } from '../src/components/room/ListRooms'
+import { NoRooms } from '../src/components/room/NoRooms'
 
 const List = () => {
   const { currentUser, roomList } = useFirestore()
@@ -51,35 +50,3 @@ const List = () => {
 }
 
 export default List
-
-const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
-  const router = useRouter()
-
-  return (
-    <button
-      onClick={() => router.push(`/rooms/${room.roomID}`)}
-      className="card flex-between h-[70px] mb-2 btnEffect w-full text-left"
-    >
-      <div className="leading-5">
-        <p className="text-f9">{room.name}</p>
-        <p className="text-sm">members: {room.members.length}</p>
-      </div>
-
-      <BiDoorOpen className="icon" />
-    </button>
-  )
-}
-
-const NoRooms: React.FC<NoRoomsProps> = ({ desc, href }) => {
-  const router = useRouter()
-
-  return (
-    <button
-      onClick={() => router.push(href)}
-      className="flex px-[30px] justify-between h-[70px] w-full items-center bg-primary text-f9 text-center rounded-lg btnEffect"
-    >
-      <h2>{desc}</h2>
-      <VscSignIn className="icon" />
-    </button>
-  )
-}

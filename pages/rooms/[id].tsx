@@ -73,7 +73,7 @@ const Room = () => {
         hasPermission() ? (
           <>
             <RoomNav room={currentRoom} />
-            <Header title={currentRoom.name} desc={currentRoom.roomID} />
+            <Header title={currentRoom.name} desc='' />
             <form onSubmit={addTask} className='w-full'>
               <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
                 <input

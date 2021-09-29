@@ -6,8 +6,8 @@ import { useRouter } from 'next/router'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { defaultPic } from '../../src/static/utils'
 import { doc, updateDoc } from 'firebase/firestore'
-import mascot from '../../public/assets/404cat.svg'
 import Container from '../../src/components/Container'
+import { Error } from '../../src/components/global/Error'
 
 const Requests = () => {
   const { db, roomList, userList } = useFirestore()
@@ -39,7 +39,7 @@ const Requests = () => {
 
   return (
     <Container>
-      <Header title='Invitation' />
+      <Header title='Requests' />
       <div className='w-full mb-4'>
         {currentRoom?.requests.length ? (
           matchUsers.map((user) => (
@@ -69,12 +69,7 @@ const Requests = () => {
             </button>
           ))
         ) : (
-          <div className='flex flex-col items-center leading-5'>
-            <div className='w-[150px] mt-10'>
-              <Image src={mascot} alt='404 cat mascot' />
-            </div>
-            <h2 className='font-bold text-xl'>why so empty?</h2>
-          </div>
+          <Error code='204' info='why so empty?' />
         )}
       </div>
     </Container>
