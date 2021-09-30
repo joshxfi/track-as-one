@@ -13,6 +13,7 @@ import { RoomTask } from '../../src/components/room/RoomTask'
 import { nanoid } from 'nanoid'
 import { Error } from '../../src/components/global/Error'
 import Container from '../../src/components/Container'
+import { AnimatePresence } from 'framer-motion'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
@@ -77,6 +78,7 @@ const Room = () => {
             <form onSubmit={addTask} className='w-full'>
               <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
                 <input
+                  maxLength={150}
                   onChange={(e) => setDesc(e.target.value)}
                   value={desc}
                   type='text'
@@ -107,9 +109,11 @@ const Room = () => {
               </div>
             </form>
             <div className='w-full my-2'>
-              {currentRoom.tasks.map((task) => (
-                <RoomTask key={task.id} task={task} delTask={delTask} />
-              ))}
+              <AnimatePresence>
+                {currentRoom.tasks.map((task) => (
+                  <RoomTask key={task.id} task={task} delTask={delTask} />
+                ))}
+              </AnimatePresence>
             </div>
           </>
         ) : (
