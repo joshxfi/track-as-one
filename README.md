@@ -7,13 +7,7 @@
 
 ## Project Status
 Currently in development using mobile-first approach.
-- [x] Mobile UI
-- [ ] Desktop UI
-- [x] Hosting
-- [ ] PWA
-- [ ] SEO
-- [ ] Open Beta
-- [ ] Mobile App
+_Open Beta Soon!_
 
 ## Contributing
 This project is currently not accepting any pull requests or code contributions. PRs will be open after the beta release!
