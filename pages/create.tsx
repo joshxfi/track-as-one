@@ -35,7 +35,7 @@ const Create = () => {
     }
 
     setRoomName('')
-    const updateUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
+    const updateUserRef = doc(db, 'userList', currentUser!.userTag as string)
     if (currentUser!.roomsCreated.length >= 3) {
       setError('Max rooms reached (3)')
       setShowError(true)
@@ -47,13 +47,11 @@ const Create = () => {
       const roomDocRef = doc(db, 'roomList', roomID)
       await setDoc(roomDocRef, payload)
 
-      if (currentUser?.roomsCreated) {
-        router.push(`/list`)
+      router.push(`/list`)
 
-        await updateDoc(updateUserRef, {
-          roomsCreated: [payload.roomID, ...currentUser?.roomsCreated],
-        })
-      }
+      await updateDoc(updateUserRef, {
+        roomsCreated: [payload.roomID, ...currentUser!.roomsCreated],
+      })
     }
   }
 

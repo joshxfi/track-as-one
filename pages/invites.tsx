@@ -1,11 +1,11 @@
 import React from 'react'
+import router from 'next/router'
+import Container from '../src/components/Container'
 import { Header } from '../src/components/global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { useFirestore } from '../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
-import router from 'next/router'
 import { Error } from '../src/components/global/Error'
-import Container from '../src/components/Container'
 
 const Invites: React.FC = () => {
   const { db, currentUser, roomList } = useFirestore()
@@ -18,19 +18,17 @@ const Invites: React.FC = () => {
   const acceptInvite = async (roomTag: string) => {
     const targetRoom = roomList.find((room) => room.roomID === roomTag)
 
-    const currentUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
+    const currentUserRef = doc(db, 'userList', currentUser!.userTag as string)
     const joinRoomRef = doc(db, 'roomList', roomTag)
 
-    if (currentUser) {
-      await updateDoc(currentUserRef, {
-        invites: currentUser?.invites.filter((invite) => invite !== roomTag),
-        roomsJoined: [roomTag, ...currentUser?.roomsJoined],
-      })
+    await updateDoc(currentUserRef, {
+      invites: currentUser?.invites.filter((invite) => invite !== roomTag),
+      roomsJoined: [roomTag, ...currentUser!.roomsJoined],
+    })
 
-      await updateDoc(joinRoomRef, {
-        members: targetRoom && [currentUser.userTag, ...targetRoom?.members],
-      })
-    }
+    await updateDoc(joinRoomRef, {
+      members: [currentUser!.userTag, ...targetRoom!.members],
+    })
 
     router.push(`rooms/${roomTag}`)
   }

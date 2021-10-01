@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Container from '../../src/components/Container'
+import ErrorMSG from '../../src/components/global/ErrorMSG'
 import { useRouter } from 'next/router'
 import { Header } from '../../src/components/global/Header'
 import { AiOutlineIdcard } from 'react-icons/ai'
@@ -8,7 +9,6 @@ import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import { Input } from '../../src/components/Input'
 import { Error } from '../../src/components/global/Error'
-import ErrorMSG from '../../src/components/global/ErrorMSG'
 
 const Invite = () => {
   const [invUserTag, setUserTag] = useState<string>('')
@@ -32,7 +32,7 @@ const Invite = () => {
   const userToInv = userList.find((user) => user.userTag === invUserTag)
 
   const inviteUser = async () => {
-    const userToInvRef = doc(db, 'userList', invUserTag || 'none')
+    const userToInvRef = doc(db, 'userList', invUserTag)
     setUserTag('')
 
     if (invUserTag === currentUser?.userTag) {
@@ -56,7 +56,7 @@ const Invite = () => {
       {currentRoom ? (
         <>
           {' '}
-          <RoomNav room={currentRoom as RoomList} />
+          <RoomNav room={currentRoom} />
           <Header title='Invite a User' />
           <form
             spellCheck='false'

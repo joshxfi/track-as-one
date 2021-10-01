@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
+import Container from '../../src/components/Container'
+import Clipboard from '../../src/components/global/Clipboard'
 import { useRouter } from 'next/router'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
@@ -10,8 +12,6 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { InfoBtn } from '../../src/components/buttons/InfoBtn'
 import { defaultPic } from '../../src/static/utils'
 import { Error } from '../../src/components/global/Error'
-import Container from '../../src/components/Container'
-import Clipboard from '../../src/components/global/Clipboard'
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
@@ -29,8 +29,8 @@ const Info: React.FC = () => {
   const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
 
   const deleteRoom = async () => {
-    const delRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
-    const creatorRef = doc(db, 'userList', `${roomCreator?.userTag}`)
+    const delRoomRef = doc(db, 'roomList', currentRoom!.roomID)
+    const creatorRef = doc(db, 'userList', roomCreator!.userTag as string)
 
     router.push('/')
     await deleteDoc(delRoomRef)

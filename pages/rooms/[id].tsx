@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react'
+import Container from '../../src/components/Container'
 import { useRouter } from 'next/router'
 import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
+
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { updateDoc, doc } from 'firebase/firestore'
 
@@ -12,7 +14,6 @@ import { RoomNav } from '../../src/components/room/RoomNav'
 import { RoomTask } from '../../src/components/room/RoomTask'
 import { nanoid } from 'nanoid'
 import { Error } from '../../src/components/global/Error'
-import Container from '../../src/components/Container'
 import { AnimatePresence } from 'framer-motion'
 
 const Room = () => {
@@ -26,7 +27,7 @@ const Room = () => {
   const { userTag } = currentUser || {}
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+  const currentRoomRef = doc(db, 'roomList', currentRoom!.roomID)
   const dateInputRef = useRef<ReactDatePicker>(null)
 
   const hasPermission = () => {
@@ -50,11 +51,11 @@ const Room = () => {
     }
 
     setDesc('')
-    const roomDocRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+    const roomDocRef = doc(db, 'roomList', currentRoom!.roomID)
 
-    if (currentRoom?.tasks && desc !== '' && currentRoom.tasks.length < 15) {
+    if (desc !== '' && currentRoom!.tasks.length < 15) {
       await updateDoc(roomDocRef, {
-        tasks: [payload, ...currentRoom?.tasks],
+        tasks: [payload, ...currentRoom!.tasks],
       })
     }
   }
@@ -75,10 +76,16 @@ const Room = () => {
           <>
             <RoomNav room={currentRoom} />
             <Header title={currentRoom.name} desc='' />
-            <form onSubmit={addTask} className='w-full'>
+            <form
+              spellCheck='false'
+              autoComplete='off'
+              onSubmit={addTask}
+              className='w-full'
+            >
               <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
                 <input
                   maxLength={150}
+                  minLength={5}
                   onChange={(e) => setDesc(e.target.value)}
                   value={desc}
                   type='text'

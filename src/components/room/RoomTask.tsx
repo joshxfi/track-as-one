@@ -4,7 +4,6 @@ import { BsXSquareFill } from 'react-icons/bs'
 
 export const RoomTask: React.FC<RoomTaskProps> = ({ task, delTask }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false)
-
   const deadline = task.dueDate!.toString()
 
   const optionsVariant: Variants = {
@@ -34,7 +33,7 @@ export const RoomTask: React.FC<RoomTaskProps> = ({ task, delTask }) => {
     >
       <div
         onClick={() => setShowOptions(!showOptions)}
-        className='leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg'
+        className='leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
       >
         <p className='text-f9 break-all'>{task.description}</p>
         <p className='text-sm pt-2'>Due on {deadline}</p>

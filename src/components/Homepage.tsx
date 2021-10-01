@@ -21,9 +21,7 @@ export const Homepage: React.FC = () => {
     navigator.clipboard.writeText(userTag || '')
     setCopied(true)
 
-    setTimeout(() => {
-      setCopied(false)
-    }, 3000)
+    setTimeout(() => setCopied(false), 3000)
   }
 
   return (
