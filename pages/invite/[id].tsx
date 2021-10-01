@@ -66,6 +66,7 @@ const Invite = () => {
               handleChange={(e) => setUserTag(e.target.value)}
               value={invUserTag}
               placeholder='enter user tag'
+              max={10}
             />
             <motion.div
               initial={{ opacity: 0 }}

@@ -50,6 +50,7 @@ interface InputProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   placeholder: string;
+  max: number;
 }
 
 interface WcButtonProps {

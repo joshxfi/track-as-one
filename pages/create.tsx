@@ -33,17 +33,11 @@ const Create = () => {
     setRoomName('')
     const updateUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
 
-    if (roomName) {
+    if (roomName && currentUser!.roomsCreated.length < 3) {
       const roomDocRef = doc(db, 'roomList', roomID)
       await setDoc(roomDocRef, payload)
 
-      const roomOwner = () => {
-        currentUser?.roomsCreated.forEach((room) => {
-          if (room === roomID) return true
-        })
-      }
-
-      if (currentUser?.roomsCreated && roomOwner) {
+      if (currentUser?.roomsCreated) {
         router.push(`/list`)
 
         await updateDoc(updateUserRef, {
@@ -64,6 +58,7 @@ const Create = () => {
           handleChange={(e) => setRoomName(e.target.value)}
           value={roomName}
           placeholder='enter room name'
+          max={15}
         />
         <div className='inline-block mx-auto mt-6'>
           <Button desc='Create room' type='submit' Icon={BiDoorOpen} />

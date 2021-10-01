@@ -52,7 +52,7 @@ const Room = () => {
     setDesc('')
     const roomDocRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
 
-    if (currentRoom?.tasks && desc !== '') {
+    if (currentRoom?.tasks && desc !== '' && currentRoom.tasks.length < 15) {
       await updateDoc(roomDocRef, {
         tasks: [payload, ...currentRoom?.tasks],
       })

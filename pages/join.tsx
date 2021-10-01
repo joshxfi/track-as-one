@@ -37,6 +37,7 @@ const Join = () => {
           handleChange={(e) => setRoomID(e.target.value)}
           value={roomID}
           placeholder='enter room id'
+          max={15}
         />
         <div className='inline-block mx-auto mt-6'>
           <button onClick={requestJoin} className='btn btnEffect'>
