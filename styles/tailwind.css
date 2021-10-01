@@ -16,7 +16,7 @@
     }
 
     .dueBtn {
-        @apply outline-none w-full px-[30px] h-[45px] rounded-lg bg-primary text-secondary hover:bg-[#292929];
+        @apply outline-none w-full px-[30px] h-[45px] rounded-lg bg-secondary text-primary;
     }
 
     .btnEffect {
