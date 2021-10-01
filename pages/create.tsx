@@ -35,7 +35,7 @@ const Create = () => {
     }
 
     setRoomName('')
-    const updateUserRef = doc(db, 'userList', currentUser!.userTag as string)
+    const updateUserRef = doc(db, 'userList', currentUser?.userTag || '')
     if (currentUser!.roomsCreated.length >= 3) {
       setError('Max rooms reached (3)')
       setShowError(true)

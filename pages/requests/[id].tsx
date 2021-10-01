@@ -22,7 +22,7 @@ const Requests = () => {
   const acceptRequest = async ({ userTag, roomsJoined }: UserList) => {
     if (currentRoom) {
       const currentRoomRef = doc(db, 'roomList', currentRoom.roomID)
-      const targetUserRef = doc(db, 'userList', userTag as string)
+      const targetUserRef = doc(db, 'userList', `${userTag}`)
 
       const newReqs = currentRoom.requests.filter((req) => req !== userTag)
 

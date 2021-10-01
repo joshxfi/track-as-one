@@ -18,7 +18,7 @@ const Invites: React.FC = () => {
   const acceptInvite = async (roomTag: string) => {
     const targetRoom = roomList.find((room) => room.roomID === roomTag)
 
-    const currentUserRef = doc(db, 'userList', currentUser!.userTag as string)
+    const currentUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
     const joinRoomRef = doc(db, 'roomList', roomTag)
 
     await updateDoc(currentUserRef, {

@@ -29,8 +29,8 @@ const Info: React.FC = () => {
   const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
 
   const deleteRoom = async () => {
-    const delRoomRef = doc(db, 'roomList', currentRoom!.roomID)
-    const creatorRef = doc(db, 'userList', roomCreator!.userTag as string)
+    const delRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+    const creatorRef = doc(db, 'userList', `${roomCreator?.userTag}`)
 
     router.push('/')
     await deleteDoc(delRoomRef)
@@ -69,7 +69,7 @@ const Info: React.FC = () => {
   }
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(currentRoom?.roomID || '')
+    navigator.clipboard.writeText(`${currentRoom?.roomID}`)
     setCopied(true)
 
     setTimeout(() => setCopied(false), 3000)
@@ -161,7 +161,11 @@ const Info: React.FC = () => {
             ) : (
               <>
                 <div className='flex'>
-                  <InfoBtn desc='LEAVE ROOM' handleClick={leaveRoom} />
+                  <InfoBtn
+                    desc='LEAVE ROOM'
+                    style='mr-2'
+                    handleClick={leaveRoom}
+                  />
                   <InfoBtn
                     desc='GO BACK'
                     handleClick={() =>

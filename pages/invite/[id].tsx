@@ -32,25 +32,28 @@ const Invite = () => {
   const userToInv = userList.find((user) => user.userTag === invUserTag)
 
   const inviteUser = async () => {
-    const userToInvRef = doc(db, 'userList', invUserTag)
     setUserTag('')
 
-    if (invUserTag === currentUser?.userTag) {
-      errorMsg('you are already in the room')
-    } else if (invUserTag === '') {
+    if (invUserTag === '') {
       errorMsg('example → user:nTWS_')
-    } else if (currentRoom?.members?.includes(invUserTag)) {
-      errorMsg('user is already in the room')
-    } else if (userToInv) {
-      await updateDoc(userToInvRef, {
-        invites: [currentRoom?.roomID, ...userToInv?.invites],
-      })
-      errorMsg('user invited!')
     } else {
-      errorMsg('user tag could not be found')
+      const userToInvRef = doc(db, 'userList', invUserTag)
+
+      if (invUserTag === currentUser?.userTag) {
+        errorMsg('you are already in the room')
+      } else if (currentRoom?.members?.includes(invUserTag)) {
+        errorMsg('user is already in the room')
+      } else if (userToInv) {
+        await updateDoc(userToInvRef, {
+          invites: [currentRoom?.roomID, ...userToInv?.invites],
+        })
+        errorMsg('user invited!')
+      } else {
+        errorMsg('user tag could not be found')
+      }
     }
   }
-
+  
   return (
     <Container>
       {currentRoom ? (

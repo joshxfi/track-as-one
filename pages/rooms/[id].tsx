@@ -27,7 +27,7 @@ const Room = () => {
   const { userTag } = currentUser || {}
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const currentRoomRef = doc(db, 'roomList', currentRoom!.roomID)
+  const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
   const dateInputRef = useRef<ReactDatePicker>(null)
 
   const hasPermission = () => {
@@ -51,7 +51,7 @@ const Room = () => {
     }
 
     setDesc('')
-    const roomDocRef = doc(db, 'roomList', currentRoom!.roomID)
+    const roomDocRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
 
     if (desc !== '' && currentRoom!.tasks.length < 15) {
       await updateDoc(roomDocRef, {
@@ -103,7 +103,7 @@ const Room = () => {
                   onChange={(date: Date) => setDueDate(date)}
                   minDate={new Date()}
                   ref={dateInputRef}
-                  className='bg-primary w-full outline-none'
+                  className='bg-secondary text-sm w-full outline-none font-semibold'
                 />
 
                 <div className=' flex text-2xl mr-[3px]'>
