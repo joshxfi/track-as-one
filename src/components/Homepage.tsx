@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import Clipboard from './global/Clipboard'
 
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
@@ -62,18 +63,7 @@ export const Homepage: React.FC = () => {
         <HomeBtn link='/list' desc='my rooms' Icon={VscListOrdered} />
       </div>
 
-      <AnimatePresence>
-        {copied && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className='mt-4 font-bold'
-          >
-            copied to clipboard!
-          </motion.p>
-        )}
-      </AnimatePresence>
+      <Clipboard copied={copied} />
     </section>
   )
 }

@@ -7,8 +7,8 @@ import { RoomNav } from '../../src/components/room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import { Input } from '../../src/components/Input'
-import { motion } from 'framer-motion'
 import { Error } from '../../src/components/global/Error'
+import ErrorMSG from '../../src/components/global/ErrorMSG'
 
 const Invite = () => {
   const [invUserTag, setUserTag] = useState<string>('')
@@ -68,13 +68,8 @@ const Invite = () => {
               placeholder='enter user tag'
               max={10}
             />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: showError ? 1 : 0 }}
-              className='text-center font-bold text-sm mt-2'
-            >
-              <p>{error}</p>
-            </motion.div>
+            <ErrorMSG error={error} showError={showError} />
+
             <div className='inline-block mx-auto mt-2'>
               <button
                 onClick={inviteUser}

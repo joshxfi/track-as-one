@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { AiOutlineIdcard } from 'react-icons/ai'
@@ -11,8 +11,10 @@ import { InfoBtn } from '../../src/components/buttons/InfoBtn'
 import { defaultPic } from '../../src/static/utils'
 import { Error } from '../../src/components/global/Error'
 import Container from '../../src/components/Container'
+import Clipboard from '../../src/components/global/Clipboard'
 
 const Info: React.FC = () => {
+  const [copied, setCopied] = useState<boolean>(false)
   const { db, roomList, userList, currentUser } = useFirestore()
 
   const router = useRouter()
@@ -68,6 +70,9 @@ const Info: React.FC = () => {
 
   const copyRoomID = () => {
     navigator.clipboard.writeText(currentRoom?.roomID || '')
+    setCopied(true)
+
+    setTimeout(() => setCopied(false), 3000)
   }
 
   return (
@@ -152,11 +157,6 @@ const Info: React.FC = () => {
                     router.push(`/requests/${currentRoom?.roomID}`)
                   }
                 />
-                <InfoBtn
-                  desc='COPY ROOM ID'
-                  style='mt-2'
-                  handleClick={copyRoomID}
-                />
               </>
             ) : (
               <>
@@ -169,13 +169,17 @@ const Info: React.FC = () => {
                     }
                   />
                 </div>
-                <InfoBtn
-                  desc='COPY ROOM ID'
-                  style='mt-2'
-                  handleClick={copyRoomID}
-                />
               </>
             )}
+            <InfoBtn
+              desc='COPY ROOM ID'
+              style='mt-2'
+              handleClick={copyRoomID}
+            />
+
+            <div className='text-center'>
+              <Clipboard copied={copied} />
+            </div>
           </div>
         </>
       ) : (
