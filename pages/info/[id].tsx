@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Container from '../../src/components/Container'
-import Clipboard from '../../src/components/global/Clipboard'
+import Clipboard from '../../src/components/Global/Clipboard'
 import { useRouter } from 'next/router'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
-import { Header } from '../../src/components/global/Header'
-import { RoomNav } from '../../src/components/room/RoomNav'
+import { Header } from '../../src/components/Global/Header'
+import { RoomNav } from '../../src/components/Room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { InfoBtn } from '../../src/components/buttons/InfoBtn'
+import { InfoBtn } from '../../src/components/Buttons/InfoBtn'
 import { defaultPic } from '../../src/static/utils'
-import { Error } from '../../src/components/global/Error'
+import { Error } from '../../src/components/Global/Error'
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
@@ -20,24 +20,24 @@ const Info: React.FC = () => {
   const router = useRouter()
   const { id } = router.query
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const roomCreator = userList.find(
-    (user) => user.userTag === currentRoom?.creator
-  )
+  const { creator, dateAdded, members, requests, roomID } = currentRoom || {}
+
+  const roomCreator = userList.find((user) => user.userTag === creator)
+  const { userTag, roomsCreated, displayName, photoURL } = roomCreator || {}
+
   const roomMembers = userList.filter((user) =>
-    currentRoom?.members.includes(user?.userTag as string)
+    members?.includes(user?.userTag as string)
   )
-  const dateCreated = currentRoom?.dateAdded.toDate().toDateString()
+  const dateCreated = dateAdded.toDate().toDateString()
 
   const deleteRoom = async () => {
-    const delRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
-    const creatorRef = doc(db, 'userList', `${roomCreator?.userTag}`)
+    const delRoomRef = doc(db, 'roomList', `${roomID}`)
+    const creatorRef = doc(db, 'userList', `${userTag}`)
 
     router.push('/')
     await deleteDoc(delRoomRef)
 
-    const filterRoom = roomCreator?.roomsCreated.filter(
-      (room) => room !== currentRoom?.roomID
-    )
+    const filterRoom = roomsCreated?.filter((room) => room !== roomID)
 
     await updateDoc(creatorRef, {
       roomsCreated: filterRoom,
@@ -45,17 +45,17 @@ const Info: React.FC = () => {
   }
 
   const leaveRoom = async () => {
-    const removeMemberRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+    const removeMemberRef = doc(db, 'roomList', `${roomID}`)
     const updateUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
 
-    const updatedRoomMembers = currentRoom?.members.filter(
+    const updatedRoomMembers = members?.filter(
       (member) => member !== currentUser?.userTag
     )
     const updatedUserRooms = currentUser?.roomsJoined.filter(
       (room) => room !== id
     )
 
-    if (currentUser?.userTag !== currentRoom?.creator) {
+    if (currentUser?.userTag !== creator) {
       await updateDoc(removeMemberRef, {
         members: updatedRoomMembers,
       })
@@ -69,7 +69,7 @@ const Info: React.FC = () => {
   }
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${currentRoom?.roomID}`)
+    navigator.clipboard.writeText(`${roomID}`)
     setCopied(true)
 
     setTimeout(() => setCopied(false), 3000)
@@ -79,8 +79,8 @@ const Info: React.FC = () => {
     <Container>
       {currentRoom ? (
         <>
-          <RoomNav room={currentRoom as RoomList} />
-          <Header title='Room Info' desc={`room id → ${currentRoom?.roomID}`} />
+          <RoomNav room={currentRoom} />
+          <Header title='Room Info' desc={`room id → ${roomID}`} />
 
           <div className='card flex-between h-[70px] mb-2 w-full'>
             <div className='leading-5'>
@@ -96,16 +96,14 @@ const Info: React.FC = () => {
               <div className='flex'>
                 <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
                   <Image
-                    src={
-                      roomCreator?.photoURL ? roomCreator?.photoURL : defaultPic
-                    }
+                    src={photoURL ? photoURL : defaultPic}
                     height={36}
                     width={36}
                     alt='creator profile picture'
                   />
                 </div>
                 <div className='leading-5'>
-                  <p className='text-f9'>{roomCreator?.displayName}</p>
+                  <p className='text-f9'>{displayName}</p>
                   <p className='text-sm'>creator</p>
                 </div>
               </div>
@@ -135,7 +133,7 @@ const Info: React.FC = () => {
               </div>
             ))}
 
-            {currentRoom?.creator === currentUser?.userTag ? (
+            {creator === currentUser?.userTag ? (
               <>
                 <div className='flex'>
                   <InfoBtn
@@ -145,17 +143,13 @@ const Info: React.FC = () => {
                   />
                   <InfoBtn
                     desc='GO BACK'
-                    handleClick={() =>
-                      router.push(`/rooms/${currentRoom.roomID}`)
-                    }
+                    handleClick={() => router.push(`/rooms/${roomID}`)}
                   />
                 </div>
                 <InfoBtn
                   style='mt-2'
-                  desc={`VIEW REQUESTS (${currentRoom?.requests.length})`}
-                  handleClick={() =>
-                    router.push(`/requests/${currentRoom?.roomID}`)
-                  }
+                  desc={`VIEW REQUESTS (${requests?.length})`}
+                  handleClick={() => router.push(`/requests/${roomID}`)}
                 />
               </>
             ) : (
@@ -168,9 +162,7 @@ const Info: React.FC = () => {
                   />
                   <InfoBtn
                     desc='GO BACK'
-                    handleClick={() =>
-                      router.push(`/rooms/${currentRoom.roomID}`)
-                    }
+                    handleClick={() => router.push(`/rooms/${roomID}`)}
                   />
                 </div>
               </>

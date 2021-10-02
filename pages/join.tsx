@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Container from '../src/components/Container'
-import ErrorMSG from '../src/components/global/ErrorMSG'
-import { Header } from '../src/components/global/Header'
+import ErrorMSG from '../src/components/Global/ErrorMSG'
+import { Header } from '../src/components/Global/Header'
 import { VscSignIn } from 'react-icons/vsc'
 import { Input } from '../src/components/Input'
 import { doc, updateDoc } from 'firebase/firestore'
@@ -9,6 +9,7 @@ import { useFirestore } from '../src/context/FirestoreContext'
 
 const Join = () => {
   const { currentUser, roomList, db } = useFirestore()
+  const { userTag } = currentUser || {}
   const [roomID, setRoomID] = useState<string>('')
   const [error, setError] = useState<string>('blank')
   const [showError, setShowError] = useState<boolean>(false)
@@ -23,23 +24,20 @@ const Join = () => {
   }
 
   const targetRoom = roomList.find((room) => room.roomID === roomID)
-  const userTag = currentUser?.userTag as string
+  const { members, creator, requests } = targetRoom || {}
 
   const requestJoin = async () => {
     setRoomID('')
 
-    if (targetRoom?.members.includes(userTag))
-      errorMsg('You are already a member')
-    else if (targetRoom?.members.includes(userTag))
-      errorMsg('You already sent a request')
-    else if (targetRoom?.creator === userTag)
-      errorMsg('You are the owner of the room')
+    if (members?.includes(userTag!)) errorMsg('You are already a member')
+    else if (members?.includes(userTag!)) errorMsg('You already sent a request')
+    else if (creator === userTag) errorMsg('You are the owner of the room')
     else if (!targetRoom) errorMsg('Room does not exist')
     else {
       const requestRoomRef = doc(db, 'roomList', roomID)
 
       await updateDoc(requestRoomRef, {
-        requests: [currentUser?.userTag, ...targetRoom!.requests],
+        requests: [currentUser?.userTag, ...(requests ?? [])],
       })
     }
   }

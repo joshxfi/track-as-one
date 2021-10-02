@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
-import { Header } from '../src/components/global/Header'
+import { Header } from '../src/components/Global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
-import { Button } from '../src/components/buttons/Button'
+import { Button } from '../src/components/Buttons/Button'
 import { useFirestore } from '../src/context/FirestoreContext'
 import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
 import { Input } from '../src/components/Input'
 import Container from '../src/components/Container'
-import ErrorMSG from '../src/components/global/ErrorMSG'
+import ErrorMSG from '../src/components/Global/ErrorMSG'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
@@ -18,6 +18,7 @@ const Create = () => {
   const router = useRouter()
 
   const { db, currentUser } = useFirestore()
+  const { userTag, roomsCreated } = currentUser || {}
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -27,7 +28,7 @@ const Create = () => {
       roomID,
       name: roomName,
       tasks: [],
-      creator: currentUser?.userTag,
+      creator: userTag,
       admin: [],
       members: [],
       dateAdded: serverTimestamp(),
@@ -35,8 +36,8 @@ const Create = () => {
     }
 
     setRoomName('')
-    const updateUserRef = doc(db, 'userList', currentUser?.userTag || '')
-    if (currentUser!.roomsCreated.length >= 3) {
+    const updateUserRef = doc(db, 'userList', `${userTag}`)
+    if (roomsCreated!.length >= 3) {
       setError('Max rooms reached (3)')
       setShowError(true)
 
@@ -50,7 +51,7 @@ const Create = () => {
       router.push(`/list`)
 
       await updateDoc(updateUserRef, {
-        roomsCreated: [payload.roomID, ...currentUser!.roomsCreated],
+        roomsCreated: [payload.roomID, ...roomsCreated!],
       })
     }
   }

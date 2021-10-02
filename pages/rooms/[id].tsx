@@ -9,11 +9,11 @@ import { updateDoc, doc } from 'firebase/firestore'
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { Header } from '../../src/components/global/Header'
-import { RoomNav } from '../../src/components/room/RoomNav'
-import { RoomTask } from '../../src/components/room/RoomTask'
+import { Header } from '../../src/components/Global/Header'
+import { RoomNav } from '../../src/components/Room/RoomNav'
+import { RoomTask } from '../../src/components/Room/RoomTask'
 import { nanoid } from 'nanoid'
-import { Error } from '../../src/components/global/Error'
+import { Error } from '../../src/components/Global/Error'
 import { AnimatePresence } from 'framer-motion'
 
 const Room = () => {
@@ -27,16 +27,15 @@ const Room = () => {
   const { userTag } = currentUser || {}
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+  const { creator, members, roomID, tasks } = currentRoom || {}
+
+  const currentRoomRef = doc(db, 'roomList', `${roomID}`)
   const dateInputRef = useRef<ReactDatePicker>(null)
 
   const memberCount = currentRoom!?.members?.length + 1
 
   const hasPermission = () => {
-    if (
-      currentRoom?.creator === userTag ||
-      (userTag && currentRoom?.members.includes(userTag))
-    )
+    if (creator === userTag || (userTag && members?.includes(userTag)))
       return true
     else return false
   }
@@ -54,7 +53,7 @@ const Room = () => {
     }
 
     setDesc('')
-    const roomDocRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
+    const roomDocRef = doc(db, 'roomList', `${roomID}`)
 
     if (desc !== '' && currentRoom!.tasks.length < 15) {
       await updateDoc(roomDocRef, {
@@ -64,7 +63,7 @@ const Room = () => {
   }
 
   const delTask = async (id: string) => {
-    const newTasks = currentRoom?.tasks.filter((task) => task.id !== id)
+    const newTasks = tasks?.filter((task) => task.id !== id)
 
     await updateDoc(currentRoomRef, {
       tasks: newTasks,
@@ -74,9 +73,7 @@ const Room = () => {
   const doneTask = async (task: TaskList) => {
     const { addedBy, completedBy, dateAdded, description, dueDate, id } = task
 
-    const copyTasks = currentRoom?.tasks
-      .slice()
-      .filter((task) => task.id !== id)
+    const copyTasks = tasks?.slice().filter((task) => task.id !== id)
 
     if (!completedBy.includes(userTag as string)) {
       const newTask: TaskList[] = [

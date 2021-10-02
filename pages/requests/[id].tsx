@@ -1,38 +1,41 @@
 import React from 'react'
 import Image from 'next/image'
 import Container from '../../src/components/Container'
-import { Header } from '../../src/components/global/Header'
+import { Header } from '../../src/components/Global/Header'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { useRouter } from 'next/router'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { defaultPic } from '../../src/static/utils'
 import { doc, updateDoc } from 'firebase/firestore'
-import { Error } from '../../src/components/global/Error'
+import { Error } from '../../src/components/Global/Error'
 
 const Requests = () => {
   const { db, roomList, userList } = useFirestore()
+
   const router = useRouter()
   const { id } = router.query
 
   const currentRoom = roomList.find((room) => room.roomID === id)
+  const { members, requests, roomID } = currentRoom || {}
+
   const matchUsers = userList.filter((user) =>
-    currentRoom?.requests.includes(user.userTag as string)
+    requests?.includes(user.userTag as string)
   )
 
   const acceptRequest = async ({ userTag, roomsJoined }: UserList) => {
     if (currentRoom) {
-      const currentRoomRef = doc(db, 'roomList', currentRoom.roomID)
+      const currentRoomRef = doc(db, 'roomList', `${roomID}`)
       const targetUserRef = doc(db, 'userList', `${userTag}`)
 
-      const newReqs = currentRoom.requests.filter((req) => req !== userTag)
+      const newReqs = requests?.filter((req) => req !== userTag)
 
       await updateDoc(currentRoomRef, {
         requests: newReqs,
-        members: [userTag, ...currentRoom.members],
+        members: [userTag, ...(members ?? [])],
       })
 
       await updateDoc(targetUserRef, {
-        roomsJoined: [currentRoom.roomID, ...roomsJoined],
+        roomsJoined: [roomID, ...roomsJoined],
       })
     }
   }
@@ -41,7 +44,7 @@ const Requests = () => {
     <Container>
       <Header title='Requests' />
       <div className='w-full mb-4'>
-        {currentRoom?.requests.length ? (
+        {requests?.length ? (
           matchUsers.map((user) => (
             <button
               onClick={() => acceptRequest(user)}

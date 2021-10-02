@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import Container from '../../src/components/Container'
-import ErrorMSG from '../../src/components/global/ErrorMSG'
+import ErrorMSG from '../../src/components/Global/ErrorMSG'
 import { useRouter } from 'next/router'
-import { Header } from '../../src/components/global/Header'
+import { Header } from '../../src/components/Global/Header'
 import { AiOutlineIdcard } from 'react-icons/ai'
-import { RoomNav } from '../../src/components/room/RoomNav'
+import { RoomNav } from '../../src/components/Room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import { Input } from '../../src/components/Input'
-import { Error } from '../../src/components/global/Error'
+import { Error } from '../../src/components/Global/Error'
 
 const Invite = () => {
   const [invUserTag, setUserTag] = useState<string>('')
@@ -29,6 +29,8 @@ const Invite = () => {
   const { db, roomList, userList, currentUser } = useFirestore()
 
   const currentRoom = roomList.find((room) => room.roomID === id)
+  const { members, roomID } = currentRoom || {}
+
   const userToInv = userList.find((user) => user.userTag === invUserTag)
 
   const inviteUser = async () => {
@@ -41,11 +43,11 @@ const Invite = () => {
 
       if (invUserTag === currentUser?.userTag) {
         errorMsg('you are already in the room')
-      } else if (currentRoom?.members?.includes(invUserTag)) {
+      } else if (members?.includes(invUserTag)) {
         errorMsg('user is already in the room')
       } else if (userToInv) {
         await updateDoc(userToInvRef, {
-          invites: [currentRoom?.roomID, ...userToInv?.invites],
+          invites: [roomID, ...userToInv?.invites],
         })
         errorMsg('user invited!')
       } else {
@@ -53,7 +55,7 @@ const Invite = () => {
       }
     }
   }
-  
+
   return (
     <Container>
       {currentRoom ? (
@@ -93,3 +95,4 @@ const Invite = () => {
 }
 
 export default Invite
+

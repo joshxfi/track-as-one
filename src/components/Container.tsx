@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
-import { Error } from './global/Error'
+import { Error } from './Global/Error'
 
 const Container = ({ children }: Children) => {
   const { authUser } = useAuth()

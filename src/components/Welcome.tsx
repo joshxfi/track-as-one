@@ -4,7 +4,7 @@ import avatar from '../../public/assets/avatar.svg'
 import avatar2 from '../../public/assets/avatar2.svg'
 import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
-import { WcButton } from './buttons/WcButton'
+import { WcButton } from './Buttons/WcButton'
 import { wcpage1, wcpage2 } from '../static/text'
 
 export const Welcome: React.FC = () => {
@@ -12,14 +12,14 @@ export const Welcome: React.FC = () => {
 
   return (
     <>
-      <section className='wrap h-screen lg:container lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
+      <section className='wrap h-screen max-w-screen-xl lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
         <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
           <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
             trackAs
             <span className='gradient-text'>One</span>
           </h1>
 
-          <div className='wrap lg:items-start lg:container lg:pl-2'>
+          <div className='wrap lg:items-start max-w-screen-xl lg:pl-2'>
             <div className='text-center lg:text-left'>
               <div className='my-8 w-[300px] mx-auto lg:hidden'>
                 <Image
@@ -51,7 +51,7 @@ export const Welcome: React.FC = () => {
         </div>
       </section>
 
-      <section className='mx-auto lg:container lg:flex lg:justify-between h-screen mt-36 xs:mt-0'>
+      <section className='mx-auto max-w-screen-xl lg:flex lg:justify-between h-screen mt-36 xs:mt-0'>
         <div className='text-center lg:text-left lg:pl-2'>
           <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl'>
             Built by a student for students.

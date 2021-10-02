@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import Clipboard from './global/Clipboard'
+import Clipboard from './Global/Clipboard'
 
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
 
-import { HomeBtn } from './buttons/HomeBtn'
+import { HomeBtn } from './Buttons/HomeBtn'
 import { useFirestore } from '../context/FirestoreContext'
 import { defaultPic } from '../static/utils'
 
