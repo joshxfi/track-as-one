@@ -9,7 +9,7 @@ import { Header } from '../../src/components/Global/Header'
 import { RoomNav } from '../../src/components/Room/RoomNav'
 import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { InfoBtn } from '../../src/components/Buttons/InfoBtn'
+import { InfoBtn } from '../../src/components/Button/InfoBtn'
 import { defaultPic } from '../../src/static/utils'
 import { Error } from '../../src/components/Global/Error'
 

@@ -7,7 +7,7 @@ import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
 
-import { HomeBtn } from './Buttons/HomeBtn'
+import { HomeBtn } from './Button/HomeBtn'
 import { useFirestore } from '../context/FirestoreContext'
 import { defaultPic } from '../static/utils'
 

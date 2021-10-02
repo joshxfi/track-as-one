@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { BsXSquareFill } from 'react-icons/bs'
-import { TaskBtn } from '../Buttons/TaskBtn'
+import { TaskBtn } from '../Button/TaskBtn'
 
 export const RoomTask: React.FC<RoomTaskProps> = ({
   task,
