@@ -28,7 +28,6 @@ const Info: React.FC = () => {
   const roomMembers = userList.filter((user) =>
     members?.includes(user?.userTag as string)
   )
-  const dateCreated = dateAdded.toDate().toDateString()
 
   const deleteRoom = async () => {
     const delRoomRef = doc(db, 'roomList', `${roomID}`)
@@ -84,7 +83,7 @@ const Info: React.FC = () => {
 
           <div className='card flex-between h-[70px] mb-2 w-full'>
             <div className='leading-5'>
-              <p className='text-f9 text-sm'>{dateCreated}</p>
+              <p className='text-f9 text-sm'>{dateAdded}</p>
               <p className='text-sm'>room created</p>
             </div>
 

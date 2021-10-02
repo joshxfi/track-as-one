@@ -17,7 +17,7 @@ interface RoomList {
   creator: string | undefined | nulll;
   admin: string[];
   members: string[];
-  dateAdded: any;
+  dateAdded: string | undefined;
   requests: string[];
 }
 

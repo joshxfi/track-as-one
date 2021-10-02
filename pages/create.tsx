@@ -5,7 +5,7 @@ import { Header } from '../src/components/Global/Header'
 import { BiDoorOpen } from 'react-icons/bi'
 import { Button } from '../src/components/Button/HrefBtn'
 import { useFirestore } from '../src/context/FirestoreContext'
-import { serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
+import { updateDoc, doc, setDoc } from 'firebase/firestore'
 import { Input } from '../src/components/Input'
 import Container from '../src/components/Container'
 import ErrorMSG from '../src/components/Global/ErrorMSG'
@@ -31,7 +31,7 @@ const Create = () => {
       creator: userTag,
       admin: [],
       members: [],
-      dateAdded: serverTimestamp(),
+      dateAdded: new Date().toDateString(),
       requests: [],
     }
 
