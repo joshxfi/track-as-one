@@ -30,6 +30,8 @@ const Room = () => {
   const currentRoomRef = doc(db, 'roomList', `${currentRoom?.roomID}`)
   const dateInputRef = useRef<ReactDatePicker>(null)
 
+  const memberCount = currentRoom!?.members?.length + 1
+
   const hasPermission = () => {
     if (
       currentRoom?.creator === userTag ||
@@ -45,7 +47,8 @@ const Room = () => {
     const payload: TaskList = {
       id: nanoid(9),
       description: desc,
-      addedBy: currentUser?.userTag,
+      addedBy: userTag,
+      completedBy: [],
       dateAdded: new Date().toDateString(),
       dueDate: dueDate ? dueDate?.toDateString() : 'none',
     }
@@ -61,12 +64,37 @@ const Room = () => {
   }
 
   const delTask = async (id: string) => {
-    console.log('clicked')
     const newTasks = currentRoom?.tasks.filter((task) => task.id !== id)
 
     await updateDoc(currentRoomRef, {
       tasks: newTasks,
     })
+  }
+
+  const doneTask = async (task: TaskList) => {
+    const { addedBy, completedBy, dateAdded, description, dueDate, id } = task
+
+    const copyTasks = currentRoom?.tasks
+      .slice()
+      .filter((task) => task.id !== id)
+
+    if (!completedBy.includes(userTag as string)) {
+      const newTask: TaskList[] = [
+        {
+          id,
+          addedBy: addedBy,
+          completedBy: [userTag ?? '', ...(completedBy ?? [])],
+          dateAdded: dateAdded,
+          description: description,
+          dueDate: dueDate,
+        },
+        ...(copyTasks ?? []),
+      ]
+
+      await updateDoc(currentRoomRef, {
+        tasks: newTask,
+      })
+    }
   }
 
   return (
@@ -118,7 +146,13 @@ const Room = () => {
             <div className='w-full my-2'>
               <AnimatePresence>
                 {currentRoom.tasks.map((task) => (
-                  <RoomTask key={task.id} task={task} delTask={delTask} />
+                  <RoomTask
+                    key={task.id}
+                    task={task}
+                    delTask={delTask}
+                    doneTask={doneTask}
+                    memberCount={memberCount}
+                  />
                 ))}
               </AnimatePresence>
             </div>

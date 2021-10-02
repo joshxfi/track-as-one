@@ -3,7 +3,12 @@ import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { BsXSquareFill } from 'react-icons/bs'
 import { TaskBtn } from '../buttons/TaskBtn'
 
-export const RoomTask: React.FC<RoomTaskProps> = ({ task, delTask }) => {
+export const RoomTask: React.FC<RoomTaskProps> = ({
+  task,
+  delTask,
+  memberCount,
+  doneTask,
+}) => {
   const [showOptions, setShowOptions] = useState<boolean>(false)
   const deadline = task.dueDate!.toString()
 
@@ -37,9 +42,12 @@ export const RoomTask: React.FC<RoomTaskProps> = ({ task, delTask }) => {
         className='leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
       >
         <p className='text-f9 break-all'>{task.description}</p>
-        <p className='text-sm pt-2'>
-          {deadline === 'none' ? 'No due date' : `Due on ${deadline}`}
-        </p>
+        <div className='text-sm pt-2 flex-between'>
+          <p>{deadline === 'none' ? 'No due date' : `Due - ${deadline}`}</p>
+          <p>
+            Done [{task.completedBy?.length}/{memberCount}]
+          </p>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -52,7 +60,12 @@ export const RoomTask: React.FC<RoomTaskProps> = ({ task, delTask }) => {
             transition={{ duration: 0.5 }}
             className='flex-between mt-2 mb-4 w-full'
           >
-            <TaskBtn Icon={CheckIcon} desc={'done'} style='mr-2' />
+            <TaskBtn
+              Icon={CheckIcon}
+              desc={'done'}
+              style='mr-2'
+              handleClick={() => doneTask(task)}
+            />
 
             <TaskBtn
               Icon={BsXSquareFill}

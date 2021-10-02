@@ -28,7 +28,9 @@ interface ButtonProps {
 
 interface RoomTaskProps {
   task: TaskList;
+  memberCount: number;
   delTask: (id: string) => void;
+  doneTask: (task: TaskList) => void;
 }
 
 
