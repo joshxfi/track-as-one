@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
-import Container from '../../src/components/Container'
-import Clipboard from '../../src/components/Global/Clipboard'
 import { useRouter } from 'next/router'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { defaultPic } from '../../src/static/utils'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
-import { Header } from '../../src/components/Global/Header'
-import { RoomNav } from '../../src/components/Room/RoomNav'
-import { useFirestore } from '../../src/context/FirestoreContext'
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { InfoBtn } from '../../src/components/Button/InfoBtn'
-import { defaultPic } from '../../src/static/utils'
-import { Error } from '../../src/components/Global/Error'
+
+import { useFirestore } from '@/context/FirestoreContext'
+import Container from '@/components/Container'
+import Clipboard from '@/components/Global/Clipboard'
+import { Header } from '@/components/Global/Header'
+import { RoomNav } from '@/components/Room/RoomNav'
+import { InfoBtn } from '@/components/Button/InfoBtn'
+import { Error } from '@/components/Global/Error'
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)

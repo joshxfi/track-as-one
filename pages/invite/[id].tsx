@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import Container from '../../src/components/Container'
-import ErrorMSG from '../../src/components/Global/ErrorMSG'
 import { useRouter } from 'next/router'
-import { Header } from '../../src/components/Global/Header'
-import { AiOutlineIdcard } from 'react-icons/ai'
-import { RoomNav } from '../../src/components/Room/RoomNav'
-import { useFirestore } from '../../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
-import { Input } from '../../src/components/Input'
-import { Error } from '../../src/components/Global/Error'
+import { AiOutlineIdcard } from 'react-icons/ai'
+
+import { useFirestore } from '@/context/FirestoreContext'
+import ErrorMSG from '@/components/Global/ErrorMSG'
+import Container from '@/components/Container'
+import { Header } from '@/components/Global/Header'
+import { RoomNav } from '@/components/Room/RoomNav'
+import { Input } from '@/components/Input'
+import { Error } from '@/components/Global/Error'
 
 const Invite = () => {
   const [invUserTag, setUserTag] = useState<string>('')
@@ -95,4 +96,3 @@ const Invite = () => {
 }
 
 export default Invite
-

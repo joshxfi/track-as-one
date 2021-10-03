@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import Container from '../src/components/Container'
-import ErrorMSG from '../src/components/Global/ErrorMSG'
-import { Header } from '../src/components/Global/Header'
-import { VscSignIn } from 'react-icons/vsc'
-import { Input } from '../src/components/Input'
 import { doc, updateDoc } from 'firebase/firestore'
-import { useFirestore } from '../src/context/FirestoreContext'
+import { VscSignIn } from 'react-icons/vsc'
+
+import { useFirestore } from '@/context/FirestoreContext'
+import Container from '@/components/Container'
+import ErrorMSG from '@/components/Global/ErrorMSG'
+import { Header } from '@/components/Global/Header'
+import { Input } from '@/components/Input'
 
 const Join = () => {
   const { currentUser, roomList, db } = useFirestore()

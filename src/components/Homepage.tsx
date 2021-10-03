@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import Clipboard from './Global/Clipboard'
-
 import { BiDoorOpen } from 'react-icons/bi'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
 
+import { useFirestore } from '@/context/FirestoreContext'
+import Clipboard from './Global/Clipboard'
 import { HomeBtn } from './Button/HomeBtn'
-import { useFirestore } from '../context/FirestoreContext'
 import { defaultPic } from '../static/utils'
 
 export const Homepage: React.FC = () => {

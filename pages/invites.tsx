@@ -1,11 +1,12 @@
 import React from 'react'
 import router from 'next/router'
-import Container from '../src/components/Container'
-import { Header } from '../src/components/Global/Header'
-import { BiDoorOpen } from 'react-icons/bi'
-import { useFirestore } from '../src/context/FirestoreContext'
 import { doc, updateDoc } from 'firebase/firestore'
-import { Error } from '../src/components/Global/Error'
+import { BiDoorOpen } from 'react-icons/bi'
+
+import Container from '@/components/Container'
+import { Header } from '@/components/Global/Header'
+import { useFirestore } from '@/context/FirestoreContext'
+import { Error } from '@/components/Global/Error'
 
 const Invites: React.FC = () => {
   const { db, currentUser, roomList } = useFirestore()

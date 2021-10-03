@@ -1,33 +1,31 @@
 import React, { useState, useRef } from 'react'
-import Container from '../../src/components/Container'
+import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
+import { AnimatePresence } from 'framer-motion'
 import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
-
-import { useFirestore } from '../../src/context/FirestoreContext'
-import { updateDoc, doc } from 'firebase/firestore'
-
+import { updateDoc, doc, query, where } from 'firebase/firestore'
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { Header } from '../../src/components/Global/Header'
-import { RoomNav } from '../../src/components/Room/RoomNav'
-import { RoomTask } from '../../src/components/Room/RoomTask'
-import { nanoid } from 'nanoid'
-import { Error } from '../../src/components/Global/Error'
-import { AnimatePresence } from 'framer-motion'
+import { useFirestore } from '@/context/FirestoreContext'
+import Container from '@/components/Container'
+import { Header } from '@/components/Global/Header'
+import { RoomNav } from '@/components/Room/RoomNav'
+import { RoomTask } from '@/components/Room/RoomTask'
+import { Error } from '@/components/Global/Error'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
   const [dueDate, setDueDate] = useState<Date | null>(new Date())
 
   const router = useRouter()
-  const { roomList, currentUser, db } = useFirestore()
+  const { roomList, currentUser, db, roomRef } = useFirestore()
   const { id } = router.query
 
   const { userTag } = currentUser || {}
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const { creator, members, roomID, tasks } = currentRoom || {}
+  const { creator, roomID, tasks } = currentRoom || {}
 
   const currentRoomRef = doc(db, 'roomList', `${roomID}`)
   const dateInputRef = useRef<ReactDatePicker>(null)
@@ -35,8 +33,12 @@ const Room = () => {
   const memberCount = currentRoom!?.members?.length + 1
 
   const hasPermission = () => {
-    if (creator === userTag || (userTag && members?.includes(userTag)))
-      return true
+    const userPermRef = query(
+      roomRef,
+      where('members', 'array-contains', userTag)
+    )
+
+    if (creator === userTag || userPermRef) return true
     else return false
   }
 

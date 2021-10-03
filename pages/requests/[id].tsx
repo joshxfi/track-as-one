@@ -1,13 +1,14 @@
 import React from 'react'
 import Image from 'next/image'
-import Container from '../../src/components/Container'
-import { Header } from '../../src/components/Global/Header'
-import { useFirestore } from '../../src/context/FirestoreContext'
 import { useRouter } from 'next/router'
+import { doc, updateDoc } from 'firebase/firestore'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { defaultPic } from '../../src/static/utils'
-import { doc, updateDoc } from 'firebase/firestore'
-import { Error } from '../../src/components/Global/Error'
+
+import { useFirestore } from '@/context/FirestoreContext'
+import Container from '@/components/Container'
+import { Header } from '@/components/Global/Header'
+import { Error } from '@/components/Global/Error'
 
 const Requests = () => {
   const { db, roomList, userList } = useFirestore()

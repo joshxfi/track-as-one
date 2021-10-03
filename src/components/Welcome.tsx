@@ -2,10 +2,11 @@ import React from 'react'
 import Image from 'next/image'
 import avatar from '../../public/assets/avatar.svg'
 import avatar2 from '../../public/assets/avatar2.svg'
+import { wcpage1, wcpage2 } from '../static/text'
 import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
+
 import { useAuth } from '../context/AuthContext'
 import { WcButton } from './Button/YellowBtn'
-import { wcpage1, wcpage2 } from '../static/text'
 
 export const Welcome: React.FC = () => {
   const { signIn } = useAuth()

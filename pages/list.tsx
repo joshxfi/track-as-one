@@ -1,11 +1,12 @@
 import React from 'react'
-import Container from '../src/components/Container'
-import { Header } from '../src/components/Global/Header'
 import { BsEye } from 'react-icons/bs'
-import { Button } from '../src/components/Button/HrefBtn'
-import { useFirestore } from '../src/context/FirestoreContext'
-import { ListRooms } from '../src/components/Room/ListRooms'
-import { NoRooms } from '../src/components/Room/NoRooms'
+
+import { useFirestore } from '@/context/FirestoreContext'
+import Container from '@/components/Container'
+import { Header } from '@/components/Global/Header'
+import { Button } from '@/components/Button/HrefBtn'
+import { ListRooms } from '@/components/Room/ListRooms'
+import { NoRooms } from '@/components/Room/NoRooms'
 
 const List = () => {
   const { currentUser, roomList } = useFirestore()
