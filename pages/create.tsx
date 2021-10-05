@@ -28,7 +28,6 @@ const Create = () => {
     const payload: RoomList = {
       roomID,
       name: roomName,
-      tasks: [],
       creator: userTag,
       admin: [],
       members: [],

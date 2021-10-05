@@ -23,13 +23,11 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   const [userList, setUserList] = useState<UserList[]>([])
   const [roomList, setRoomList] = useState<RoomList[]>([])
-  const [taskList, setTaskList] = useState<TaskList[]>([])
 
   const currentUser = userList.find((user) => user.uid === uid)
 
   const userRef = collection(db, 'userList')
   const roomRef = collection(db, 'roomList')
-  const taskRef = collection(db, 'taskList')
 
   // fetch users
   useEffect(() => {
@@ -73,7 +71,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
       let newRooms: RoomList[] | any[] = []
 
       docs.forEach((doc) => {
-        let room = { ...doc.data(), id: doc.id }
+        let room = { ...doc.data() }
         newRooms = [room, ...newRooms]
       })
 
@@ -82,32 +80,12 @@ const FirestoreProvider: React.FC = ({ children }) => {
     return unsub
   }, [db])
 
-  // fetch tasks
-  useEffect(() => {
-    const q = query(taskRef, orderBy('dateAdded'))
-
-    const unsub = onSnapshot(q, (docs) => {
-      let newTasks: TaskList[] | any[] = []
-
-      docs.forEach((doc) => {
-        let task = { ...doc.data(), id: doc.id }
-        newTasks = [task, ...newTasks]
-      })
-
-      setTaskList(newTasks)
-    })
-
-    return unsub
-  }, [db])
-
   const values: FirestoreContextValues = {
     db,
     userList,
     roomList,
-    taskList,
     userRef,
     roomRef,
-    taskRef,
     currentUser,
   }
 

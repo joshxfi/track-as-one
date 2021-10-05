@@ -1,9 +1,15 @@
 import React, { useState, useRef } from 'react'
-import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
+import useTasks from 'src/hooks/useTasks'
 import { AnimatePresence } from 'framer-motion'
 import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
-import { updateDoc, doc, query, where } from 'firebase/firestore'
+import {
+  updateDoc,
+  addDoc,
+  collection,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore'
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -19,34 +25,30 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<Date | null>(new Date())
 
   const router = useRouter()
-  const { roomList, currentUser, db, roomRef } = useFirestore()
   const { id } = router.query
 
-  const { userTag } = currentUser || {}
+  const { roomList, currentUser, db } = useFirestore()
 
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const { creator, roomID, tasks } = currentRoom || {}
+  const { creator, roomID, members } = currentRoom || {}
 
-  const currentRoomRef = doc(db, 'roomList', `${roomID}`)
+  const roomTasks = useTasks(roomID)
+
+  const { userTag } = currentUser || {}
   const dateInputRef = useRef<ReactDatePicker>(null)
 
   const memberCount = currentRoom!?.members?.length + 1
 
   const hasPermission = () => {
-    const userPermRef = query(
-      roomRef,
-      where('members', 'array-contains', userTag)
-    )
-
-    if (creator === userTag || userPermRef) return true
-    else return false
+    if (userTag)
+      if (creator === userTag || members?.includes(userTag)) return true
+    return false
   }
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const payload: TaskList = {
-      id: nanoid(9),
       description: desc,
       addedBy: userTag,
       completedBy: [],
@@ -55,45 +57,28 @@ const Room = () => {
     }
 
     setDesc('')
-    const roomDocRef = doc(db, 'roomList', `${roomID}`)
+    const tasksRef = collection(db, `roomList/${roomID}/tasks`)
 
-    if (desc !== '' && currentRoom!.tasks.length < 15) {
-      await updateDoc(roomDocRef, {
-        tasks: [payload, ...currentRoom!.tasks],
-      })
+    if (desc !== '' && roomTasks!.length < 15) {
+      await addDoc(tasksRef, payload)
     }
   }
 
   const delTask = async (id: string) => {
-    const newTasks = tasks?.filter((task) => task.id !== id)
+    const delTaskRef = doc(db, `roomList/${roomID}/tasks/${id}`)
 
-    await updateDoc(currentRoomRef, {
-      tasks: newTasks,
-    })
+    await deleteDoc(delTaskRef)
   }
 
-  const doneTask = async (task: TaskList) => {
-    const { addedBy, completedBy, dateAdded, description, dueDate, id } = task
+  const doneTask = async (id: string) => {
+    const tasksRef = doc(db, `roomList/${roomID}/tasks/${id}`)
+    const currentTasks = roomTasks?.find((task) => task.id === id)
+    const { completedBy } = currentTasks || {}
 
-    const copyTasks = tasks?.slice().filter((task) => task.id !== id)
-
-    if (!completedBy.includes(userTag as string)) {
-      const newTask: TaskList[] = [
-        {
-          id,
-          addedBy: addedBy,
-          completedBy: [userTag ?? '', ...(completedBy ?? [])],
-          dateAdded: dateAdded,
-          description: description,
-          dueDate: dueDate,
-        },
-        ...(copyTasks ?? []),
-      ]
-
-      await updateDoc(currentRoomRef, {
-        tasks: newTask,
+    if (!completedBy?.includes(userTag as string))
+      await updateDoc(tasksRef, {
+        completedBy: [userTag, ...(completedBy ?? [])],
       })
-    }
   }
 
   return (
@@ -144,7 +129,7 @@ const Room = () => {
             </form>
             <div className='w-full my-2'>
               <AnimatePresence>
-                {currentRoom.tasks.map((task) => (
+                {roomTasks?.map((task) => (
                   <RoomTask
                     key={task.id}
                     task={task}

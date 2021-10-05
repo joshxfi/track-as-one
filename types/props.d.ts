@@ -30,7 +30,7 @@ interface RoomTaskProps {
   task: TaskList;
   memberCount: number;
   delTask: (id: string) => void;
-  doneTask: (task: TaskList) => void;
+  doneTask: (id: string) => void;
 }
 
 

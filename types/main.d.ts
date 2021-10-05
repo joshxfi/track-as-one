@@ -12,9 +12,7 @@ interface FirestoreContextValues {
   db: Firestore;
   userList: UserList[];
   roomList: RoomList[];
-  taskList: TaskList[];
   userRef: CollectionReference<DocumentData>;
   roomRef: CollectionReference<DocumentData>;
-  taskRef: CollectionReference<DocumentData>;
   currentUser: UserList | undefined;
 }

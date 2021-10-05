@@ -10,7 +10,7 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
   doneTask,
 }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false)
-  const deadline = task.dueDate!.toString()
+  const { id, dueDate } = task || {}
 
   const optionsVariant: Variants = {
     init: {
@@ -43,7 +43,7 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
       >
         <p className='text-f9 break-all'>{task.description}</p>
         <div className='text-sm pt-2 flex-between'>
-          <p>{deadline === 'none' ? 'No due date' : `Due - ${deadline}`}</p>
+          <p>{dueDate === 'none' ? 'No due date' : `Due - ${dueDate}`}</p>
           <p>
             Done [{task.completedBy?.length}/{memberCount}]
           </p>
@@ -64,14 +64,14 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
               Icon={CheckIcon}
               desc={'done'}
               style='mr-2'
-              handleClick={() => doneTask(task)}
+              handleClick={() => doneTask(id ?? '')}
             />
 
             <TaskBtn
               Icon={BsXSquareFill}
               desc={'delete'}
               iconSize='text-2xl'
-              handleClick={() => delTask(task.id)}
+              handleClick={() => delTask(id ?? '')}
             />
           </motion.div>
         )}

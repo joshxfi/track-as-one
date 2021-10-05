@@ -13,7 +13,6 @@ interface UserList {
 interface RoomList {
   name: string;
   roomID: string;
-  tasks: TaskList[];
   creator: string | undefined | nulll;
   admin: string[];
   members: string[];
@@ -22,7 +21,7 @@ interface RoomList {
 }
 
 interface TaskList {
-  id: string;
+  id?: string;
   description: string;
   addedBy: string | undefined | null;
   dateAdded: string;
