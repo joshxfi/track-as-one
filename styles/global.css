@@ -34,3 +34,18 @@ body {
 ::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
+
+.load{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 10px solid transparent;
+  border-top: 10px solid #E3B04B;
+  border-bottom: 10px solid #E3B04B;
+  animation: rotate 1.8s linear infinite;
+}
+
+@keyframes rotate{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}

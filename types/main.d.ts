@@ -6,6 +6,7 @@ interface AuthContextValues {
   email: string | null | undefined;
   signIn: () => void;
   signOut: () => void;
+  userLoading: boolean;
 }
 
 interface FirestoreContextValues {
@@ -15,4 +16,5 @@ interface FirestoreContextValues {
   userRef: CollectionReference<DocumentData>;
   roomRef: CollectionReference<DocumentData>;
   currentUser: UserList | undefined;
+  dataLoading: boolean;
 }

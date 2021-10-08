@@ -13,10 +13,14 @@ const AuthProvider: React.FC = ({ children }) => {
   const [authUser, setAuthUser] = useState(() => auth.currentUser)
   const { uid, displayName, photoURL, email } = authUser || {}
   const router = useRouter()
+  
+  const [userLoading, setUserLoading] = useState(true)
 
   useEffect(() => {
+    setUserLoading(true)
     const unsub = auth.onAuthStateChanged((user) => {
-      user ? setAuthUser(user) : setAuthUser(null)
+      if (user) setAuthUser(user)
+      setUserLoading(false)
     })
 
     return unsub
@@ -50,6 +54,7 @@ const AuthProvider: React.FC = ({ children }) => {
     email,
     signIn,
     signOut,
+    userLoading,
   }
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>

@@ -24,6 +24,8 @@ const FirestoreProvider: React.FC = ({ children }) => {
   const [userList, setUserList] = useState<UserList[]>([])
   const [roomList, setRoomList] = useState<RoomList[]>([])
 
+  const [dataLoading, setDataLoading] = useState(true)
+
   const currentUser = userList.find((user) => user.uid === uid)
 
   const userRef = collection(db, 'userList')
@@ -31,6 +33,8 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   // fetch users
   useEffect(() => {
+    setDataLoading(true)
+
     const orderUsers = query(userRef, orderBy('dateJoined'))
 
     const unsub = onSnapshot(orderUsers, async (docs) => {
@@ -62,11 +66,15 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
       setUserList(newUsers)
     })
+
+    setDataLoading(true)
     return unsub
-  }, [db, authUser])
+  }, [authUser, userRef, uid, displayName, photoURL, email])
 
   // fetch rooms
   useEffect(() => {
+    setDataLoading(true)
+
     const unsub = onSnapshot(roomRef, (docs) => {
       let newRooms: RoomList[] | any[] = []
 
@@ -77,8 +85,10 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
       setRoomList(newRooms)
     })
+
+    setDataLoading(false)
     return unsub
-  }, [db])
+  }, [roomRef])
 
   const values: FirestoreContextValues = {
     db,
@@ -87,6 +97,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
     userRef,
     roomRef,
     currentUser,
+    dataLoading,
   }
 
   return (
