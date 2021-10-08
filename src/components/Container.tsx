@@ -1,14 +1,26 @@
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import { Error } from './Global/Error'
+import { Layout } from './Layout'
 
-const Container = ({ children }: Children) => {
+interface ContainerProps {
+  styles?: string
+  children: React.ReactNode
+}
+
+const Container = ({ styles, children }: ContainerProps) => {
   const { authUser } = useAuth()
 
   return (
-    <section className='wrap'>
-      {authUser ? children : <Error code='401' info='you are not signed in' />}
-    </section>
+    <Layout>
+      <section className={`wrap ${styles}`}>
+        {authUser ? (
+          children
+        ) : (
+          <Error code='401' info='you are not signed in' />
+        )}
+      </section>
+    </Layout>
   )
 }
 

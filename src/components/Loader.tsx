@@ -7,10 +7,10 @@ const Loader = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className='h-screen flex justify-center'
+      transition={{ duration: 0.3 }}
+      className='h-screen flex justify-center items-center bg-gradient-to-tr from-[#F2F1DD] to-f9'
     >
-      <span className='load mt-48'></span>
+      <span className='load'></span>
     </motion.div>
   )
 }

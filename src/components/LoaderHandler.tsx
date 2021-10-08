@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useFirestore } from '@/context/FirestoreContext'
 import Loader from './Loader'
+import { AnimatePresence } from 'framer-motion'
 
 interface LoaderProps {
   children: React.ReactNode
@@ -21,7 +22,7 @@ const LoaderHandler: React.FC<LoaderProps> = ({ children }) => {
       }, 1500)
   }, [userLoading, dataLoading])
 
-  return <>{loading ? <Loader /> : children}</>
+  return <AnimatePresence>{loading ? <Loader /> : children}</AnimatePresence>
 }
 
 export default LoaderHandler

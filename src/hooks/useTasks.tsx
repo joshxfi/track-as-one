@@ -24,7 +24,7 @@ const useTasks = (roomId: string | undefined) => {
     })
 
     return unsub
-  }, [db, taskRef])
+  }, [taskRef])
 
   return data
 }

@@ -4,12 +4,12 @@ import type { AppProps } from 'next/app'
 import { AnimatePresence } from 'framer-motion'
 
 import { FirestoreProvider } from '@/context/FirestoreContext'
-import { Layout } from '@/components/Layout'
 import LoaderHandler from '@/components/LoaderHandler'
+import { AuthProvider } from '@/context/AuthContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
+    <AuthProvider>
       <FirestoreProvider>
         <AnimatePresence initial={false} exitBeforeEnter>
           <LoaderHandler>
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </LoaderHandler>
         </AnimatePresence>
       </FirestoreProvider>
-    </Layout>
+    </AuthProvider>
   )
 }
 export default MyApp

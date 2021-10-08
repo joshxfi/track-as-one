@@ -10,6 +10,7 @@ import { Button } from '@/components/Button/HrefBtn'
 import { Input } from '@/components/Input'
 import Container from '@/components/Container'
 import ErrorMSG from '@/components/Global/ErrorMSG'
+import { Layout } from '@/components/Layout'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')

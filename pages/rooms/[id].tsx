@@ -29,7 +29,7 @@ const Room = () => {
 
   const { roomList, currentUser, db } = useFirestore()
 
-  const currentRoom = roomList.find((room) => room.roomID === id)
+  const currentRoom = roomList?.find((room) => room.roomID === id)
   const { creator, roomID, members } = currentRoom || {}
 
   const roomTasks = useTasks(roomID)

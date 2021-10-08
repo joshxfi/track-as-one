@@ -2,9 +2,15 @@ import React from 'react'
 import Head from 'next/head'
 import { Navbar } from './Global/Navbar'
 import { Footer } from './Global/Footer'
-import { AuthProvider } from '../context/AuthContext'
+import { motion } from 'framer-motion'
 
 export const Layout: React.FC<Children> = ({ children }) => {
+  const variants = {
+    hidden: { opacity: 0 },
+    enter: { opacity: 1 },
+    exit: { opacity: 0 },
+  }
+
   return (
     <>
       <Head>
@@ -15,12 +21,19 @@ export const Layout: React.FC<Children> = ({ children }) => {
         />
         <title>taskAsOne</title>
       </Head>
-      <div className='min-h-screen bg-gradient-to-tr from-[#F2F1DD] to-f9 relative pb-[450px] md:pb-[300px]'>
-        <AuthProvider>
-          <Navbar />
-          <main className='text-primary w-[90%] mx-auto'>{children}</main>
-          <Footer />
-        </AuthProvider>
+      <div className='bg-gradient-to-tr from-[#F2F1DD] to-f9'>
+        <Navbar />
+        <motion.main
+          variants={variants}
+          initial='hidden'
+          animate='enter'
+          exit='exit'
+          transition={{ duration: 0.3 }}
+          className='text-primary w-[90%] mx-auto min-h-screen'
+        >
+          {children}
+        </motion.main>
+        <Footer />
       </div>
     </>
   )

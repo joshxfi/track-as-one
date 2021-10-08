@@ -38,9 +38,8 @@ export const Homepage: React.FC = () => {
         </div>
 
         <div className='text-right'>
-          <h1 className='text-2xl font-bold'>Hello, {displayName}</h1>
-          <p>{email}</p>
-          <p>{userTag}</p>
+          <h1 className='text-2xl font-bold'>{displayName ?? 'User'}</h1>
+          <p>{userTag ?? 'userTag:hEllO'}</p>
         </div>
       </div>
 

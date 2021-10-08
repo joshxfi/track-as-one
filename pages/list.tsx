@@ -11,10 +11,10 @@ import { NoRooms } from '@/components/Room/NoRooms'
 const List = () => {
   const { currentUser, roomList } = useFirestore()
 
-  const createdRooms = roomList.filter((room) =>
-    currentUser?.roomsCreated.includes(room.roomID)
+  const createdRooms = roomList?.filter((room) =>
+    currentUser?.roomsCreated?.includes(room.roomID)
   )
-  const joinedRooms = roomList.filter((room) =>
+  const joinedRooms = roomList?.filter((room) =>
     currentUser?.roomsJoined.includes(room.roomID)
   )
 
@@ -23,11 +23,11 @@ const List = () => {
       <Header title='My Rooms' />
       <div className='w-full mb-4'>
         <div className='w-full bg-secondary text-primary text-center mb-2 rounded-lg py-1 text-sm'>
-          <h2>rooms created {createdRooms.length}/3</h2>
+          <h2>rooms created {createdRooms?.length}/3</h2>
         </div>
 
-        {createdRooms.length ? (
-          createdRooms.map((room) => (
+        {createdRooms?.length ? (
+          createdRooms?.map((room) => (
             <ListRooms key={room.roomID} room={room} />
           ))
         ) : (
@@ -35,11 +35,13 @@ const List = () => {
         )}
 
         <div className='w-full bg-secondary text-primary text-center my-2 rounded-lg py-1 text-sm'>
-          <h2>rooms joined {joinedRooms.length}/∞</h2>
+          <h2>rooms joined {joinedRooms?.length}/∞</h2>
         </div>
 
-        {joinedRooms.length ? (
-          joinedRooms.map((room) => <ListRooms key={room.roomID} room={room} />)
+        {joinedRooms?.length ? (
+          joinedRooms?.map((room) => (
+            <ListRooms key={room.roomID} room={room} />
+          ))
         ) : (
           <NoRooms desc='Join a Room' href='/join' />
         )}

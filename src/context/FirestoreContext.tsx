@@ -69,7 +69,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
     setDataLoading(true)
     return unsub
-  }, [authUser, userRef, uid, displayName, photoURL, email])
+  }, [authUser, displayName, email, photoURL, uid, userRef])
 
   // fetch rooms
   useEffect(() => {
@@ -87,6 +87,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
     })
 
     setDataLoading(false)
+
     return unsub
   }, [roomRef])
 

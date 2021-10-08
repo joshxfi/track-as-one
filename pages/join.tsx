@@ -24,7 +24,7 @@ const Join = () => {
     }, 3000)
   }
 
-  const targetRoom = roomList.find((room) => room.roomID === roomID)
+  const targetRoom = roomList?.find((room) => room.roomID === roomID)
   const { members, creator, requests } = targetRoom || {}
 
   const requestJoin = async () => {
