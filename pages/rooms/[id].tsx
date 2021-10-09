@@ -30,11 +30,11 @@ const Room = () => {
   const { roomList, currentUser, db } = useFirestore()
 
   const currentRoom = roomList?.find((room) => room.roomID === id)
-  const { creator, roomID, members } = currentRoom || {}
+  const { creator, roomID, members } = currentRoom ?? {}
 
   const roomTasks = useTasks(roomID)
 
-  const { userTag } = currentUser || {}
+  const { userTag } = currentUser ?? {}
   const dateInputRef = useRef<ReactDatePicker>(null)
 
   const memberCount = currentRoom!?.members?.length + 1

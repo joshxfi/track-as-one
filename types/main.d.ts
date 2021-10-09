@@ -17,4 +17,5 @@ interface FirestoreContextValues {
   roomRef: CollectionReference<DocumentData>;
   currentUser: UserList | undefined;
   dataLoading: boolean;
+  setDataLoading: Dispatch<SetStateAction<boolean>>;
 }

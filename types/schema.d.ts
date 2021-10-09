@@ -3,7 +3,6 @@ interface UserList {
   userTag: string | undefined | null;
   displayName: string | undefined | null;
   photoURL: string | undefined | null;
-  email: string | undefined | null;
   roomsCreated: string[];
   roomsJoined: string[];
   invites: string[];
