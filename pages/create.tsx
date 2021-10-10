@@ -19,7 +19,7 @@ const Create = () => {
   const router = useRouter()
 
   const { db, currentUser } = useFirestore()
-  const { userTag, roomsCreated } = currentUser || {}
+  const { userTag, roomsCreated } = currentUser ?? {}
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

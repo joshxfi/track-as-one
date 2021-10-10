@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, {
   useContext,
   createContext,
@@ -17,7 +18,7 @@ const useFirestore = () => {
   return useContext(FirestoreContext)
 }
 
-const FirestoreProvider: React.FC = ({ children }) => {
+const FirestoreProvider: React.FC<React.ReactNode> = ({ children }) => {
   const { authUser, uid, displayName, photoURL } = useAuth()
 
   const [userList, setUserList] = useState<UserList[]>([])
@@ -38,7 +39,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
     const querySnapshot = await getDocs(userRef)
     querySnapshot.forEach((doc) => {
-      let user = { ...doc.data() }
+      const user = { ...doc.data() }
       UsersCopy = [user as UserList, ...UsersCopy]
     })
 
@@ -95,7 +96,7 @@ const FirestoreProvider: React.FC = ({ children }) => {
     roomRef,
     currentUser,
     dataLoading,
-    setDataLoading
+    setDataLoading,
   }
 
   return (

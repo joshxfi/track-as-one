@@ -55,14 +55,6 @@ interface InputProps {
   max: number;
 }
 
-interface WcButtonProps {
-  style?: string;
-  desc: string;
-  Icon: Icon;
-  iconSize?: string;
-  handleClick?: () => void;
-}
-
 interface InfoBtnProps {
   desc: string;
   style?: string;

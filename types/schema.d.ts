@@ -12,7 +12,7 @@ interface UserList {
 interface RoomList {
   name: string;
   roomID: string;
-  creator: string | undefined | nulll;
+  creator: string | undefined | null;
   admin: string[];
   members: string[];
   dateAdded: string | undefined;

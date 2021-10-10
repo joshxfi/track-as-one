@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
 import { useEffect, useState, useCallback } from 'react'
 import { getDocs, collection, query, orderBy } from 'firebase/firestore'
 import { useFirestore } from '@/context/FirestoreContext'
