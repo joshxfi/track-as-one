@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence, Variants } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { BsXSquareFill } from 'react-icons/bs'
 import { TaskBtn } from '../Button/TaskBtn'
 
@@ -17,9 +17,9 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
   doneTask,
 }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false)
-  const { id, dueDate } = task || {}
+  const { id, dueDate } = task ?? {}
 
-  const optionsVariant: Variants = {
+  const optionsVariant = {
     init: {
       y: -70,
       opacity: 0,
@@ -37,17 +37,11 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
   }
 
   return (
-    <motion.div
-      initial={{ scale: 0.5, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ x: '-100%', opacity: 0 }}
-      transition={{ duration: 0.4 }}
-      className='relative mb-2'
-    >
+    <motion.div className='relative mb-2'>
       <button
         type='button'
         onClick={() => setShowOptions(!showOptions)}
-        className='leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
+        className='w-full text-left leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
       >
         <p className='text-f9 break-all'>{task.description}</p>
         <div className='text-sm pt-2 flex-between'>

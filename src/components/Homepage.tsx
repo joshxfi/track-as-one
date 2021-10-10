@@ -28,7 +28,7 @@ export const Homepage: React.FC = () => {
       <div className='flex-between mt-8 w-full'>
         <div className='h-[100px] w-[100px] rounded-full p-2 primary-gradient'>
           <Image
-            src={photoURL || defaultPic}
+            src={photoURL ?? defaultPic}
             height={100}
             width={100}
             objectFit='cover'

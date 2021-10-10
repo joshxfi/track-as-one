@@ -1,11 +1,5 @@
 /* eslint-disable no-undef */
-import React, {
-  useContext,
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react'
+import React, { useContext, createContext, useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
 import { collection, setDoc, doc, getDocs } from 'firebase/firestore'
 import { db } from '../config/firebase'
@@ -33,7 +27,7 @@ const FirestoreProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   // get users from firebase
 
-  const fetchUsers = useCallback(async () => {
+  const fetchUsers = async () => {
     const userID = `user:${nanoid(5)}`
     let UsersCopy: UserList[] = []
 
@@ -61,12 +55,11 @@ const FirestoreProvider: React.FC<React.ReactNode> = ({ children }) => {
     }
 
     setUserList(UsersCopy)
-    setDataLoading(false)
-  }, [authUser, displayName, photoURL, uid, userRef])
+  }
 
   // get room list from firebase
 
-  const fetchRooms = useCallback(async () => {
+  const fetchRooms = async () => {
     const querySnapshot = await getDocs(roomRef)
     let RoomsCopy: RoomList[] = []
     querySnapshot.forEach((doc) => {
@@ -75,18 +68,19 @@ const FirestoreProvider: React.FC<React.ReactNode> = ({ children }) => {
     })
 
     setRoomList(RoomsCopy)
-    setDataLoading(false)
-  }, [roomRef])
+  }
 
   useEffect(() => {
     setDataLoading(true)
     fetchUsers()
-  }, [fetchUsers])
+    setDataLoading(false)
+  }, [authUser])
 
   useEffect(() => {
     setDataLoading(true)
     fetchRooms()
-  }, [fetchRooms])
+    setDataLoading(false)
+  }, [roomRef])
 
   const values: FirestoreContextValues = {
     db,

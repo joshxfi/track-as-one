@@ -4,7 +4,7 @@ import { FaGithub , FaLinkedin , FaDiscord , FaInstagramSquare } from 'react-ico
 
 
 
-import doodle from '../../../public/assets/doodle.svg'
+import doodle from '@/assets/doodle.svg'
 
 const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare]
 

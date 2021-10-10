@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { getDocs, collection, query, orderBy } from 'firebase/firestore'
 import { useFirestore } from '@/context/FirestoreContext'
 
@@ -12,7 +12,7 @@ const useTasks = (roomId: string | undefined) => {
     orderBy('dateAdded')
   )
 
-  const fetchTasks = useCallback(async () => {
+  const fetchTasks = async () => {
     const querySnapshot = await getDocs(taskRef)
     let newTasks: TaskList[] = []
 
@@ -22,13 +22,13 @@ const useTasks = (roomId: string | undefined) => {
     })
 
     setData(newTasks)
-    setDataLoading(false)
-  }, [taskRef])
+  }
 
   useEffect(() => {
     setDataLoading(true)
     fetchTasks()
-  }, [fetchTasks])
+    setDataLoading(false)
+  }, [taskRef])
 
   return data
 }
