@@ -14,10 +14,10 @@ export const Homepage: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
 
   const { currentUser } = useFirestore()
-  const { userTag, displayName, email, photoURL } = currentUser || {}
+  const { userTag, displayName, photoURL } = currentUser ?? {}
 
   const copyTag = () => {
-    navigator.clipboard.writeText(userTag || '')
+    navigator.clipboard.writeText(userTag ?? '')
     setCopied(true)
 
     setTimeout(() => setCopied(false), 3000)

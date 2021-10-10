@@ -34,15 +34,15 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   const fetchUsers = useCallback(async () => {
     const userID = `user:${nanoid(5)}`
-    let newUsers: UserList[] = []
+    let UsersCopy: UserList[] = []
 
     const querySnapshot = await getDocs(userRef)
     querySnapshot.forEach((doc) => {
       let user = { ...doc.data() }
-      newUsers = [user as UserList, ...newUsers]
+      UsersCopy = [user as UserList, ...UsersCopy]
     })
 
-    const userExists = newUsers.some((user) => uid === user.uid)
+    const userExists = UsersCopy.some((user) => uid === user.uid)
     if (!userExists && authUser !== null) {
       const payload: UserList = {
         userTag: userID,
@@ -56,10 +56,10 @@ const FirestoreProvider: React.FC = ({ children }) => {
       }
 
       await setDoc(doc(db, 'userList', userID), payload)
-      newUsers = [payload, ...newUsers]
+      UsersCopy = [payload, ...UsersCopy]
     }
 
-    setUserList(newUsers)
+    setUserList(UsersCopy)
     setDataLoading(false)
   }, [authUser, displayName, photoURL, uid, userRef])
 
@@ -67,13 +67,13 @@ const FirestoreProvider: React.FC = ({ children }) => {
 
   const fetchRooms = useCallback(async () => {
     const querySnapshot = await getDocs(roomRef)
-    let newRooms: RoomList[] = []
+    let RoomsCopy: RoomList[] = []
     querySnapshot.forEach((doc) => {
       const room = { ...doc.data() }
-      newRooms = [room as RoomList, ...newRooms]
+      RoomsCopy = [room as RoomList, ...RoomsCopy]
     })
 
-    setRoomList(newRooms)
+    setRoomList(RoomsCopy)
     setDataLoading(false)
   }, [roomRef])
 

@@ -18,7 +18,6 @@ import Container from '@/components/Container'
 import { Header } from '@/components/Global/Header'
 import { RoomNav } from '@/components/Room/RoomNav'
 import { RoomTask } from '@/components/Room/RoomTask'
-import { Error } from '@/components/Global/Error'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
@@ -30,7 +29,7 @@ const Room = () => {
   const { roomList, currentUser, db } = useFirestore()
 
   const currentRoom = roomList?.find((room) => room.roomID === id)
-  const { creator, roomID, members } = currentRoom ?? {}
+  const { roomID } = currentRoom ?? {}
 
   const roomTasks = useTasks(roomID)
 
@@ -38,12 +37,6 @@ const Room = () => {
   const dateInputRef = useRef<ReactDatePicker>(null)
 
   const memberCount = currentRoom!?.members?.length + 1
-
-  const hasPermission = () => {
-    if (userTag)
-      if (creator === userTag || members?.includes(userTag)) return true
-    return false
-  }
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -83,70 +76,60 @@ const Room = () => {
 
   return (
     <Container>
-      {currentRoom ? (
-        hasPermission() ? (
-          <>
-            <RoomNav room={currentRoom} />
-            <Header title={currentRoom.name} desc='' />
-            <form
-              spellCheck='false'
-              autoComplete='off'
-              onSubmit={addTask}
-              className='w-full'
-            >
-              <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
-                <input
-                  maxLength={150}
-                  minLength={5}
-                  onChange={(e) => setDesc(e.target.value)}
-                  value={desc}
-                  type='text'
-                  placeholder='task description'
-                  className='bg-inputbg h-[45px] outline-none w-full pr-4'
-                />
-                <button type='submit'>
-                  <BsPlusSquareFill className='text-2xl' />
-                </button>
-              </div>
+      <RoomNav room={currentRoom as RoomList} />
+      <Header title={currentRoom?.name} desc='' />
+      <form
+        spellCheck='false'
+        autoComplete='off'
+        onSubmit={addTask}
+        className='w-full'
+      >
+        <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
+          <input
+            maxLength={150}
+            minLength={5}
+            onChange={(e) => setDesc(e.target.value)}
+            value={desc}
+            type='text'
+            placeholder='task description'
+            className='bg-inputbg h-[45px] outline-none w-full pr-4'
+          />
+          <button type='submit'>
+            <BsPlusSquareFill className='text-2xl' />
+          </button>
+        </div>
 
-              <div className='flex dueBtn items-center mt-2'>
-                <DatePicker
-                  selected={dueDate}
-                  onChange={(date: Date) => setDueDate(date)}
-                  minDate={new Date()}
-                  ref={dateInputRef}
-                  className='bg-secondary text-sm w-full outline-none font-semibold'
-                />
+        <div className='flex dueBtn items-center mt-2'>
+          <DatePicker
+            selected={dueDate}
+            onChange={(date: Date) => setDueDate(date)}
+            minDate={new Date()}
+            ref={dateInputRef}
+            className='bg-secondary text-sm w-full outline-none font-semibold'
+          />
 
-                <div className=' flex text-2xl mr-[3px]'>
-                  <BsCalendarFill
-                    className='mr-2'
-                    onClick={() => dateInputRef.current?.setFocus()}
-                  />
-                  <BsXSquareFill onClick={() => setDueDate(null)} />
-                </div>
-              </div>
-            </form>
-            <div className='w-full my-2'>
-              <AnimatePresence>
-                {roomTasks?.map((task) => (
-                  <RoomTask
-                    key={task.id}
-                    task={task}
-                    delTask={delTask}
-                    doneTask={doneTask}
-                    memberCount={memberCount}
-                  />
-                ))}
-              </AnimatePresence>
-            </div>
-          </>
-        ) : (
-          <Error code='403' info='no permission' />
-        )
-      ) : (
-        <Error />
-      )}
+          <div className=' flex text-2xl mr-[3px]'>
+            <BsCalendarFill
+              className='mr-2'
+              onClick={() => dateInputRef.current?.setFocus()}
+            />
+            <BsXSquareFill onClick={() => setDueDate(null)} />
+          </div>
+        </div>
+      </form>
+      <div className='w-full my-2'>
+        <AnimatePresence>
+          {roomTasks?.map((task) => (
+            <RoomTask
+              key={task.id}
+              task={task}
+              delTask={delTask}
+              doneTask={doneTask}
+              memberCount={memberCount}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
     </Container>
   )
 }

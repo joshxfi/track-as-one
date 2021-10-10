@@ -21,10 +21,10 @@ const Info: React.FC = () => {
   const router = useRouter()
   const { id } = router.query
   const currentRoom = roomList.find((room) => room.roomID === id)
-  const { creator, dateAdded, members, requests, roomID } = currentRoom || {}
+  const { creator, dateAdded, members, requests, roomID } = currentRoom ?? {}
 
   const roomCreator = userList.find((user) => user.userTag === creator)
-  const { userTag, roomsCreated, displayName, photoURL } = roomCreator || {}
+  const { userTag, roomsCreated, displayName, photoURL } = roomCreator ?? {}
 
   const roomMembers = userList.filter((user) =>
     members?.includes(user?.userTag as string)
