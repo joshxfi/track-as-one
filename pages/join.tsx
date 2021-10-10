@@ -56,7 +56,7 @@ const Join = () => {
         <ErrorMSG error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
-          <button onClick={requestJoin} className='btn btnEffect'>
+          <button type='button' onClick={requestJoin} className='btn btnEffect'>
             <p className='mr-4'>request join</p>
             <VscSignIn className='icon' />
           </button>

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check-lint": "eslint . --ext ts --ext tsx"
+    "check-lint": "eslint . --ext ts --ext tsx",
+    "check-types": "tsc --pretty --noEmit",
+    "check-all": "yarn check-lint && yarn check-types"
   },
   "dependencies": {
     "firebase": "^9.0.2",

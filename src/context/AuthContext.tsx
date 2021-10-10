@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useContext, createContext, useState, useEffect } from 'react'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'next/router'
@@ -13,7 +14,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const [authUser, setAuthUser] = useState(() => auth.currentUser)
   const { uid, displayName, photoURL, email } = authUser || {}
   const router = useRouter()
-  
+
   const [userLoading, setUserLoading] = useState(true)
 
   useEffect(() => {

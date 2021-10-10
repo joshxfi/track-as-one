@@ -1,6 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
 
+interface RoomNavProps {
+  room: RoomList
+}
+
 export const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
   const { roomID, members } = room || {}
 

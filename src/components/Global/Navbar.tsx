@@ -24,11 +24,20 @@ export const Navbar: React.FC = () => {
   )
 }
 
+interface NavBtnProps {
+  method: string
+  onTap: () => void
+}
+
 const NavBtn = ({ method, onTap }: NavBtnProps) => {
   return (
-    <div onClick={onTap} className="flex items-center text-sm cursor-pointer">
-      <p className="text-sm mr-2">{method}</p>
-      <FaSignInAlt className="text-secondary" />
-    </div>
+    <button
+      type='button'
+      onClick={onTap}
+      className='flex items-center text-sm cursor-pointer'
+    >
+      <p className='text-sm mr-2'>{method}</p>
+      <FaSignInAlt className='text-secondary' />
+    </button>
   )
 }

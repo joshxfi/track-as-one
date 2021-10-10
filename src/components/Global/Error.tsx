@@ -2,6 +2,11 @@ import React from 'react'
 import Image from 'next/image'
 import mascot from '../../../public/assets/404cat.svg'
 
+interface ErrorProps {
+  code?: string
+  info?: string
+}
+
 export const Error: React.FC<ErrorProps> = ({ code, info }) => {
   return (
     <section className='wrap'>

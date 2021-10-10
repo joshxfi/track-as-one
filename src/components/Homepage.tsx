@@ -43,7 +43,7 @@ export const Homepage: React.FC = () => {
         </div>
       </div>
 
-      <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-8 w-full'></div>
+      <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-8 w-full' />
 
       <div className='md:grid grid-cols-2 gap-x-2'>
         <motion.button
@@ -54,9 +54,9 @@ export const Homepage: React.FC = () => {
           <p className='mr-4'>copy user tag</p>{' '}
           <AiOutlineIdcard className='text-xl text-secondary' />
         </motion.button>
-        <HomeBtn link='/create' desc='create room' Icon={BiDoorOpen} />
-        <HomeBtn link='/join' desc='join room' Icon={VscSignIn} />
-        <HomeBtn link='/list' desc='my rooms' Icon={VscListOrdered} />
+        <HomeBtn href='/create' desc='create room' Icon={BiDoorOpen} />
+        <HomeBtn href='/join' desc='join room' Icon={VscSignIn} />
+        <HomeBtn href='/list' desc='my rooms' Icon={VscListOrdered} />
       </div>
 
       <Clipboard copied={copied} />

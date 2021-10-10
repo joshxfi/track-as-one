@@ -1,5 +1,12 @@
 import React from 'react'
 
+interface InputProps {
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value: string
+  placeholder: string
+  max: number
+}
+
 export const Input: React.FC<InputProps> = ({
   handleChange,
   value,

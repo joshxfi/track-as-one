@@ -3,12 +3,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { doc, updateDoc } from 'firebase/firestore'
 import { AiOutlineIdcard } from 'react-icons/ai'
-import { defaultPic } from '../../src/static/utils'
 
 import { useFirestore } from '@/context/FirestoreContext'
 import Container from '@/components/Container'
 import { Header } from '@/components/Global/Header'
 import { Error } from '@/components/Global/Error'
+import { defaultPic } from '../../src/static/utils'
 
 const Requests = () => {
   const { db, roomList, userList } = useFirestore()
@@ -48,6 +48,7 @@ const Requests = () => {
         {requests?.length ? (
           matchUsers.map((user) => (
             <button
+              type='button'
               onClick={() => acceptRequest(user)}
               key={user.userTag}
               className='flex-between card h-[70px] mb-2 btnEffect w-full text-left'

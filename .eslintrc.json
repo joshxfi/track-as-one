@@ -5,7 +5,9 @@
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
   "rules": {
     "react/jsx-props-no-spreading": "off",

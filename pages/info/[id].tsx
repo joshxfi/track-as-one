@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { defaultPic } from '../../src/static/utils'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
 
@@ -13,6 +12,7 @@ import { Header } from '@/components/Global/Header'
 import { RoomNav } from '@/components/Room/RoomNav'
 import { InfoBtn } from '@/components/Button/InfoBtn'
 import { Error } from '@/components/Global/Error'
+import { defaultPic } from '../../src/static/utils'
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
@@ -96,7 +96,7 @@ const Info: React.FC = () => {
               <div className='flex'>
                 <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
                   <Image
-                    src={photoURL ? photoURL : defaultPic}
+                    src={photoURL || defaultPic}
                     height={36}
                     width={36}
                     alt='creator profile picture'
@@ -138,7 +138,7 @@ const Info: React.FC = () => {
                 <div className='flex'>
                   <InfoBtn
                     desc='DELETE ROOM'
-                    style='mr-2'
+                    styles='mr-2'
                     handleClick={deleteRoom}
                   />
                   <InfoBtn
@@ -147,7 +147,7 @@ const Info: React.FC = () => {
                   />
                 </div>
                 <InfoBtn
-                  style='mt-2'
+                  styles='mt-2'
                   desc={`VIEW REQUESTS (${requests?.length})`}
                   handleClick={() => router.push(`/requests/${roomID}`)}
                 />
@@ -157,7 +157,7 @@ const Info: React.FC = () => {
                 <div className='flex'>
                   <InfoBtn
                     desc='LEAVE ROOM'
-                    style='mr-2'
+                    styles='mr-2'
                     handleClick={leaveRoom}
                   />
                   <InfoBtn
@@ -169,7 +169,7 @@ const Info: React.FC = () => {
             )}
             <InfoBtn
               desc='COPY ROOM ID'
-              style='mt-2'
+              styles='mt-2'
               handleClick={copyRoomID}
             />
 

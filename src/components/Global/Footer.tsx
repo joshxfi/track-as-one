@@ -1,10 +1,10 @@
 import React from 'react'
-import doodle from '../../../public/assets/doodle.svg'
 import Image from 'next/image'
-import { FaGithub } from 'react-icons/fa'
-import { FaLinkedin } from 'react-icons/fa'
-import { FaDiscord } from 'react-icons/fa'
-import { FaInstagramSquare } from 'react-icons/fa'
+import { FaGithub , FaLinkedin , FaDiscord , FaInstagramSquare } from 'react-icons/fa'
+
+
+
+import doodle from '../../../public/assets/doodle.svg'
 
 const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare]
 
@@ -73,7 +73,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div className='w-full h-[1px] bg-gray-500 my-8'></div>
+          <div className='w-full h-[1px] bg-gray-500 my-8' />
 
           <div className='md:flex-between md:flex-row mx-auto flex flex-col items-center'>
             <p className='text-secondary mb-4 md:mb-0'>

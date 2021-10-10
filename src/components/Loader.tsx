@@ -10,7 +10,7 @@ const Loader = () => {
       transition={{ duration: 0.3 }}
       className='h-screen flex justify-center items-center bg-gradient-to-tr from-[#F2F1DD] to-f9'
     >
-      <span className='load'></span>
+      <span className='load' />
     </motion.div>
   )
 }

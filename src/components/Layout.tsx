@@ -1,8 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
+import { motion } from 'framer-motion'
 import { Navbar } from './Global/Navbar'
 import { Footer } from './Global/Footer'
-import { motion } from 'framer-motion'
 
 export const Layout: React.FC<Children> = ({ children }) => {
   const variants = {

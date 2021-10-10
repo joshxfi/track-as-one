@@ -42,6 +42,7 @@ const Invites: React.FC = () => {
         {matchInvites.length ? (
           matchInvites.map((room) => (
             <button
+              type='button'
               onClick={() => acceptInvite(room.roomID)}
               key={room.roomID}
               className='card w-full text-left btnEffect flex-between h-[70px] mb-2'

@@ -1,13 +1,6 @@
 import React from 'react'
-import type { IconType } from 'react-icons'
 
-interface YellowBtnProps {
-  styles?: string
-  desc: string
-  Icon: IconType
-  iconSize?: string
-  handleClick?: () => void
-}
+interface YellowBtnProps extends ButtonProps {}
 
 export const YellowBtn = ({
   styles,

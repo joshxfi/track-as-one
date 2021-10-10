@@ -3,6 +3,13 @@ import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { BsXSquareFill } from 'react-icons/bs'
 import { TaskBtn } from '../Button/TaskBtn'
 
+interface RoomTaskProps {
+  task: TaskList
+  memberCount: number
+  delTask: (id: string) => void
+  doneTask: (id: string) => void
+}
+
 export const RoomTask: React.FC<RoomTaskProps> = ({
   task,
   delTask,
@@ -37,7 +44,8 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
       transition={{ duration: 0.4 }}
       className='relative mb-2'
     >
-      <div
+      <button
+        type='button'
         onClick={() => setShowOptions(!showOptions)}
         className='leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
       >
@@ -48,7 +56,7 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
             Done [{task.completedBy?.length}/{memberCount}]
           </p>
         </div>
-      </div>
+      </button>
 
       <AnimatePresence>
         {showOptions && (
@@ -62,14 +70,14 @@ export const RoomTask: React.FC<RoomTaskProps> = ({
           >
             <TaskBtn
               Icon={CheckIcon}
-              desc={'done'}
-              style='mr-2'
+              desc='done'
+              styles='mr-2'
               handleClick={() => doneTask(id ?? '')}
             />
 
             <TaskBtn
               Icon={BsXSquareFill}
-              desc={'delete'}
+              desc='delete'
               iconSize='text-2xl'
               handleClick={() => delTask(id ?? '')}
             />

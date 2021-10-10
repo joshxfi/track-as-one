@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useFirestore } from '@/context/FirestoreContext'
-import Loader from './Loader'
 import { AnimatePresence } from 'framer-motion'
+import Loader from './Loader'
 
 interface LoaderProps {
   children: React.ReactNode
