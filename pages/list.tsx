@@ -4,7 +4,7 @@ import { BsEye } from 'react-icons/bs'
 import { useFirestore } from '@/context/FirestoreContext'
 import Container from '@/components/Container'
 import { Header } from '@/components/Global/Header'
-import { Button } from '@/components/Button/HrefBtn'
+import { HrefBtn } from '@/components/Button'
 import { ListRooms } from '@/components/Room/ListRooms'
 import { NoRooms } from '@/components/Room/NoRooms'
 
@@ -47,7 +47,7 @@ const List = () => {
         )}
       </div>
 
-      <Button desc='view invites' href='/invites' Icon={BsEye} />
+      <HrefBtn desc='view invites' href='/invites' Icon={BsEye} />
     </Container>
   )
 }

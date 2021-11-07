@@ -2,7 +2,7 @@ import React from 'react'
 
 interface YellowBtnProps extends ButtonProps {}
 
-export const YellowBtn = ({
+const YellowBtn = ({
   styles,
   desc,
   Icon,
@@ -21,3 +21,5 @@ export const YellowBtn = ({
     </button>
   )
 }
+
+export default YellowBtn

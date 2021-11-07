@@ -5,11 +5,7 @@ import { motion } from 'framer-motion'
 
 interface HomepageButtonProps extends LinkButtonProps {}
 
-export const HomeBtn: React.FC<HomepageButtonProps> = ({
-  desc,
-  href,
-  Icon,
-}) => {
+const HomeBtn: React.FC<HomepageButtonProps> = ({ desc, href, Icon }) => {
   return (
     <motion.button
       type='button'
@@ -21,3 +17,5 @@ export const HomeBtn: React.FC<HomepageButtonProps> = ({
     </motion.button>
   )
 }
+
+export default HomeBtn

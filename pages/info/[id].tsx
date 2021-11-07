@@ -10,7 +10,7 @@ import Container from '@/components/Container'
 import Clipboard from '@/components/Global/Clipboard'
 import { Header } from '@/components/Global/Header'
 import { RoomNav } from '@/components/Room/RoomNav'
-import { InfoBtn } from '@/components/Button/InfoBtn'
+import { InfoBtn } from '@/components/Button'
 import { Error } from '@/components/Global/Error'
 import { defaultPic } from '../../src/static/utils'
 

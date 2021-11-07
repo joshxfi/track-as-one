@@ -6,7 +6,7 @@ import { BiDoorOpen } from 'react-icons/bi'
 
 import { useFirestore } from '@/context/FirestoreContext'
 import { Header } from '@/components/Global/Header'
-import { Button } from '@/components/Button/HrefBtn'
+import { HrefBtn } from '@/components/Button'
 import { Input } from '@/components/Input'
 import Container from '@/components/Container'
 import ErrorMSG from '@/components/Global/ErrorMSG'
@@ -72,7 +72,7 @@ const Create = () => {
         <ErrorMSG error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
-          <Button desc='Create room' type='submit' Icon={BiDoorOpen} />
+          <HrefBtn desc='Create room' type='submit' Icon={BiDoorOpen} />
         </div>
       </form>
     </Container>

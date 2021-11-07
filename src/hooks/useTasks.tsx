@@ -1,9 +1,15 @@
 /* eslint-disable no-undef */
-import { useEffect, useState } from 'react'
-import { getDocs, collection, query, orderBy } from 'firebase/firestore'
+import { useEffect, useState, useRef } from 'react'
+import {
+  getDocs,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+} from 'firebase/firestore'
 import { useFirestore } from '@/context/FirestoreContext'
 
-const useTasks = (roomId: string | undefined) => {
+const useTasks = (roomId: string) => {
   const [data, setData] = useState<TaskList[]>()
   const { db, setDataLoading } = useFirestore()
 
@@ -12,23 +18,22 @@ const useTasks = (roomId: string | undefined) => {
     orderBy('dateAdded')
   )
 
-  const fetchTasks = async () => {
-    const querySnapshot = await getDocs(taskRef)
-    let newTasks: TaskList[] = []
+  useEffect(() => {
+    const unsub = onSnapshot(taskRef, (docs) => {
+      setDataLoading(true)
+      let newTasks: TaskList[] = []
 
-    querySnapshot.forEach((doc) => {
-      const task = { ...doc.data() }
-      newTasks = [task as TaskList, ...newTasks]
+      docs.forEach((doc) => {
+        const task = { ...doc.data(), id: doc.id }
+        newTasks = [task as TaskList, ...newTasks]
+      })
+
+      setData(newTasks)
+      setDataLoading(false)
     })
 
-    setData(newTasks)
-  }
-
-  useEffect(() => {
-    setDataLoading(true)
-    fetchTasks()
-    setDataLoading(false)
-  }, [taskRef])
+    return unsub
+  }, [])
 
   return data
 }

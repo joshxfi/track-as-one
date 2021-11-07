@@ -31,7 +31,7 @@ const Room = () => {
   const currentRoom = roomList?.find((room) => room.roomID === id)
   const { roomID } = currentRoom ?? {}
 
-  const roomTasks = useTasks(roomID)
+  const roomTasks = useTasks(roomID ?? '_')
 
   const { userTag } = currentUser ?? {}
   const dateInputRef = useRef<ReactDatePicker>(null)

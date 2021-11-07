@@ -20,3 +20,5 @@ export const TaskBtn = ({
     </button>
   )
 }
+
+export default TaskBtn

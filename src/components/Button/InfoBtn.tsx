@@ -6,7 +6,7 @@ interface InfoBtnProps {
   handleClick: () => void
 }
 
-export const InfoBtn = ({ desc, styles, handleClick }: InfoBtnProps) => {
+const InfoBtn = ({ desc, styles, handleClick }: InfoBtnProps) => {
   return (
     <button
       type='button'
@@ -17,3 +17,5 @@ export const InfoBtn = ({ desc, styles, handleClick }: InfoBtnProps) => {
     </button>
   )
 }
+
+export default InfoBtn

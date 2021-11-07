@@ -7,7 +7,7 @@ import { AiOutlineIdcard } from 'react-icons/ai'
 
 import { useFirestore } from '@/context/FirestoreContext'
 import Clipboard from './Global/Clipboard'
-import { HomeBtn } from './Button/HomeBtn'
+import { HomeBtn } from './Button'
 import { defaultPic } from '../static/utils'
 
 export const Homepage: React.FC = () => {
