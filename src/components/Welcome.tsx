@@ -4,13 +4,9 @@ import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
 import avatar from '@/assets/avatar.svg'
 import avatar2 from '@/assets/avatar2.svg'
 import { useAuth } from '@/context/AuthContext'
-import { wcpage1, wcpage2 } from '../static/text'
-
-import { YellowBtn } from './Button/YellowBtn'
+import { YellowBtn } from '@/components/Button'
 
 export const Welcome: React.FC = () => {
-  const { signIn } = useAuth()
-
   return (
     <>
       <section className='wrap h-screen max-w-screen-xl lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
@@ -24,6 +20,7 @@ export const Welcome: React.FC = () => {
             <div className='text-center lg:text-left'>
               <div className='my-8 w-[300px] mx-auto lg:hidden'>
                 <Image
+                  priority
                   src={avatar}
                   objectFit='contain'
                   alt='trackAsOne avatar'
@@ -31,19 +28,24 @@ export const Welcome: React.FC = () => {
               </div>
 
               <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl lg:w-[500px] xl:w-auto'>
-                Life&apos;s already difficult, don&apos;t make it harder.
+                An open-source{' '}
+                <span className='block md:inline'>
+                  collaborative task tracker.
+                </span>
               </h1>
 
               <p className='mt-2 text-lg lg:w-[490px] xl:w-[650px] xl:text-xl'>
-                {wcpage1}
+                Every now and then, someone would pop in the group chat and say:{' '}
+                <span className='italic font-medium'>
+                  What assignments do we have? When is it due?
+                </span>{' '}
+                With this web app, you can track tasks collaboratively with your
+                peers!
               </p>
             </div>
 
-            <YellowBtn
-              desc='get started'
-              Icon={FaSignInAlt}
-              handleClick={signIn}
-            />
+            <YellowBtn desc='get started' Icon={FaSignInAlt} />
+            <p className='mt-2 italic text-base font-medium'>coming soon!</p>
           </div>
         </div>
 
@@ -52,13 +54,15 @@ export const Welcome: React.FC = () => {
         </div>
       </section>
 
-      <section className='mx-auto max-w-screen-xl lg:flex lg:justify-between h-screen mt-36 xs:mt-0'>
+      <section className='mx-auto max-w-screen-xl lg:flex lg:justify-between pb-8 mt-36 xs:mt-0'>
         <div className='text-center lg:text-left lg:pl-2'>
           <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl'>
             Built by a student for students.
           </h1>
           <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
-            {wcpage2}
+            trackAsOne is a collaborative cross-platform app that enables
+            students to track homework, activities, and more together with their
+            friends or classmates.
           </p>
           <div className='flex flex-col lg:flex-row items-center'>
             <YellowBtn
@@ -72,7 +76,12 @@ export const Welcome: React.FC = () => {
         </div>
 
         <div className='mt-8 w-[300px] lg:w-[400px] mx-auto lg:mx-0'>
-          <Image src={avatar2} objectFit='contain' alt='trackAsOne avatar' />
+          <Image
+            priority
+            src={avatar2}
+            objectFit='contain'
+            alt='trackAsOne avatar'
+          />
         </div>
       </section>
     </>
