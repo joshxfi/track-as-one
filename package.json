@@ -9,11 +9,13 @@
     "lint": "next lint",
     "check-lint": "eslint . --ext ts --ext tsx",
     "check-types": "tsc --pretty --noEmit",
-    "check-all": "yarn check-lint && yarn check-types"
+    "check-all": "yarn check-lint && yarn check-types",
+    "prepare": "husky install"
   },
   "dependencies": {
     "firebase": "^9.0.2",
     "framer-motion": "^4.1.17",
+    "lint-staged": "^11.2.6",
     "nanoid": "^3.1.25",
     "next": "11.1.2",
     "react": "17.0.2",
@@ -34,8 +36,13 @@
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "1.7.0",
+    "husky": "^7.0.0",
     "postcss": "^8.3.6",
     "tailwindcss": "^2.2.15",
     "typescript": "4.4.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --cache --fix",
+    "*.{js,ts,tsx,css,md}": "prettier --write"
   }
 }
