@@ -29,7 +29,7 @@ export const Welcome: React.FC = () => {
 
               <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl lg:w-[500px] xl:w-auto'>
                 An open-source{' '}
-                <span className='block md:inline'>
+                <span className='block sm:inline'>
                   collaborative task tracker.
                 </span>
               </h1>
