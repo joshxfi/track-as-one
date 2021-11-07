@@ -3,7 +3,7 @@
 </div>
 
 ## What is it?
-[trackAsOne](https://github.com/joshxfi/trackAsOne) is a platform that enables students to track homework, activities, and more together with their friends or classmates. With this platform, you can create rooms, invite your friends, and track tasks in a way that nobody gets left behind! You can also create a room with just yourself for your personal tasks! [#WeTrackAsOne](https://github.com/joshxfi/trackAsOne).
+[trackAsOne](https://github.com/joshxfi/trackAsOne) is a platform that enables students to track homework, activities, and more together with their friends or classmates. With this platform, you can create rooms, invite your friends, and track tasks collaboratively!
 
 ## Project Status
 Currently in development using mobile-first approach.
