@@ -8,14 +8,14 @@ import {
 } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../config/firebase'
 
 interface AuthContextValues {
   user: User | null
   signIn: () => void
   signOut: () => void
-  userLoading: boolean
+  loading: boolean
 }
 
 const AuthContext = createContext<AuthContextValues>({} as AuthContextValues)
@@ -29,13 +29,16 @@ const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(() => auth.currentUser)
   const router = useRouter()
 
-  const [userLoading, setUserLoading] = useState(true)
+  const [userLoading, setUserLoading] = useState(false)
+  const [dataLoading, setDataLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState({})
 
   useEffect(() => {
-    setUserLoading(true)
-    const unsub = auth.onAuthStateChanged((user) => {
-      if (user) setUser(user)
-      setUserLoading(false)
+    setUserLoading(() => true)
+    const unsub = auth.onAuthStateChanged((_user) => {
+      if (_user) setUser(_user)
+      setUserLoading(() => false)
     })
 
     return unsub
@@ -65,9 +68,28 @@ const AuthProvider: React.FC = ({ children }) => {
         await setDoc(doc(db, 'users', uid), payload)
       }
     } catch (err) {
-      console.log(err)
+      console.error(err);
     }
   }
+
+  useEffect(() => {
+    setDataLoading(() => true)
+    const getUserData = async () => {
+      if (user) {
+        const res = await getDoc(doc(db, 'users', user.uid))
+        setData({ ...res.data, id: res.id } as UserList)
+      }
+
+      setDataLoading(() => false)
+    }
+
+    getUserData()
+  }, [user])
+
+  useEffect(() => {
+    if (userLoading || dataLoading) setLoading(() => true)
+    else setLoading(() => false)
+  }, [userLoading, dataLoading])
 
   const signOut = async () => {
     try {
@@ -79,7 +101,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, userLoading }}>
+    <AuthContext.Provider value={{ user, signIn, signOut, loading }}>
       {children}
     </AuthContext.Provider>
   )

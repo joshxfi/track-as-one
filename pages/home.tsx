@@ -5,9 +5,8 @@ import { BiDoorOpen } from 'react-icons/bi'
 import { AiOutlineIdcard } from 'react-icons/ai'
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 
-import { HomeBtn } from './Button'
-import Clipboard from './Clipboard'
-import { defaultPic } from '../static/utils'
+import { HomeBtn } from '@/components/Button'
+import { Clipboard } from '@/components'
 
 const Homepage: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
