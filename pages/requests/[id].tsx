@@ -1,18 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { doc, updateDoc } from 'firebase/firestore'
 import { AiOutlineIdcard } from 'react-icons/ai'
+import { doc, updateDoc } from 'firebase/firestore'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import Container from '@/components/Container'
-import { Header } from '@/components/Global/Header'
-import { Error } from '@/components/Global/Error'
-import { defaultPic } from '../../src/static/utils'
+import { Container, Header, Error } from '@/components'
 
 const Requests = () => {
-  const { db, roomList, userList } = useFirestore()
-
   const router = useRouter()
   const { id } = router.query
 

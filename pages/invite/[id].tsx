@@ -3,13 +3,8 @@ import { useRouter } from 'next/router'
 import { doc, updateDoc } from 'firebase/firestore'
 import { AiOutlineIdcard } from 'react-icons/ai'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import ErrorMSG from '@/components/Global/ErrorMSG'
-import Container from '@/components/Container'
-import { Header } from '@/components/Global/Header'
-import { RoomNav } from '@/components/Room/RoomNav'
-import { Input } from '@/components/Input'
-import { Error } from '@/components/Global/Error'
+import { RoomNav } from '@/components/Room'
+import { ErrorMsg, Container, Header, Error, Input } from '@/components'
 
 const Invite = () => {
   const [invUserTag, setUserTag] = useState<string>('')
@@ -27,7 +22,6 @@ const Invite = () => {
 
   const router = useRouter()
   const { id } = router.query
-  const { db, roomList, userList, currentUser } = useFirestore()
 
   const currentRoom = roomList.find((room) => room.roomID === id)
   const { members, roomID } = currentRoom || {}
@@ -74,7 +68,7 @@ const Invite = () => {
               placeholder='enter user tag'
               max={10}
             />
-            <ErrorMSG error={error} showError={showError} />
+            <ErrorMsg error={error} showError={showError} />
 
             <div className='inline-block mx-auto mt-2'>
               <button

@@ -1,22 +1,16 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
-import { AiOutlineIdcard } from 'react-icons/ai'
 import { BsCalendarFill } from 'react-icons/bs'
+import { AiOutlineIdcard } from 'react-icons/ai'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import Container from '@/components/Container'
-import Clipboard from '@/components/Clipboard'
-import { Header } from '@/components/Global/Header'
-import { RoomNav } from '@/components/Room/RoomNav'
+import { RoomNav } from '@/components/Room'
 import { InfoBtn } from '@/components/Button'
-import { Error } from '@/components/Global/Error'
-import { defaultPic } from '../../src/static/utils'
+import { Container, Header, Clipboard, Error } from '@/components'
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
-  const { db, roomList, userList, currentUser } = useFirestore()
 
   const router = useRouter()
   const { id } = router.query

@@ -13,11 +13,8 @@ import {
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import Container from '@/components/Container'
-import { Header } from '@/components/Global/Header'
-import { RoomNav } from '@/components/Room/RoomNav'
-import { RoomTask } from '@/components/Room/RoomTask'
+import { Container, Header } from '@/components'
+import { RoomNav, RoomTask } from '@/components/Room'
 
 const Room = () => {
   const [desc, setDesc] = useState<string>('')
@@ -25,8 +22,6 @@ const Room = () => {
 
   const router = useRouter()
   const { id } = router.query
-
-  const { roomList, currentUser, db } = useFirestore()
 
   const currentRoom = roomList?.find((room) => room.roomID === id)
   const { roomID } = currentRoom ?? {}
