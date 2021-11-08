@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { FaSignInAlt } from 'react-icons/fa'
 
-export const Navbar: React.FC = () => {
+const Navbar: React.FC = () => {
   return (
     <nav className='w-full bg-primary py-3 text-f9 shadow-lg'>
       <div className='flex-between w-[85%] max-w-screen-xl mx-auto'>
@@ -34,3 +34,5 @@ const NavBtn = ({ method, onTap }: NavBtnProps) => {
     </button>
   )
 }
+
+export default Navbar

@@ -1,15 +1,11 @@
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
-import { updateDoc, doc, setDoc } from 'firebase/firestore'
+import { useRouter } from 'next/router'
 import { BiDoorOpen } from 'react-icons/bi'
+import { updateDoc, doc, setDoc } from 'firebase/firestore'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import { Header } from '@/components/Global/Header'
 import { HrefBtn } from '@/components/Button'
-import { Input } from '@/components/Input'
-import Container from '@/components/Container'
-import ErrorMSG from '@/components/Global/ErrorMSG'
+import { Header, ErrorMsg, Input, Container } from '@/components'
 
 const Create = () => {
   const [roomName, setRoomName] = useState<string>('')
@@ -17,9 +13,6 @@ const Create = () => {
   const [showError, setShowError] = useState<boolean>(false)
 
   const router = useRouter()
-
-  const { db, currentUser } = useFirestore()
-  const { userTag, roomsCreated } = currentUser ?? {}
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -69,7 +62,7 @@ const Create = () => {
           placeholder='enter room name'
           max={15}
         />
-        <ErrorMSG error={error} showError={showError} />
+        <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
           <HrefBtn desc='Create room' type='submit' Icon={BiDoorOpen} />

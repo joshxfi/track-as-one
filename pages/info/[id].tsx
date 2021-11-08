@@ -7,7 +7,7 @@ import { BsCalendarFill } from 'react-icons/bs'
 
 import { useFirestore } from '@/context/FirestoreContext'
 import Container from '@/components/Container'
-import Clipboard from '@/components/Global/Clipboard'
+import Clipboard from '@/components/Clipboard'
 import { Header } from '@/components/Global/Header'
 import { RoomNav } from '@/components/Room/RoomNav'
 import { InfoBtn } from '@/components/Button'

@@ -1,12 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
 import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
+
 import avatar from '@/assets/avatar.svg'
 import avatar2 from '@/assets/avatar2.svg'
-import { useAuth } from '@/context/AuthContext'
 import { YellowBtn } from '@/components/Button'
 
-export const Welcome: React.FC = () => {
+const Welcome: React.FC = () => {
   return (
     <>
       <section className='wrap h-screen max-w-screen-xl lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
@@ -87,3 +87,5 @@ export const Welcome: React.FC = () => {
     </>
   )
 }
+
+export default Welcome

@@ -2,19 +2,15 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BiDoorOpen } from 'react-icons/bi'
-import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 import { AiOutlineIdcard } from 'react-icons/ai'
+import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import Clipboard from './Global/Clipboard'
 import { HomeBtn } from './Button'
+import Clipboard from './Clipboard'
 import { defaultPic } from '../static/utils'
 
-export const Homepage: React.FC = () => {
+const Homepage: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
-
-  const { currentUser } = useFirestore()
-  const { userTag, displayName, photoURL } = currentUser ?? {}
 
   const copyTag = () => {
     navigator.clipboard.writeText(userTag ?? '')
@@ -63,3 +59,5 @@ export const Homepage: React.FC = () => {
     </section>
   )
 }
+
+export default Homepage

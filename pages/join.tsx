@@ -2,15 +2,10 @@ import React, { useState } from 'react'
 import { doc, updateDoc } from 'firebase/firestore'
 import { VscSignIn } from 'react-icons/vsc'
 
-import { useFirestore } from '@/context/FirestoreContext'
 import Container from '@/components/Container'
-import ErrorMSG from '@/components/Global/ErrorMSG'
-import { Header } from '@/components/Global/Header'
-import { Input } from '@/components/Input'
+import { ErrorMsg, Header, Input } from '@/components'
 
 const Join = () => {
-  const { currentUser, roomList, db } = useFirestore()
-  const { userTag } = currentUser || {}
   const [roomID, setRoomID] = useState<string>('')
   const [error, setError] = useState<string>('blank')
   const [showError, setShowError] = useState<boolean>(false)
@@ -53,7 +48,7 @@ const Join = () => {
           placeholder='enter room id'
           max={15}
         />
-        <ErrorMSG error={error} showError={showError} />
+        <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
           <button type='button' onClick={requestJoin} className='btn btnEffect'>

@@ -1,16 +1,11 @@
 import React from 'react'
 import { BsEye } from 'react-icons/bs'
 
-import { useFirestore } from '@/context/FirestoreContext'
-import Container from '@/components/Container'
-import { Header } from '@/components/Global/Header'
+import { Container, Header } from '@/components'
 import { HrefBtn } from '@/components/Button'
-import { ListRooms } from '@/components/Room/ListRooms'
-import { NoRooms } from '@/components/Room/NoRooms'
+import { ListRooms, NoRooms } from '@/components/Room'
 
 const List = () => {
-  const { currentUser, roomList } = useFirestore()
-
   const createdRooms = roomList?.filter((room) =>
     currentUser?.roomsCreated?.includes(room.roomID)
   )

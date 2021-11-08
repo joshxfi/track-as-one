@@ -1,10 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
 import { motion } from 'framer-motion'
-import { Navbar } from './Global/Navbar'
-import { Footer } from './Global/Footer'
 
-export const Layout: React.FC<Children> = ({ children }) => {
+import { Navbar, Footer } from '.'
+
+const Layout: React.FC<Children> = ({ children }) => {
   const variants = {
     hidden: { opacity: 0 },
     enter: { opacity: 1 },
@@ -38,3 +38,5 @@ export const Layout: React.FC<Children> = ({ children }) => {
     </>
   )
 }
+
+export default Layout

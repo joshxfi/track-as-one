@@ -21,3 +21,5 @@ export const NoRooms: React.FC<NoRoomsProps> = ({ desc, href }) => {
     </button>
   )
 }
+
+export default NoRooms

@@ -6,7 +6,7 @@ interface ListRoomsProps {
   room: RoomList
 }
 
-export const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
+const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
   const router = useRouter()
 
   return (
@@ -24,3 +24,5 @@ export const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
     </button>
   )
 }
+
+export default ListRooms

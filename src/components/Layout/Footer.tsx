@@ -1,14 +1,16 @@
 import React from 'react'
 import Image from 'next/image'
-import { FaGithub , FaLinkedin , FaDiscord , FaInstagramSquare } from 'react-icons/fa'
-
-
-
+import {
+  FaGithub,
+  FaLinkedin,
+  FaDiscord,
+  FaInstagramSquare,
+} from 'react-icons/fa'
 import doodle from '@/assets/doodle.svg'
 
 const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare]
 
-export const Footer: React.FC = () => {
+const Footer: React.FC = () => {
   return (
     <footer className='w-full'>
       <div className='w-full lg:hidden h-24 overflow-hidden'>
@@ -96,3 +98,5 @@ export const Footer: React.FC = () => {
     </footer>
   )
 }
+
+export default Footer

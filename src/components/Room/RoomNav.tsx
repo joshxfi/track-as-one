@@ -5,7 +5,7 @@ interface RoomNavProps {
   room: RoomList
 }
 
-export const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
+const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
   const { roomID, members } = room || {}
 
   return (
@@ -22,3 +22,5 @@ export const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
     </nav>
   )
 }
+
+export default RoomNav

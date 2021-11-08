@@ -1,6 +1,6 @@
 import React from 'react'
-import { Error } from '@/components/Global/Error'
-import Container from '@/components/Container'
+import { Error, Container } from '@/components'
+
 
 const Error404 = () => {
   return (

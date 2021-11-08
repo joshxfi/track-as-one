@@ -7,7 +7,7 @@ interface InputProps {
   max: number
 }
 
-export const Input: React.FC<InputProps> = ({
+const Input: React.FC<InputProps> = ({
   handleChange,
   value,
   placeholder,
@@ -26,3 +26,5 @@ export const Input: React.FC<InputProps> = ({
     />
   )
 }
+
+export default Input

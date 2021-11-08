@@ -21,7 +21,8 @@
     "react/prop-types": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
     "no-shadow": "off",
-    "import/extensions": ["error", "never"]
+    "import/extensions": ["error", "never"],
+    "no-underscore-dangle": "off"
   },
   "settings": {
     "import/resolver": {

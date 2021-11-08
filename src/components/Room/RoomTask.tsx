@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { BsXSquareFill } from 'react-icons/bs'
-import { TaskBtn } from '../Button/TaskBtn'
+import { motion, AnimatePresence } from 'framer-motion'
+
+import { TaskBtn } from '@/components/Button'
 
 interface RoomTaskProps {
   task: TaskList
@@ -10,7 +11,7 @@ interface RoomTaskProps {
   doneTask: (id: string) => void
 }
 
-export const RoomTask: React.FC<RoomTaskProps> = ({
+const RoomTask: React.FC<RoomTaskProps> = ({
   task,
   delTask,
   memberCount,
@@ -96,3 +97,5 @@ const CheckIcon = () => {
     </svg>
   )
 }
+
+export default RoomTask

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Welcome } from '@/components/Welcome'
+import { Welcome } from '@/components'
 import { Layout } from '@/components/Layout'
 
 const Index = () => {

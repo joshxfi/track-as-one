@@ -3,15 +3,9 @@ import router from 'next/router'
 import { doc, updateDoc } from 'firebase/firestore'
 import { BiDoorOpen } from 'react-icons/bi'
 
-import Container from '@/components/Container'
-import { Header } from '@/components/Global/Header'
-import { useFirestore } from '@/context/FirestoreContext'
-import { Error } from '@/components/Global/Error'
+import { Container, Error, Header } from '@/components'
 
 const Invites: React.FC = () => {
-  const { db, currentUser, roomList } = useFirestore()
-  const { userTag, roomsJoined, invites } = currentUser || {}
-
   const userInvites = invites?.map((inv) => inv)
   const matchInvites = roomList.filter((room) =>
     userInvites?.includes(room.roomID)

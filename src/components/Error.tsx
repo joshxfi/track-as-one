@@ -7,7 +7,7 @@ interface ErrorProps {
   info?: string
 }
 
-export const Error: React.FC<ErrorProps> = ({ code, info }) => {
+const Error: React.FC<ErrorProps> = ({ code, info }) => {
   return (
     <section className='wrap'>
       <div className='w-[200px] mt-10'>
@@ -23,3 +23,5 @@ Error.defaultProps = {
   code: '404',
   info: 'page not found',
 }
+
+export default Error

@@ -6,7 +6,7 @@ interface ErrorMSGProps {
   showError: boolean
 }
 
-const ErrorMSG: React.FC<ErrorMSGProps> = ({ error, showError }) => {
+const ErrorMsg: React.FC<ErrorMSGProps> = ({ error, showError }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -18,4 +18,4 @@ const ErrorMSG: React.FC<ErrorMSGProps> = ({ error, showError }) => {
   )
 }
 
-export default ErrorMSG
+export default ErrorMsg
