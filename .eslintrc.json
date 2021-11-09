@@ -22,7 +22,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
     "no-shadow": "off",
     "import/extensions": ["error", "never"],
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-console": "warn"
   },
   "settings": {
     "import/resolver": {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Welcome } from '@/components'
-import { Layout } from '@/components/Layout'
+import { Welcome, Layout } from '@/components'
+
 
 const Index = () => {
   return (

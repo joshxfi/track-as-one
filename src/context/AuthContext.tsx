@@ -16,6 +16,7 @@ interface AuthContextValues {
   signIn: () => void
   signOut: () => void
   loading: boolean
+  data: UserList
 }
 
 const AuthContext = createContext<AuthContextValues>({} as AuthContextValues)
@@ -32,12 +33,13 @@ const AuthProvider: React.FC = ({ children }) => {
   const [userLoading, setUserLoading] = useState(false)
   const [dataLoading, setDataLoading] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState({})
+  const [data, setData] = useState({} as UserList)
 
   useEffect(() => {
     setUserLoading(() => true)
     const unsub = auth.onAuthStateChanged((_user) => {
       if (_user) setUser(_user)
+      else setUser(null)
       setUserLoading(() => false)
     })
 
@@ -67,8 +69,10 @@ const AuthProvider: React.FC = ({ children }) => {
 
         await setDoc(doc(db, 'users', uid), payload)
       }
+
+      router.push('/home')
     } catch (err) {
-      console.error(err);
+      console.log(err)
     }
   }
 
@@ -77,7 +81,8 @@ const AuthProvider: React.FC = ({ children }) => {
     const getUserData = async () => {
       if (user) {
         const res = await getDoc(doc(db, 'users', user.uid))
-        setData({ ...res.data, id: res.id } as UserList)
+        const data = { ...res.data(), id: res.id }
+        setData(data as UserList)
       }
 
       setDataLoading(() => false)
@@ -101,7 +106,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, loading }}>
+    <AuthContext.Provider value={{ user, signIn, signOut, data, loading }}>
       {children}
     </AuthContext.Provider>
   )

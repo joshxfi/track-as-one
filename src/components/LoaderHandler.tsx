@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useAuth } from '@/context/AuthContext'
-import { useFirestore } from '@/context/FirestoreContext'
 import { AnimatePresence } from 'framer-motion'
 import Loader from './Loader'
 
@@ -9,18 +8,7 @@ interface LoaderProps {
 }
 
 const LoaderHandler: React.FC<LoaderProps> = ({ children }) => {
-  const { userLoading } = useAuth()
-  const { dataLoading } = useFirestore()
-
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (userLoading || dataLoading) setLoading(true)
-    else
-      setTimeout(() => {
-        setLoading(false)
-      }, 1500)
-  }, [userLoading, dataLoading])
+  const { loading } = useAuth()
 
   return <AnimatePresence>{loading ? <Loader /> : children}</AnimatePresence>
 }

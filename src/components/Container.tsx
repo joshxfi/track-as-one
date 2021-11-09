@@ -1,7 +1,6 @@
 import React from 'react'
+import { Layout, Welcome } from '@/components'
 import { useAuth } from '@/context/AuthContext'
-import { Error } from './Global/Error'
-import { Layout } from './Layout/Layout'
 
 interface ContainerProps {
   styles?: string
@@ -9,17 +8,11 @@ interface ContainerProps {
 }
 
 const Container = ({ styles, children }: ContainerProps) => {
-  const { authUser } = useAuth()
+  const { user } = useAuth()
 
   return (
     <Layout>
-      <section className={`wrap ${styles}`}>
-        {authUser ? (
-          children
-        ) : (
-          <Error code='401' info='you are not signed in' />
-        )}
-      </section>
+      <div className={styles}>{user ? children : <Welcome />}</div>
     </Layout>
   )
 }

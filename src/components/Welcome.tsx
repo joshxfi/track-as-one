@@ -27,14 +27,14 @@ const Welcome: React.FC = () => {
                 />
               </div>
 
-              <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl lg:w-[500px] xl:w-auto'>
+              <h1 className='text-2xl font-semibold lg:font-medium lg:text-2xl xl:text-3xl xl:w-auto'>
                 An open-source{' '}
                 <span className='block sm:inline'>
                   collaborative task tracker.
                 </span>
               </h1>
 
-              <p className='mt-2 text-lg lg:w-[490px] xl:w-[650px] xl:text-xl'>
+              <p className='mt-2 text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
                 Every now and then, someone would pop in the group chat and say:{' '}
                 <span className='italic font-medium'>
                   What assignments do we have? When is it due?
