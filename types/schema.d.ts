@@ -12,12 +12,12 @@ interface UserList {
 }
 
 interface RoomList {
+  id?: string;
   name: string;
-  roomID: string;
-  creator: string | undefined | null;
+  creator: string;
   admin: string[];
   members: string[];
-  dateAdded: string | undefined;
+  dateAdded: any;
   requests: string[];
 }
 

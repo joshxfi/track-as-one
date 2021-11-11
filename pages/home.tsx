@@ -16,7 +16,7 @@ const Homepage: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
 
   const copyTag = () => {
-    navigator.clipboard.writeText(userTag ?? '')
+    navigator.clipboard.writeText(userTag)
     setCopied(true)
 
     setTimeout(() => setCopied(false), 3000)
