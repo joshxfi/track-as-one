@@ -12,12 +12,12 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
   return (
     <button
       type='button'
-      onClick={() => router.push(`/rooms/${room.roomID}`)}
+      onClick={() => router.push(`/rooms/${room.id}`)}
       className='card flex-between h-[70px] mb-2 btnEffect w-full text-left'
     >
       <div className='leading-5'>
-        <p className='text-f9'>{room.name}</p>
-        <p className='text-sm'>members: {room.members.length + 1}</p>
+        <p className='text-f9'>{room?.name}</p>
+        <p className='text-sm'>members: {room.members?.length + 1}</p>
       </div>
 
       <BiDoorOpen className='icon' />

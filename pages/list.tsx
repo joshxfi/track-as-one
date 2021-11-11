@@ -1,17 +1,29 @@
 import React from 'react'
 import { BsEye } from 'react-icons/bs'
 
-import { Container, Header } from '@/components'
+import { Container, Header, Loader } from '@/components'
 import { HrefBtn } from '@/components/Button'
 import { ListRooms, NoRooms } from '@/components/Room'
+import { useCollection } from '@/hooks'
+import { collection, query, where } from 'firebase/firestore'
+import { db } from '@/config/firebase'
+import { useAuth } from '@/context/AuthContext'
 
 const List = () => {
-  const createdRooms = roomList?.filter((room) =>
-    currentUser?.roomsCreated?.includes(room.roomID)
+  const { data } = useAuth()
+
+  const roomRef = collection(db, 'rooms')
+
+  const [createdRooms, loading] = useCollection<RoomList>(
+    query(roomRef, where('creator', '==', data.userTag ?? ''))
   )
-  const joinedRooms = roomList?.filter((room) =>
-    currentUser?.roomsJoined.includes(room.roomID)
+  const [joinedRooms, _loading] = useCollection<RoomList>(
+    query(roomRef, where('members', 'array-contains', data.userTag ?? ''))
   )
+
+  const isLoading = loading || _loading
+
+  if (isLoading) return <Loader />
 
   return (
     <Container>
@@ -22,9 +34,7 @@ const List = () => {
         </div>
 
         {createdRooms?.length ? (
-          createdRooms?.map((room) => (
-            <ListRooms key={room.roomID} room={room} />
-          ))
+          createdRooms?.map((room) => <ListRooms key={room.id} room={room} />)
         ) : (
           <NoRooms desc='Create a Room' href='/create' />
         )}
@@ -34,9 +44,7 @@ const List = () => {
         </div>
 
         {joinedRooms?.length ? (
-          joinedRooms?.map((room) => (
-            <ListRooms key={room.roomID} room={room} />
-          ))
+          joinedRooms?.map((room) => <ListRooms key={room.id} room={room} />)
         ) : (
           <NoRooms desc='Join a Room' href='/join' />
         )}
