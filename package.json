@@ -13,7 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "firebase": "^9.0.2",
+    "firebase": "^9.5.0",
     "framer-motion": "^4.1.17",
     "lint-staged": "^11.2.6",
     "nanoid": "^3.1.25",
