@@ -7,18 +7,11 @@ import { TaskBtn } from '@/components/Button'
 interface RoomTaskProps {
   task: TaskList
   memberCount: number
-  delTask: (id: string) => void
-  doneTask: (id: string) => void
 }
 
-const RoomTask: React.FC<RoomTaskProps> = ({
-  task,
-  delTask,
-  memberCount,
-  doneTask,
-}) => {
+const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false)
-  const { id, dueDate } = task ?? {}
+  const { dueDate } = task
 
   const optionsVariant = {
     init: {
@@ -46,7 +39,11 @@ const RoomTask: React.FC<RoomTaskProps> = ({
       >
         <p className='text-f9 break-all'>{task.description}</p>
         <div className='text-sm pt-2 flex-between'>
-          <p>{dueDate === 'none' ? 'No due date' : `Due - ${dueDate}`}</p>
+          <p>
+            {dueDate
+              ? `Due - ${dueDate.toDate().toDateString()}`
+              : 'No Due Date'}
+          </p>
           <p>
             Done [{task.completedBy?.length}/{memberCount}]
           </p>
@@ -67,14 +64,14 @@ const RoomTask: React.FC<RoomTaskProps> = ({
               Icon={CheckIcon}
               desc='done'
               styles='mr-2'
-              handleClick={() => doneTask(id ?? '')}
+              handleClick={() => null}
             />
 
             <TaskBtn
               Icon={BsXSquareFill}
               desc='delete'
               iconSize='text-2xl'
-              handleClick={() => delTask(id ?? '')}
+              handleClick={() => null}
             />
           </motion.div>
         )}

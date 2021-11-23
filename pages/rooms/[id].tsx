@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
-import useTasks from 'src/hooks/useTasks'
 import { AnimatePresence } from 'framer-motion'
 import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
 import {
@@ -9,69 +8,60 @@ import {
   collection,
   doc,
   deleteDoc,
+  serverTimestamp,
 } from 'firebase/firestore'
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { Container, Header } from '@/components'
 import { RoomNav, RoomTask } from '@/components/Room'
+import { useCollection, useDocument } from '@/hooks'
+import { db } from '@/config/firebase'
+import { useAuth } from '@/context/AuthContext'
 
 const Room = () => {
-  const [desc, setDesc] = useState<string>('')
+  const [description, setDesc] = useState<string>('')
   const [dueDate, setDueDate] = useState<Date | null>(new Date())
 
   const router = useRouter()
   const { id } = router.query
 
-  const currentRoom = roomList?.find((room) => room.roomID === id)
-  const { roomID } = currentRoom ?? {}
+  const [tasks] = useCollection<TaskList>(
+    collection(db, `rooms/${id}/tasks`),
+    true
+  )
+  const [currentRoom] = useDocument<RoomList>(doc(db, `rooms/${id}`))
 
-  const roomTasks = useTasks(roomID ?? '_')
+  const { id: roomID } = currentRoom
+  const { data } = useAuth()
+  const { userTag } = data
 
-  const { userTag } = currentUser ?? {}
   const dateInputRef = useRef<ReactDatePicker>(null)
 
-  const memberCount = currentRoom!?.members?.length + 1
+  const memberCount = currentRoom?.members?.length + 1
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const payload: TaskList = {
-      description: desc,
+      description,
       addedBy: userTag,
       completedBy: [],
-      dateAdded: new Date().toDateString(),
-      dueDate: dueDate ? dueDate?.toDateString() : 'none',
+      dateAdded: serverTimestamp(),
+      dueDate,
     }
 
     setDesc('')
-    const tasksRef = collection(db, `roomList/${roomID}/tasks`)
+    const tasksRef = collection(db, `rooms/${roomID}/tasks`)
 
-    if (desc !== '' && roomTasks!.length < 15) {
+    if (description && tasks.length < 15) {
       await addDoc(tasksRef, payload)
     }
   }
 
-  const delTask = async (id: string) => {
-    const delTaskRef = doc(db, `roomList/${roomID}/tasks/${id}`)
-
-    await deleteDoc(delTaskRef)
-  }
-
-  const doneTask = async (id: string) => {
-    const tasksRef = doc(db, `roomList/${roomID}/tasks/${id}`)
-    const currentTasks = roomTasks?.find((task) => task.id === id)
-    const { completedBy } = currentTasks || {}
-
-    if (!completedBy?.includes(userTag as string))
-      await updateDoc(tasksRef, {
-        completedBy: [userTag, ...(completedBy ?? [])],
-      })
-  }
-
   return (
     <Container>
-      <RoomNav room={currentRoom as RoomList} />
+      <RoomNav room={currentRoom} />
       <Header title={currentRoom?.name} desc='' />
       <form
         spellCheck='false'
@@ -84,7 +74,7 @@ const Room = () => {
             maxLength={150}
             minLength={5}
             onChange={(e) => setDesc(e.target.value)}
-            value={desc}
+            value={description}
             type='text'
             placeholder='task description'
             className='bg-inputbg h-[45px] outline-none w-full pr-4'
@@ -96,11 +86,12 @@ const Room = () => {
 
         <div className='flex dueBtn items-center mt-2'>
           <DatePicker
+            placeholderText='No Due Date'
             selected={dueDate}
             onChange={(date: Date) => setDueDate(date)}
             minDate={new Date()}
             ref={dateInputRef}
-            className='bg-secondary text-sm w-full outline-none font-semibold'
+            className='bg-secondary text-sm w-full outline-none font-semibold placeholder-primary'
           />
 
           <div className=' flex text-2xl mr-[3px]'>
@@ -114,14 +105,8 @@ const Room = () => {
       </form>
       <div className='w-full my-2'>
         <AnimatePresence>
-          {roomTasks?.map((task) => (
-            <RoomTask
-              key={task.id}
-              task={task}
-              delTask={delTask}
-              doneTask={doneTask}
-              memberCount={memberCount}
-            />
+          {tasks?.map((task) => (
+            <RoomTask key={task.id} task={task} memberCount={memberCount} />
           ))}
         </AnimatePresence>
       </div>

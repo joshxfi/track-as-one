@@ -6,17 +6,17 @@ interface RoomNavProps {
 }
 
 const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
-  const { roomID, members } = room || {}
+  const { id, members } = room
 
   return (
     <nav className='flex justify-evenly text-sm p-2 bg-secondary w-full rounded-b-[16px]'>
-      <Link href={`/info/${roomID}`}>
+      <Link href={`/info/${id}`}>
         <a>room info</a>
       </Link>
 
-      <p>members: {members.length + 1}</p>
+      <p>members: {members?.length + 1}</p>
 
-      <Link href={`/invite/${roomID}`}>
+      <Link href={`/invite/${id}`}>
         <a>invite user</a>
       </Link>
     </nav>

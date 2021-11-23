@@ -24,8 +24,8 @@ interface RoomList {
 interface TaskList {
   id?: string;
   description: string;
-  addedBy: string | undefined | null;
-  dateAdded: string;
-  dueDate: string | undefined;
+  addedBy: string;
+  dateAdded: any;
+  dueDate?: any;
   completedBy: string[];
 }

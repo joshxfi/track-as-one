@@ -1,20 +1,21 @@
 import { DocumentData, getDocs, onSnapshot, Query } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 /**
  *
- * @param ref Query<DocumentData>
+ * @param ref collection reference
+ * @param listen if true, onSnapshot will be used, else getDocs
  * @returns [collection, loading]
  */
 
 const useCollection = <T extends unknown>(
   ref: Query<DocumentData>,
-  listener?: { listen: true }
+  listen?: boolean
 ) => {
   const [collection, setCollection] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const getCollection = async () => {
+  const getCollection = useCallback(async () => {
     setLoading(true);
 
     const docs = await getDocs(ref);
@@ -30,12 +31,12 @@ const useCollection = <T extends unknown>(
     });
 
     setLoading(false);
-  };
+  }, [ref]);
 
   useEffect(() => {
     let unsub: any;
 
-    if (listener) {
+    if (listen) {
       setLoading(true);
 
       unsub = onSnapshot(ref, (docs) => {
