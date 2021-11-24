@@ -8,11 +8,9 @@ interface ContainerProps {
 }
 
 const Container = ({ styles, children }: ContainerProps) => {
-  const { user } = useAuth();
-
   return (
     <Layout>
-      <div className={styles}>{user ? children : <Welcome />}</div>
+      <div className={styles}>{children}</div>
     </Layout>
   );
 };

@@ -15,11 +15,17 @@ import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
 import { Container, Header } from '@/components';
-import { RoomInfo, RoomInvite, RoomNav, RoomRequest, RoomTask } from '@/components/Room';
+import {
+  RoomInfo,
+  RoomInvite,
+  RoomNav,
+  RoomRequest,
+  RoomTask,
+} from '@/components/Room';
 
 const Room = () => {
   const [description, setDesc] = useState<string>('');
-  const [dueDate, setDueDate] = useState<Date | null>(new Date());
+  const [dueDate, setDueDate] = useState<Date | null>(null);
 
   const router = useRouter();
   const { id, tab } = router.query;

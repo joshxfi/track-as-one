@@ -58,7 +58,7 @@ const RoomInvite = () => {
       } else if (room.members?.includes(invUserTag)) {
         errorMsg('user is already in the room');
       } else if (user.userTag) {
-        await updateDoc(doc(db, 'users', user.id), {
+        await updateDoc(doc(db, `users/${user.id}`), {
           invites: arrayUnion(id),
         });
         errorMsg('user invited!');

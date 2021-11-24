@@ -6,9 +6,10 @@ import {
   signInWithPopup,
   User,
 } from 'firebase/auth';
-import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
+import { useRouter } from 'next/router';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+
 import { auth, db } from '../config/firebase';
 
 interface AuthContextValues {
