@@ -1,4 +1,5 @@
 interface UserList {
+  id: string;
   username?: string;
   userTag: string;
   photoURL?: string | null;

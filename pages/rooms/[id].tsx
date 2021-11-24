@@ -2,19 +2,12 @@ import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { AnimatePresence } from 'framer-motion'
 import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
-import {
-  updateDoc,
-  addDoc,
-  collection,
-  doc,
-  deleteDoc,
-  serverTimestamp,
-} from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { Container, Header } from '@/components'
-import { RoomInfo, RoomNav, RoomTask } from '@/components/Room'
+import { RoomInfo, RoomInvite, RoomNav, RoomTask } from '@/components/Room'
 import { useCollection } from '@/hooks'
 import { db } from '@/config/firebase'
 import { useAuth } from '@/context/AuthContext'
@@ -30,14 +23,14 @@ const Room = () => {
   const [tasks] = useCollection<TaskList>(collection(db, `rooms/${id}/tasks`), {
     listen: true,
   })
-  const [currentRoom] = useRoom(id)
+  const [room] = useRoom(id)
 
-  const { id: roomID } = currentRoom
+  const { id: roomID } = room
   const { data } = useAuth()
   const { userTag } = data
 
   const dateInputRef = useRef<ReactDatePicker>(null)
-  const memberCount = currentRoom?.members?.length + 1
+  const memberCount = room?.members?.length + 1
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -59,11 +52,12 @@ const Room = () => {
   }
 
   if (tab === 'info') return <RoomInfo />
+  if (tab === 'invite') return <RoomInvite />
 
   return (
     <Container>
-      <RoomNav room={currentRoom} />
-      <Header title={currentRoom?.name} desc='' />
+      <RoomNav room={room} />
+      <Header title={room?.name} desc='' />
       <form
         spellCheck='false'
         autoComplete='off'

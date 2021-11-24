@@ -16,7 +16,7 @@ import {
 import useRoom from '@/hooks/useRoom'
 import { RoomNav } from '@/components/Room'
 import { InfoBtn } from '@/components/Button'
-import { Container, Header, Clipboard, Error } from '@/components'
+import { Container, Header, Clipboard } from '@/components'
 import { useAuth } from '@/context/AuthContext'
 import { useCollection } from '@/hooks'
 import { db } from '@/config/firebase'
@@ -30,8 +30,8 @@ const Info: React.FC = () => {
 
   const { user, data } = useAuth()
 
-  const [currentRoom, loading] = useRoom(id)
-  const { creator, dateAdded, requests, id: roomID } = currentRoom
+  const [room, loading] = useRoom(id)
+  const { creator, dateAdded, requests, id: roomID } = room
 
   const [roomCreator] = useCollection<UserList>(
     query(collection(db, 'users'), where('userTag', '==', `${creator}`)),
@@ -78,7 +78,7 @@ const Info: React.FC = () => {
 
   return (
     <Container>
-      <RoomNav room={currentRoom} />
+      <RoomNav room={room} />
       <Header title='Room Info' desc={`room id → ${roomID}`} />
 
       <div className='card flex-between h-[70px] mb-2 w-full'>
