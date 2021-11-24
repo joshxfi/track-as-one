@@ -1,13 +1,13 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import { BiDoorOpen } from 'react-icons/bi'
+import React from 'react';
+import { useRouter } from 'next/router';
+import { BiDoorOpen } from 'react-icons/bi';
 
 interface ListRoomsProps {
-  room: RoomList
+  room: IRoom;
 }
 
 const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <button
@@ -22,7 +22,7 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
 
       <BiDoorOpen className='icon' />
     </button>
-  )
-}
+  );
+};
 
-export default ListRooms
+export default ListRooms;

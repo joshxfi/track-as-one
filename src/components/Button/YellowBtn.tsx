@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 interface YellowBtnProps extends ButtonProps {}
 
@@ -19,7 +19,7 @@ const YellowBtn = ({
     >
       <p className='mr-4'>{desc}</p> <Icon className={`${iconSize}`} />
     </button>
-  )
-}
+  );
+};
 
-export default YellowBtn
+export default YellowBtn;

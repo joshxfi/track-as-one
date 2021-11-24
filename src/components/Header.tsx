@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 interface HeaderProps {
-  title?: string
-  desc?: string
+  title?: string;
+  desc?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ title, desc }) => {
@@ -11,12 +11,12 @@ const Header: React.FC<HeaderProps> = ({ title, desc }) => {
       <h1 className='text-5xl font-bold md:text-7xl'>{title}</h1>
       <i className='text-base md:text-xl'>{desc}</i>
     </header>
-  )
-}
+  );
+};
 
 Header.defaultProps = {
   title: 'trackAsOne',
   desc: 'organize your tasks as one',
-}
+};
 
-export default Header
+export default Header;

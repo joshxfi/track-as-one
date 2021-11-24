@@ -1,39 +1,39 @@
-import React from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { AiOutlineIdcard } from 'react-icons/ai'
-import { doc, updateDoc } from 'firebase/firestore'
+import React from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { AiOutlineIdcard } from 'react-icons/ai';
+import { doc, updateDoc } from 'firebase/firestore';
 
-import { Container, Header, Error } from '@/components'
+import { Container, Header, Error } from '@/components';
 
 const Requests = () => {
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
 
-  const currentRoom = roomList.find((room) => room.roomID === id)
-  const { members, requests, roomID } = currentRoom || {}
+  const currentRoom = roomList.find((room) => room.roomID === id);
+  const { members, requests, roomID } = currentRoom || {};
 
   const matchUsers = userList.filter((user) =>
     requests?.includes(user.userTag as string)
-  )
+  );
 
-  const acceptRequest = async ({ userTag, roomsJoined }: UserList) => {
+  const acceptRequest = async ({ userTag, roomsJoined }: IUser) => {
     if (currentRoom) {
-      const currentRoomRef = doc(db, 'roomList', `${roomID}`)
-      const targetUserRef = doc(db, 'userList', `${userTag}`)
+      const currentRoomRef = doc(db, 'roomList', `${roomID}`);
+      const targetUserRef = doc(db, 'userList', `${userTag}`);
 
-      const newReqs = requests?.filter((req) => req !== userTag)
+      const newReqs = requests?.filter((req) => req !== userTag);
 
       await updateDoc(currentRoomRef, {
         requests: newReqs,
         members: [userTag, ...(members ?? [])],
-      })
+      });
 
       await updateDoc(targetUserRef, {
         roomsJoined: [roomID, ...roomsJoined],
-      })
+      });
     }
-  }
+  };
 
   return (
     <Container>
@@ -72,7 +72,7 @@ const Requests = () => {
         )}
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Requests
+export default Requests;

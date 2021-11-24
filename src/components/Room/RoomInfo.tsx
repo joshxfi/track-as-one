@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { BsCalendarFill } from 'react-icons/bs'
-import { AiOutlineIdcard } from 'react-icons/ai'
+import React, { useState } from 'react';
+import { BsCalendarFill } from 'react-icons/bs';
+import { AiOutlineIdcard } from 'react-icons/ai';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 import {
   doc,
   deleteDoc,
@@ -11,70 +11,70 @@ import {
   query,
   where,
   arrayRemove,
-} from 'firebase/firestore'
+} from 'firebase/firestore';
 
-import useRoom from '@/hooks/useRoom'
-import { RoomNav } from '@/components/Room'
-import { InfoBtn } from '@/components/Button'
-import { Container, Header, Clipboard } from '@/components'
-import { useAuth } from '@/context/AuthContext'
-import { useCollection } from '@/hooks'
-import { db } from '@/config/firebase'
-import { defaultPic } from '@/utils/default'
+import useRoom from '@/hooks/useRoom';
+import { db } from '@/config/firebase';
+import { useCollection } from '@/hooks';
+import { RoomNav } from '@/components/Room';
+import { defaultPic } from '@/utils/default';
+import { InfoBtn } from '@/components/Button';
+import { useAuth } from '@/context/AuthContext';
+import { Container, Header, Clipboard } from '@/components';
 
 const Info: React.FC = () => {
-  const [copied, setCopied] = useState<boolean>(false)
+  const [copied, setCopied] = useState<boolean>(false);
 
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
 
-  const { user, data } = useAuth()
+  const { user, data } = useAuth();
 
-  const [room, loading] = useRoom(id)
-  const { creator, dateAdded, requests, id: roomID } = room
+  const [room, loading] = useRoom(id);
+  const { creator, dateAdded, requests, id: roomID } = room;
 
-  const [roomCreator] = useCollection<UserList>(
+  const [roomCreator] = useCollection<IUser>(
     query(collection(db, 'users'), where('userTag', '==', `${creator}`)),
     { deps: [loading] }
-  )
-  const [roomMembers] = useCollection<UserList>(
+  );
+  const [roomMembers] = useCollection<IUser>(
     query(
       collection(db, 'users'),
       where('roomsJoined', 'array-contains', `${roomID}`)
     )
-  )
+  );
 
   const deleteRoom = async () => {
-    const creatorRef = doc(db, `users/${creator}`)
+    const creatorRef = doc(db, `users/${creator}`);
 
-    router.push('/')
-    await deleteDoc(doc(db, `rooms/${roomID}`))
+    router.push('/');
+    await deleteDoc(doc(db, `rooms/${roomID}`));
 
     await updateDoc(creatorRef, {
       roomsCreated: arrayRemove(roomID),
-    })
-  }
+    });
+  };
 
   const leaveRoom = async () => {
     if (data.userTag !== creator) {
       await updateDoc(doc(db, `rooms/${roomID}`), {
         members: arrayRemove(data.userTag),
-      })
+      });
 
       await updateDoc(doc(db, `users/${user?.uid}`), {
         roomsJoined: arrayRemove(roomID),
-      })
+      });
 
-      router.push('/')
+      router.push('/');
     }
-  }
+  };
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${roomID}`)
-    setCopied(true)
+    navigator.clipboard.writeText(`${roomID}`);
+    setCopied(true);
 
-    setTimeout(() => setCopied(false), 3000)
-  }
+    setTimeout(() => setCopied(false), 3000);
+  };
 
   return (
     <Container>
@@ -172,7 +172,7 @@ const Info: React.FC = () => {
         </div>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Info
+export default Info;

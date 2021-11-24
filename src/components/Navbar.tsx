@@ -1,10 +1,10 @@
-import React from 'react'
-import Link from 'next/link'
-import { FaSignInAlt } from 'react-icons/fa'
-import { useAuth } from '@/context/AuthContext'
+import React from 'react';
+import Link from 'next/link';
+import { FaSignInAlt } from 'react-icons/fa';
+import { useAuth } from '@/context/AuthContext';
 
 const Navbar: React.FC = () => {
-  const { user, signIn, signOut } = useAuth()
+  const { user, signIn, signOut } = useAuth();
 
   return (
     <nav className='w-full bg-primary py-3 text-f9 shadow-lg'>
@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
         </button>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

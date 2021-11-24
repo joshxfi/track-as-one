@@ -1,10 +1,10 @@
-import React from 'react'
-import Image from 'next/image'
-import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa'
+import React from 'react';
+import Image from 'next/image';
+import { FaSignInAlt, FaHandHoldingHeart, FaPhone } from 'react-icons/fa';
 
-import avatar from '@/assets/avatar.svg'
-import avatar2 from '@/assets/avatar2.svg'
-import { YellowBtn } from '@/components/Button'
+import avatar from '@/assets/avatar.svg';
+import avatar2 from '@/assets/avatar2.svg';
+import { YellowBtn } from '@/components/Button';
 
 const Welcome: React.FC = () => {
   return (
@@ -85,7 +85,7 @@ const Welcome: React.FC = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default Welcome
+export default Welcome;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 interface TaskBtnProps extends ButtonProps {}
 
@@ -18,7 +18,7 @@ export const TaskBtn = ({
     >
       <p className='mr-4'>{desc}</p> <Icon className={`${iconSize}`} />
     </button>
-  )
-}
+  );
+};
 
-export default TaskBtn
+export default TaskBtn;

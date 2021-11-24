@@ -1,9 +1,9 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React from 'react';
+import { motion } from 'framer-motion';
 
 interface ErrorMSGProps {
-  error: string
-  showError: boolean
+  error: string;
+  showError: boolean;
 }
 
 const ErrorMsg: React.FC<ErrorMSGProps> = ({ error, showError }) => {
@@ -15,7 +15,7 @@ const ErrorMsg: React.FC<ErrorMSGProps> = ({ error, showError }) => {
     >
       <p>{error}</p>
     </motion.div>
-  )
-}
+  );
+};
 
-export default ErrorMsg
+export default ErrorMsg;

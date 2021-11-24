@@ -1,14 +1,14 @@
-import React from 'react'
-import Image from 'next/image'
+import React from 'react';
+import Image from 'next/image';
 import {
   FaGithub,
   FaLinkedin,
   FaDiscord,
   FaInstagramSquare,
-} from 'react-icons/fa'
-import doodle from '@/assets/doodle.svg'
+} from 'react-icons/fa';
+import doodle from '@/assets/doodle.svg';
 
-const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare]
+const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare];
 
 const Footer: React.FC = () => {
   return (
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

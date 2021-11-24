@@ -1,4 +1,4 @@
-interface UserList {
+interface IUser {
   id: string;
   username?: string;
   userTag: string;
@@ -10,7 +10,7 @@ interface UserList {
   dateJoined: any;
 }
 
-interface RoomList {
+interface IRoom {
   id?: string;
   name: string;
   creator: string;
@@ -20,7 +20,7 @@ interface RoomList {
   requests: string[];
 }
 
-interface TaskList {
+interface ITask {
   id?: string;
   description: string;
   addedBy: string;

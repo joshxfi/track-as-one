@@ -1,12 +1,12 @@
-import React from 'react'
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
 
 interface RoomNavProps {
-  room: RoomList
+  room: IRoom;
 }
 
 const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
-  const { id, members } = room
+  const { id, members } = room;
 
   return (
     <nav className='flex justify-evenly text-sm p-2 bg-secondary w-full rounded-b-[16px]'>
@@ -20,7 +20,7 @@ const RoomNav: React.FC<RoomNavProps> = ({ room }) => {
         <a>invite user</a>
       </Link>
     </nav>
-  )
-}
+  );
+};
 
-export default RoomNav
+export default RoomNav;

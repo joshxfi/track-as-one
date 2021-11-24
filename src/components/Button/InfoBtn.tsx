@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 interface InfoBtnProps {
-  desc: string
-  styles?: string
-  handleClick: () => void
+  desc: string;
+  styles?: string;
+  handleClick: () => void;
 }
 
 const InfoBtn = ({ desc, styles, handleClick }: InfoBtnProps) => {
@@ -15,7 +15,7 @@ const InfoBtn = ({ desc, styles, handleClick }: InfoBtnProps) => {
     >
       {desc}
     </button>
-  )
-}
+  );
+};
 
-export default InfoBtn
+export default InfoBtn;

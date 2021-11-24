@@ -1,74 +1,70 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   arrayUnion,
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
   updateDoc,
   where,
-} from 'firebase/firestore'
-import { AiOutlineIdcard } from 'react-icons/ai'
+} from 'firebase/firestore';
+import { AiOutlineIdcard } from 'react-icons/ai';
 
-import { RoomNav } from '@/components/Room'
-import { ErrorMsg, Container, Header, Input } from '@/components'
-import useRoom from '@/hooks/useRoom'
-import { db } from '@/config/firebase'
-import { useAuth } from '@/context/AuthContext'
+import useRoom from '@/hooks/useRoom';
+import { db } from '@/config/firebase';
+import { RoomNav } from '@/components/Room';
+import { useAuth } from '@/context/AuthContext';
+import { ErrorMsg, Container, Header, Input } from '@/components';
 
 const RoomInvite = () => {
-  const [invUserTag, setUserTag] = useState<string>('')
-  const [error, setError] = useState<string>('blank')
-  const [showError, setShowError] = useState<boolean>(false)
+  const [invUserTag, setUserTag] = useState<string>('');
+  const [error, setError] = useState<string>('blank');
+  const [showError, setShowError] = useState<boolean>(false);
 
   const errorMsg = (error: string) => {
-    setError(error)
-    setShowError(true)
+    setError(error);
+    setShowError(true);
 
     setTimeout(() => {
-      setShowError(false)
-    }, 3000)
-  }
+      setShowError(false);
+    }, 3000);
+  };
 
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
 
-  const { data } = useAuth()
+  const { data } = useAuth();
 
-  const [room] = useRoom(id)
+  const [room] = useRoom(id);
   const inviteUser = async () => {
-    setUserTag('')
+    setUserTag('');
 
     if (invUserTag === '') {
-      errorMsg('example → user:nTWS_')
+      errorMsg('example → user:nTWS_');
     } else {
       const invUserRef = query(
         collection(db, 'users'),
         where('userTag', '==', invUserTag)
-      )
-      const getUser = await getDocs(invUserRef)
+      );
+      const getUser = await getDocs(invUserRef);
 
-      const user: UserList = getUser.docs.map((user) => {
-        return { ...user.data(), id: user.id } as UserList
-      })[0]
+      const user: IUser = getUser.docs.map((user) => {
+        return { ...user.data(), id: user.id } as IUser;
+      })[0];
 
       if (invUserTag === data?.userTag) {
-        errorMsg('you are already in the room')
+        errorMsg('you are already in the room');
       } else if (room.members?.includes(invUserTag)) {
-        errorMsg('user is already in the room')
+        errorMsg('user is already in the room');
       } else if (user.userTag) {
         await updateDoc(doc(db, 'users', user.id), {
           invites: arrayUnion(id),
-        })
-        errorMsg('user invited!')
-      } else {
-        errorMsg('user tag could not be found')
-        console.log(user)
-      }
+        });
+        errorMsg('user invited!');
+      } else errorMsg('user tag could not be found');
     }
-  }
+  };
 
   return (
     <Container>
@@ -94,7 +90,7 @@ const RoomInvite = () => {
         </div>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-export default RoomInvite
+export default RoomInvite;

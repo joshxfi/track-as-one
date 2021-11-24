@@ -9,7 +9,7 @@ import { useDocument } from '.';
  */
 
 const useRoom = (id: string | string[] | undefined) => {
-  const [room, loading] = useDocument<RoomList>(doc(db, `rooms/${id}`));
+  const [room, loading] = useDocument<IRoom>(doc(db, `rooms/${id}`));
   return [room, loading] as const;
 };
 

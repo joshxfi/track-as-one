@@ -1,15 +1,15 @@
-import React from 'react'
-import Head from 'next/head'
-import { motion } from 'framer-motion'
+import React from 'react';
+import Head from 'next/head';
+import { motion } from 'framer-motion';
 
-import { Navbar, Footer } from '@/components'
+import { Navbar, Footer } from '@/components';
 
 const Layout: React.FC<Children> = ({ children }) => {
   const variants = {
     hidden: { opacity: 0 },
     enter: { opacity: 1 },
     exit: { opacity: 0 },
-  }
+  };
 
   return (
     <>
@@ -36,7 +36,7 @@ const Layout: React.FC<Children> = ({ children }) => {
         <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

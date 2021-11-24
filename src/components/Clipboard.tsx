@@ -1,5 +1,5 @@
-import React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Clipboard = ({ copied }: { copied: boolean }) => {
   return (
@@ -15,7 +15,7 @@ const Clipboard = ({ copied }: { copied: boolean }) => {
         </motion.p>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
-export default Clipboard
+export default Clipboard;

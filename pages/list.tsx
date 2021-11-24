@@ -1,29 +1,29 @@
-import React from 'react'
-import { BsEye } from 'react-icons/bs'
+import React from 'react';
+import { BsEye } from 'react-icons/bs';
 
-import { Container, Header, Loader } from '@/components'
-import { HrefBtn } from '@/components/Button'
-import { ListRooms, NoRooms } from '@/components/Room'
-import { useCollection } from '@/hooks'
-import { collection, query, where } from 'firebase/firestore'
-import { db } from '@/config/firebase'
-import { useAuth } from '@/context/AuthContext'
+import { Container, Header, Loader } from '@/components';
+import { HrefBtn } from '@/components/Button';
+import { ListRooms, NoRooms } from '@/components/Room';
+import { useCollection } from '@/hooks';
+import { collection, query, where } from 'firebase/firestore';
+import { db } from '@/config/firebase';
+import { useAuth } from '@/context/AuthContext';
 
 const List = () => {
-  const { data } = useAuth()
+  const { data } = useAuth();
 
-  const roomRef = collection(db, 'rooms')
+  const roomRef = collection(db, 'rooms');
 
-  const [createdRooms, loading] = useCollection<RoomList>(
+  const [createdRooms, loading] = useCollection<IRoom>(
     query(roomRef, where('creator', '==', data.userTag ?? ''))
-  )
-  const [joinedRooms, _loading] = useCollection<RoomList>(
+  );
+  const [joinedRooms, _loading] = useCollection<IRoom>(
     query(roomRef, where('members', 'array-contains', data.userTag ?? ''))
-  )
+  );
 
-  const isLoading = loading || _loading
+  const isLoading = loading || _loading;
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <Loader />;
 
   return (
     <Container>
@@ -52,7 +52,7 @@ const List = () => {
 
       <HrefBtn desc='view invites' href='/invites' Icon={BsEye} />
     </Container>
-  )
-}
+  );
+};
 
-export default List
+export default List;

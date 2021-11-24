@@ -1,14 +1,14 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import { VscSignIn } from 'react-icons/vsc'
+import React from 'react';
+import { useRouter } from 'next/router';
+import { VscSignIn } from 'react-icons/vsc';
 
 interface NoRoomsProps {
-  desc: string
-  href: string
+  desc: string;
+  href: string;
 }
 
 export const NoRooms: React.FC<NoRoomsProps> = ({ desc, href }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <button
@@ -19,7 +19,7 @@ export const NoRooms: React.FC<NoRoomsProps> = ({ desc, href }) => {
       <h2>{desc}</h2>
       <VscSignIn className='icon' />
     </button>
-  )
-}
+  );
+};
 
-export default NoRooms
+export default NoRooms;

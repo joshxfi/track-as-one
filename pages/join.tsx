@@ -1,42 +1,43 @@
-import React, { useState } from 'react'
-import { doc, updateDoc } from 'firebase/firestore'
-import { VscSignIn } from 'react-icons/vsc'
+import React, { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { VscSignIn } from 'react-icons/vsc';
 
-import Container from '@/components/Container'
-import { ErrorMsg, Header, Input } from '@/components'
+import Container from '@/components/Container';
+import { ErrorMsg, Header, Input } from '@/components';
 
 const Join = () => {
-  const [roomID, setRoomID] = useState<string>('')
-  const [error, setError] = useState<string>('blank')
-  const [showError, setShowError] = useState<boolean>(false)
+  const [roomID, setRoomID] = useState<string>('');
+  const [error, setError] = useState<string>('blank');
+  const [showError, setShowError] = useState<boolean>(false);
 
   const errorMsg = (error: string) => {
-    setError(error)
-    setShowError(true)
+    setError(error);
+    setShowError(true);
 
     setTimeout(() => {
-      setShowError(false)
-    }, 3000)
-  }
+      setShowError(false);
+    }, 3000);
+  };
 
-  const targetRoom = roomList?.find((room) => room.roomID === roomID)
-  const { members, creator, requests } = targetRoom || {}
+  const targetRoom = roomList?.find((room) => room.roomID === roomID);
+  const { members, creator, requests } = targetRoom || {};
 
   const requestJoin = async () => {
-    setRoomID('')
+    setRoomID('');
 
-    if (members?.includes(userTag!)) errorMsg('You are already a member')
-    else if (members?.includes(userTag!)) errorMsg('You already sent a request')
-    else if (creator === userTag) errorMsg('You are the owner of the room')
-    else if (!targetRoom) errorMsg('Room does not exist')
+    if (members?.includes(userTag!)) errorMsg('You are already a member');
+    else if (members?.includes(userTag!))
+      errorMsg('You already sent a request');
+    else if (creator === userTag) errorMsg('You are the owner of the room');
+    else if (!targetRoom) errorMsg('Room does not exist');
     else {
-      const requestRoomRef = doc(db, 'roomList', roomID)
+      const requestRoomRef = doc(db, 'roomList', roomID);
 
       await updateDoc(requestRoomRef, {
         requests: [currentUser?.userTag, ...(requests ?? [])],
-      })
+      });
     }
-  }
+  };
 
   return (
     <Container>
@@ -58,7 +59,7 @@ const Join = () => {
         </div>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Join
+export default Join;

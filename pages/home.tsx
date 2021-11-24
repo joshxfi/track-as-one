@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { BiDoorOpen } from 'react-icons/bi'
-import { AiOutlineIdcard } from 'react-icons/ai'
-import { VscSignIn, VscListOrdered } from 'react-icons/vsc'
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { BiDoorOpen } from 'react-icons/bi';
+import { AiOutlineIdcard } from 'react-icons/ai';
+import { VscSignIn, VscListOrdered } from 'react-icons/vsc';
 
-import { Clipboard, Container } from '@/components'
-import { defaultPic } from '@/utils/default'
-import { HomeBtn } from '@/components/Button'
-import { useAuth } from '@/context/AuthContext'
+import { Clipboard, Container } from '@/components';
+import { defaultPic } from '@/utils/default';
+import { HomeBtn } from '@/components/Button';
+import { useAuth } from '@/context/AuthContext';
 
 const Homepage: React.FC = () => {
-  const { data } = useAuth()
-  const { userTag, photoURL, username } = data
-  const [copied, setCopied] = useState<boolean>(false)
+  const { data } = useAuth();
+  const { userTag, photoURL, username } = data;
+  const [copied, setCopied] = useState<boolean>(false);
 
   const copyTag = () => {
-    navigator.clipboard.writeText(userTag)
-    setCopied(true)
+    navigator.clipboard.writeText(userTag);
+    setCopied(true);
 
-    setTimeout(() => setCopied(false), 3000)
-  }
+    setTimeout(() => setCopied(false), 3000);
+  };
 
   return (
     <Container>
@@ -62,7 +62,7 @@ const Homepage: React.FC = () => {
         <Clipboard copied={copied} />
       </section>
     </Container>
-  )
-}
+  );
+};
 
-export default Homepage
+export default Homepage;

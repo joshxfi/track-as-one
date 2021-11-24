@@ -1,5 +1,5 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const Loader = () => {
   return (
@@ -12,7 +12,7 @@ const Loader = () => {
     >
       <span className='load' />
     </motion.div>
-  )
-}
+  );
+};
 
-export default Loader
+export default Loader;

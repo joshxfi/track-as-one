@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-import router from 'next/router'
-import { motion } from 'framer-motion'
+import router from 'next/router';
+import { motion } from 'framer-motion';
 
 interface HomepageButtonProps extends LinkButtonProps {}
 
@@ -15,7 +15,7 @@ const HomeBtn: React.FC<HomepageButtonProps> = ({ desc, href, Icon }) => {
     >
       <p className='mr-4'>{desc}</p> <Icon className='text-xl text-secondary' />
     </motion.button>
-  )
-}
+  );
+};
 
-export default HomeBtn
+export default HomeBtn;

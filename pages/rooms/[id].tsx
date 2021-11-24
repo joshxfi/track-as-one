@@ -1,58 +1,62 @@
-import React, { useState, useRef } from 'react'
-import { useRouter } from 'next/router'
-import { AnimatePresence } from 'framer-motion'
-import { BsPlusSquareFill, BsCalendarFill, BsXSquareFill } from 'react-icons/bs'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import DatePicker, { ReactDatePicker } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import React, { useState, useRef } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/router';
+import {
+  BsPlusSquareFill,
+  BsCalendarFill,
+  BsXSquareFill,
+} from 'react-icons/bs';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker, { ReactDatePicker } from 'react-datepicker';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
-import { Container, Header } from '@/components'
-import { RoomInfo, RoomInvite, RoomNav, RoomTask } from '@/components/Room'
-import { useCollection } from '@/hooks'
-import { db } from '@/config/firebase'
-import { useAuth } from '@/context/AuthContext'
-import useRoom from '@/hooks/useRoom'
+import useRoom from '@/hooks/useRoom';
+import { db } from '@/config/firebase';
+import { useCollection } from '@/hooks';
+import { useAuth } from '@/context/AuthContext';
+import { Container, Header } from '@/components';
+import { RoomInfo, RoomInvite, RoomNav, RoomTask } from '@/components/Room';
 
 const Room = () => {
-  const [description, setDesc] = useState<string>('')
-  const [dueDate, setDueDate] = useState<Date | null>(new Date())
+  const [description, setDesc] = useState<string>('');
+  const [dueDate, setDueDate] = useState<Date | null>(new Date());
 
-  const router = useRouter()
-  const { id, tab } = router.query
+  const router = useRouter();
+  const { id, tab } = router.query;
 
-  const [tasks] = useCollection<TaskList>(collection(db, `rooms/${id}/tasks`), {
+  const [tasks] = useCollection<ITask>(collection(db, `rooms/${id}/tasks`), {
     listen: true,
-  })
-  const [room] = useRoom(id)
+  });
+  const [room] = useRoom(id);
 
-  const { id: roomID } = room
-  const { data } = useAuth()
-  const { userTag } = data
+  const { id: roomID } = room;
+  const { data } = useAuth();
+  const { userTag } = data;
 
-  const dateInputRef = useRef<ReactDatePicker>(null)
-  const memberCount = room?.members?.length + 1
+  const dateInputRef = useRef<ReactDatePicker>(null);
+  const memberCount = room?.members?.length + 1;
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const payload: TaskList = {
+    const payload: ITask = {
       description,
       addedBy: userTag,
       completedBy: [],
       dateAdded: serverTimestamp(),
       dueDate,
-    }
+    };
 
-    setDesc('')
-    const tasksRef = collection(db, `rooms/${roomID}/tasks`)
+    setDesc('');
+    const tasksRef = collection(db, `rooms/${roomID}/tasks`);
 
     if (description && tasks.length < 15) {
-      await addDoc(tasksRef, payload)
+      await addDoc(tasksRef, payload);
     }
-  }
+  };
 
-  if (tab === 'info') return <RoomInfo />
-  if (tab === 'invite') return <RoomInvite />
+  if (tab === 'info') return <RoomInfo />;
+  if (tab === 'invite') return <RoomInvite />;
 
   return (
     <Container>
@@ -106,7 +110,7 @@ const Room = () => {
         </AnimatePresence>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Room
+export default Room;

@@ -1,11 +1,11 @@
 /* eslint-disable react/button-has-type */
-import React from 'react'
-import { useRouter } from 'next/router'
+import React from 'react';
+import { useRouter } from 'next/router';
 
 interface HrefButtonProps extends LinkButtonProps {}
 
 const HrefBtn = ({ desc, href, type, Icon }: HrefButtonProps) => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <button
@@ -16,7 +16,7 @@ const HrefBtn = ({ desc, href, type, Icon }: HrefButtonProps) => {
       <p className='mr-4'>{desc}</p>
       <Icon className='icon' />
     </button>
-  )
-}
+  );
+};
 
-export default HrefBtn
+export default HrefBtn;

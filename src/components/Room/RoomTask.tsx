@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { BsXSquareFill } from 'react-icons/bs'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState } from 'react';
+import { BsXSquareFill } from 'react-icons/bs';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { TaskBtn } from '@/components/Button'
+import { TaskBtn } from '@/components/Button';
 
 interface RoomTaskProps {
-  task: TaskList
-  memberCount: number
+  task: ITask;
+  memberCount: number;
 }
 
 const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
-  const [showOptions, setShowOptions] = useState<boolean>(false)
-  const { dueDate } = task
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const { dueDate } = task;
 
   const optionsVariant = {
     init: {
@@ -28,7 +28,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
       y: -70,
       opacity: 0,
     },
-  }
+  };
 
   return (
     <motion.div className='relative mb-2'>
@@ -77,8 +77,8 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
         )}
       </AnimatePresence>
     </motion.div>
-  )
-}
+  );
+};
 
 const CheckIcon = () => {
   return (
@@ -92,7 +92,7 @@ const CheckIcon = () => {
     >
       <path d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z' />
     </svg>
-  )
-}
+  );
+};
 
-export default RoomTask
+export default RoomTask;

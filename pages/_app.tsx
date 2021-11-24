@@ -1,11 +1,11 @@
-import React from 'react'
-import '../styles/global.css'
-import '../styles/tailwind.css'
-import type { AppProps } from 'next/app'
-import { AnimatePresence } from 'framer-motion'
+import React from 'react';
+import '../styles/global.css';
+import '../styles/tailwind.css';
+import type { AppProps } from 'next/app';
+import { AnimatePresence } from 'framer-motion';
 
-import LoaderHandler from '@/components/LoaderHandler'
-import { AuthProvider } from '@/context/AuthContext'
+import LoaderHandler from '@/components/LoaderHandler';
+import { AuthProvider } from '@/context/AuthContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,6 +16,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         </LoaderHandler>
       </AnimatePresence>
     </AuthProvider>
-  )
+  );
 }
-export default MyApp
+export default MyApp;

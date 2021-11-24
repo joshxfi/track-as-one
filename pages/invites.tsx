@@ -1,33 +1,33 @@
-import React from 'react'
-import router from 'next/router'
-import { doc, updateDoc } from 'firebase/firestore'
-import { BiDoorOpen } from 'react-icons/bi'
+import React from 'react';
+import router from 'next/router';
+import { doc, updateDoc } from 'firebase/firestore';
+import { BiDoorOpen } from 'react-icons/bi';
 
-import { Container, Error, Header } from '@/components'
+import { Container, Error, Header } from '@/components';
 
 const Invites: React.FC = () => {
-  const userInvites = invites?.map((inv) => inv)
+  const userInvites = invites?.map((inv) => inv);
   const matchInvites = roomList.filter((room) =>
     userInvites?.includes(room.roomID)
-  )
+  );
 
   const acceptInvite = async (roomTag: string) => {
-    const targetRoom = roomList.find((room) => room.roomID === roomTag)
+    const targetRoom = roomList.find((room) => room.roomID === roomTag);
 
-    const currentUserRef = doc(db, 'userList', `${userTag}`)
-    const joinRoomRef = doc(db, 'roomList', roomTag)
+    const currentUserRef = doc(db, 'userList', `${userTag}`);
+    const joinRoomRef = doc(db, 'roomList', roomTag);
 
     await updateDoc(currentUserRef, {
       invites: invites?.filter((invite) => invite !== roomTag),
       roomsJoined: [roomTag, ...(roomsJoined ?? [])],
-    })
+    });
 
     await updateDoc(joinRoomRef, {
       members: [userTag, ...targetRoom!.members],
-    })
+    });
 
-    router.push(`rooms/${roomTag}`)
-  }
+    router.push(`rooms/${roomTag}`);
+  };
 
   return (
     <Container>
@@ -54,7 +54,7 @@ const Invites: React.FC = () => {
         )}
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Invites
+export default Invites;
