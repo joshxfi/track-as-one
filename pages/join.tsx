@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { doc, updateDoc } from 'firebase/firestore';
 import { VscSignIn } from 'react-icons/vsc';
+import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
-import Container from '@/components/Container';
+import { db } from '@/config/firebase';
+import { useAuth } from '@/context/AuthContext';
 import { ErrorMsg, Header, Input } from '@/components';
+import Container from '@/components/Container';
 
 const Join = () => {
   const [roomID, setRoomID] = useState<string>('');
   const [error, setError] = useState<string>('blank');
   const [showError, setShowError] = useState<boolean>(false);
+
+  const { data } = useAuth();
+  const { userTag } = data;
 
   const errorMsg = (error: string) => {
     setError(error);
@@ -19,23 +24,27 @@ const Join = () => {
     }, 3000);
   };
 
-  const targetRoom = roomList?.find((room) => room.roomID === roomID);
-  const { members, creator, requests } = targetRoom || {};
-
   const requestJoin = async () => {
     setRoomID('');
 
-    if (members?.includes(userTag!)) errorMsg('You are already a member');
-    else if (members?.includes(userTag!))
-      errorMsg('You already sent a request');
-    else if (creator === userTag) errorMsg('You are the owner of the room');
-    else if (!targetRoom) errorMsg('Room does not exist');
-    else {
-      const requestRoomRef = doc(db, 'roomList', roomID);
+    const roomRef = doc(db, 'rooms', roomID)
 
-      await updateDoc(requestRoomRef, {
-        requests: [currentUser?.userTag, ...(requests ?? [])],
+    const room = await getDoc(roomRef);
+    const _room: IRoom = room.data() as IRoom;
+
+    if (!room.exists()) errorMsg('Room does not exist');
+    else if (_room.members.includes(userTag))
+      errorMsg('You are already a member');
+    else if (_room.requests.includes(userTag))
+      errorMsg('You already sent a request');
+    else if (_room.creator === userTag)
+      errorMsg('You are the owner of the room');
+    else {
+      await updateDoc(roomRef, {
+        requests: arrayUnion(userTag),
       });
+
+      errorMsg('Request to join sent!')
     }
   };
 
@@ -52,7 +61,11 @@ const Join = () => {
         <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
-          <button type='button' onClick={requestJoin} className='btn btnEffect'>
+          <button
+            type='button'
+            onClick={roomID ? requestJoin : () => null}
+            className='btn btnEffect'
+          >
             <p className='mr-4'>request join</p>
             <VscSignIn className='icon' />
           </button>

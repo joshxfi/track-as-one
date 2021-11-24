@@ -1,50 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   arrayRemove,
   arrayUnion,
+  collection,
   doc,
-  getDoc,
+  query,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { useRouter } from 'next/router';
+import { nanoid } from 'nanoid';
 import Image from 'next/image';
 
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { defaultPic } from '@/utils/default';
 import { Container, Header } from '@/components';
+import { useCollection } from '@/hooks';
 
 const Requests = () => {
-  const [userReq, setUserReq] = useState<IUser[]>([]);
+  const [reqs, setReqs] = useState<string[]>(['default']);
 
   const router = useRouter();
   const { id } = router.query;
 
-  const [room] = useRoom(id);
-  const { requests, id: roomID } = room;
+  const [room, loading] = useRoom(id);
 
   useEffect(() => {
-    const unsub = () => {
-      if (!userReq) {
-        requests.forEach(async (userId) => {
-          const user = await getDoc(doc(db, `users/${userId}`));
-          setUserReq((prevState) => [user.data() as IUser, ...prevState]);
-        });
-      }
-    };
+    if (room.requests?.length) setReqs(room.requests);
+  }, [loading]);
 
-    return unsub();
-  }, [requests]);
+  const [users] = useCollection<IUser>(
+    query(collection(db, 'users'), where('userTag', 'in', reqs)), { deps: [reqs] }
+  );
 
   const acceptRequest = async ({ userTag, id }: IUser) => {
-    await updateDoc(doc(db, `rooms/${roomID}`), {
+    await updateDoc(doc(db, `rooms/${room.id}`), {
       requests: arrayRemove(userTag),
       members: arrayUnion(userTag),
     });
 
     await updateDoc(doc(db, `users/${id}`), {
-      roomsJoined: arrayUnion(roomID),
+      roomsJoined: arrayUnion(room.id),
     });
   };
 
@@ -52,11 +50,11 @@ const Requests = () => {
     <Container>
       <Header title='Requests' />
       <div className='w-full mb-4'>
-        {userReq.map((user) => (
+        {users.map((user) => (
           <button
+            key={nanoid()}
             type='button'
             onClick={() => acceptRequest(user)}
-            key={user.userTag}
             className='flex-between card h-[70px] mb-2 btnEffect w-full text-left'
           >
             <div className='flex'>
@@ -71,7 +69,7 @@ const Requests = () => {
               <div className='leading-5'>
                 <p className='text-f9'>
                   {user?.username} →
-                  <span className='text-secondary'> {user.userTag}</span>
+                  <span className='text-secondary'> {user?.userTag}</span>
                 </p>
                 <p className='text-sm'>accept request</p>
               </div>
