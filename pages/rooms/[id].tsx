@@ -14,7 +14,7 @@ import DatePicker, { ReactDatePicker } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { Container, Header } from '@/components'
-import { RoomNav, RoomTask } from '@/components/Room'
+import { RoomInfo, RoomNav, RoomTask } from '@/components/Room'
 import { useCollection } from '@/hooks'
 import { db } from '@/config/firebase'
 import { useAuth } from '@/context/AuthContext'
@@ -25,7 +25,7 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<Date | null>(new Date())
 
   const router = useRouter()
-  const { id } = router.query
+  const { id, tab } = router.query
 
   const [tasks] = useCollection<TaskList>(collection(db, `rooms/${id}/tasks`), {
     listen: true,
@@ -57,6 +57,8 @@ const Room = () => {
       await addDoc(tasksRef, payload)
     }
   }
+
+  if (tab === 'info') return <RoomInfo />
 
   return (
     <Container>
