@@ -8,7 +8,7 @@
 
 ## Project Status
 
-Currently in development using mobile-first approach.
+Currently in development! (w/ hiatus in between)
 _Open Beta Soon!_
 
 ## Contributing
