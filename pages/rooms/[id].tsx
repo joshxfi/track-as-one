@@ -15,7 +15,7 @@ import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
 import { Container, Header } from '@/components';
-import { RoomInfo, RoomInvite, RoomNav, RoomTask } from '@/components/Room';
+import { RoomInfo, RoomInvite, RoomNav, RoomRequest, RoomTask } from '@/components/Room';
 
 const Room = () => {
   const [description, setDesc] = useState<string>('');
@@ -27,6 +27,7 @@ const Room = () => {
   const [tasks] = useCollection<ITask>(collection(db, `rooms/${id}/tasks`), {
     listen: true,
   });
+
   const [room] = useRoom(id);
 
   const { id: roomID } = room;
@@ -57,6 +58,7 @@ const Room = () => {
 
   if (tab === 'info') return <RoomInfo />;
   if (tab === 'invite') return <RoomInvite />;
+  if (tab === 'requests') return <RoomRequest />;
 
   return (
     <Container>

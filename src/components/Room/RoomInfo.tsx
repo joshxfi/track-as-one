@@ -144,10 +144,11 @@ const Info: React.FC = () => {
                 handleClick={() => router.push(`/rooms/${roomID}`)}
               />
             </div>
+
             <InfoBtn
               styles='mt-2'
               desc={`VIEW REQUESTS (${requests?.length})`}
-              handleClick={() => router.push(`/requests/${roomID}`)}
+              handleClick={() => router.push(`${roomID}?tab=requests`)}
             />
           </>
         ) : (
