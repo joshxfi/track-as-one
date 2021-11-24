@@ -15,9 +15,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { Container, Header } from '@/components'
 import { RoomNav, RoomTask } from '@/components/Room'
-import { useCollection, useDocument } from '@/hooks'
+import { useCollection } from '@/hooks'
 import { db } from '@/config/firebase'
 import { useAuth } from '@/context/AuthContext'
+import useRoom from '@/hooks/useRoom'
 
 const Room = () => {
   const [description, setDesc] = useState<string>('')
@@ -26,18 +27,16 @@ const Room = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const [tasks] = useCollection<TaskList>(
-    collection(db, `rooms/${id}/tasks`),
-    true
-  )
-  const [currentRoom] = useDocument<RoomList>(doc(db, `rooms/${id}`))
+  const [tasks] = useCollection<TaskList>(collection(db, `rooms/${id}/tasks`), {
+    listen: true,
+  })
+  const [currentRoom] = useRoom(id)
 
   const { id: roomID } = currentRoom
   const { data } = useAuth()
   const { userTag } = data
 
   const dateInputRef = useRef<ReactDatePicker>(null)
-
   const memberCount = currentRoom?.members?.length + 1
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {

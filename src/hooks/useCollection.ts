@@ -1,6 +1,11 @@
 import { DocumentData, getDocs, onSnapshot, Query } from 'firebase/firestore';
 import { useState, useEffect, useCallback } from 'react';
 
+interface Options {
+  listen?: boolean;
+  deps?: any[];
+}
+
 /**
  *
  * @param ref collection reference
@@ -10,7 +15,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 const useCollection = <T extends unknown>(
   ref: Query<DocumentData>,
-  listen?: boolean
+  options?: Options
 ) => {
   const [collection, setCollection] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,7 +41,7 @@ const useCollection = <T extends unknown>(
   useEffect(() => {
     let unsub: any;
 
-    if (listen) {
+    if (options?.listen) {
       setLoading(true);
 
       unsub = onSnapshot(ref, (docs) => {
@@ -55,7 +60,7 @@ const useCollection = <T extends unknown>(
     } else getCollection();
 
     return unsub;
-  }, []);
+  }, [...(options?.deps ?? [])]);
 
   return [collection, loading] as const;
 };

@@ -1,8 +1,6 @@
 interface UserList {
-  id?: string;
   username?: string;
   userTag: string;
-  displayName?: string;
   photoURL?: string | null;
   email?: string | null;
   roomsCreated: string[];

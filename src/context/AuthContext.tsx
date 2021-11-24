@@ -55,16 +55,18 @@ const AuthProvider: React.FC = ({ children }) => {
 
       const { uid, email, metadata, photoURL } = _user.user
 
+      const userTag = `user:${nanoid(5)}`
+
       if (moreInfo?.isNewUser) {
         const payload: UserList = {
-          userTag: `user:${nanoid(5)}`,
-          username: email?.split('@')[0].toLowerCase().concat(nanoid(2)),
-          roomsCreated: [],
-          roomsJoined: [],
-          invites: [],
-          dateJoined: metadata.creationTime,
-          photoURL,
           email,
+          userTag,
+          photoURL,
+          invites: [],
+          roomsJoined: [],
+          roomsCreated: [],
+          dateJoined: metadata.creationTime,
+          username: email?.split('@')[0].toLowerCase(),
         }
 
         await setDoc(doc(db, 'users', uid), payload)
@@ -81,7 +83,7 @@ const AuthProvider: React.FC = ({ children }) => {
     const getUserData = async () => {
       if (user) {
         const res = await getDoc(doc(db, 'users', user.uid))
-        const data = { ...res.data(), id: res.id }
+        const data = res.data()
         setData(data as UserList)
       }
 

@@ -3,62 +3,69 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { BsCalendarFill } from 'react-icons/bs'
 import { AiOutlineIdcard } from 'react-icons/ai'
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import {
+  doc,
+  deleteDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  arrayRemove,
+} from 'firebase/firestore'
 
+import useRoom from '@/hooks/useRoom'
 import { RoomNav } from '@/components/Room'
 import { InfoBtn } from '@/components/Button'
 import { Container, Header, Clipboard, Error } from '@/components'
+import { useAuth } from '@/context/AuthContext'
+import { useCollection } from '@/hooks'
+import { db } from '@/config/firebase'
+import { defaultPic } from '@/utils/default'
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false)
 
   const router = useRouter()
   const { id } = router.query
-  const currentRoom = roomList.find((room) => room.roomID === id)
-  const { creator, dateAdded, members, requests, roomID } = currentRoom ?? {}
 
-  const roomCreator = userList.find((user) => user.userTag === creator)
-  const { userTag, roomsCreated, displayName, photoURL } = roomCreator ?? {}
+  const { user, data } = useAuth()
 
-  const roomMembers = userList.filter((user) =>
-    members?.includes(user?.userTag as string)
+  const [currentRoom, loading] = useRoom(id)
+  const { creator, dateAdded, requests, id: roomID } = currentRoom
+
+  const [roomCreator] = useCollection<UserList>(
+    query(collection(db, 'users'), where('userTag', '==', `${creator}`)),
+    { deps: [loading] }
+  )
+  const [roomMembers] = useCollection<UserList>(
+    query(
+      collection(db, 'users'),
+      where('roomsJoined', 'array-contains', `${roomID}`)
+    )
   )
 
   const deleteRoom = async () => {
-    const delRoomRef = doc(db, 'roomList', `${roomID}`)
-    const creatorRef = doc(db, 'userList', `${userTag}`)
+    const creatorRef = doc(db, `users/${creator}`)
 
     router.push('/')
-    await deleteDoc(delRoomRef)
-
-    const filterRoom = roomsCreated?.filter((room) => room !== roomID)
+    await deleteDoc(doc(db, `rooms/${roomID}`))
 
     await updateDoc(creatorRef, {
-      roomsCreated: filterRoom,
+      roomsCreated: arrayRemove(roomID),
     })
   }
 
   const leaveRoom = async () => {
-    const removeMemberRef = doc(db, 'roomList', `${roomID}`)
-    const updateUserRef = doc(db, 'userList', `${currentUser?.userTag}`)
+    if (data.userTag !== creator) {
+      await updateDoc(doc(db, `rooms/${roomID}`), {
+        members: arrayRemove(data.userTag),
+      })
 
-    const updatedRoomMembers = members?.filter(
-      (member) => member !== currentUser?.userTag
-    )
-    const updatedUserRooms = currentUser?.roomsJoined.filter(
-      (room) => room !== id
-    )
-
-    if (currentUser?.userTag !== creator) {
-      await updateDoc(removeMemberRef, {
-        members: updatedRoomMembers,
+      await updateDoc(doc(db, `users/${user?.uid}`), {
+        roomsJoined: arrayRemove(roomID),
       })
 
       router.push('/')
-
-      await updateDoc(updateUserRef, {
-        roomsJoined: updatedUserRooms,
-      })
     }
   }
 
@@ -78,7 +85,9 @@ const Info: React.FC = () => {
 
           <div className='card flex-between h-[70px] mb-2 w-full'>
             <div className='leading-5'>
-              <p className='text-f9 text-sm'>{dateAdded}</p>
+              <p className='text-f9 text-sm'>
+                {dateAdded?.toDate().toDateString()}
+              </p>
               <p className='text-sm'>room created</p>
             </div>
 
@@ -90,14 +99,14 @@ const Info: React.FC = () => {
               <div className='flex'>
                 <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
                   <Image
-                    src={photoURL || defaultPic}
+                    src={roomCreator[0]?.photoURL || defaultPic}
                     height={36}
                     width={36}
                     alt='creator profile picture'
                   />
                 </div>
                 <div className='leading-5'>
-                  <p className='text-f9'>{displayName}</p>
+                  <p className='text-f9'>{roomCreator[0]?.username}</p>
                   <p className='text-sm'>creator</p>
                 </div>
               </div>
@@ -112,14 +121,14 @@ const Info: React.FC = () => {
                 <div className='flex'>
                   <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
                     <Image
-                      src={member?.photoURL ? member?.photoURL : defaultPic}
+                      src={member?.photoURL || defaultPic}
                       height={36}
                       width={36}
                       alt='creator profile picture'
                     />
                   </div>
                   <div className='leading-5'>
-                    <p className='text-f9'>{member?.displayName}</p>
+                    <p className='text-f9'>{member?.username}</p>
                     <p className='text-sm'>member</p>
                   </div>
                 </div>
@@ -127,7 +136,7 @@ const Info: React.FC = () => {
               </div>
             ))}
 
-            {creator === currentUser?.userTag ? (
+            {creator === data?.userTag ? (
               <>
                 <div className='flex'>
                   <InfoBtn

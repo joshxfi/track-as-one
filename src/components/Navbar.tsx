@@ -19,7 +19,9 @@ const Navbar: React.FC = () => {
           onClick={user ? signOut : signIn}
           className='flex items-center text-sm cursor-pointer'
         >
-          <p className='text-sm mr-2'>{user ? 'sign out' : 'login'}</p>
+          <p suppressHydrationWarning className='text-sm mr-2'>
+            {user ? 'sign out' : 'login'}
+          </p>
           <FaSignInAlt className='text-secondary' />
         </button>
       </div>
