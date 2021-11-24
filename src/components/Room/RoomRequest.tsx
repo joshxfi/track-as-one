@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   arrayRemove,
   arrayUnion,
@@ -15,9 +15,9 @@ import Image from 'next/image';
 
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
+import { useCollection } from '@/hooks';
 import { defaultPic } from '@/utils/default';
 import { Container, Header } from '@/components';
-import { useCollection } from '@/hooks';
 
 const Requests = () => {
   const [reqs, setReqs] = useState<string[]>(['default']);
@@ -32,7 +32,8 @@ const Requests = () => {
   }, [loading]);
 
   const [users] = useCollection<IUser>(
-    query(collection(db, 'users'), where('userTag', 'in', reqs)), { deps: [reqs] }
+    query(collection(db, 'users'), where('userTag', 'in', reqs)),
+    { deps: [reqs] }
   );
 
   const acceptRequest = async ({ userTag, id }: IUser) => {

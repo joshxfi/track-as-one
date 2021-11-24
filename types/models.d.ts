@@ -1,5 +1,5 @@
 interface IUser {
-  id: string;
+  id?: string;
   username?: string;
   userTag: string;
   photoURL?: string | null;
