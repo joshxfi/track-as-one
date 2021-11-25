@@ -1,10 +1,10 @@
 export { default as Input } from './Input';
 export { default as Error } from './Error';
-export { default as Loader } from './Loader';
 export { default as Navbar } from './Navbar';
 export { default as Footer } from './Footer';
 export { default as Header } from './Header';
 export { default as Layout } from './Layout';
+export { default as Loader } from './Loader';
 export { default as ErrorMsg } from './ErrorMsg';
 export { default as Clipboard } from './Clipboard';
 export { default as LoaderHandler } from './LoaderHandler';
