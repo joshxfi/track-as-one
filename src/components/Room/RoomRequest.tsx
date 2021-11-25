@@ -17,7 +17,7 @@ import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { defaultPic } from '@/utils/default';
-import { Container, Header } from '@/components';
+import { Layout, Header } from '@/components';
 
 const Requests = () => {
   const [reqs, setReqs] = useState<string[]>(['default']);
@@ -48,7 +48,7 @@ const Requests = () => {
   };
 
   return (
-    <Container>
+    <Layout>
       <Header title='Requests' />
       <div className='w-full mb-4'>
         {users.map((user) => (
@@ -56,7 +56,7 @@ const Requests = () => {
             key={nanoid()}
             type='button'
             onClick={() => acceptRequest(user)}
-            className='flex-between card h-[70px] mb-2 btnEffect w-full text-left'
+            className='flex-between card h-[70px] mb-2 btn-ring w-full text-left'
           >
             <div className='flex'>
               <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
@@ -79,7 +79,7 @@ const Requests = () => {
           </button>
         ))}
       </div>
-    </Container>
+    </Layout>
   );
 };
 

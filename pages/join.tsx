@@ -5,7 +5,7 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { ErrorMsg, Header, Input } from '@/components';
-import Container from '@/components/Container';
+import Layout from '@/components/Layout';
 
 const Join = () => {
   const [roomID, setRoomID] = useState<string>('');
@@ -27,7 +27,7 @@ const Join = () => {
   const requestJoin = async () => {
     setRoomID('');
 
-    const roomRef = doc(db, 'rooms', roomID)
+    const roomRef = doc(db, 'rooms', roomID);
 
     const room = await getDoc(roomRef);
     const _room: IRoom = room.data() as IRoom;
@@ -44,12 +44,12 @@ const Join = () => {
         requests: arrayUnion(userTag),
       });
 
-      errorMsg('Request to join sent!')
+      errorMsg('Request to join sent!');
     }
   };
 
   return (
-    <Container>
+    <Layout>
       <Header title='Join a Room' />
       <div className='w-full flex justify-center items-center flex-col'>
         <Input
@@ -64,14 +64,14 @@ const Join = () => {
           <button
             type='button'
             onClick={roomID ? requestJoin : () => null}
-            className='btn btnEffect'
+            className='btn btn-ring'
           >
             <p className='mr-4'>request join</p>
             <VscSignIn className='icon' />
           </button>
         </div>
       </div>
-    </Container>
+    </Layout>
   );
 };
 

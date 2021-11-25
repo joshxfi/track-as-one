@@ -14,7 +14,7 @@ import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
-import { Container, Header } from '@/components';
+import { Layout, Header } from '@/components';
 import {
   RoomInfo,
   RoomInvite,
@@ -67,7 +67,7 @@ const Room = () => {
   if (tab === 'requests') return <RoomRequest />;
 
   return (
-    <Container>
+    <Layout>
       <RoomNav room={room} />
       <Header title={room?.name} desc='' />
       <form
@@ -117,7 +117,7 @@ const Room = () => {
           ))}
         </AnimatePresence>
       </div>
-    </Container>
+    </Layout>
   );
 };
 

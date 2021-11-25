@@ -7,7 +7,7 @@ import { updateDoc, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { HrefBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
-import { Header, ErrorMsg, Input, Container } from '@/components';
+import { Header, ErrorMsg, Input, Layout } from '@/components';
 
 const Create = () => {
   const [error, setError] = useState<string>('blank');
@@ -52,7 +52,7 @@ const Create = () => {
   };
 
   return (
-    <Container>
+    <Layout>
       <Header title='Create a Room' />
       <form
         onSubmit={createRoom}
@@ -70,7 +70,7 @@ const Create = () => {
           <HrefBtn desc='Create room' type='submit' Icon={BiDoorOpen} />
         </div>
       </form>
-    </Container>
+    </Layout>
   );
 };
 

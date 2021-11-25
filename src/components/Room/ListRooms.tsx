@@ -13,7 +13,7 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
     <button
       type='button'
       onClick={() => router.push(`/rooms/${room.id}`)}
-      className='card flex-between h-[70px] mb-2 btnEffect w-full text-left'
+      className='card flex-between h-[70px] mb-2 btn-ring w-full text-left'
     >
       <div className='leading-5'>
         <p className='text-f9'>{room?.name}</p>

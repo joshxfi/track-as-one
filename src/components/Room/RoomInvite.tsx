@@ -15,7 +15,7 @@ import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { RoomNav } from '@/components/Room';
 import { useAuth } from '@/context/AuthContext';
-import { ErrorMsg, Container, Header, Input } from '@/components';
+import { ErrorMsg, Layout, Header, Input } from '@/components';
 
 const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
@@ -67,7 +67,7 @@ const RoomInvite = () => {
   };
 
   return (
-    <Container>
+    <Layout>
       <RoomNav room={room} />
       <Header title='Invite a User' />
       <form
@@ -83,13 +83,13 @@ const RoomInvite = () => {
         <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
-          <button onClick={inviteUser} className='btn btnEffect' type='button'>
+          <button onClick={inviteUser} className='btn btn-ring' type='button'>
             <p className='mr-4'>invite user</p>
             <AiOutlineIdcard className='icon' />
           </button>
         </div>
       </form>
-    </Container>
+    </Layout>
   );
 };
 

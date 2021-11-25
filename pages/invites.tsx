@@ -15,7 +15,7 @@ import { BiDoorOpen } from 'react-icons/bi';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
-import { Container, Header } from '@/components';
+import { Layout, Header } from '@/components';
 
 const Invites: React.FC = () => {
   const [invs, setInvs] = useState<string[]>(['default']);
@@ -46,7 +46,7 @@ const Invites: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Layout>
       <Header title='Invitation' />
       <div className='w-full mb-4'>
         {invites.map((room) => (
@@ -54,7 +54,7 @@ const Invites: React.FC = () => {
             type='button'
             onClick={() => acceptInvite(room.id)}
             key={room.id}
-            className='card w-full text-left btnEffect flex-between h-[70px] mb-2'
+            className='card w-full text-left btn-ring flex-between h-[70px] mb-2'
           >
             <div className='leading-5'>
               <p className='text-f9'>{room.name}</p>
@@ -65,7 +65,7 @@ const Invites: React.FC = () => {
           </button>
         ))}
       </div>
-    </Container>
+    </Layout>
   );
 };
 

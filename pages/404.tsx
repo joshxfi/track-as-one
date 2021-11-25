@@ -1,11 +1,11 @@
 import React from 'react';
-import { Error, Container } from '@/components';
+import { Error, Layout } from '@/components';
 
 const Error404 = () => {
   return (
-    <Container>
+    <Layout>
       <Error code='404' info='page not found' />
-    </Container>
+    </Layout>
   );
 };
 

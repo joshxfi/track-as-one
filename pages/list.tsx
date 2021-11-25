@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsEye } from 'react-icons/bs';
 
-import { Container, Header, Loader } from '@/components';
+import { Layout, Header, Loader } from '@/components';
 import { HrefBtn } from '@/components/Button';
 import { ListRooms, NoRooms } from '@/components/Room';
 import { useCollection } from '@/hooks';
@@ -26,7 +26,7 @@ const List = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <Container>
+    <Layout>
       <Header title='My Rooms' />
       <div className='w-full mb-4'>
         <div className='w-full bg-secondary text-primary text-center mb-2 rounded-lg py-1 text-sm'>
@@ -51,7 +51,7 @@ const List = () => {
       </div>
 
       <HrefBtn desc='view invites' href='/invites' Icon={BsEye} />
-    </Container>
+    </Layout>
   );
 };
 

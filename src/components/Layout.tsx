@@ -1,10 +1,9 @@
 import React from 'react';
-import Head from 'next/head';
 import { motion } from 'framer-motion';
-
 import { Navbar, Footer } from '@/components';
+import { NextSeo, NextSeoProps } from 'next-seo';
 
-const Layout: React.FC<Children> = ({ children }) => {
+const Layout: React.FC<NextSeoProps> = ({ children, ...rest }) => {
   const variants = {
     hidden: { opacity: 0 },
     enter: { opacity: 1 },
@@ -13,14 +12,7 @@ const Layout: React.FC<Children> = ({ children }) => {
 
   return (
     <>
-      <Head>
-        <meta charSet='UTF-8' />
-        <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1, minimum-scale=1'
-        />
-        <title>taskAsOne</title>
-      </Head>
+      <NextSeo {...rest} />
       <div className='bg-gradient-to-tr from-[#F2F1DD] to-f9'>
         <Navbar />
         <motion.main

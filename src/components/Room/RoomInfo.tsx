@@ -20,7 +20,7 @@ import { RoomNav } from '@/components/Room';
 import { defaultPic } from '@/utils/default';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
-import { Container, Header, Clipboard } from '@/components';
+import { Layout, Header, Clipboard } from '@/components';
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
@@ -77,7 +77,7 @@ const Info: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Layout>
       <RoomNav room={room} />
       <Header title='Room Info' desc={`room id → ${roomID}`} />
 
@@ -172,7 +172,7 @@ const Info: React.FC = () => {
           <Clipboard copied={copied} />
         </div>
       </div>
-    </Container>
+    </Layout>
   );
 };
 
