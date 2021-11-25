@@ -1,15 +1,17 @@
 import React from 'react';
+import { collection, query, where } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import { BsEye } from 'react-icons/bs';
 
-import { Layout, Header, Loader } from '@/components';
-import { HrefBtn } from '@/components/Button';
-import { ListRooms, NoRooms } from '@/components/Room';
-import { useCollection } from '@/hooks';
-import { collection, query, where } from 'firebase/firestore';
 import { db } from '@/config/firebase';
+import { useCollection } from '@/hooks';
+import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { Layout, Header, Loader } from '@/components';
+import { ListRooms, NoRooms } from '@/components/Room';
 
 const List = () => {
+  const { push } = useRouter();
   const { data } = useAuth();
 
   const roomRef = collection(db, 'rooms');
@@ -50,7 +52,13 @@ const List = () => {
         )}
       </div>
 
-      <HrefBtn desc='view invites' href='/invites' Icon={BsEye} />
+      <Button
+        name='view invites'
+        onClick={() => push('/invites')}
+        className='btn btn-effect'
+        iconStyles='text-secondary text-xl'
+        Icon={BsEye}
+      />
     </Layout>
   );
 };

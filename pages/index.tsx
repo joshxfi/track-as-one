@@ -4,6 +4,7 @@ import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import avatar2 from '@/assets/avatar2.svg';
 import { FaHandHoldingHeart, FaPhone, FaSignInAlt } from 'react-icons/fa';
+import { Button } from '@/components/Button';
 
 const Index = () => {
   return (
@@ -48,7 +49,11 @@ const Index = () => {
               </p>
             </div>
 
-            <WelcomeBtn desc='get started' Icon={FaSignInAlt} />
+            <Button
+              className='welcome-btn'
+              name='get started'
+              Icon={FaSignInAlt}
+            />
             <p className='mt-2 italic text-base font-medium'>coming soon!</p>
           </div>
         </div>
@@ -69,13 +74,13 @@ const Index = () => {
             or classmates.
           </p>
           <div className='flex flex-col lg:flex-row items-center'>
-            <WelcomeBtn
-              styles='lg:mr-5'
-              desc='contribute'
+            <Button
+              className='welcome-btn lg:mr-5'
+              name='contribute'
               Icon={FaHandHoldingHeart}
-              iconSize='text-lg'
+              iconStyles='text-lg'
             />
-            <WelcomeBtn desc='contact me' Icon={FaPhone} />
+            <Button className='welcome-btn' name='contact me' Icon={FaPhone} />
           </div>
         </div>
 

@@ -5,7 +5,7 @@ import { BiDoorOpen } from 'react-icons/bi';
 import { updateDoc, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
-import { HrefBtn } from '@/components/Button';
+import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Header, ErrorMsg, Input, Layout } from '@/components';
 
@@ -67,7 +67,13 @@ const Create = () => {
         <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
-          <HrefBtn desc='Create room' type='submit' Icon={BiDoorOpen} />
+          <Button
+            name='create room'
+            type='submit'
+            className='btn btn-effect'
+            iconStyles='text-secondary text-xl'
+            Icon={BiDoorOpen}
+          />
         </div>
       </form>
     </Layout>

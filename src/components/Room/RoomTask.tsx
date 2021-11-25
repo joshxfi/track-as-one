@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BsXSquareFill } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { TaskBtn } from '@/components/Button';
+import { Button } from '@/components/Button';
 
 interface RoomTaskProps {
   task: ITask;
@@ -60,18 +60,13 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
             transition={{ duration: 0.5 }}
             className='flex-between mt-2 mb-4 w-full'
           >
-            <TaskBtn
-              Icon={CheckIcon}
-              desc='done'
-              styles='mr-2'
-              handleClick={() => null}
-            />
+            <Button Icon={CheckIcon} name='done' className='mr-2 task-btn' />
 
-            <TaskBtn
+            <Button
               Icon={BsXSquareFill}
-              desc='delete'
-              iconSize='text-2xl'
-              handleClick={() => null}
+              name='delete'
+              className='task-btn'
+              iconStyles='text-2xl'
             />
           </motion.div>
         )}

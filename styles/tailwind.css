@@ -42,4 +42,16 @@
   .footer-h1 {
     @apply font-semibold text-secondary mb-2;
   }
+
+  .home-btn {
+    @apply rounded-[36px] bg-primary text-f9 p-2 w-[300px] px-[50px] mt-4 btn-ring flex-between;
+  }
+
+  .welcome-btn {
+    @apply rounded-[36px] bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-semibold mt-4 btn-ring flex-between;
+  }
+
+  .task-btn {
+    @apply rounded-lg w-full bg-secondary py-2 px-4 font-semibold btn-ring flex-between;
+  }
 }

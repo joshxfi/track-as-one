@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { VscSignIn, VscListOrdered } from 'react-icons/vsc';
-import { AiOutlineIdcard } from 'react-icons/ai';
 import { BiDoorOpen } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import { defaultPic } from '@/utils/default';
-import { HomeBtn } from '@/components/Button';
+import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Clipboard, Layout } from '@/components';
 
 const Homepage: React.FC = () => {
+  const { push } = useRouter();
   const { data } = useAuth();
   const { userTag, photoURL, username } = data;
   const [copied, setCopied] = useState<boolean>(false);
@@ -44,9 +45,27 @@ const Homepage: React.FC = () => {
       <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-8 w-full' />
 
       <div className='md:grid grid-cols-2 gap-x-2'>
-        <HomeBtn href='/create' name='create room' Icon={BiDoorOpen} />
-        <HomeBtn href='/join' name='join room' Icon={VscSignIn} />
-        <HomeBtn href='/list' name='my rooms' Icon={VscListOrdered} />
+        <Button
+          onClick={() => push('/create')}
+          className='home-btn'
+          name='create room'
+          Icon={BiDoorOpen}
+          iconStyles='text-xl text-secondary'
+        />
+        <Button
+          onClick={() => push('/join')}
+          className='home-btn'
+          name='join room'
+          Icon={VscSignIn}
+          iconStyles='text-xl text-secondary'
+        />
+        <Button
+          onClick={() => push('/list')}
+          className='home-btn'
+          name='my rooms'
+          Icon={VscListOrdered}
+          iconStyles='text-xl text-secondary'
+        />
       </div>
 
       <Clipboard copied={copied} />
