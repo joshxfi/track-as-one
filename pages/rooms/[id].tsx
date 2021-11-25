@@ -15,13 +15,7 @@ import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header } from '@/components';
-import {
-  RoomInfo,
-  RoomInvite,
-  RoomNav,
-  RoomRequest,
-  RoomTask,
-} from '@/components/Room';
+import { Info, InviteUser, RoomNav, Requests, Tasks } from '@/components/Room';
 
 const Room = () => {
   const [description, setDesc] = useState<string>('');
@@ -62,9 +56,9 @@ const Room = () => {
     }
   };
 
-  if (tab === 'info') return <RoomInfo />;
-  if (tab === 'invite') return <RoomInvite />;
-  if (tab === 'requests') return <RoomRequest />;
+  if (tab === 'info') return <Info />;
+  if (tab === 'invite') return <InviteUser />;
+  if (tab === 'requests') return <Requests />;
 
   return (
     <Layout>
@@ -113,7 +107,7 @@ const Room = () => {
       <div className='w-full my-2'>
         <AnimatePresence>
           {tasks?.map((task) => (
-            <RoomTask key={task.id} task={task} memberCount={memberCount} />
+            <Tasks key={task.id} task={task} memberCount={memberCount} />
           ))}
         </AnimatePresence>
       </div>
