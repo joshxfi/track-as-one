@@ -8,7 +8,7 @@
   }
 
   .sq-btn {
-    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[40px] mb-3;
+    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[20px] mb-3 btn-ring;
   }
 
   .icon {

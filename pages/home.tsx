@@ -9,12 +9,28 @@ import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Clipboard, Layout } from '@/components';
 import { AiOutlineIdcard } from 'react-icons/ai';
+import { collection, query, where } from 'firebase/firestore';
+import { useCollection } from '@/hooks';
+import { db } from '@/config/firebase';
 
 const Homepage: React.FC = () => {
   const { push } = useRouter();
-  const { data } = useAuth();
+  const { data, loading } = useAuth();
   const { userTag, photoURL, username } = data;
   const [copied, setCopied] = useState<boolean>(false);
+
+  const roomRef = collection(db, 'rooms');
+  const deps = { deps: [loading] };
+  const _userTag = data.userTag ?? '';
+
+  const [createdRooms, crLoading] = useCollection<IRoom>(
+    query(roomRef, where('creator', '==', _userTag)),
+    deps
+  );
+  const [joinedRooms, jrLoading] = useCollection<IRoom>(
+    query(roomRef, where('members', 'array-contains', _userTag)),
+    deps
+  );
 
   const copyTag = () => {
     navigator.clipboard.writeText(userTag);
@@ -24,7 +40,7 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <Layout className='max-w-screen-md'>
+    <Layout loaders={[crLoading, jrLoading]} className='max-w-screen-md'>
       <div className='flex flex-col items-center mt-8 w-full space-y-4'>
         <div className='h-[100px] w-[100px] rounded-full p-2 primary-gradient'>
           <Image
@@ -47,7 +63,7 @@ const Homepage: React.FC = () => {
 
       <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-4 w-full' />
 
-      <MyRooms />
+      <MyRooms createdRooms={createdRooms} joinedRooms={joinedRooms} />
 
       <div className='flex-between space-x-2'>
         <Button

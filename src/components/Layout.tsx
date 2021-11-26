@@ -5,9 +5,15 @@ import { Navbar, Footer, LoaderHandler } from '@/components';
 
 interface LayoutProps extends NextSeoProps {
   className?: string;
+  loaders?: boolean[];
 }
 
-const Layout: React.FC<LayoutProps> = ({ className, children, ...rest }) => {
+const Layout: React.FC<LayoutProps> = ({
+  className,
+  loaders,
+  children,
+  ...rest
+}) => {
   const variants = {
     hidden: { opacity: 0 },
     enter: { opacity: 1 },
@@ -17,22 +23,24 @@ const Layout: React.FC<LayoutProps> = ({ className, children, ...rest }) => {
   return (
     <>
       <NextSeo {...rest} />
-      <div className='bg-gradient-to-tr from-[#F2F1DD] to-f9'>
-        <LoaderHandler>
+      <motion.div
+        variants={variants}
+        initial='hidden'
+        animate='enter'
+        exit='exit'
+        transition={{ duration: 0.3 }}
+        className='bg-gradient-to-tr from-[#F2F1DD] to-f9'
+      >
+        <LoaderHandler loaders={loaders}>
           <Navbar />
-          <motion.main
-            variants={variants}
-            initial='hidden'
-            animate='enter'
-            exit='exit'
-            transition={{ duration: 0.3 }}
+          <main
             className={`text-primary w-[90%] mx-auto min-h-screen ${className}`}
           >
             {children}
-          </motion.main>
+          </main>
           <Footer />
         </LoaderHandler>
-      </div>
+      </motion.div>
     </>
   );
 };

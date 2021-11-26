@@ -14,7 +14,7 @@ const RoomLabel = ({ rooms, label, limit }: RoomLabelProps) => {
         {rooms?.length}/{limit}
       </h2>
 
-      <Link href={label}>
+      <Link href={`/${label}`}>
         <a>{label.toUpperCase()} &rarr;</a>
       </Link>
     </div>
