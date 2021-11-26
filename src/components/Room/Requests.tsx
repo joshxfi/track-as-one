@@ -11,13 +11,14 @@ import {
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
+import Link from 'next/link';
 import Image from 'next/image';
 
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { defaultPic } from '@/utils/default';
-import { Layout, Header } from '@/components';
+import { Layout, Header, EmptyMsg } from '@/components';
 
 const Requests = () => {
   const [reqs, setReqs] = useState<string[]>(['default']);
@@ -33,7 +34,7 @@ const Requests = () => {
 
   const [users] = useCollection<IUser>(
     query(collection(db, 'users'), where('userTag', 'in', reqs)),
-    { deps: [reqs] }
+    { listen: true, deps: [reqs] }
   );
 
   const acceptRequest = async ({ userTag, id }: IUser) => {
@@ -48,8 +49,9 @@ const Requests = () => {
   };
 
   return (
-    <Layout>
+    <Layout loaders={[loading]}>
       <Header title='Requests' />
+      {!users.length && <EmptyMsg empty='requests' href={`/room/${id}`} />}
       <div className='w-full mb-4'>
         {users.map((user) => (
           <button

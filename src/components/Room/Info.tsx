@@ -34,13 +34,13 @@ const Info: React.FC = () => {
   const { creator, dateAdded, requests, id: roomID } = room;
 
   const [roomCreator] = useCollection<IUser>(
-    query(collection(db, 'users'), where('userTag', '==', `${creator}`)),
-    { deps: [loading] }
+    query(collection(db, 'users'), where('userTag', '==', creator ?? '')),
+    { deps: [creator] }
   );
   const [roomMembers] = useCollection<IUser>(
     query(
       collection(db, 'users'),
-      where('roomsJoined', 'array-contains', `${roomID}`)
+      where('roomsJoined', 'array-contains', roomID ?? '')
     )
   );
 

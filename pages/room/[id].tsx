@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/router';
+import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import {
   BsPlusSquareFill,
   BsCalendarFill,
   BsXSquareFill,
 } from 'react-icons/bs';
 import 'react-datepicker/dist/react-datepicker.css';
-import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import {
   addDoc,
   collection,
@@ -14,11 +13,12 @@ import {
   query,
   serverTimestamp,
 } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 import { Layout } from '@/components';
 import { db } from '@/config/firebase';
-import { useCollection, useRoom, useNextQuery } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
+import { useCollection, useRoom, useNextQuery } from '@/hooks';
 import { Info, InviteUser, RoomNav, Requests, Tasks } from '@/components/Room';
 
 const Room = () => {
@@ -35,7 +35,7 @@ const Room = () => {
     query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc')),
     {
       listen: true,
-      deps: [loading],
+      deps: [room.id],
     }
   );
 
@@ -98,7 +98,7 @@ const Room = () => {
             onChange={(date: Date) => setDueDate(date)}
             minDate={new Date()}
             ref={dateInputRef}
-            className='bg-secondary text-sm w-full outline-none font-semibold placeholder-primary'
+            className='bg-secondary text-sm w-full outline-none placeholder-primary'
           />
 
           <div className=' flex text-2xl mr-[3px]'>

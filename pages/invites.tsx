@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import {
   arrayRemove,
   arrayUnion,
@@ -15,11 +15,13 @@ import { BiDoorOpen } from 'react-icons/bi';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
-import { Layout, Header } from '@/components';
+import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {
   const [invs, setInvs] = useState<string[]>(['default']);
   const { user, data, loading } = useAuth();
+
+  const { push } = useRouter();
 
   useEffect(() => {
     if (data?.invites?.length) setInvs(data.invites);
@@ -41,13 +43,14 @@ const Invites: React.FC = () => {
         members: arrayUnion(data.userTag),
       });
 
-      router.push(`rooms/${roomId}`);
+      push(`room/${roomId}`);
     }
   };
 
   return (
     <Layout>
       <Header title='Invitation' />
+      {!invites.length && <EmptyMsg empty='invites' href='/home' />}
       <div className='w-full mb-4'>
         {invites.map((room) => (
           <button
