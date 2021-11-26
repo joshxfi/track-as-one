@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { VscSignIn, VscListOrdered } from 'react-icons/vsc';
-import { BiDoorOpen } from 'react-icons/bi';
 import { useRouter } from 'next/router';
+import { BsEye } from 'react-icons/bs';
 import Image from 'next/image';
 
+import { MyRooms } from '@/components/Home';
 import { defaultPic } from '@/utils/default';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Clipboard, Layout } from '@/components';
+import { AiOutlineIdcard } from 'react-icons/ai';
 
 const Homepage: React.FC = () => {
   const { push } = useRouter();
@@ -23,8 +24,8 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className='flex-between mt-8 w-full'>
+    <Layout className='max-w-screen-md'>
+      <div className='flex flex-col items-center mt-8 w-full space-y-4'>
         <div className='h-[100px] w-[100px] rounded-full p-2 primary-gradient'>
           <Image
             src={photoURL ?? defaultPic}
@@ -36,39 +37,39 @@ const Homepage: React.FC = () => {
           />
         </div>
 
-        <div className='text-right'>
-          <h1 className='text-2xl font-bold'>{username}</h1>
-          <p>{userTag}</p>
+        <div className='text-center'>
+          <div>
+            <h1 className='text-2xl font-bold'>{username}</h1>
+            <p>{userTag}</p>
+          </div>
         </div>
       </div>
 
-      <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-8 w-full' />
+      <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-4 w-full' />
 
-      <div className='md:grid grid-cols-2 gap-x-2'>
+      <MyRooms />
+
+      <div className='flex-between space-x-2'>
         <Button
-          onClick={() => push('/create')}
-          className='home-btn'
-          name='create room'
-          Icon={BiDoorOpen}
-          iconStyles='text-xl text-secondary'
+          name='copy tag'
+          onClick={copyTag}
+          className='sq-btn btn-effect'
+          iconStyles='text-secondary text-xl'
+          Icon={AiOutlineIdcard}
         />
+
         <Button
-          onClick={() => push('/join')}
-          className='home-btn'
-          name='join room'
-          Icon={VscSignIn}
-          iconStyles='text-xl text-secondary'
-        />
-        <Button
-          onClick={() => push('/list')}
-          className='home-btn'
-          name='my rooms'
-          Icon={VscListOrdered}
-          iconStyles='text-xl text-secondary'
+          name='view invites'
+          onClick={() => push('/invites')}
+          className='sq-btn btn-effect'
+          iconStyles='text-secondary text-xl'
+          Icon={BsEye}
         />
       </div>
 
-      <Clipboard copied={copied} />
+      <div className='grid place-items-center'>
+        <Clipboard copied={copied} />
+      </div>
     </Layout>
   );
 };

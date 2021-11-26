@@ -9,7 +9,7 @@ interface ErrorProps {
 
 const Error: React.FC<ErrorProps> = ({ code, info }) => {
   return (
-    <section className='wrap'>
+    <section className='flex flex-col items-center'>
       <div className='w-[200px] mt-10'>
         <Image src={mascot} objectFit='contain' alt='error cat mascot' />
       </div>

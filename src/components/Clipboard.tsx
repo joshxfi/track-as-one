@@ -9,7 +9,7 @@ const Clipboard = ({ copied }: { copied: boolean }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className='mt-4 font-bold'
+          className='mt-4 font-semibold'
         >
           copied to clipboard!
         </motion.p>

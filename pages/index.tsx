@@ -14,14 +14,14 @@ const Index = () => {
     students to track homework & activities together with their
     friends or classmates.'
     >
-      <section className='wrap h-screen max-w-screen-xl lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
+      <section className='flex flex-col items-center mx-auto h-screen max-w-screen-xl lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
         <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
           <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
             trackAs
             <span className='gradient-text'>One</span>
           </h1>
 
-          <div className='wrap lg:items-start max-w-screen-xl lg:pl-2'>
+          <div className='flex flex-col items-center lg:items-start max-w-screen-xl lg:pl-2'>
             <div className='text-center lg:text-left'>
               <div className='my-8 w-[300px] mx-auto lg:hidden'>
                 <Image

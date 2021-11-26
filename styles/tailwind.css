@@ -4,15 +4,15 @@
 
 @layer components {
   .btn {
-    @apply flex items-center justify-between text-f9 bg-primary rounded-[36px] text-sm h-[40px] px-[40px] mb-3;
+    @apply flex items-center w-full justify-between text-f9 bg-primary rounded-[36px] text-sm h-[40px] px-[40px] mb-3;
+  }
+
+  .sq-btn {
+    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[40px] mb-3;
   }
 
   .icon {
     @apply text-secondary text-lg;
-  }
-
-  .wrap {
-    @apply flex flex-col items-center max-w-screen-md mx-auto min-h-screen;
   }
 
   .dueBtn {
@@ -24,11 +24,15 @@
   }
 
   .card {
-    @apply bg-primary text-secondary px-[30px] rounded-lg;
+    @apply bg-primary text-secondary px-[30px] rounded;
   }
 
   .flex-between {
     @apply flex justify-between items-center;
+  }
+
+  .room-label {
+    @apply w-full bg-secondary text-primary rounded py-1 px-[30px] text-sm font-medium flex-between;
   }
 
   .gradient-text {
@@ -44,7 +48,7 @@
   }
 
   .home-btn {
-    @apply rounded-[36px] bg-primary text-f9 p-2 w-[300px] px-[50px] mt-4 btn-ring flex-between;
+    @apply rounded-[36px] bg-primary text-f9 py-2 w-full px-[50px] mt-4 btn-ring flex-between text-sm;
   }
 
   .welcome-btn {

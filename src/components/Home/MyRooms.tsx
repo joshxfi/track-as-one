@@ -6,11 +6,10 @@ import { BsEye } from 'react-icons/bs';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { Button } from '@/components/Button';
-import { Layout, Header } from '@/components';
 import { useAuth } from '@/context/AuthContext';
-import { ListRooms, NoRooms } from '@/components/List';
+import { ListRooms, NoRooms, RoomLabel } from '@/components/Home';
 
-const List = () => {
+const MyRooms = () => {
   const { push } = useRouter();
   const { data, loading } = useAuth();
 
@@ -26,12 +25,9 @@ const List = () => {
   );
 
   return (
-    <Layout>
-      <Header title='My Rooms' />
-      <div className='w-full mb-4'>
-        <div className='w-full bg-secondary text-primary text-center mb-2 rounded-lg py-1 text-sm'>
-          <h2>rooms created {createdRooms?.length}/3</h2>
-        </div>
+    <div>
+      <div className='w-full mb-4 space-y-2'>
+        <RoomLabel label='create' rooms={createdRooms} limit='3' />
 
         {createdRooms?.length ? (
           createdRooms?.map((room) => <ListRooms key={room.id} room={room} />)
@@ -39,9 +35,7 @@ const List = () => {
           <NoRooms desc='Create a Room' href='/create' />
         )}
 
-        <div className='w-full bg-secondary text-primary text-center my-2 rounded-lg py-1 text-sm'>
-          <h2>rooms joined {joinedRooms?.length}/∞</h2>
-        </div>
+        <RoomLabel label='join' rooms={joinedRooms} limit='∞' />
 
         {joinedRooms?.length ? (
           joinedRooms?.map((room) => <ListRooms key={room.id} room={room} />)
@@ -49,16 +43,8 @@ const List = () => {
           <NoRooms desc='Join a Room' href='/join' />
         )}
       </div>
-
-      <Button
-        name='view invites'
-        onClick={() => push('/invites')}
-        className='btn btn-effect'
-        iconStyles='text-secondary text-xl'
-        Icon={BsEye}
-      />
-    </Layout>
+    </div>
   );
 };
 
-export default List;
+export default MyRooms;
