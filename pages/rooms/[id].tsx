@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import {
   BsPlusSquareFill,
@@ -8,13 +7,18 @@ import {
 } from 'react-icons/bs';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  orderBy,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore';
 
-import useRoom from '@/hooks/useRoom';
+import { Layout } from '@/components';
 import { db } from '@/config/firebase';
-import { useCollection } from '@/hooks';
+import { useCollection, useRoom, useNextQuery } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
-import { Layout, Header } from '@/components';
 import { Info, InviteUser, RoomNav, Requests, Tasks } from '@/components/Room';
 
 const Room = () => {
@@ -22,20 +26,26 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<Date | null>(null);
 
   const router = useRouter();
-  const { id, tab } = router.query;
+  const { id } = router.query;
 
-  const [tasks] = useCollection<ITask>(collection(db, `rooms/${id}/tasks`), {
-    listen: true,
-  });
+  const tab = useNextQuery('tab');
 
-  const [room] = useRoom(id);
+  const [room, loading] = useRoom(id);
 
-  const { id: roomID } = room;
+  const memberLength = room?.members?.length + 1 ?? 0;
+
+  const [tasks] = useCollection<ITask>(
+    query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc')),
+    {
+      listen: true,
+      deps: [loading],
+    }
+  );
+
   const { data } = useAuth();
   const { userTag } = data;
 
   const dateInputRef = useRef<ReactDatePicker>(null);
-  const memberCount = room?.members?.length + 1;
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +59,7 @@ const Room = () => {
     };
 
     setDesc('');
-    const tasksRef = collection(db, `rooms/${roomID}/tasks`);
+    const tasksRef = collection(db, `rooms/${room.id}/tasks`);
 
     if (description && tasks.length < 15) {
       await addDoc(tasksRef, payload);
@@ -61,14 +71,13 @@ const Room = () => {
   if (tab === 'requests') return <Requests />;
 
   return (
-    <Layout>
+    <Layout loaders={[loading]}>
       <RoomNav room={room} />
-      <Header title={room?.name} desc='' />
       <form
         spellCheck='false'
         autoComplete='off'
         onSubmit={addTask}
-        className='w-full'
+        className='w-full mt-4'
       >
         <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
           <input
@@ -104,13 +113,7 @@ const Room = () => {
           </div>
         </div>
       </form>
-      <div className='w-full my-2'>
-        <AnimatePresence>
-          {tasks?.map((task) => (
-            <Tasks key={task.id} task={task} memberCount={memberCount} />
-          ))}
-        </AnimatePresence>
-      </div>
+      <Tasks tasks={tasks} members={memberLength} />
     </Layout>
   );
 };

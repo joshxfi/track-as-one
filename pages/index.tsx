@@ -9,6 +9,7 @@ import { Button } from '@/components/Button';
 const Index = () => {
   return (
     <Layout
+      xl
       title='trackAsOne'
       description='trackAsOne is a collaborative cross-platform app that enables
     students to track homework & activities together with their

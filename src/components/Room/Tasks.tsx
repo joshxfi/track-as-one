@@ -5,13 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/Button';
 
 interface RoomTaskProps {
-  task: ITask;
-  memberCount: number;
+  tasks: ITask[];
+  members: number;
 }
 
-const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
-  const [showOptions, setShowOptions] = useState<boolean>(false);
-  const { dueDate } = task;
+const RoomTask: React.FC<RoomTaskProps> = ({ tasks, members }) => {
+  const [showOptions, setShowOptions] = useState('');
 
   const optionsVariant = {
     init: {
@@ -31,47 +30,60 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, memberCount }) => {
   };
 
   return (
-    <motion.div className='relative mb-2'>
-      <button
-        type='button'
-        onClick={() => setShowOptions(!showOptions)}
-        className='w-full text-left leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
-      >
-        <p className='text-f9 break-all'>{task.description}</p>
-        <div className='text-sm pt-2 flex-between'>
-          <p>
-            {dueDate
-              ? `Due - ${dueDate.toDate().toDateString()}`
-              : 'No Due Date'}
-          </p>
-          <p>
-            Done [{task.completedBy?.length}/{memberCount}]
-          </p>
-        </div>
-      </button>
-
-      <AnimatePresence>
-        {showOptions && (
-          <motion.div
-            variants={optionsVariant}
-            initial='init'
-            animate='animate'
-            exit='exit'
-            transition={{ duration: 0.5 }}
-            className='flex-between mt-2 mb-4 w-full'
+    <section className='my-4'>
+      {tasks?.map((task) => (
+        <motion.div key={task.id} className='relative mb-2'>
+          <button
+            type='button'
+            onClick={() =>
+              setShowOptions((prev) => {
+                if (prev === task.id) return '';
+                return task.id ?? '';
+              })
+            }
+            className='w-full text-left leading-5 relative z-10 px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded-lg cursor-pointer hover:bg-opacity-95 transition-all duration-300'
           >
-            <Button Icon={CheckIcon} name='done' className='mr-2 task-btn' />
+            <p className='text-f9 break-all'>{task.description}</p>
+            <div className='text-sm pt-2 flex-between'>
+              <p>
+                {task.dueDate
+                  ? `Due - ${task.dueDate.toDate().toDateString()}`
+                  : 'No Due Date'}
+              </p>
+              <p>
+                Done: {task.completedBy?.length}/{members}
+              </p>
+            </div>
+          </button>
 
-            <Button
-              Icon={BsXSquareFill}
-              name='delete'
-              className='task-btn'
-              iconStyles='text-2xl'
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+          <AnimatePresence>
+            {showOptions === task.id && (
+              <motion.div
+                variants={optionsVariant}
+                initial='init'
+                animate='animate'
+                exit='exit'
+                transition={{ duration: 0.5 }}
+                className='flex-between mt-2 mb-4 w-full'
+              >
+                <Button
+                  Icon={CheckIcon}
+                  name='done'
+                  className='mr-2 task-btn'
+                />
+
+                <Button
+                  Icon={BsXSquareFill}
+                  name='delete'
+                  className='task-btn'
+                  iconStyles='text-2xl'
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      ))}
+    </section>
   );
 };
 

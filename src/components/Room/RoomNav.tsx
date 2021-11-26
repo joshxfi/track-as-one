@@ -10,7 +10,7 @@ const RoomNav = ({ room }: { room: IRoom }) => {
         <a>room info</a>
       </button>
 
-      <p>members: {room.members?.length + 1}</p>
+      <p>{room.name}</p>
 
       <button type='button' onClick={() => push(`${room.id}?tab=invite`)}>
         <a>invite user</a>

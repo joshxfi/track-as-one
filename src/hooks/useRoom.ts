@@ -8,7 +8,7 @@ import { useDocument } from '.';
  * @returns [room, loading]
  */
 
-const useRoom = (id: any) => {
+const useRoom = (id: string | string[] | undefined) => {
   const [room, loading] = useDocument<IRoom>(doc(db, `rooms/${id}`));
   return [room, loading] as const;
 };

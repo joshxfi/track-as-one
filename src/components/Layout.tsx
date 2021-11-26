@@ -6,11 +6,13 @@ import { Navbar, Footer, LoaderHandler } from '@/components';
 interface LayoutProps extends NextSeoProps {
   className?: string;
   loaders?: boolean[];
+  xl?: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   className,
   loaders,
+  xl,
   children,
   ...rest
 }) => {
@@ -34,7 +36,9 @@ const Layout: React.FC<LayoutProps> = ({
         <LoaderHandler loaders={loaders}>
           <Navbar />
           <main
-            className={`text-primary w-[90%] mx-auto min-h-screen ${className}`}
+            className={`text-primary w-[90%] mx-auto min-h-screen ${
+              xl ? 'max-w-screen-xl' : 'max-w-screen-md'
+            }  ${className}`}
           >
             {children}
           </main>

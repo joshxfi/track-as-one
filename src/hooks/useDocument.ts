@@ -6,6 +6,11 @@ import {
 } from 'firebase/firestore';
 import { useState, useEffect, useCallback } from 'react';
 
+interface Options {
+  listen?: boolean;
+  deps?: any[];
+}
+
 /**
  *
  * @param ref document reference
@@ -15,7 +20,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 const useDocument = <T extends unknown>(
   ref: DocumentReference<DocumentData>,
-  listen?: boolean
+  options?: Options
 ) => {
   const [document, setDocument] = useState<T>({} as T);
   const [loading, setLoading] = useState(false);
@@ -31,7 +36,7 @@ const useDocument = <T extends unknown>(
   useEffect(() => {
     let unsub: any;
 
-    if (listen) {
+    if (options?.listen) {
       setLoading(true);
 
       unsub = onSnapshot(ref, (doc) => {
@@ -41,7 +46,7 @@ const useDocument = <T extends unknown>(
     } else getDocument();
 
     return unsub;
-  }, []);
+  }, [...(options?.deps ?? [])]);
 
   return [document, loading] as const;
 };

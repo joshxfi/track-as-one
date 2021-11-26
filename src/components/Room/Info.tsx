@@ -77,7 +77,7 @@ const Info: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout loaders={[loading]}>
       <RoomNav room={room} />
       <Header title='Room Info' desc={`room id → ${roomID}`} />
 
