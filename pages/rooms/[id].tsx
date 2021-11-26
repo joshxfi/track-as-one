@@ -27,12 +27,9 @@ const Room = () => {
 
   const router = useRouter();
   const { id } = router.query;
-
   const tab = useNextQuery('tab');
 
   const [room, loading] = useRoom(id);
-
-  const memberLength = room?.members?.length + 1 ?? 0;
 
   const [tasks] = useCollection<ITask>(
     query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc')),
@@ -113,7 +110,7 @@ const Room = () => {
           </div>
         </div>
       </form>
-      <Tasks tasks={tasks} members={memberLength} />
+      <Tasks tasks={tasks} members={room?.members?.length + 1} />
     </Layout>
   );
 };

@@ -31,7 +31,7 @@ const useDocument = <T extends unknown>(
     setDocument({ ...doc.data(), id: doc.id } as T);
 
     setLoading(false);
-  }, []);
+  }, [ref]);
 
   useEffect(() => {
     let unsub: any;
