@@ -3,17 +3,18 @@ import { VscSignIn } from 'react-icons/vsc';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
+import Layout from '@/components/Layout';
 import { useAuth } from '@/context/AuthContext';
 import { ErrorMsg, Header, Input } from '@/components';
-import Layout from '@/components/Layout';
 
 const Join = () => {
   const [roomID, setRoomID] = useState<string>('');
   const [error, setError] = useState<string>('blank');
   const [showError, setShowError] = useState<boolean>(false);
 
-  const { data } = useAuth();
-  const { userTag } = data;
+  const {
+    data: { id },
+  } = useAuth();
 
   const errorMsg = (error: string) => {
     setError(error);
@@ -33,15 +34,13 @@ const Join = () => {
     const _room: IRoom = room.data() as IRoom;
 
     if (!room.exists()) errorMsg('Room does not exist');
-    else if (_room.members.includes(userTag))
-      errorMsg('You are already a member');
-    else if (_room.requests.includes(userTag))
+    else if (_room.members.includes(id!)) errorMsg('You are already a member');
+    else if (_room.requests.includes(id!))
       errorMsg('You already sent a request');
-    else if (_room.creator === userTag)
-      errorMsg('You are the owner of the room');
+    else if (_room.creator === id) errorMsg('You are the owner of the room');
     else {
       await updateDoc(roomRef, {
-        requests: arrayUnion(userTag),
+        requests: arrayUnion(id),
       });
 
       errorMsg('Request to join sent!');

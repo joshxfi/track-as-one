@@ -40,7 +40,6 @@ const Room = () => {
   );
 
   const { data } = useAuth();
-  const { userTag } = data;
 
   const dateInputRef = useRef<ReactDatePicker>(null);
 
@@ -49,7 +48,7 @@ const Room = () => {
 
     const payload: ITask = {
       description,
-      addedBy: userTag,
+      addedBy: data.id!,
       completedBy: [],
       dateAdded: serverTimestamp(),
       dueDate,

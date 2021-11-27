@@ -4,6 +4,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  documentId,
   query,
   updateDoc,
   where,
@@ -11,7 +12,6 @@ import {
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid';
-import Link from 'next/link';
 import Image from 'next/image';
 
 import useRoom from '@/hooks/useRoom';
@@ -33,14 +33,14 @@ const Requests = () => {
   }, [loading]);
 
   const [users] = useCollection<IUser>(
-    query(collection(db, 'users'), where('userTag', 'in', reqs)),
+    query(collection(db, 'users'), where(documentId(), 'in', reqs)),
     { listen: true, deps: [reqs] }
   );
 
-  const acceptRequest = async ({ userTag, id }: IUser) => {
+  const acceptRequest = async (id: string | undefined) => {
     await updateDoc(doc(db, `rooms/${room.id}`), {
-      requests: arrayRemove(userTag),
-      members: arrayUnion(userTag),
+      requests: arrayRemove(id),
+      members: arrayUnion(id),
     });
 
     await updateDoc(doc(db, `users/${id}`), {
@@ -57,7 +57,7 @@ const Requests = () => {
           <button
             key={nanoid()}
             type='button'
-            onClick={() => acceptRequest(user)}
+            onClick={() => acceptRequest(user?.id)}
             className='flex-between card h-[70px] mb-2 btn-ring w-full text-left'
           >
             <div className='flex'>
@@ -72,7 +72,7 @@ const Requests = () => {
               <div className='leading-5'>
                 <p className='text-f9'>
                   {user?.username} →
-                  <span className='text-secondary'> {user?.userTag}</span>
+                  <span className='text-secondary'> {user?.id}</span>
                 </p>
                 <p className='text-sm'>accept request</p>
               </div>

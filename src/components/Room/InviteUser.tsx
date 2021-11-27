@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  arrayUnion,
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { AiOutlineIdcard } from 'react-icons/ai';
 
 import useRoom from '@/hooks/useRoom';
@@ -43,22 +35,14 @@ const RoomInvite = () => {
     if (invUserTag === '') {
       errorMsg('example → user:nTWS_');
     } else {
-      const invUserRef = query(
-        collection(db, 'users'),
-        where('userTag', '==', invUserTag)
-      );
-      const getUser = await getDocs(invUserRef);
+      const userToInv = await getDoc(doc(db, 'users', invUserTag));
 
-      const user: IUser = getUser.docs.map((user) => {
-        return { ...user.data(), id: user.id } as IUser;
-      })[0];
-
-      if (invUserTag === data?.userTag) {
+      if (invUserTag === data.id) {
         errorMsg('you are already in the room');
       } else if (room.members?.includes(invUserTag)) {
         errorMsg('user is already in the room');
-      } else if (user.userTag) {
-        await updateDoc(doc(db, `users/${user.id}`), {
+      } else if (userToInv.id) {
+        await updateDoc(doc(db, `users/${userToInv.id}`), {
           invites: arrayUnion(id),
         });
         errorMsg('user invited!');

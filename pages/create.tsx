@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { BiDoorOpen } from 'react-icons/bi';
-import { updateDoc, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  updateDoc,
+  doc,
+  setDoc,
+  serverTimestamp,
+  arrayUnion,
+} from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { Button } from '@/components/Button';
@@ -16,16 +22,17 @@ const Create = () => {
 
   const router = useRouter();
 
-  const { data, user } = useAuth();
-  const { userTag, roomsCreated } = data;
+  const {
+    data: { id, roomsCreated },
+  } = useAuth();
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const roomID = nanoid(5);
+    const roomID = `room:${nanoid(5)}`;
 
     const payload: IRoom = {
       name: roomName,
-      creator: userTag,
+      creator: id!,
       admin: [],
       members: [],
       dateAdded: serverTimestamp(),
@@ -43,10 +50,10 @@ const Create = () => {
     } else if (roomName) {
       await setDoc(doc(db, 'rooms', roomID), payload);
 
-      router.push(`/list`);
+      router.push(`/`);
 
-      await updateDoc(doc(db, 'users', user?.uid!), {
-        roomsCreated: [roomID, ...roomsCreated!],
+      await updateDoc(doc(db, 'users', id!), {
+        roomsCreated: arrayUnion(roomID),
       });
     }
   };

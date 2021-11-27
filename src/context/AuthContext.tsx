@@ -8,7 +8,14 @@ import {
 } from 'firebase/auth';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
 import { auth, db } from '../config/firebase';
 
@@ -54,14 +61,13 @@ const AuthProvider: React.FC = ({ children }) => {
       const _user = await signInWithPopup(auth, provider);
       const moreInfo = getAdditionalUserInfo(_user);
 
-      const { uid, email, metadata, photoURL } = _user.user;
+      const { email, metadata, photoURL } = _user.user;
 
       const userTag = `user:${nanoid(5)}`;
 
       if (moreInfo?.isNewUser) {
         const payload: IUser = {
           email,
-          userTag,
           photoURL,
           invites: [],
           roomsJoined: [],
@@ -70,7 +76,7 @@ const AuthProvider: React.FC = ({ children }) => {
           username: email?.split('@')[0].toLowerCase(),
         };
 
-        await setDoc(doc(db, 'users', uid), payload);
+        await setDoc(doc(db, 'users', userTag), payload);
       }
 
       router.push('/home');
@@ -83,9 +89,14 @@ const AuthProvider: React.FC = ({ children }) => {
     setDataLoading(() => true);
     const getUserData = async () => {
       if (user) {
-        const res = await getDoc(doc(db, 'users', user.uid));
-        const data = res.data();
-        setData(data as IUser);
+        const res = await getDocs(
+          query(collection(db, 'users'), where('email', '==', user.email))
+        );
+        setData(
+          res.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id } as IUser;
+          })[0]
+        );
       }
 
       setDataLoading(() => false);

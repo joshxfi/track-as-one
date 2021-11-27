@@ -1,7 +1,6 @@
 interface IUser {
   id?: string;
   username?: string;
-  userTag: string;
   photoURL?: string | null;
   email?: string | null;
   roomsCreated: string[];

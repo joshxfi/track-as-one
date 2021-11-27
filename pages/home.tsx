@@ -15,25 +15,26 @@ import { db } from '@/config/firebase';
 
 const Homepage: React.FC = () => {
   const { push } = useRouter();
-  const { data, loading } = useAuth();
-  const { userTag, photoURL, username } = data;
+  const {
+    data: { id, username, photoURL },
+    loading,
+  } = useAuth();
   const [copied, setCopied] = useState<boolean>(false);
 
   const roomRef = collection(db, 'rooms');
   const deps = { deps: [loading] };
-  const _userTag = data.userTag ?? '';
 
   const [createdRooms, crLoading] = useCollection<IRoom>(
-    query(roomRef, where('creator', '==', _userTag)),
+    query(roomRef, where('creator', '==', id ?? '')),
     deps
   );
   const [joinedRooms, jrLoading] = useCollection<IRoom>(
-    query(roomRef, where('members', 'array-contains', _userTag)),
+    query(roomRef, where('members', 'array-contains', id ?? '')),
     deps
   );
 
   const copyTag = () => {
-    navigator.clipboard.writeText(userTag);
+    navigator.clipboard.writeText(id ?? '');
     setCopied(true);
 
     setTimeout(() => setCopied(false), 3000);
@@ -56,7 +57,7 @@ const Homepage: React.FC = () => {
         <div className='text-center'>
           <div>
             <h1 className='text-2xl font-bold'>{username}</h1>
-            <p>{userTag}</p>
+            <p>{id}</p>
           </div>
         </div>
       </div>

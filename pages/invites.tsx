@@ -19,7 +19,7 @@ import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {
   const [invs, setInvs] = useState<string[]>(['default']);
-  const { user, data, loading } = useAuth();
+  const { data, loading } = useAuth();
 
   const { push } = useRouter();
 
@@ -34,13 +34,13 @@ const Invites: React.FC = () => {
 
   const acceptInvite = async (roomId?: string) => {
     if (roomId) {
-      await updateDoc(doc(db, `users/${user?.uid}`), {
+      await updateDoc(doc(db, `users/${data.id}`), {
         invites: arrayRemove(roomId),
         roomsJoined: arrayUnion(roomId),
       });
 
       await updateDoc(doc(db, `rooms/${roomId}`), {
-        members: arrayUnion(data.userTag),
+        members: arrayUnion(data.id),
       });
 
       push(`room/${roomId}`);

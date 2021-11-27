@@ -15,11 +15,11 @@ import {
 
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
-import { useCollection } from '@/hooks';
 import { RoomNav } from '@/components/Room';
 import { defaultPic } from '@/utils/default';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { useCollection, useDocument } from '@/hooks';
 import { Layout, Header, Clipboard } from '@/components';
 
 const Info: React.FC = () => {
@@ -28,15 +28,15 @@ const Info: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { user, data } = useAuth();
+  const { data } = useAuth();
 
   const [room, loading] = useRoom(id);
   const { creator, dateAdded, requests, id: roomID } = room;
 
-  const [roomCreator] = useCollection<IUser>(
-    query(collection(db, 'users'), where('userTag', '==', creator ?? '')),
-    { deps: [creator] }
-  );
+  const creatorRef = doc(db, `users/${creator}`);
+  const roomRef = doc(db, `rooms/${roomID}`);
+
+  const [roomCreator] = useDocument<IUser>(creatorRef);
   const [roomMembers] = useCollection<IUser>(
     query(
       collection(db, 'users'),
@@ -45,23 +45,21 @@ const Info: React.FC = () => {
   );
 
   const deleteRoom = async () => {
-    const creatorRef = doc(db, `users/${creator}`);
-
     router.push('/');
-    await deleteDoc(doc(db, `rooms/${roomID}`));
 
+    await deleteDoc(roomRef);
     await updateDoc(creatorRef, {
       roomsCreated: arrayRemove(roomID),
     });
   };
 
   const leaveRoom = async () => {
-    if (data.userTag !== creator) {
-      await updateDoc(doc(db, `rooms/${roomID}`), {
-        members: arrayRemove(data.userTag),
+    if (data.id !== creator) {
+      await updateDoc(roomRef, {
+        members: arrayRemove(data.id),
       });
 
-      await updateDoc(doc(db, `users/${user?.uid}`), {
+      await updateDoc(doc(db, `users/${data.id}`), {
         roomsJoined: arrayRemove(roomID),
       });
 
@@ -97,14 +95,14 @@ const Info: React.FC = () => {
           <div className='flex'>
             <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
               <Image
-                src={roomCreator[0]?.photoURL || defaultPic}
+                src={roomCreator?.photoURL ?? defaultPic}
                 height={36}
                 width={36}
                 alt='creator profile picture'
               />
             </div>
             <div className='leading-5'>
-              <p className='text-f9'>{roomCreator[0]?.username}</p>
+              <p className='text-f9'>{roomCreator?.username}</p>
               <p className='text-sm'>creator</p>
             </div>
           </div>
@@ -112,11 +110,11 @@ const Info: React.FC = () => {
         </div>
 
         {roomMembers.map((member) => (
-          <div key={member.userTag} className='flex-between card h-[70px] mb-2'>
+          <div key={member.id} className='flex-between card h-[70px] mb-2'>
             <div className='flex'>
               <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
                 <Image
-                  src={member?.photoURL || defaultPic}
+                  src={member?.photoURL ?? defaultPic}
                   height={36}
                   width={36}
                   alt='creator profile picture'
@@ -131,7 +129,7 @@ const Info: React.FC = () => {
           </div>
         ))}
 
-        {creator === data?.userTag ? (
+        {creator === data?.id ? (
           <>
             <div className='flex'>
               <InfoBtn
