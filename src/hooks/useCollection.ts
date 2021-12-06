@@ -1,8 +1,10 @@
+import { useAuth } from '@/context/AuthContext';
 import { DocumentData, getDocs, onSnapshot, Query } from 'firebase/firestore';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 interface Options {
   listen?: boolean;
+  repull?: boolean;
   deps?: any[];
 }
 
@@ -17,8 +19,17 @@ const useCollection = <T extends unknown>(
   ref: Query<DocumentData>,
   options?: Options
 ) => {
+  const { loading } = useAuth();
+
   const [collection, setCollection] = useState<T[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
+
+  const _deps = options?.deps;
+
+  const deps = useMemo(() => {
+    if (options?.repull) return [...(_deps ?? []), loading];
+    return [...(_deps ?? [])];
+  }, [_deps, loading]);
 
   const getCollection = useCallback(async () => {
     setLoading(true);
@@ -60,9 +71,9 @@ const useCollection = <T extends unknown>(
     } else getCollection();
 
     return unsub;
-  }, [...(options?.deps ?? [])]);
+  }, [...deps]);
 
-  return [collection, loading] as const;
+  return [collection, _loading] as const;
 };
 
 export default useCollection;

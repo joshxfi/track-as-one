@@ -37,16 +37,18 @@ const RoomInvite = () => {
     } else {
       const userToInv = await getDoc(doc(db, 'users', invUserTag));
 
-      if (invUserTag === data.id) {
+      if (!userToInv.exists()) {
+        errorMsg('user tag could not be found');
+      } else if (invUserTag === data.id) {
         errorMsg('you are already in the room');
       } else if (room.members?.includes(invUserTag)) {
         errorMsg('user is already in the room');
-      } else if (userToInv.id) {
+      } else {
         await updateDoc(doc(db, `users/${userToInv.id}`), {
           invites: arrayUnion(id),
         });
         errorMsg('user invited!');
-      } else errorMsg('user tag could not be found');
+      }
     }
   };
 

@@ -36,12 +36,15 @@ const Info: React.FC = () => {
   const creatorRef = doc(db, `users/${creator}`);
   const roomRef = doc(db, `rooms/${roomID}`);
 
-  const [roomCreator] = useDocument<IUser>(creatorRef);
+  const repull = { repull: true };
+
+  const [roomCreator] = useDocument<IUser>(creatorRef, repull);
   const [roomMembers] = useCollection<IUser>(
     query(
       collection(db, 'users'),
       where('roomsJoined', 'array-contains', roomID ?? '')
-    )
+    ),
+    repull
   );
 
   const deleteRoom = async () => {
