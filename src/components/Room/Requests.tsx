@@ -51,7 +51,7 @@ const Requests = () => {
   return (
     <Layout loaders={[loading]}>
       <Header title='Requests' />
-      {!users.length && <EmptyMsg empty='requests' href={`/room/${id}`} />}
+      {!users.length && <EmptyMsg empty='requests' />}
       <div className='w-full mb-4'>
         {users.map((user) => (
           <button

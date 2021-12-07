@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface RoomLabelProps {
   rooms: IRoom[];
@@ -8,16 +8,20 @@ interface RoomLabelProps {
 }
 
 const RoomLabel = ({ rooms, label, limit }: RoomLabelProps) => {
+  const { push } = useRouter();
+
   return (
-    <div className='room-label'>
+    <button
+      type='button'
+      onClick={() => push(`/${label.toLowerCase()}`)}
+      className='w-full primary-gradient text-primary rounded py-1 px-[30px] text-sm font-medium flex-between hover:shadow-lg transition-shadow'
+    >
       <h2 className='font-medium'>
-        {rooms?.length}/{limit}
+        {rooms?.length} out of {limit} rooms
       </h2>
 
-      <Link href={`/${label}`}>
-        <a>{label.toUpperCase()} &rarr;</a>
-      </Link>
-    </div>
+      <p>{label} &rarr;</p>
+    </button>
   );
 };
 

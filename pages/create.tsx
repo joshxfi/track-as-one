@@ -50,7 +50,7 @@ const Create = () => {
     } else if (roomName) {
       await setDoc(doc(db, 'rooms', roomID), payload);
 
-      router.push(`/`);
+      router.push(`/home`);
 
       await updateDoc(doc(db, 'users', id!), {
         roomsCreated: arrayUnion(roomID),

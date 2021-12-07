@@ -14,7 +14,7 @@ export const NoRooms: React.FC<NoRoomsProps> = ({ desc, href }) => {
     <button
       type='button'
       onClick={() => router.push(href)}
-      className='flex px-[30px] justify-between h-[70px] w-full items-center bg-primary text-f9 text-center rounded-lg btn-ring'
+      className='flex px-[30px] justify-between h-[70px] w-full items-center bg-primary text-f9 text-center rounded btn-ring'
     >
       <h2>{desc}</h2>
       <VscSignIn className='icon' />

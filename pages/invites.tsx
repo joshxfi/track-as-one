@@ -50,7 +50,7 @@ const Invites: React.FC = () => {
   return (
     <Layout>
       <Header title='Invitation' />
-      {!invites.length && <EmptyMsg empty='invites' href='/home' />}
+      {!invites.length && <EmptyMsg empty='invites' />}
       <div className='w-full mb-4'>
         {invites.map((room) => (
           <button

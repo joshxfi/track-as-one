@@ -62,9 +62,7 @@ const Homepage: React.FC = () => {
         </div>
       </div>
 
-      <div className='bg-gradient-to-tr from-secondary to-[#FFDC54] h-[2px] my-4 w-full' />
-
-      <MyRooms createdRooms={createdRooms} joinedRooms={joinedRooms} />
+      <div className='primary-gradient h-[2px] my-4 w-full' />
 
       <div className='flex-between space-x-2'>
         <Button
@@ -83,6 +81,8 @@ const Homepage: React.FC = () => {
           Icon={BsEye}
         />
       </div>
+
+      <MyRooms createdRooms={createdRooms} joinedRooms={joinedRooms} />
 
       <div className='grid place-items-center'>
         <Clipboard copied={copied} />

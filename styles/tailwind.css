@@ -8,7 +8,7 @@
   }
 
   .sq-btn {
-    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[20px] mb-3 btn-ring;
+    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[20px] mb-2 btn-ring;
   }
 
   .icon {
@@ -29,10 +29,6 @@
 
   .flex-between {
     @apply flex justify-between items-center;
-  }
-
-  .room-label {
-    @apply w-full bg-secondary text-primary rounded py-1 px-[30px] text-sm font-medium flex-between;
   }
 
   .gradient-text {
