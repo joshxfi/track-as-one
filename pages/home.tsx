@@ -68,7 +68,7 @@ const Homepage: React.FC = () => {
         <Button
           name='copy tag'
           onClick={copyTag}
-          className='sq-btn btn-effect'
+          className='sq-btn'
           iconStyles='text-secondary text-xl'
           Icon={AiOutlineIdcard}
         />
@@ -76,7 +76,7 @@ const Homepage: React.FC = () => {
         <Button
           name='view invites'
           onClick={() => push('/invites')}
-          className='sq-btn btn-effect'
+          className='sq-btn'
           iconStyles='text-secondary text-xl'
           Icon={BsEye}
         />

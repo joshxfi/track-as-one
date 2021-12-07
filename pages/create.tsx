@@ -28,7 +28,7 @@ const Create = () => {
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const roomID = `room:${nanoid(5)}`;
+    const roomID = nanoid(5);
 
     const payload: IRoom = {
       name: roomName,
