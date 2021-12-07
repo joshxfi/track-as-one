@@ -11,6 +11,7 @@ import {
   query,
   where,
   arrayRemove,
+  getDocs,
 } from 'firebase/firestore';
 
 import useRoom from '@/hooks/useRoom';
@@ -48,12 +49,18 @@ const Info: React.FC = () => {
   );
 
   const deleteRoom = async () => {
-    router.push('/');
-
     await deleteDoc(roomRef);
+
+    const roomTasks = await getDocs(collection(db, `rooms/${roomID}/tasks`));
+    roomTasks.forEach(async (task) => {
+      await deleteDoc(doc(db, `rooms/${roomID}/tasks/${task.id}`));
+    });
+
     await updateDoc(creatorRef, {
       roomsCreated: arrayRemove(roomID),
     });
+
+    router.push('/home');
   };
 
   const leaveRoom = async () => {
@@ -66,7 +73,7 @@ const Info: React.FC = () => {
         roomsJoined: arrayRemove(roomID),
       });
 
-      router.push('/');
+      router.push('/home');
     }
   };
 
