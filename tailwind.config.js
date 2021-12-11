@@ -1,7 +1,6 @@
 module.exports = {
-  mode: 'jit',
-  purge: ['./pages/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./pages/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
@@ -17,9 +16,6 @@ module.exports = {
         xs: '400px',
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 };
