@@ -15,7 +15,7 @@ const Index = () => {
     students to track homework & activities together with their
     friends or classmates.'
     >
-      <section className='flex flex-col items-center mx-auto h-screen max-w-screen-xl lg:items-start lg:pt-28 lg:flex-row lg:justify-between'>
+      <section className='flex flex-col items-center mx-auto h-screen max-w-screen-xl lg:items-center lg:flex-row lg:justify-between'>
         <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
           <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
             trackAs
