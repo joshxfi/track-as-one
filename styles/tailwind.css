@@ -48,7 +48,7 @@
   }
 
   .welcome-btn {
-    @apply rounded-[36px] bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-semibold mt-4 btn-ring flex-between;
+    @apply rounded bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-medium mt-4 btn-ring flex-between;
   }
 
   .task-btn {

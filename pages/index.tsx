@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
+import { FaHandHoldingHeart, FaPhone, FaSignInAlt } from 'react-icons/fa';
+
 import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
-import avatar2 from '@/assets/avatar2.svg';
-import { FaHandHoldingHeart, FaPhone, FaSignInAlt } from 'react-icons/fa';
 import { Button } from '@/components/Button';
 
 const Index = () => {
@@ -15,7 +15,7 @@ const Index = () => {
     students to track homework & activities together with their
     friends or classmates.'
     >
-      <section className='flex flex-col items-center mx-auto h-screen max-w-screen-xl lg:items-start lg:mt-20  lg:flex-row lg:justify-between'>
+      <section className='flex flex-col items-center mx-auto max-w-screen-xl lg:items-start lg:mt-20 lg:flex-row lg:justify-between'>
         <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
           <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
             trackAs
@@ -33,19 +33,14 @@ const Index = () => {
                 />
               </div>
 
-              <h1 className='text-2xl font-semibold lg:font-medium lg:text-2xl xl:text-3xl xl:w-auto'>
-                An open-source{' '}
-                <span className='block sm:inline'>
-                  collaborative task tracker.
-                </span>
+              <h1 className='text-2xl font-semibold xl:text-3xl xl:w-auto font-serif'>
+                A collaborative task tracker.
               </h1>
 
               <p className='mt-2 text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
-                Every now and then, someone would pop in the group chat and say:{' '}
-                <span className='italic font-medium'>
-                  What assignments do we have? When is it due?
-                </span>{' '}
-                With this web app, you can track tasks collaboratively with your
+                Every now and then, someone would pop in the group chat and say:
+                &quot;What assignments do we have? When is it due?&quot; With
+                this web app, you can track tasks collaboratively with your
                 peers!
               </p>
             </div>
@@ -55,7 +50,6 @@ const Index = () => {
               name='get started'
               Icon={FaSignInAlt}
             />
-            <p className='mt-2 italic text-base font-medium'>coming soon!</p>
           </div>
         </div>
 
@@ -64,37 +58,48 @@ const Index = () => {
         </div>
       </section>
 
-      <section className='mx-auto max-w-screen-xl lg:flex lg:justify-between pb-8 mt-36 xs:mt-0'>
-        <div className='text-center lg:text-left lg:pl-2'>
-          <h1 className='text-2xl font-semibold lg:font-medium lg:text-3xl'>
-            Built by a student for students.
-          </h1>
-          <p className='mt-2 text-lg lg:w-[490px] xl:w-[600px] xl:text-xl'>
-            trackAsOne is a collaborative cross-platform app that enables
-            students to track homework & activities together with their friends
-            or classmates.
-          </p>
-          <div className='flex flex-col lg:flex-row items-center'>
-            <Button
-              className='welcome-btn lg:mr-5'
-              name='contribute'
-              Icon={FaHandHoldingHeart}
-              iconStyles='text-lg'
-            />
-            <Button className='welcome-btn' name='contact me' Icon={FaPhone} />
-          </div>
-        </div>
+      <section className='md:my-40 my-20 border-y-2 border-primary md:py-12 py-5'>
+        <ul className='text-md sm:text-2xl md:text-3xl xl:text-5xl text-primary flex justify-between text-opacity-90'>
+          {['User-Friendly', 'Collaborative', 'Open-Source'].map((i) => (
+            <li key={i}>
+              <p className='font-serif font-semibold'>{i}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        <div className='mt-8 w-[300px] lg:w-[400px] mx-auto lg:mx-0'>
-          <Image
-            priority
-            src={avatar2}
-            objectFit='contain'
-            alt='trackAsOne avatar'
-          />
-        </div>
+      <section className='mx-auto max-w-screen-xl pb-40 md:space-y-40 space-y-32'>
+        <Info
+          title='Built by a student for students.'
+          body='trackAsOne is a responsive web-based app that enables students to track homework & activities together with their friends or classmates. Forgot about a homework? Your friends got your back!'
+        />
+
+        <Info
+          title='Why use this task tracker?'
+          body="Tasks given by teachers are usually on different platforms. Few
+            examples are Messenger and MS Teams. The problem is that they are
+            usually cluttered with conversations making it hard to scroll back
+            and you have to check multiple platforms just to make sure you won't
+            miss a task."
+        />
       </section>
     </Layout>
+  );
+};
+
+interface InfoProps {
+  title: string;
+  body: string;
+}
+
+const Info = ({ title, body }: InfoProps) => {
+  return (
+    <div className='flex flex-col items-center'>
+      <h1 className='text-2xl lg:text-4xl font-semibold font-serif'>{title}</h1>
+      <p className='mt-2 text-lg lg:w-[490px] xl:w-[670px] xl:text-xl text-center'>
+        {body}
+      </p>
+    </div>
   );
 };
 

@@ -20,10 +20,10 @@ const Navbar: React.FC = () => {
 
           <div className='space-x-8 hidden md:block'>
             {['Home', 'About', 'Contact'].map((name) => {
-              const href = `/${name.toLowerCase()}`;
+              const href = name.toLowerCase();
 
               return (
-                <Link href='/[name]' as={href} key={name}>
+                <Link href={`/${encodeURIComponent(href)}`} key={name}>
                   <a
                     className={`${
                       asPath === href && 'text-secondary'
