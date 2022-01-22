@@ -11,6 +11,7 @@ const Index = () => {
     <Layout
       xl
       title='trackAsOne'
+      className='pt-20'
       description='trackAsOne is a collaborative cross-platform app that enables
     students to track homework & activities together with their
     friends or classmates.'

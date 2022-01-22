@@ -36,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({
         <LoaderHandler loaders={loaders}>
           <Navbar />
           <main
-            className={`text-primary w-[90%] mx-auto min-h-screen pt-20 ${
+            className={`text-primary w-[90%] mx-auto min-h-screen ${
               xl ? 'max-w-screen-xl' : 'max-w-screen-md'
             }  ${className}`}
           >
