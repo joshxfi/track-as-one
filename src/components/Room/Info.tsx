@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsCalendarFill } from 'react-icons/bs';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { useRouter } from 'next/router';
@@ -25,6 +25,7 @@ import { Layout, Header, Clipboard } from '@/components';
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
+  const [rerender, setRerender] = useState(false);
 
   const router = useRouter();
   const { id } = router.query;
@@ -37,16 +38,24 @@ const Info: React.FC = () => {
   const creatorRef = doc(db, `users/${creator}`);
   const roomRef = doc(db, `rooms/${roomID}`);
 
-  const repull = { repull: true };
-
-  const [roomCreator] = useDocument<IUser>(creatorRef, repull);
+  const [roomCreator] = useDocument<IUser>(creatorRef, {
+    deps: [roomID],
+  });
   const [roomMembers] = useCollection<IUser>(
     query(
       collection(db, 'users'),
       where('roomsJoined', 'array-contains', roomID ?? '')
     ),
-    repull
+    {
+      deps: [roomID],
+    }
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRerender(!rerender);
+    });
+  }, []);
 
   const deleteRoom = async () => {
     await deleteDoc(roomRef);

@@ -10,11 +10,7 @@ import { useDocument } from '.';
  */
 
 const useRoom = (id: string | string[] | undefined) => {
-  const { loading: _loading } = useAuth();
-
-  const [room, loading] = useDocument<IRoom>(doc(db, `rooms/${id}`), {
-    deps: [_loading],
-  });
+  const [room, loading] = useDocument<IRoom>(doc(db, `rooms/${id}`));
   return [room, loading] as const;
 };
 

@@ -25,7 +25,6 @@ const RoomInvite = () => {
 
   const router = useRouter();
   const { id } = router.query;
-
   const { data } = useAuth();
 
   const [room] = useRoom(id);
