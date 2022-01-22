@@ -2,16 +2,16 @@ import React from 'react';
 
 interface InfoBtnProps {
   desc: string;
-  styles?: string;
+  className?: string;
   handleClick: () => void;
 }
 
-const InfoBtn = ({ desc, styles, handleClick }: InfoBtnProps) => {
+const InfoBtn = ({ desc, className, handleClick }: InfoBtnProps) => {
   return (
     <button
       type='button'
       onClick={handleClick}
-      className={`card w-full h-[50px] outline-none btn-ring text-sm ${styles}`}
+      className={`card w-full h-[50px] outline-none btn-ring text-sm ${className}`}
     >
       {desc}
     </button>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BsCalendarFill } from 'react-icons/bs';
-import { AiOutlineIdcard } from 'react-icons/ai';
+import { AiFillCalendar } from 'react-icons/ai';
+import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import {
   doc,
   deleteDoc,
@@ -16,12 +15,12 @@ import {
 
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
-import { RoomNav } from '@/components/Room';
 import { defaultPic } from '@/utils/default';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useDocument } from '@/hooks';
 import { Layout, Header, Clipboard } from '@/components';
+import { InfoSection, InfoMember, RoomNav } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
@@ -96,94 +95,64 @@ const Info: React.FC = () => {
   return (
     <Layout loaders={[loading]}>
       <RoomNav room={room} />
-      <Header title='Room Info' desc={`room id → ${roomID}`} />
+      <Header title='Room Info' />
 
-      <div className='card flex-between h-[70px] mb-2 w-full'>
-        <div className='leading-5'>
-          <p className='text-f9 text-sm'>
-            {dateAdded?.toDate().toDateString()}
-          </p>
-          <p className='text-sm'>room created</p>
-        </div>
-
-        <BsCalendarFill className='icon' />
-      </div>
+      <InfoSection
+        title={roomID ?? ''}
+        label='room id'
+        onClick={copyRoomID}
+        Icon={IoMdKey}
+      />
+      <InfoSection
+        title={dateAdded?.toDate().toDateString()}
+        label='room created'
+        Icon={AiFillCalendar}
+      />
 
       <div className='w-full mb-4'>
-        <div className='flex-between card h-[70px] mb-2'>
-          <div className='flex'>
-            <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
-              <Image
-                src={roomCreator?.photoURL ?? defaultPic}
-                height={36}
-                width={36}
-                alt='creator profile picture'
-              />
-            </div>
-            <div className='leading-5'>
-              <p className='text-f9'>{roomCreator?.username}</p>
-              <p className='text-sm'>creator</p>
-            </div>
-          </div>
-          <AiOutlineIdcard className='icon text-xl' />
-        </div>
+        <InfoMember
+          img={roomCreator?.photoURL ?? defaultPic}
+          username={roomCreator?.username ?? ''}
+          label='creator'
+        />
 
         {roomMembers.map((member) => (
-          <div key={member.id} className='flex-between card h-[70px] mb-2'>
-            <div className='flex'>
-              <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
-                <Image
-                  src={member?.photoURL ?? defaultPic}
-                  height={36}
-                  width={36}
-                  alt='creator profile picture'
-                />
-              </div>
-              <div className='leading-5'>
-                <p className='text-f9'>{member?.username}</p>
-                <p className='text-sm'>member</p>
-              </div>
-            </div>
-            <AiOutlineIdcard className='icon text-xl' />
-          </div>
+          <InfoMember
+            key={member.id}
+            img={member.photoURL ?? defaultPic}
+            username={member.username ?? ''}
+          />
         ))}
 
-        {creator === data?.id ? (
-          <>
-            <div className='flex'>
-              <InfoBtn
-                desc='DELETE ROOM'
-                styles='mr-2'
-                handleClick={deleteRoom}
-              />
-              <InfoBtn
-                desc='GO BACK'
-                handleClick={() => router.push(`/rooms/${roomID}`)}
-              />
-            </div>
-
-            <InfoBtn
-              styles='mt-2'
-              desc={`VIEW REQUESTS (${requests?.length})`}
-              handleClick={() => router.push(`${roomID}?tab=requests`)}
-            />
-          </>
-        ) : (
-          <>
-            <div className='flex'>
-              <InfoBtn
-                desc='LEAVE ROOM'
-                styles='mr-2'
-                handleClick={leaveRoom}
-              />
-              <InfoBtn
-                desc='GO BACK'
-                handleClick={() => router.push(`/rooms/${roomID}`)}
-              />
-            </div>
-          </>
+        {creator === data.id && (
+          <InfoBtn
+            className='mb-2'
+            desc={`VIEW REQUESTS (${requests?.length})`}
+            handleClick={() => router.push(`${roomID}?tab=requests`)}
+          />
         )}
-        <InfoBtn desc='COPY ROOM ID' styles='mt-2' handleClick={copyRoomID} />
+
+        <div className='flex'>
+          {creator === data.id ? (
+            <InfoBtn
+              desc='DELETE ROOM'
+              className='info-red-btn'
+              handleClick={deleteRoom}
+            />
+          ) : (
+            <InfoBtn
+              desc='LEAVE ROOM'
+              className='info-red-btn'
+              handleClick={leaveRoom}
+            />
+          )}
+
+          <InfoBtn
+            desc='GO BACK'
+            className='bg-secondary text-primary'
+            handleClick={() => router.push(`/room/${roomID}`)}
+          />
+        </div>
 
         <div className='text-center'>
           <Clipboard copied={copied} />
