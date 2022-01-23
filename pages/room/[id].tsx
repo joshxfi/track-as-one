@@ -8,10 +8,13 @@ import {
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   addDoc,
+  arrayUnion,
   collection,
+  doc,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 
@@ -39,8 +42,7 @@ const Room = () => {
     }
   );
 
-  const { data } = useAuth();
-
+  const { user, data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -60,6 +62,13 @@ const Room = () => {
     if (description && tasks.length < 15) {
       await addDoc(tasksRef, payload);
     }
+  };
+
+  const taskDone = async (id: string) => {
+    const taskRef = doc(db, `rooms/${room.id}/tasks/${id}`);
+    await updateDoc(taskRef, {
+      completedBy: arrayUnion(user?.uid),
+    });
   };
 
   if (tab === 'info') return <Info />;
@@ -114,6 +123,7 @@ const Room = () => {
         {tasks?.map((task) => (
           <Tasks
             key={task.id}
+            taskDone={taskDone}
             task={task}
             members={room?.members?.length + 1}
           />
