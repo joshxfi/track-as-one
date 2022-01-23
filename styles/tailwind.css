@@ -16,7 +16,7 @@
   }
 
   .dueBtn {
-    @apply outline-none w-full px-[30px] h-[45px] rounded-lg bg-secondary text-primary;
+    @apply outline-none w-full px-[30px] h-[45px] rounded bg-secondary text-primary;
   }
 
   .btn-ring {
@@ -56,6 +56,6 @@
   }
 
   .task-btn {
-    @apply rounded-lg w-full bg-secondary py-2 px-4 font-semibold btn-ring flex-between;
+    @apply rounded w-full py-2 px-4 btn-ring flex-between;
   }
 }

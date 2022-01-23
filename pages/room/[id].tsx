@@ -75,7 +75,7 @@ const Room = () => {
         onSubmit={addTask}
         className='w-full mt-4'
       >
-        <div className='flex-between px-[30px] rounded-lg bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
+        <div className='flex-between px-[30px] rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
           <input
             maxLength={150}
             minLength={5}
@@ -109,7 +109,16 @@ const Room = () => {
           </div>
         </div>
       </form>
-      <Tasks tasks={tasks} members={room?.members?.length + 1} />
+
+      <section className='my-4'>
+        {tasks?.map((task) => (
+          <Tasks
+            key={task.id}
+            task={task}
+            members={room?.members?.length + 1}
+          />
+        ))}
+      </section>
     </Layout>
   );
 };
