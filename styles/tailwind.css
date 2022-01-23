@@ -3,43 +3,59 @@
 @tailwind utilities;
 
 @layer components {
-    .btn {
-        @apply flex items-center justify-between text-f9 bg-primary rounded-[36px] text-sm h-[40px] px-[40px] mb-3;
-    }
+  .btn {
+    @apply flex items-center w-full justify-between text-f9 bg-primary rounded-[36px] text-sm h-[40px] px-[40px] mb-3;
+  }
 
-    .icon {
-        @apply text-secondary text-lg;
-    }
+  .sq-btn {
+    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[20px] mb-2 btn-ring;
+  }
 
-    .wrap {
-        @apply flex flex-col items-center max-w-screen-md mx-auto min-h-screen;
-    }
+  .icon {
+    @apply text-secondary text-lg;
+  }
 
-    .dueBtn {
-        @apply outline-none w-full px-[30px] h-[45px] rounded-lg bg-secondary text-primary;
-    }
+  .dueBtn {
+    @apply outline-none w-full px-[30px] h-[45px] rounded bg-secondary text-primary;
+  }
 
-    .btnEffect {
-        @apply hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset-1 focus:ring-secondary;
-    }
+  .btn-ring {
+    @apply hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset-1 focus:ring-secondary;
+  }
 
-    .card {
-        @apply bg-primary text-secondary px-[30px] rounded-lg;
-    }
+  .card {
+    @apply bg-primary text-secondary px-[30px] rounded;
+  }
 
-    .flex-between {
-        @apply flex justify-between items-center;
-    }
+  .info-red-btn {
+    @apply mr-2 bg-red-700 text-white hover:bg-red-700/95 transition-all;
+  }
 
-    .gradient-text {
-        @apply text-transparent bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text;
-    }
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
 
-    .primary-gradient {
-        @apply bg-gradient-to-tr from-secondary to-[#FFDC54];
-    }
+  .gradient-text {
+    @apply text-transparent bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text;
+  }
 
-    .footer-h1 {
-        @apply font-semibold text-secondary mb-2;
-    }
+  .primary-gradient {
+    @apply bg-gradient-to-tr from-secondary to-[#FFDC54];
+  }
+
+  .footer-h1 {
+    @apply font-semibold text-secondary mb-2;
+  }
+
+  .home-btn {
+    @apply rounded-[36px] bg-primary text-f9 py-2 w-full px-[50px] mt-4 btn-ring flex-between text-sm;
+  }
+
+  .welcome-btn {
+    @apply rounded bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-medium mt-4 btn-ring flex-between;
+  }
+
+  .task-btn {
+    @apply rounded w-full py-2 px-4 btn-ring flex-between;
+  }
 }

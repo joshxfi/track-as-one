@@ -1,13 +1,12 @@
-import React from 'react'
-import { Error } from '@/components/Global/Error'
-import Container from '@/components/Container'
+import React from 'react';
+import { Error, Layout } from '@/components';
 
 const Error404 = () => {
   return (
-    <Container>
+    <Layout>
       <Error code='404' info='page not found' />
-    </Container>
-  )
-}
+    </Layout>
+  );
+};
 
-export default Error404
+export default Error404;

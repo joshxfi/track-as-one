@@ -1,66 +1,75 @@
-import React from 'react'
-import router from 'next/router'
-import { doc, updateDoc } from 'firebase/firestore'
-import { BiDoorOpen } from 'react-icons/bi'
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import {
+  arrayRemove,
+  arrayUnion,
+  collection,
+  doc,
+  documentId,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { BiDoorOpen } from 'react-icons/bi';
 
-import Container from '@/components/Container'
-import { Header } from '@/components/Global/Header'
-import { useFirestore } from '@/context/FirestoreContext'
-import { Error } from '@/components/Global/Error'
+import { db } from '@/config/firebase';
+import { useCollection } from '@/hooks';
+import { useAuth } from '@/context/AuthContext';
+import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {
-  const { db, currentUser, roomList } = useFirestore()
-  const { userTag, roomsJoined, invites } = currentUser || {}
+  const [invs, setInvs] = useState<string[]>(['default']);
+  const { data, loading } = useAuth();
 
-  const userInvites = invites?.map((inv) => inv)
-  const matchInvites = roomList.filter((room) =>
-    userInvites?.includes(room.roomID)
-  )
+  const { push } = useRouter();
 
-  const acceptInvite = async (roomTag: string) => {
-    const targetRoom = roomList.find((room) => room.roomID === roomTag)
+  useEffect(() => {
+    if (data?.invites?.length) setInvs(data.invites);
+  }, [loading]);
 
-    const currentUserRef = doc(db, 'userList', `${userTag}`)
-    const joinRoomRef = doc(db, 'roomList', roomTag)
+  const [invites] = useCollection<IRoom>(
+    query(collection(db, 'rooms'), where(documentId(), 'in', invs)),
+    { listen: true, deps: [invs] }
+  );
 
-    await updateDoc(currentUserRef, {
-      invites: invites?.filter((invite) => invite !== roomTag),
-      roomsJoined: [roomTag, ...(roomsJoined ?? [])],
-    })
+  const acceptInvite = async (roomId?: string) => {
+    if (roomId) {
+      await updateDoc(doc(db, `users/${data.id}`), {
+        invites: arrayRemove(roomId),
+        roomsJoined: arrayUnion(roomId),
+      });
 
-    await updateDoc(joinRoomRef, {
-      members: [userTag, ...targetRoom!.members],
-    })
+      await updateDoc(doc(db, `rooms/${roomId}`), {
+        members: arrayUnion(data.id),
+      });
 
-    router.push(`rooms/${roomTag}`)
-  }
+      push(`room/${roomId}`);
+    }
+  };
 
   return (
-    <Container>
+    <Layout>
       <Header title='Invitation' />
+      {!invites.length && <EmptyMsg empty='invites' />}
       <div className='w-full mb-4'>
-        {matchInvites.length ? (
-          matchInvites.map((room) => (
-            <button
-              type='button'
-              onClick={() => acceptInvite(room.roomID)}
-              key={room.roomID}
-              className='card w-full text-left btnEffect flex-between h-[70px] mb-2'
-            >
-              <div className='leading-5'>
-                <p className='text-f9'>{room.name}</p>
-                <p className='text-sm'>Accept Invitation</p>
-              </div>
+        {invites.map((room) => (
+          <button
+            type='button'
+            onClick={() => acceptInvite(room.id)}
+            key={room.id}
+            className='card w-full text-left btn-ring flex-between h-[70px] mb-2'
+          >
+            <div className='leading-5'>
+              <p className='text-f9'>{room.name}</p>
+              <p className='text-sm'>Accept Invitation</p>
+            </div>
 
-              <BiDoorOpen className='icon' />
-            </button>
-          ))
-        ) : (
-          <Error code='204' info='why so empty?' />
-        )}
+            <BiDoorOpen className='icon' />
+          </button>
+        ))}
       </div>
-    </Container>
-  )
-}
+    </Layout>
+  );
+};
 
-export default Invites
+export default Invites;

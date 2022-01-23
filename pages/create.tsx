@@ -1,63 +1,65 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import { nanoid } from 'nanoid'
-import { updateDoc, doc, setDoc } from 'firebase/firestore'
-import { BiDoorOpen } from 'react-icons/bi'
+import React, { useState } from 'react';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/router';
+import { BiDoorOpen } from 'react-icons/bi';
+import {
+  updateDoc,
+  doc,
+  setDoc,
+  serverTimestamp,
+  arrayUnion,
+} from 'firebase/firestore';
 
-import { useFirestore } from '@/context/FirestoreContext'
-import { Header } from '@/components/Global/Header'
-import { HrefBtn } from '@/components/Button'
-import { Input } from '@/components/Input'
-import Container from '@/components/Container'
-import ErrorMSG from '@/components/Global/ErrorMSG'
+import { db } from '@/config/firebase';
+import { Button } from '@/components/Button';
+import { useAuth } from '@/context/AuthContext';
+import { Header, ErrorMsg, Input, Layout } from '@/components';
 
 const Create = () => {
-  const [roomName, setRoomName] = useState<string>('')
-  const [error, setError] = useState<string>('blank')
-  const [showError, setShowError] = useState<boolean>(false)
+  const [error, setError] = useState<string>('blank');
+  const [roomName, setRoomName] = useState<string>('');
+  const [showError, setShowError] = useState<boolean>(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { db, currentUser } = useFirestore()
-  const { userTag, roomsCreated } = currentUser ?? {}
+  const {
+    data: { id, roomsCreated },
+  } = useAuth();
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const roomID = nanoid(5)
+    e.preventDefault();
+    const roomID = nanoid(5);
 
-    const payload: RoomList = {
-      roomID,
+    const payload: IRoom = {
       name: roomName,
-      creator: userTag,
+      creator: id!,
       admin: [],
       members: [],
-      dateAdded: new Date().toDateString(),
+      dateAdded: serverTimestamp(),
       requests: [],
-    }
+    };
 
-    setRoomName('')
-    const updateUserRef = doc(db, 'userList', `${userTag}`)
+    setRoomName('');
     if (roomsCreated!.length >= 3) {
-      setError('Max rooms reached (3)')
-      setShowError(true)
+      setError('Max rooms reached (3)');
+      setShowError(true);
 
       setTimeout(() => {
-        setShowError(false)
-      }, 3000)
+        setShowError(false);
+      }, 3000);
     } else if (roomName) {
-      const roomDocRef = doc(db, 'roomList', roomID)
-      await setDoc(roomDocRef, payload)
+      await setDoc(doc(db, 'rooms', roomID), payload);
 
-      router.push(`/list`)
+      router.push(`/home`);
 
-      await updateDoc(updateUserRef, {
-        roomsCreated: [payload.roomID, ...roomsCreated!],
-      })
+      await updateDoc(doc(db, 'users', id!), {
+        roomsCreated: arrayUnion(roomID),
+      });
     }
-  }
+  };
 
   return (
-    <Container>
+    <Layout>
       <Header title='Create a Room' />
       <form
         onSubmit={createRoom}
@@ -69,14 +71,20 @@ const Create = () => {
           placeholder='enter room name'
           max={15}
         />
-        <ErrorMSG error={error} showError={showError} />
+        <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
-          <HrefBtn desc='Create room' type='submit' Icon={BiDoorOpen} />
+          <Button
+            name='create room'
+            type='submit'
+            className='btn btn-effect'
+            iconStyles='text-secondary text-xl'
+            Icon={BiDoorOpen}
+          />
         </div>
       </form>
-    </Container>
-  )
-}
+    </Layout>
+  );
+};
 
-export default Create
+export default Create;

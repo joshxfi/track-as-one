@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 interface InputProps {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  value: string
-  placeholder: string
-  max: number
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  placeholder: string;
+  max: number;
 }
 
-export const Input: React.FC<InputProps> = ({
+const Input: React.FC<InputProps> = ({
   handleChange,
   value,
   placeholder,
@@ -24,5 +24,7 @@ export const Input: React.FC<InputProps> = ({
       placeholder={placeholder}
       maxLength={max}
     />
-  )
-}
+  );
+};
+
+export default Input;

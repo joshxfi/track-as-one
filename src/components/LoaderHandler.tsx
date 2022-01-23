@@ -1,28 +1,50 @@
-import React, { useState, useEffect } from 'react'
-import { useAuth } from '@/context/AuthContext'
-import { useFirestore } from '@/context/FirestoreContext'
-import { AnimatePresence } from 'framer-motion'
-import Loader from './Loader'
+import React from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Loader } from '.';
 
-interface LoaderProps {
-  children: React.ReactNode
-}
+type ILoader = {
+  loaders?: boolean[];
+};
 
-const LoaderHandler: React.FC<LoaderProps> = ({ children }) => {
-  const { userLoading } = useAuth()
-  const { dataLoading } = useFirestore()
+const LoaderHandler: React.FC<ILoader> = ({ loaders, children }) => {
+  const { loading } = useAuth();
 
-  const [loading, setLoading] = useState(true)
+  const variants = {
+    hidden: { opacity: 0 },
+    enter: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
 
-  useEffect(() => {
-    if (userLoading || dataLoading) setLoading(true)
-    else
-      setTimeout(() => {
-        setLoading(false)
-      }, 1500)
-  }, [userLoading, dataLoading])
+  const _loading = () => {
+    if (loaders) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < loaders.length; i++) {
+        if (loaders[i]) return true;
+      }
+    }
 
-  return <AnimatePresence>{loading ? <Loader /> : children}</AnimatePresence>
-}
+    return false;
+  };
 
-export default LoaderHandler
+  if (loading || _loading()) {
+    return (
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          variants={variants}
+          initial='hidden'
+          animate='enter'
+          exit='exit'
+          transition={{ duration: 0.3 }}
+          className='h-screen grid place-items-center'
+        >
+          <Loader />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  return <>{children}</>;
+};
+
+export default LoaderHandler;

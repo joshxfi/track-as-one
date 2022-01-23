@@ -1,64 +1,129 @@
 /* eslint-disable no-console */
-import React, { useContext, createContext, useState, useEffect } from 'react'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { useRouter } from 'next/router'
-import { auth } from '../config/firebase'
+import React, { useContext, createContext, useState, useEffect } from 'react';
+import {
+  getAdditionalUserInfo,
+  GoogleAuthProvider,
+  signInWithPopup,
+  User,
+} from 'firebase/auth';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/router';
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
-const AuthContext = createContext<AuthContextValues>({} as AuthContextValues)
+import { auth, db } from '../config/firebase';
 
-const useAuth = () => {
-  return useContext(AuthContext)
+interface AuthContextValues {
+  user: User | null;
+  signIn: () => void;
+  signOut: () => void;
+  loading: boolean;
+  data: IUser;
 }
 
-const AuthProvider: React.FC = ({ children }) => {
-  const [authUser, setAuthUser] = useState(() => auth.currentUser)
-  const { uid, displayName, photoURL, email } = authUser || {}
-  const router = useRouter()
+const AuthContext = createContext<AuthContextValues>({} as AuthContextValues);
 
-  const [userLoading, setUserLoading] = useState(true)
+const useAuth = () => {
+  const data = useContext(AuthContext);
+  return { ...data };
+};
+
+const AuthProvider: React.FC = ({ children }) => {
+  const [user, setUser] = useState(() => auth.currentUser);
+  const router = useRouter();
+
+  const [userLoading, setUserLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({} as IUser);
 
   useEffect(() => {
-    setUserLoading(true)
-    const unsub = auth.onAuthStateChanged((user) => {
-      if (user) setAuthUser(user)
-      setUserLoading(false)
-    })
+    setUserLoading(() => true);
+    const unsub = auth.onAuthStateChanged((_user) => {
+      if (_user) setUser(_user);
+      else setUser(null);
+      setUserLoading(() => false);
+    });
 
-    return unsub
-  }, [])
+    return unsub;
+  }, []);
 
   const signIn = async () => {
-    const provider = new GoogleAuthProvider()
-    auth.useDeviceLanguage()
+    const provider = new GoogleAuthProvider();
 
     try {
-      await signInWithPopup(auth, provider)
+      const _user = await signInWithPopup(auth, provider);
+      const moreInfo = getAdditionalUserInfo(_user);
+
+      const { email, metadata, photoURL } = _user.user;
+
+      const userTag = `user:${nanoid(5)}`;
+
+      if (moreInfo?.isNewUser) {
+        const payload: IUser = {
+          email,
+          photoURL,
+          invites: [],
+          roomsJoined: [],
+          roomsCreated: [],
+          dateJoined: metadata.creationTime,
+          username: email?.split('@')[0].toLowerCase(),
+        };
+
+        await setDoc(doc(db, 'users', userTag), payload);
+      }
+
+      router.push('/home');
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
+
+  useEffect(() => {
+    setDataLoading(() => true);
+    const getUserData = async () => {
+      if (user) {
+        const res = await getDocs(
+          query(collection(db, 'users'), where('email', '==', user.email))
+        );
+        setData(
+          res.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id } as IUser;
+          })[0]
+        );
+      }
+
+      setDataLoading(() => false);
+    };
+
+    getUserData();
+  }, [user]);
+
+  useEffect(() => {
+    if (userLoading || dataLoading) setLoading(() => true);
+    else setLoading(() => false);
+  }, [userLoading, dataLoading]);
 
   const signOut = async () => {
     try {
-      await auth.signOut()
-      router.push('/')
+      await auth.signOut();
+      router.push('/');
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
-  const values: AuthContextValues = {
-    authUser,
-    uid,
-    displayName,
-    photoURL,
-    email,
-    signIn,
-    signOut,
-    userLoading,
-  }
+  return (
+    <AuthContext.Provider value={{ user, signIn, signOut, data, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
-}
-
-export { useAuth, AuthProvider }
+export { useAuth, AuthProvider };

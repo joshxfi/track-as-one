@@ -1,25 +1,21 @@
 module.exports = {
-  mode: 'jit',
-  purge: ['./pages/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./pages/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
-        'f9': '#F9F9F9',
-        'primary': '#2B2B2B',
-        'secondary': '#E3B04B',
-        'inputbg': '#E7E7E7',
-        'inputfg': '#B5B3B1'
+        f9: '#F9F9F9',
+        primary: '#2B2B2B',
+        secondary: '#E3B04B',
+        inputbg: '#E7E7E7',
+        inputfg: '#B5B3B1',
       },
 
       screens: {
-        'lg': '1080px',
-        'xs': '400px'
-      }
+        lg: '1080px',
+        xs: '400px',
+      },
     },
   },
-  variants: {
-    extend: {},
-  },
   plugins: [],
-}
+};
