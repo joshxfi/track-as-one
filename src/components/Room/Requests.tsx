@@ -29,7 +29,7 @@ const Requests = () => {
   const [room, loading] = useRoom(id);
 
   useEffect(() => {
-    if (room.requests?.length) setReqs(room.requests);
+    if (room?.requests?.length) setReqs(room?.requests);
   }, [loading]);
 
   const [users] = useCollection<IUser>(
@@ -38,13 +38,13 @@ const Requests = () => {
   );
 
   const acceptRequest = async (id: string | undefined) => {
-    await updateDoc(doc(db, `rooms/${room.id}`), {
+    await updateDoc(doc(db, `rooms/${room?.id}`), {
       requests: arrayRemove(id),
       members: arrayUnion(id),
     });
 
     await updateDoc(doc(db, `users/${id}`), {
-      roomsJoined: arrayUnion(room.id),
+      roomsJoined: arrayUnion(room?.id),
     });
   };
 

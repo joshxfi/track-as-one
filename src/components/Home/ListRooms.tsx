@@ -12,7 +12,7 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
   return (
     <button
       type='button'
-      onClick={() => push(`/room/${encodeURIComponent(room.id ?? '')}`)}
+      onClick={() => push({ pathname: '/room', query: { id: room.id } })}
       className='card flex-between h-[70px] mb-2 btn-ring w-full text-left'
     >
       <div className='leading-5'>

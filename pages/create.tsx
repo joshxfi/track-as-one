@@ -30,32 +30,35 @@ const Create = () => {
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const roomID = nanoid(5);
 
-    const payload: IRoom = {
-      name: roomName,
-      creator: id!,
-      admin: [],
-      members: [],
-      dateAdded: serverTimestamp(),
-      requests: [],
-    };
+    if (user) {
+      const roomID = nanoid(5);
 
-    setRoomName('');
-    if (user.roomsCreated.length >= 3) {
-      toast.error('max rooms reached (3)');
-    } else if (roomName) {
-      toast.promise(setDoc(doc(db, 'rooms', roomID), payload), {
-        loading: 'creating room...',
-        success: 'room created!',
-        error: 'room could not be created.',
-      });
+      const payload: IRoom = {
+        name: roomName,
+        creator: id!,
+        admin: [],
+        members: [],
+        dateAdded: serverTimestamp(),
+        requests: [],
+      };
 
-      push(`/home`);
+      setRoomName('');
+      if (user.roomsCreated.length >= 3) {
+        toast.error('max rooms reached (3)');
+      } else if (roomName) {
+        toast.promise(setDoc(doc(db, 'rooms', roomID), payload), {
+          loading: 'creating room...',
+          success: 'room created!',
+          error: 'room could not be created.',
+        });
 
-      await updateDoc(doc(db, 'users', id!), {
-        roomsCreated: arrayUnion(roomID),
-      });
+        push(`/home`);
+
+        await updateDoc(doc(db, 'users', id!), {
+          roomsCreated: arrayUnion(roomID),
+        });
+      }
     }
   };
 

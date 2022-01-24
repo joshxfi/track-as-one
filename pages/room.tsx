@@ -14,9 +14,8 @@ import {
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 
-import { Layout } from '@/components';
+import { Layout, Error } from '@/components';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useRoom, useNextQuery } from '@/hooks';
@@ -34,8 +33,8 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const [url, setUrl] = useState('');
 
-  const router = useRouter();
-  const { id } = router.query;
+  // eslint-disable-next-line prefer-destructuring
+  const id = useNextQuery('id');
   const tab = useNextQuery('tab');
 
   const [room, loading] = useRoom(id);
@@ -44,7 +43,7 @@ const Room = () => {
     query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc')),
     {
       listen: true,
-      deps: [room.id],
+      deps: [room?.id],
     }
   );
 
@@ -67,7 +66,7 @@ const Room = () => {
     setUrl('');
     setDueDate(null);
 
-    const tasksRef = collection(db, `rooms/${room.id}/tasks`);
+    const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
 
     if (description && tasks.length < 15) {
       toast.promise(addDoc(tasksRef, payload), {
@@ -79,7 +78,7 @@ const Room = () => {
   };
 
   const taskDone = async (id: string) => {
-    const taskRef = doc(db, `rooms/${room.id}/tasks/${id}`);
+    const taskRef = doc(db, `rooms/${room?.id}/tasks/${id}`);
     await updateDoc(taskRef, {
       completedBy: arrayUnion(data.id),
     });
@@ -88,12 +87,20 @@ const Room = () => {
   };
 
   const taskDel = async (id: string) => {
-    toast.promise(deleteDoc(doc(db, `rooms/${room.id}/tasks/${id}`)), {
+    toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
       loading: 'deleting task...',
       success: 'task deleted',
       error: 'error deleting task',
     });
   };
+
+  if (!room || !id) {
+    return (
+      <Layout>
+        <Error code='404' info='room not found' />
+      </Layout>
+    );
+  }
 
   if (tab === 'info') return <Info />;
   if (tab === 'invite') return <InviteUser />;
@@ -153,7 +160,6 @@ const Room = () => {
           </div>
         </div>
       </form>
-
       <section className='mt-4 mb-8 space-y-2'>
         {tasks?.map((task) => (
           <Task

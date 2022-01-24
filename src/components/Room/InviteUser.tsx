@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+
+import toast from 'react-hot-toast';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import useRoom from '@/hooks/useRoom';
+import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { RoomSettings } from '@/components/Room';
 import { Layout, Header, Input } from '@/components';
-import toast from 'react-hot-toast';
 
 const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
 
-  const router = useRouter();
-  const { id } = router.query;
+  const id = useNextQuery('id');
   const { data } = useAuth();
 
   const [room] = useRoom(id);
@@ -30,7 +30,7 @@ const RoomInvite = () => {
         toast.error('user tag could not be found');
       } else if (invUserTag === data.id) {
         toast.error('you are already in the room');
-      } else if (room.members?.includes(invUserTag)) {
+      } else if (room?.members?.includes(invUserTag)) {
         toast.error('user is already in the room');
       } else {
         toast.promise(
@@ -49,7 +49,7 @@ const RoomInvite = () => {
 
   return (
     <Layout>
-      <RoomSettings room={room} />
+      <RoomSettings room={room!} />
       <Header title='Invite a User' />
       <form
         spellCheck='false'

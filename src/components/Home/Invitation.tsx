@@ -1,10 +1,10 @@
-import { db } from '@/config/firebase';
-import { useRouter } from 'next/router';
-import useUser from '@/hooks/useUser';
-import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import React from 'react';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 import { BiDoorOpen } from 'react-icons/bi';
+import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
+
+import { db } from '@/config/firebase';
 import { useDocument } from '@/hooks';
 
 interface InvitationProps {
@@ -46,7 +46,7 @@ const Invitation = ({ roomID, user }: InvitationProps) => {
       className='card w-full text-left btn-ring flex-between h-[70px] mb-2'
     >
       <div className='leading-5'>
-        <p className='text-f9'>{room.name}</p>
+        <p className='text-f9'>{room?.name}</p>
         <p className='text-sm'>Accept Invitation</p>
       </div>
 
