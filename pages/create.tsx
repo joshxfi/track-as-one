@@ -47,8 +47,8 @@ const Create = () => {
     } else if (roomName) {
       toast.promise(setDoc(doc(db, 'rooms', roomID), payload), {
         loading: 'creating room...',
-        success: <p>room created!</p>,
-        error: <p>room could not be created.</p>,
+        success: 'room created!',
+        error: 'room could not be created.',
       });
 
       push(`/home`);
