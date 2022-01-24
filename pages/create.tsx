@@ -12,7 +12,7 @@ import {
   arrayUnion,
 } from 'firebase/firestore';
 
-import { useDocument } from '@/hooks';
+import useUser from '@/hooks/useUser';
 import { db } from '@/config/firebase';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
@@ -26,7 +26,7 @@ const Create = () => {
     data: { id },
   } = useAuth();
 
-  const [user] = useDocument<IUser>(doc(db, `users/${id}`), { deps: [id] });
+  const [user] = useUser(id);
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
