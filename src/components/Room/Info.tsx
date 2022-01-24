@@ -20,7 +20,7 @@ import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useDocument } from '@/hooks';
 import { Layout, Header, Clipboard } from '@/components';
-import { InfoSection, InfoMember, RoomNav } from '@/components/Room';
+import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
@@ -94,7 +94,7 @@ const Info: React.FC = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <RoomNav room={room} />
+      <RoomSettings room={room} />
       <Header title='Room Info' />
 
       <InfoSection
