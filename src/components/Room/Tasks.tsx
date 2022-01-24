@@ -9,7 +9,7 @@ interface RoomTaskProps {
 
 const RoomTask: React.FC<RoomTaskProps> = ({ task, members, taskDone }) => {
   return (
-    <div className='w-full text-left leading-5 relative px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded cursor-pointer transition-all duration-300 flex items-start group hover:pl-16'>
+    <div className='w-full text-left leading-5 relative px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded transition-all duration-300 flex items-start group hover:pl-16'>
       <button
         onClick={() => taskDone(task.id ?? '')}
         className='bg-green-500 absolute h-full top-0 left-0 text-green-500 rounded-tl rounded-bl group-hover:px-4 group-hover:text-white transition-all duration-300'
