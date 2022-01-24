@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import { nanoid } from 'nanoid';
+import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { BiDoorOpen } from 'react-icons/bi';
 import {
@@ -10,21 +12,21 @@ import {
   arrayUnion,
 } from 'firebase/firestore';
 
+import { useDocument } from '@/hooks';
 import { db } from '@/config/firebase';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
-import { Header, ErrorMsg, Input, Layout } from '@/components';
+import { Header, Input, Layout } from '@/components';
 
 const Create = () => {
-  const [error, setError] = useState<string>('blank');
   const [roomName, setRoomName] = useState<string>('');
-  const [showError, setShowError] = useState<boolean>(false);
 
-  const router = useRouter();
-
+  const { push } = useRouter();
   const {
-    data: { id, roomsCreated },
+    data: { id },
   } = useAuth();
+
+  const [user] = useDocument<IUser>(doc(db, `users/${id}`), { deps: [id] });
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,17 +42,16 @@ const Create = () => {
     };
 
     setRoomName('');
-    if (roomsCreated!.length >= 3) {
-      setError('Max rooms reached (3)');
-      setShowError(true);
-
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
+    if (user.roomsCreated.length >= 3) {
+      toast.error('max rooms reached (3)');
     } else if (roomName) {
-      await setDoc(doc(db, 'rooms', roomID), payload);
+      toast.promise(setDoc(doc(db, 'rooms', roomID), payload), {
+        loading: 'creating room...',
+        success: <p>room created!</p>,
+        error: <p>room could not be created.</p>,
+      });
 
-      router.push(`/home`);
+      push(`/home`);
 
       await updateDoc(doc(db, 'users', id!), {
         roomsCreated: arrayUnion(roomID),
@@ -71,7 +72,6 @@ const Create = () => {
           placeholder='enter room name'
           max={15}
         />
-        <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
           <Button
