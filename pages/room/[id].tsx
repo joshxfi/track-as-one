@@ -1,16 +1,13 @@
 import React, { useState, useRef } from 'react';
+
+import { BsPlusSquareFill, BsXSquareFill } from 'react-icons/bs';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
-import {
-  BsPlusSquareFill,
-  BsCalendarFill,
-  BsXSquareFill,
-  BsPlusLg,
-} from 'react-icons/bs';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   addDoc,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   orderBy,
   query,
@@ -23,7 +20,13 @@ import { Layout } from '@/components';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useRoom, useNextQuery } from '@/hooks';
-import { Info, InviteUser, RoomNav, Requests, Tasks } from '@/components/Room';
+import {
+  Info,
+  InviteUser,
+  RoomSettings,
+  Requests,
+  Task,
+} from '@/components/Room';
 
 const Room = () => {
   const [description, setDesc] = useState('');
@@ -44,7 +47,7 @@ const Room = () => {
     }
   );
 
-  const { user, data } = useAuth();
+  const { data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,8 +76,12 @@ const Room = () => {
   const taskDone = async (id: string) => {
     const taskRef = doc(db, `rooms/${room.id}/tasks/${id}`);
     await updateDoc(taskRef, {
-      completedBy: arrayUnion(user?.uid),
+      completedBy: arrayUnion(data.id),
     });
+  };
+
+  const taskDel = async (id: string) => {
+    await deleteDoc(doc(db, `rooms/${room.id}/tasks/${id}`));
   };
 
   if (tab === 'info') return <Info />;
@@ -83,7 +90,7 @@ const Room = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <RoomNav room={room} />
+      <RoomSettings room={room} />
       <form
         spellCheck='false'
         autoComplete='off'
@@ -138,9 +145,11 @@ const Room = () => {
 
       <section className='mt-4 mb-8 space-y-2'>
         {tasks?.map((task) => (
-          <Tasks
+          <Task
+            isAdmin={room.creator === data.id}
             key={task.id}
             taskDone={taskDone}
+            taskDel={taskDel}
             task={task}
             members={room?.members?.length + 1}
           />

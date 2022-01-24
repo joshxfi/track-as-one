@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { AiOutlineIdcard } from 'react-icons/ai';
+import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
-import { RoomNav } from '@/components/Room';
 import { useAuth } from '@/context/AuthContext';
+import { RoomSettings } from '@/components/Room';
 import { ErrorMsg, Layout, Header, Input } from '@/components';
 
 const RoomInvite = () => {
@@ -53,7 +53,7 @@ const RoomInvite = () => {
 
   return (
     <Layout>
-      <RoomNav room={room} />
+      <RoomSettings room={room} />
       <Header title='Invite a User' />
       <form
         spellCheck='false'

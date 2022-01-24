@@ -15,19 +15,23 @@ const RoomNav = ({ room }: { room: IRoom }) => {
   };
 
   return (
-    <div className='flex relative mt-4 justify-end z-50'>
-      <button
-        type='button'
-        onClick={() => setShowSettings(!showSettings)}
-        className='text-xl text-primary'
-      >
-        <AiFillSetting />
-      </button>
+    <div className='relative mt-4 z-50'>
+      <div className='flex justify-end space-x-4 items-center'>
+        <h4 className='text-sm font-medium'>{room.name}</h4>
+
+        <button
+          type='button'
+          onClick={() => setShowSettings(!showSettings)}
+          className='text-xl text-primary'
+        >
+          <AiFillSetting />
+        </button>
+      </div>
 
       {showSettings && (
         <div
           onMouseLeave={() => setShowSettings(false)}
-          className='bg-white absolute top-8 flex flex-col space-y-4 text-primary rounded p-2 text-sm overflow-hidden shadow-md ring-1 ring-black ring-opacity-5'
+          className='bg-white absolute top-8 right-0 flex flex-col space-y-4 text-primary rounded p-2 text-sm overflow-hidden shadow-md ring-1 ring-black ring-opacity-5'
         >
           <button
             className='room-nav-item'
