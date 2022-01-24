@@ -23,6 +23,10 @@
     @apply bg-primary text-secondary px-[30px] rounded;
   }
 
+  .room-nav-item {
+    @apply flex items-center w-full px-4 py-2 text-gray-700 transition-colors rounded hover:text-black hover:bg-gray-200 space-x-3 cursor-pointer;
+  }
+
   .info-red-btn {
     @apply mr-2 bg-red-700 text-white hover:bg-red-700/95 transition-all;
   }
