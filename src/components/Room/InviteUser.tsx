@@ -7,21 +7,11 @@ import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { RoomSettings } from '@/components/Room';
-import { ErrorMsg, Layout, Header, Input } from '@/components';
+import { Layout, Header, Input } from '@/components';
+import toast from 'react-hot-toast';
 
 const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
-  const [error, setError] = useState<string>('blank');
-  const [showError, setShowError] = useState<boolean>(false);
-
-  const errorMsg = (error: string) => {
-    setError(error);
-    setShowError(true);
-
-    setTimeout(() => {
-      setShowError(false);
-    }, 3000);
-  };
 
   const router = useRouter();
   const { id } = router.query;
@@ -32,21 +22,27 @@ const RoomInvite = () => {
     setUserTag('');
 
     if (invUserTag === '') {
-      errorMsg('example → user:nTWS_');
+      toast.error('example → user:nTWS_');
     } else {
       const userToInv = await getDoc(doc(db, 'users', invUserTag));
 
       if (!userToInv.exists()) {
-        errorMsg('user tag could not be found');
+        toast.error('user tag could not be found');
       } else if (invUserTag === data.id) {
-        errorMsg('you are already in the room');
+        toast.error('you are already in the room');
       } else if (room.members?.includes(invUserTag)) {
-        errorMsg('user is already in the room');
+        toast.error('user is already in the room');
       } else {
-        await updateDoc(doc(db, `users/${userToInv.id}`), {
-          invites: arrayUnion(id),
-        });
-        errorMsg('user invited!');
+        toast.promise(
+          updateDoc(doc(db, `users/${userToInv.id}`), {
+            invites: arrayUnion(id),
+          }),
+          {
+            loading: 'inviting user...',
+            success: 'user invited!',
+            error: 'could not invite user.',
+          }
+        );
       }
     }
   };
@@ -65,7 +61,6 @@ const RoomInvite = () => {
           placeholder='enter user tag'
           max={10}
         />
-        <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
           <button onClick={inviteUser} className='btn btn-ring' type='button'>

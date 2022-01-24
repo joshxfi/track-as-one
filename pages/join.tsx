@@ -1,30 +1,20 @@
 import React, { useState } from 'react';
+
+import toast from 'react-hot-toast';
 import { VscSignIn } from 'react-icons/vsc';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/context/AuthContext';
-import { ErrorMsg, Header, Input } from '@/components';
-import toast from 'react-hot-toast';
+import { Header, Input } from '@/components';
 
 const Join = () => {
   const [roomID, setRoomID] = useState<string>('');
-  const [error, setError] = useState<string>('blank');
-  const [showError, setShowError] = useState<boolean>(false);
 
   const {
     data: { id },
   } = useAuth();
-
-  const errorMsg = (error: string) => {
-    setError(error);
-    setShowError(true);
-
-    setTimeout(() => {
-      setShowError(false);
-    }, 3000);
-  };
 
   const requestJoin = async () => {
     setRoomID('');

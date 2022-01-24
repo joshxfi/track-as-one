@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 import {
   arrayRemove,
   arrayUnion,
@@ -18,7 +19,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {
-  const [invs, setInvs] = useState<string[]>(['default']);
+  const [invs, setInvs] = useState<string[]>(['empty']);
   const { data, loading } = useAuth();
 
   const { push } = useRouter();
@@ -29,7 +30,7 @@ const Invites: React.FC = () => {
 
   const [invites] = useCollection<IRoom>(
     query(collection(db, 'rooms'), where(documentId(), 'in', invs)),
-    { listen: true, deps: [invs] }
+    { listen: true, deps: [data] }
   );
 
   const acceptInvite = async (roomId?: string) => {
@@ -39,9 +40,16 @@ const Invites: React.FC = () => {
         roomsJoined: arrayUnion(roomId),
       });
 
-      await updateDoc(doc(db, `rooms/${roomId}`), {
-        members: arrayUnion(data.id),
-      });
+      toast.promise(
+        updateDoc(doc(db, `rooms/${roomId}`), {
+          members: arrayUnion(data.id),
+        }),
+        {
+          loading: 'joining room...',
+          success: 'room joined!',
+          error: 'could not join room.',
+        }
+      );
 
       push(`room/${roomId}`);
     }

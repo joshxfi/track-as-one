@@ -40,7 +40,7 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <Layout loaders={[crLoading, jrLoading]}>
+    <Layout loaders={[crLoading, jrLoading]} className='mb-16'>
       <div className='flex flex-col items-center mt-8 w-full space-y-4'>
         <div className='h-[100px] w-[100px] rounded-full p-2 primary-gradient'>
           <Image
