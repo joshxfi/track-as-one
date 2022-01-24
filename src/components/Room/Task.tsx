@@ -40,8 +40,10 @@ const RoomTask: React.FC<RoomTaskProps> = ({
       )}
 
       <div className='w-full'>
-        <p className='text-f9 break-all'>{task.description}</p>
-        <div className='text-sm pt-2 flex-between'>
+        <p className='text-f9 break-all text-sm md:text-base'>
+          {task.description}
+        </p>
+        <div className='text-xs md:text-sm pt-2 flex-between'>
           <p>
             {task.dueDate
               ? `Due - ${task.dueDate.toDate().toDateString()}`

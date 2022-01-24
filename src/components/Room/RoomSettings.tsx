@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaUserCircle } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';

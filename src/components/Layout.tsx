@@ -1,18 +1,22 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { NextSeo, NextSeoProps } from 'next-seo';
-import { Navbar, Footer, LoaderHandler } from '@/components';
+
+import { useAuth } from '@/context/AuthContext';
+import { Navbar, Footer, LoaderHandler, Error } from '@/components';
 
 interface LayoutProps extends NextSeoProps {
   className?: string;
   loaders?: boolean[];
   xl?: boolean;
+  allowAll?: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   className,
   loaders,
   xl,
+  allowAll,
   children,
   ...rest
 }) => {
@@ -20,6 +24,13 @@ const Layout: React.FC<LayoutProps> = ({
     hidden: { opacity: 0 },
     enter: { opacity: 1 },
     exit: { opacity: 0 },
+  };
+
+  const { user } = useAuth();
+
+  const display = () => {
+    if (user || allowAll) return children;
+    return <Error code='401' info='you are not authenticated' />;
   };
 
   return (
@@ -40,7 +51,7 @@ const Layout: React.FC<LayoutProps> = ({
               xl ? 'max-w-screen-xl' : 'max-w-screen-md'
             }  ${className}`}
           >
-            {children}
+            {display()}
           </main>
           <Footer />
         </LoaderHandler>

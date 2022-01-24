@@ -15,8 +15,8 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 
-import { Layout, Error } from '@/components';
 import { db } from '@/config/firebase';
+import { Layout, Error } from '@/components';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useRoom, useNextQuery } from '@/hooks';
 import {
@@ -102,6 +102,18 @@ const Room = () => {
     );
   }
 
+  if (
+    data.id &&
+    !room.members?.includes(data?.id) &&
+    room.creator !== data.id
+  ) {
+    return (
+      <Layout>
+        <Error code='401' info='you have no access' />
+      </Layout>
+    );
+  }
+
   if (tab === 'info') return <Info />;
   if (tab === 'invite') return <InviteUser />;
   if (tab === 'requests') return <Requests />;
@@ -123,7 +135,7 @@ const Room = () => {
             value={description}
             type='text'
             placeholder='task description'
-            className='bg-inputbg h-[45px] outline-none w-full pr-4'
+            className='bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base'
           />
           <button
             type='submit'
@@ -141,7 +153,7 @@ const Room = () => {
               onChange={(date: Date) => setDueDate(date)}
               minDate={new Date()}
               ref={dateInputRef}
-              className='bg-inputbg h-[45px] outline-none w-full pr-4'
+              className='bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base'
             />
 
             <div className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'>
@@ -155,7 +167,7 @@ const Room = () => {
               value={url}
               type='text'
               placeholder='add url'
-              className='bg-inputbg h-[45px] outline-none w-full pr-4'
+              className='bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base'
             />
           </div>
         </div>
