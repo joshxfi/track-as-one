@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
+
+import toast from 'react-hot-toast';
 import { VscSignIn } from 'react-icons/vsc';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/context/AuthContext';
-import { ErrorMsg, Header, Input } from '@/components';
+import { Header, Input } from '@/components';
 
 const Join = () => {
   const [roomID, setRoomID] = useState<string>('');
-  const [error, setError] = useState<string>('blank');
-  const [showError, setShowError] = useState<boolean>(false);
 
   const {
     data: { id },
   } = useAuth();
-
-  const errorMsg = (error: string) => {
-    setError(error);
-    setShowError(true);
-
-    setTimeout(() => {
-      setShowError(false);
-    }, 3000);
-  };
 
   const requestJoin = async () => {
     setRoomID('');
@@ -33,17 +24,23 @@ const Join = () => {
     const room = await getDoc(roomRef);
     const _room: IRoom = room.data() as IRoom;
 
-    if (!room.exists()) errorMsg('Room does not exist');
-    else if (_room.members.includes(id!)) errorMsg('You are already a member');
+    if (!room.exists()) toast.error('room does not exist');
+    else if (_room.members.includes(id!))
+      toast.error('you are already a member');
     else if (_room.requests.includes(id!))
-      errorMsg('You already sent a request');
-    else if (_room.creator === id) errorMsg('You are the owner of the room');
+      toast.error('you already sent a request');
+    else if (_room.creator === id) toast.error('You are the owner of the room');
     else {
-      await updateDoc(roomRef, {
-        requests: arrayUnion(id),
-      });
-
-      errorMsg('Request to join sent!');
+      toast.promise(
+        updateDoc(roomRef, {
+          requests: arrayUnion(id),
+        }),
+        {
+          loading: 'sending request...',
+          success: 'request sent!',
+          error: 'request could not be sent.',
+        }
+      );
     }
   };
 
@@ -57,7 +54,6 @@ const Join = () => {
           placeholder='enter room id'
           max={15}
         />
-        <ErrorMsg error={error} showError={showError} />
 
         <div className='inline-block mx-auto mt-2'>
           <button

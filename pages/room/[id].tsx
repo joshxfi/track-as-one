@@ -1,15 +1,13 @@
 import React, { useState, useRef } from 'react';
+
+import { BsPlusSquareFill, BsXSquareFill } from 'react-icons/bs';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
-import {
-  BsPlusSquareFill,
-  BsCalendarFill,
-  BsXSquareFill,
-} from 'react-icons/bs';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   addDoc,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   orderBy,
   query,
@@ -22,11 +20,19 @@ import { Layout } from '@/components';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useRoom, useNextQuery } from '@/hooks';
-import { Info, InviteUser, RoomNav, Requests, Tasks } from '@/components/Room';
+import {
+  Info,
+  InviteUser,
+  RoomSettings,
+  Requests,
+  Task,
+} from '@/components/Room';
+import toast from 'react-hot-toast';
 
 const Room = () => {
-  const [description, setDesc] = useState<string>('');
+  const [description, setDesc] = useState('');
   const [dueDate, setDueDate] = useState<Date | null>(null);
+  const [url, setUrl] = useState('');
 
   const router = useRouter();
   const { id } = router.query;
@@ -42,7 +48,7 @@ const Room = () => {
     }
   );
 
-  const { user, data } = useAuth();
+  const { data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,20 +60,38 @@ const Room = () => {
       completedBy: [],
       dateAdded: serverTimestamp(),
       dueDate,
+      url,
     };
 
     setDesc('');
+    setUrl('');
+    setDueDate(null);
+
     const tasksRef = collection(db, `rooms/${room.id}/tasks`);
 
     if (description && tasks.length < 15) {
-      await addDoc(tasksRef, payload);
+      toast.promise(addDoc(tasksRef, payload), {
+        loading: 'adding task...',
+        success: 'task added',
+        error: 'error adding task',
+      });
     }
   };
 
   const taskDone = async (id: string) => {
     const taskRef = doc(db, `rooms/${room.id}/tasks/${id}`);
     await updateDoc(taskRef, {
-      completedBy: arrayUnion(user?.uid),
+      completedBy: arrayUnion(data.id),
+    });
+
+    toast.success('task completed!');
+  };
+
+  const taskDel = async (id: string) => {
+    toast.promise(deleteDoc(doc(db, `rooms/${room.id}/tasks/${id}`)), {
+      loading: 'deleting task...',
+      success: 'task deleted',
+      error: 'error deleting task',
     });
   };
 
@@ -77,14 +101,14 @@ const Room = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <RoomNav room={room} />
+      <RoomSettings room={room} />
       <form
         spellCheck='false'
         autoComplete='off'
         onSubmit={addTask}
         className='w-full mt-4'
       >
-        <div className='flex-between px-[30px] rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
+        <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group'>
           <input
             maxLength={150}
             minLength={5}
@@ -94,36 +118,49 @@ const Room = () => {
             placeholder='task description'
             className='bg-inputbg h-[45px] outline-none w-full pr-4'
           />
-          <button type='submit'>
-            <BsPlusSquareFill className='text-2xl' />
+          <button
+            type='submit'
+            className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'
+          >
+            <BsPlusSquareFill />
           </button>
         </div>
 
-        <div className='flex dueBtn items-center mt-2'>
-          <DatePicker
-            placeholderText='No Due Date'
-            selected={dueDate}
-            onChange={(date: Date) => setDueDate(date)}
-            minDate={new Date()}
-            ref={dateInputRef}
-            className='bg-secondary text-sm w-full outline-none placeholder-primary'
-          />
-
-          <div className=' flex text-2xl mr-[3px]'>
-            <BsCalendarFill
-              className='mr-2'
-              onClick={() => dateInputRef.current?.setFocus()}
+        <div className='flex space-x-2 mt-2'>
+          <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group w-full'>
+            <DatePicker
+              placeholderText='add due date'
+              selected={dueDate}
+              onChange={(date: Date) => setDueDate(date)}
+              minDate={new Date()}
+              ref={dateInputRef}
+              className='bg-inputbg h-[45px] outline-none w-full pr-4'
             />
-            <BsXSquareFill onClick={() => setDueDate(null)} />
+
+            <div className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'>
+              <BsXSquareFill onClick={() => setDueDate(null)} />
+            </div>
+          </div>
+
+          <div className='px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full'>
+            <input
+              onChange={(e) => setUrl(e.target.value)}
+              value={url}
+              type='text'
+              placeholder='add url'
+              className='bg-inputbg h-[45px] outline-none w-full pr-4'
+            />
           </div>
         </div>
       </form>
 
-      <section className='my-4'>
+      <section className='mt-4 mb-8 space-y-2'>
         {tasks?.map((task) => (
-          <Tasks
+          <Task
+            isAdmin={room.creator === data.id}
             key={task.id}
             taskDone={taskDone}
+            taskDel={taskDel}
             task={task}
             members={room?.members?.length + 1}
           />
