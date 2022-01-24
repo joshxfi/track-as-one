@@ -15,10 +15,6 @@
     @apply text-secondary text-lg;
   }
 
-  .dueBtn {
-    @apply outline-none w-full px-[30px] h-[45px] rounded bg-secondary text-primary;
-  }
-
   .btn-ring {
     @apply hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset-1 focus:ring-secondary;
   }

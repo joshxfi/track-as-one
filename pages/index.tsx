@@ -38,7 +38,7 @@ const Index = () => {
                 A collaborative task tracker.
               </h1>
 
-              <p className='mt-2 text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
+              <p className='mt-2 text-md sm:text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
                 Every now and then, someone would pop in the group chat and say:
                 &quot;What assignments do we have? When is it due?&quot; With
                 this web app, you can track tasks collaboratively with your
@@ -96,8 +96,10 @@ interface InfoProps {
 const Info = ({ title, body }: InfoProps) => {
   return (
     <div className='flex flex-col items-center'>
-      <h1 className='text-2xl lg:text-4xl font-semibold font-serif'>{title}</h1>
-      <p className='mt-2 text-lg lg:w-[490px] xl:w-[670px] xl:text-xl text-center'>
+      <h1 className='text-xl sm:text-2xl lg:text-4xl font-semibold font-serif'>
+        {title}
+      </h1>
+      <p className='text-md mt-2 sm:text-lg lg:w-[490px] xl:w-[670px] xl:text-xl text-center'>
         {body}
       </p>
     </div>

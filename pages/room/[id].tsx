@@ -4,6 +4,7 @@ import {
   BsPlusSquareFill,
   BsCalendarFill,
   BsXSquareFill,
+  BsPlusLg,
 } from 'react-icons/bs';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -25,8 +26,9 @@ import { useCollection, useRoom, useNextQuery } from '@/hooks';
 import { Info, InviteUser, RoomNav, Requests, Tasks } from '@/components/Room';
 
 const Room = () => {
-  const [description, setDesc] = useState<string>('');
+  const [description, setDesc] = useState('');
   const [dueDate, setDueDate] = useState<Date | null>(null);
+  const [url, setUrl] = useState('');
 
   const router = useRouter();
   const { id } = router.query;
@@ -54,9 +56,13 @@ const Room = () => {
       completedBy: [],
       dateAdded: serverTimestamp(),
       dueDate,
+      url,
     };
 
     setDesc('');
+    setUrl('');
+    setDueDate(null);
+
     const tasksRef = collection(db, `rooms/${room.id}/tasks`);
 
     if (description && tasks.length < 15) {
@@ -84,7 +90,7 @@ const Room = () => {
         onSubmit={addTask}
         className='w-full mt-4'
       >
-        <div className='flex-between px-[30px] rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2'>
+        <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group'>
           <input
             maxLength={150}
             minLength={5}
@@ -94,32 +100,43 @@ const Room = () => {
             placeholder='task description'
             className='bg-inputbg h-[45px] outline-none w-full pr-4'
           />
-          <button type='submit'>
-            <BsPlusSquareFill className='text-2xl' />
+          <button
+            type='submit'
+            className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'
+          >
+            <BsPlusSquareFill />
           </button>
         </div>
 
-        <div className='flex dueBtn items-center mt-2'>
-          <DatePicker
-            placeholderText='No Due Date'
-            selected={dueDate}
-            onChange={(date: Date) => setDueDate(date)}
-            minDate={new Date()}
-            ref={dateInputRef}
-            className='bg-secondary text-sm w-full outline-none placeholder-primary'
-          />
-
-          <div className=' flex text-2xl mr-[3px]'>
-            <BsCalendarFill
-              className='mr-2'
-              onClick={() => dateInputRef.current?.setFocus()}
+        <div className='flex space-x-2 mt-2'>
+          <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group w-full'>
+            <DatePicker
+              placeholderText='add due date'
+              selected={dueDate}
+              onChange={(date: Date) => setDueDate(date)}
+              minDate={new Date()}
+              ref={dateInputRef}
+              className='bg-inputbg h-[45px] outline-none w-full pr-4'
             />
-            <BsXSquareFill onClick={() => setDueDate(null)} />
+
+            <div className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'>
+              <BsXSquareFill onClick={() => setDueDate(null)} />
+            </div>
+          </div>
+
+          <div className='px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full'>
+            <input
+              onChange={(e) => setUrl(e.target.value)}
+              value={url}
+              type='text'
+              placeholder='add url'
+              className='bg-inputbg h-[45px] outline-none w-full pr-4'
+            />
           </div>
         </div>
       </form>
 
-      <section className='my-4'>
+      <section className='mt-4 mb-8 space-y-2'>
         {tasks?.map((task) => (
           <Tasks
             key={task.id}
