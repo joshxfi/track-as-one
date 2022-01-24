@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { collection, query, where } from 'firebase/firestore';
+import { AiOutlineIdcard } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import { BsEye } from 'react-icons/bs';
+import toast from 'react-hot-toast';
 import Image from 'next/image';
 
+import { Layout } from '@/components';
+import { db } from '@/config/firebase';
+import { useCollection } from '@/hooks';
 import { MyRooms } from '@/components/Home';
 import { defaultPic } from '@/utils/default';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
-import { Clipboard, Layout } from '@/components';
-import { AiOutlineIdcard } from 'react-icons/ai';
-import { collection, query, where } from 'firebase/firestore';
-import { useCollection } from '@/hooks';
-import { db } from '@/config/firebase';
 
 const Homepage: React.FC = () => {
   const { push } = useRouter();
@@ -19,7 +21,6 @@ const Homepage: React.FC = () => {
     data: { id, username, photoURL },
     loading,
   } = useAuth();
-  const [copied, setCopied] = useState<boolean>(false);
 
   const roomRef = collection(db, 'rooms');
   const deps = { deps: [loading] };
@@ -35,13 +36,11 @@ const Homepage: React.FC = () => {
 
   const copyTag = () => {
     navigator.clipboard.writeText(id ?? '');
-    setCopied(true);
-
-    setTimeout(() => setCopied(false), 3000);
+    toast.success('copied to clipboard');
   };
 
   return (
-    <Layout loaders={[crLoading, jrLoading]}>
+    <Layout loaders={[crLoading, jrLoading]} className='mb-16'>
       <div className='flex flex-col items-center mt-8 w-full space-y-4'>
         <div className='h-[100px] w-[100px] rounded-full p-2 primary-gradient'>
           <Image
@@ -83,10 +82,6 @@ const Homepage: React.FC = () => {
       </div>
 
       <MyRooms createdRooms={createdRooms} joinedRooms={joinedRooms} />
-
-      <div className='grid place-items-center'>
-        <Clipboard copied={copied} />
-      </div>
     </Layout>
   );
 };

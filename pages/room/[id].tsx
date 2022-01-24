@@ -27,6 +27,7 @@ import {
   Requests,
   Task,
 } from '@/components/Room';
+import toast from 'react-hot-toast';
 
 const Room = () => {
   const [description, setDesc] = useState('');
@@ -69,7 +70,11 @@ const Room = () => {
     const tasksRef = collection(db, `rooms/${room.id}/tasks`);
 
     if (description && tasks.length < 15) {
-      await addDoc(tasksRef, payload);
+      toast.promise(addDoc(tasksRef, payload), {
+        loading: 'adding task...',
+        success: 'task added',
+        error: 'error adding task',
+      });
     }
   };
 
@@ -78,10 +83,16 @@ const Room = () => {
     await updateDoc(taskRef, {
       completedBy: arrayUnion(data.id),
     });
+
+    toast.success('task completed!');
   };
 
   const taskDel = async (id: string) => {
-    await deleteDoc(doc(db, `rooms/${room.id}/tasks/${id}`));
+    toast.promise(deleteDoc(doc(db, `rooms/${room.id}/tasks/${id}`)), {
+      loading: 'deleting task...',
+      success: 'task deleted',
+      error: 'error deleting task',
+    });
   };
 
   if (tab === 'info') return <Info />;

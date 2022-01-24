@@ -16,14 +16,14 @@ import {
 import useRoom from '@/hooks/useRoom';
 import { db } from '@/config/firebase';
 import { defaultPic } from '@/utils/default';
+import { Layout, Header } from '@/components';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useDocument } from '@/hooks';
-import { Layout, Header, Clipboard } from '@/components';
 import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
+import toast from 'react-hot-toast';
 
 const Info: React.FC = () => {
-  const [copied, setCopied] = useState<boolean>(false);
   const [rerender, setRerender] = useState(false);
 
   const router = useRouter();
@@ -57,7 +57,11 @@ const Info: React.FC = () => {
   }, []);
 
   const deleteRoom = async () => {
-    await deleteDoc(roomRef);
+    toast.promise(deleteDoc(roomRef), {
+      loading: 'deleting room...',
+      success: 'room deleted',
+      error: 'error deleting room',
+    });
 
     const roomTasks = await getDocs(collection(db, `rooms/${roomID}/tasks`));
     roomTasks.forEach(async (task) => {
@@ -73,9 +77,16 @@ const Info: React.FC = () => {
 
   const leaveRoom = async () => {
     if (data.id !== creator) {
-      await updateDoc(roomRef, {
-        members: arrayRemove(data.id),
-      });
+      toast.promise(
+        updateDoc(roomRef, {
+          members: arrayRemove(data.id),
+        }),
+        {
+          loading: 'leaving room...',
+          success: 'left room',
+          error: 'error leaving room',
+        }
+      );
 
       await updateDoc(doc(db, `users/${data.id}`), {
         roomsJoined: arrayRemove(roomID),
@@ -87,9 +98,7 @@ const Info: React.FC = () => {
 
   const copyRoomID = () => {
     navigator.clipboard.writeText(`${roomID}`);
-    setCopied(true);
-
-    setTimeout(() => setCopied(false), 3000);
+    toast.success('copied to clipboard');
   };
 
   return (
@@ -152,10 +161,6 @@ const Info: React.FC = () => {
             className='bg-secondary text-primary'
             handleClick={() => router.push(`/room/${roomID}`)}
           />
-        </div>
-
-        <div className='text-center'>
-          <Clipboard copied={copied} />
         </div>
       </div>
     </Layout>
