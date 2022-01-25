@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
-import useRoom from '@/hooks/useRoom';
+import { useRoom } from '@/services';
 import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';

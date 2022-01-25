@@ -1,7 +1,7 @@
 import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { doc } from 'firebase/firestore';
-import { useDocument } from '.';
+import { useDocument } from '../hooks';
 
 /**
  *

@@ -15,10 +15,11 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 
+import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { Layout, Error } from '@/components';
 import { useAuth } from '@/context/AuthContext';
-import { useCollection, useRoom, useNextQuery } from '@/hooks';
+import { useCollection, useNextQuery } from '@/hooks';
 import {
   Info,
   InviteUser,

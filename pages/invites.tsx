@@ -1,5 +1,5 @@
 import React from 'react';
-import useUser from '@/hooks/useUser';
+import { useUser } from '@/services';
 import { Invitation } from '@/components/Home';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, EmptyMsg } from '@/components';
