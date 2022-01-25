@@ -12,8 +12,8 @@ import {
   arrayUnion,
 } from 'firebase/firestore';
 
-import useUser from '@/hooks/useUser';
 import { db } from '@/config/firebase';
+import { useCreatedRooms } from '@/services';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Header, Input, Layout } from '@/components';
@@ -26,7 +26,7 @@ const Create = () => {
     data: { id },
   } = useAuth();
 
-  const [user] = useUser(id);
+  const [roomsCreated] = useCreatedRooms(id);
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ const Create = () => {
     };
 
     setRoomName('');
-    if (user.roomsCreated.length >= 3) {
+    if (roomsCreated.length >= 3) {
       toast.error('max rooms reached (3)');
     } else if (roomName) {
       toast.promise(setDoc(doc(db, 'rooms', roomID), payload), {
@@ -67,9 +67,10 @@ const Create = () => {
         className='w-full flex justify-center flex-col items-center'
       >
         <Input
-          handleChange={(e) => setRoomName(e.target.value)}
+          onChange={(e) => setRoomName(e.target.value)}
           value={roomName}
           placeholder='enter room name'
+          min={5}
           max={15}
         />
 

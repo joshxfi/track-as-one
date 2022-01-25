@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AiFillCalendar } from 'react-icons/ai';
 import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 import {
   doc,
   deleteDoc,
@@ -13,26 +14,24 @@ import {
   getDocs,
 } from 'firebase/firestore';
 
-import useRoom from '@/hooks/useRoom';
+import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { defaultPic } from '@/utils/default';
-import { Layout, Header } from '@/components';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { Layout, Header, Error } from '@/components';
 import { useCollection, useDocument } from '@/hooks';
 import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
-import toast from 'react-hot-toast';
 
 const Info: React.FC = () => {
   const [rerender, setRerender] = useState(false);
 
   const router = useRouter();
   const { id } = router.query;
-
   const { data } = useAuth();
 
   const [room, loading] = useRoom(id);
-  const { creator, dateAdded, requests, id: roomID } = room;
+  const { creator, dateAdded, requests, id: roomID } = room!;
 
   const creatorRef = doc(db, `users/${creator}`);
   const roomRef = doc(db, `rooms/${roomID}`);
@@ -68,10 +67,6 @@ const Info: React.FC = () => {
       await deleteDoc(doc(db, `rooms/${roomID}/tasks/${task.id}`));
     });
 
-    await updateDoc(creatorRef, {
-      roomsCreated: arrayRemove(roomID),
-    });
-
     router.push('/home');
   };
 
@@ -88,10 +83,6 @@ const Info: React.FC = () => {
         }
       );
 
-      await updateDoc(doc(db, `users/${data.id}`), {
-        roomsJoined: arrayRemove(roomID),
-      });
-
       router.push('/home');
     }
   };
@@ -101,9 +92,17 @@ const Info: React.FC = () => {
     toast.success('copied to clipboard');
   };
 
+  if (!room) {
+    return (
+      <Layout>
+        <Error code='404' info='room not found' />
+      </Layout>
+    );
+  }
+
   return (
     <Layout loaders={[loading]}>
-      <RoomSettings room={room} />
+      <RoomSettings room={room!} />
       <Header title='Room Info' />
 
       <InfoSection

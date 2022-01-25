@@ -13,6 +13,7 @@ import { useCollection } from '@/hooks';
 import { MyRooms } from '@/components/Home';
 import { defaultPic } from '@/utils/default';
 import { Button } from '@/components/Button';
+import { useCreatedRooms } from '@/services';
 import { useAuth } from '@/context/AuthContext';
 
 const Homepage: React.FC = () => {
@@ -25,10 +26,7 @@ const Homepage: React.FC = () => {
   const roomRef = collection(db, 'rooms');
   const deps = { deps: [loading] };
 
-  const [createdRooms, crLoading] = useCollection<IRoom>(
-    query(roomRef, where('creator', '==', id ?? '')),
-    deps
-  );
+  const [createdRooms, crLoading] = useCreatedRooms(id);
   const [joinedRooms, jrLoading] = useCollection<IRoom>(
     query(roomRef, where('members', 'array-contains', id ?? '')),
     deps

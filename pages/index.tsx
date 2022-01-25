@@ -1,15 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
-import { FaHandHoldingHeart, FaPhone, FaSignInAlt } from 'react-icons/fa';
+import { FaSignInAlt } from 'react-icons/fa';
 
 import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
+import Head from 'next/head';
 
 const Index = () => {
   return (
     <Layout
       xl
+      allowAll
       title='trackAsOne'
       className='pt-20'
       description='trackAsOne is a collaborative cross-platform app that enables

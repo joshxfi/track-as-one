@@ -23,13 +23,18 @@ const useDocument = <T extends unknown>(
   ref: DocumentReference<DocumentData>,
   options?: Options
 ) => {
-  const [document, setDocument] = useState<T>({} as T);
+  const [document, setDocument] = useState<T | null>({} as T);
   const [_loading, setLoading] = useState(false);
 
   const getDocument = useCallback(async () => {
     setLoading(true);
-    const doc = await getDoc(ref);
-    setDocument({ ...doc.data(), id: doc.id } as T);
+    try {
+      const doc = await getDoc(ref);
+      if (!doc.exists || !doc.data()) setDocument(null);
+      else setDocument({ ...doc.data(), id: doc.id } as T);
+    } catch (e) {
+      setDocument(null);
+    }
     setLoading(false);
   }, [ref]);
 
@@ -40,7 +45,8 @@ const useDocument = <T extends unknown>(
       setLoading(true);
 
       unsub = onSnapshot(ref, (doc) => {
-        setDocument({ ...doc.data(), id: doc.id } as T);
+        if (!doc.exists) setDocument(null);
+        else setDocument({ ...doc.data(), id: doc.id } as T);
         setLoading(false);
       });
     } else getDocument();

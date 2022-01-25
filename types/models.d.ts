@@ -3,8 +3,6 @@ interface IUser {
   username?: string;
   photoURL?: string | null;
   email?: string | null;
-  roomsCreated: string[];
-  roomsJoined: string[];
   invites: string[];
   dateJoined: any;
 }
