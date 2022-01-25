@@ -17,7 +17,7 @@ const InfoSection = ({ onClick, title, label, Icon }: InfoSectionProps) => {
     >
       <div className='leading-5'>
         <p className='text-f9 text-sm'>{title}</p>
-        <p className='text-sm'>room id</p>
+        <p className='text-sm'>{label}</p>
       </div>
 
       <Icon className='icon text-xl' />

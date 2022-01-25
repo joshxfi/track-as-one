@@ -13,8 +13,8 @@ const Invites: React.FC = () => {
       <Header title='Invitation' />
       {!user?.invites?.length && <EmptyMsg empty='invites' />}
       <div className='w-full mb-4'>
-        {user?.invites?.map((roomID) => (
-          <Invitation user={user} key={roomID} roomID={roomID} />
+        {user?.invites?.map((roomId) => (
+          <Invitation user={user} key={roomId} roomId={roomId} />
         ))}
       </div>
     </Layout>

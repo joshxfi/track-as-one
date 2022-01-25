@@ -30,7 +30,7 @@ const Create = () => {
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const roomID = nanoid(5);
+    const roomId = nanoid(5);
 
     const payload: IRoom = {
       name: roomName,
@@ -45,7 +45,7 @@ const Create = () => {
     if (roomsCreated.length >= 3) {
       toast.error('max rooms reached (3)');
     } else if (roomName) {
-      toast.promise(setDoc(doc(db, 'rooms', roomID), payload), {
+      toast.promise(setDoc(doc(db, 'rooms', roomId), payload), {
         loading: 'creating room...',
         success: 'room created!',
         error: 'room could not be created.',
@@ -54,7 +54,7 @@ const Create = () => {
       push(`/home`);
 
       await updateDoc(doc(db, 'users', id!), {
-        roomsCreated: arrayUnion(roomID),
+        roomsCreated: arrayUnion(roomId),
       });
     }
   };
@@ -70,8 +70,8 @@ const Create = () => {
           onChange={(e) => setRoomName(e.target.value)}
           value={roomName}
           placeholder='enter room name'
-          min={5}
-          max={15}
+          minLength={5}
+          maxLength={15}
         />
 
         <div className='inline-block mx-auto mt-2'>

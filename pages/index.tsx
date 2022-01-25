@@ -5,7 +5,6 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
-import Head from 'next/head';
 
 const Index = () => {
   return (
