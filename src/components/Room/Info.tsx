@@ -8,43 +8,29 @@ import {
   deleteDoc,
   updateDoc,
   collection,
-  query,
-  where,
   arrayRemove,
   getDocs,
 } from 'firebase/firestore';
 
-import { useRoom, useUser } from '@/services';
+import { useRoom } from '@/services';
+import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
-import { defaultPic } from '@/utils/default';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, Error } from '@/components';
-import { useCollection, useDocument, useNextQuery } from '@/hooks';
 import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [rerender, setRerender] = useState(false);
 
-  const { push, query: q } = useRouter();
+  const { push } = useRouter();
   const id = useNextQuery('id');
   const { data } = useAuth();
 
   const [room, loading] = useRoom(id);
-  const { creator, dateAdded, requests } = room!;
+  const { creator, dateAdded, members } = room!;
 
   const roomRef = doc(db, `rooms/${id}`);
-
-  const [roomCreator] = useUser(creator);
-  const [roomMembers] = useCollection<IUser>(
-    query(
-      collection(db, 'users'),
-      where('roomsJoined', 'array-contains', id ?? '')
-    ),
-    {
-      deps: [id],
-    }
-  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -116,27 +102,11 @@ const Info: React.FC = () => {
       />
 
       <div className='w-full mb-4'>
-        <InfoMember
-          img={roomCreator?.photoURL ?? defaultPic}
-          username={roomCreator?.username ?? ''}
-          label='creator'
-        />
+        <InfoMember memberId={creator} type='creator' />
 
-        {roomMembers.map((member) => (
-          <InfoMember
-            key={member.id}
-            img={member.photoURL ?? defaultPic}
-            username={member.username ?? ''}
-          />
+        {members?.map((member) => (
+          <InfoMember key={member} memberId={member} type='member' />
         ))}
-
-        {creator === data.id && (
-          <InfoBtn
-            className='mb-2'
-            desc={`VIEW REQUESTS (${requests?.length})`}
-            handleClick={() => push({ query: { ...q, tab: 'requests' } })}
-          />
-        )}
 
         <div className='flex'>
           {creator === data.id ? (

@@ -8,23 +8,23 @@ import { db } from '@/config/firebase';
 import { useDocument } from '@/hooks';
 
 interface InvitationProps {
-  roomID: string;
+  roomId: string;
   user: IUser;
 }
 
-const Invitation = ({ roomID, user }: InvitationProps) => {
+const Invitation = ({ roomId, user }: InvitationProps) => {
   const { push } = useRouter();
-  const [room] = useDocument<IRoom>(doc(db, `rooms/${roomID}`));
+  const [room] = useDocument<IRoom>(doc(db, `rooms/${roomId}`));
 
   const acceptInvite = async () => {
-    if (roomID) {
+    if (roomId) {
       await updateDoc(doc(db, `users/${user.id}`), {
-        invites: arrayRemove(roomID),
-        roomsJoined: arrayUnion(roomID),
+        invites: arrayRemove(roomId),
+        roomsJoined: arrayUnion(roomId),
       });
 
       toast.promise(
-        updateDoc(doc(db, `rooms/${roomID}`), {
+        updateDoc(doc(db, `rooms/${roomId}`), {
           members: arrayUnion(user.id),
         }),
         {
@@ -34,7 +34,7 @@ const Invitation = ({ roomID, user }: InvitationProps) => {
         }
       );
 
-      push(`room/${roomID}`);
+      push(`room/${roomId}`);
     }
   };
 
@@ -42,7 +42,7 @@ const Invitation = ({ roomID, user }: InvitationProps) => {
     <button
       type='button'
       onClick={acceptInvite}
-      key={roomID}
+      key={roomId}
       className='card w-full text-left btn-ring flex-between h-[70px] mb-2'
     >
       <div className='leading-5'>

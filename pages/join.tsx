@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Header, Input } from '@/components';
 
 const Join = () => {
-  const [roomID, setRoomID] = useState<string>('');
+  const [roomId, setRoomID] = useState<string>('');
 
   const {
     data: { id },
@@ -19,7 +19,7 @@ const Join = () => {
   const requestJoin = async () => {
     setRoomID('');
 
-    const roomRef = doc(db, 'rooms', roomID);
+    const roomRef = doc(db, 'rooms', roomId);
 
     const room = await getDoc(roomRef);
     const _room: IRoom = room.data() as IRoom;
@@ -50,7 +50,7 @@ const Join = () => {
       <div className='w-full flex justify-center items-center flex-col'>
         <Input
           onChange={(e) => setRoomID(e.target.value)}
-          value={roomID}
+          value={roomId}
           placeholder='enter room id'
           min={5}
           max={15}
@@ -59,7 +59,7 @@ const Join = () => {
         <div className='inline-block mx-auto mt-2'>
           <button
             type='button'
-            onClick={roomID ? requestJoin : () => null}
+            onClick={roomId ? requestJoin : () => null}
             className='btn btn-ring'
           >
             <p className='mr-4'>request join</p>

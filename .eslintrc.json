@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb", "prettier"],
+  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["react"],
   "parserOptions": {
@@ -14,7 +14,6 @@
     "import/prefer-default-export": "off",
     "arrow-body-style": "off",
     "no-use-before-define": "off",
-    "no-unused-vars": "off",
     "no-undef": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react/require-default-props": "off",
