@@ -56,10 +56,11 @@ const RoomInvite = () => {
         className='w-full flex justify-center items-center flex-col'
       >
         <Input
-          handleChange={(e) => setUserTag(e.target.value)}
+          onChange={(e) => setUserTag(e.target.value)}
           value={invUserTag}
           placeholder='enter user tag'
-          max={10}
+          min={10}
+          max={20}
         />
 
         <div className='inline-block mx-auto mt-2'>

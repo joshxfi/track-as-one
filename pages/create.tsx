@@ -67,9 +67,10 @@ const Create = () => {
         className='w-full flex justify-center flex-col items-center'
       >
         <Input
-          handleChange={(e) => setRoomName(e.target.value)}
+          onChange={(e) => setRoomName(e.target.value)}
           value={roomName}
           placeholder='enter room name'
+          min={5}
           max={15}
         />
 

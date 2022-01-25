@@ -49,9 +49,10 @@ const Join = () => {
       <Header title='Join a Room' />
       <div className='w-full flex justify-center items-center flex-col'>
         <Input
-          handleChange={(e) => setRoomID(e.target.value)}
+          onChange={(e) => setRoomID(e.target.value)}
           value={roomID}
           placeholder='enter room id'
+          min={5}
           max={15}
         />
 
