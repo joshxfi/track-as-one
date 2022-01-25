@@ -70,8 +70,8 @@ const Create = () => {
           onChange={(e) => setRoomName(e.target.value)}
           value={roomName}
           placeholder='enter room name'
-          min={5}
-          max={15}
+          minLength={5}
+          maxLength={15}
         />
 
         <div className='inline-block mx-auto mt-2'>

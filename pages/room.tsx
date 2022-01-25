@@ -110,7 +110,7 @@ const Room = () => {
   ) {
     return (
       <Layout>
-        <Error code='401' info='you have no access' />
+        <p className='hidden'>nothing to see here...</p>
       </Layout>
     );
   }

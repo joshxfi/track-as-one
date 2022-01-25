@@ -52,8 +52,8 @@ const Join = () => {
           onChange={(e) => setRoomID(e.target.value)}
           value={roomId}
           placeholder='enter room id'
-          min={5}
-          max={15}
+          minLength={5}
+          maxLength={15}
         />
 
         <div className='inline-block mx-auto mt-2'>

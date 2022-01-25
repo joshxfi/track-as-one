@@ -59,8 +59,8 @@ const RoomInvite = () => {
           onChange={(e) => setUserTag(e.target.value)}
           value={invUserTag}
           placeholder='enter user tag'
-          min={10}
-          max={20}
+          minLength={10}
+          maxLength={20}
         />
 
         <div className='inline-block mx-auto mt-2'>
