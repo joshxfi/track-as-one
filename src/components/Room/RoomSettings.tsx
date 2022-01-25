@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaUserCircle } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
@@ -42,12 +41,15 @@ const RoomNav = ({ room }: { room: IRoom }) => {
             <a>room info</a>
           </button>
 
-          <Link href={`/room/${encodeURIComponent(id ?? '')}`}>
+          <button
+            type='button'
+            onClick={() => router.push({ pathname: '/room', query: { id } })}
+          >
             <div className='room-nav-item'>
               <BsFillArrowLeftCircleFill />
               <p>go to room</p>
             </div>
-          </Link>
+          </button>
 
           <button
             className='room-nav-item'

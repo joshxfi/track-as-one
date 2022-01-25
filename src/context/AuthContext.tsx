@@ -70,8 +70,6 @@ const AuthProvider: React.FC = ({ children }) => {
           email,
           photoURL,
           invites: [],
-          roomsJoined: [],
-          roomsCreated: [],
           dateJoined: metadata.creationTime,
           username: email?.split('@')[0].toLowerCase(),
         };
