@@ -8,46 +8,29 @@ import {
   deleteDoc,
   updateDoc,
   collection,
-  query,
-  where,
   arrayRemove,
   getDocs,
 } from 'firebase/firestore';
 
 import { useRoom } from '@/services';
+import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
-import { defaultPic } from '@/utils/default';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, Error } from '@/components';
-import { useCollection, useDocument } from '@/hooks';
 import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [rerender, setRerender] = useState(false);
 
-  const router = useRouter();
-  const { id } = router.query;
+  const { push } = useRouter();
+  const id = useNextQuery('id');
   const { data } = useAuth();
 
   const [room, loading] = useRoom(id);
-  const { creator, dateAdded, requests, id: roomID } = room!;
+  const { creator, dateAdded, members } = room!;
 
-  const creatorRef = doc(db, `users/${creator}`);
-  const roomRef = doc(db, `rooms/${roomID}`);
-
-  const [roomCreator] = useDocument<IUser>(creatorRef, {
-    deps: [roomID],
-  });
-  const [roomMembers] = useCollection<IUser>(
-    query(
-      collection(db, 'users'),
-      where('roomsJoined', 'array-contains', roomID ?? '')
-    ),
-    {
-      deps: [roomID],
-    }
-  );
+  const roomRef = doc(db, `rooms/${id}`);
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,12 +45,12 @@ const Info: React.FC = () => {
       error: 'error deleting room',
     });
 
-    const roomTasks = await getDocs(collection(db, `rooms/${roomID}/tasks`));
+    const roomTasks = await getDocs(collection(db, `rooms/${id}/tasks`));
     roomTasks.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${roomID}/tasks/${task.id}`));
+      await deleteDoc(doc(db, `rooms/${id}/tasks/${task.id}`));
     });
 
-    router.push('/home');
+    push('/home');
   };
 
   const leaveRoom = async () => {
@@ -83,12 +66,12 @@ const Info: React.FC = () => {
         }
       );
 
-      router.push('/home');
+      push('/home');
     }
   };
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${roomID}`);
+    navigator.clipboard.writeText(`${id}`);
     toast.success('copied to clipboard');
   };
 
@@ -106,11 +89,12 @@ const Info: React.FC = () => {
       <Header title='Room Info' />
 
       <InfoSection
-        title={roomID ?? ''}
+        title={id ?? ''}
         label='room id'
         onClick={copyRoomID}
         Icon={IoMdKey}
       />
+
       <InfoSection
         title={dateAdded?.toDate().toDateString()}
         label='room created'
@@ -118,47 +102,31 @@ const Info: React.FC = () => {
       />
 
       <div className='w-full mb-4'>
-        <InfoMember
-          img={roomCreator?.photoURL ?? defaultPic}
-          username={roomCreator?.username ?? ''}
-          label='creator'
-        />
+        <InfoMember memberId={creator} type='creator' />
 
-        {roomMembers.map((member) => (
-          <InfoMember
-            key={member.id}
-            img={member.photoURL ?? defaultPic}
-            username={member.username ?? ''}
-          />
+        {members?.map((member) => (
+          <InfoMember key={member} memberId={member} type='member' />
         ))}
-
-        {creator === data.id && (
-          <InfoBtn
-            className='mb-2'
-            desc={`VIEW REQUESTS (${requests?.length})`}
-            handleClick={() => router.push(`${roomID}?tab=requests`)}
-          />
-        )}
 
         <div className='flex'>
           {creator === data.id ? (
             <InfoBtn
-              desc='DELETE ROOM'
+              desc='Delete Room'
               className='info-red-btn'
               handleClick={deleteRoom}
             />
           ) : (
             <InfoBtn
-              desc='LEAVE ROOM'
+              desc='Leave Room'
               className='info-red-btn'
               handleClick={leaveRoom}
             />
           )}
 
           <InfoBtn
-            desc='GO BACK'
+            desc='Back To Room'
             className='bg-secondary text-primary'
-            handleClick={() => router.push(`/room/${roomID}`)}
+            handleClick={() => push({ pathname: '/room', query: { id } })}
           />
         </div>
       </div>

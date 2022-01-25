@@ -1,11 +1,10 @@
-import { useAuth } from '@/context/AuthContext';
 import {
   DocumentData,
   DocumentReference,
   getDoc,
   onSnapshot,
 } from 'firebase/firestore';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface Options {
   listen?: boolean;
