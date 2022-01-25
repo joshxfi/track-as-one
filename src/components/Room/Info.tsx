@@ -14,38 +14,35 @@ import {
   getDocs,
 } from 'firebase/firestore';
 
-import { useRoom } from '@/services';
+import { useRoom, useUser } from '@/services';
 import { db } from '@/config/firebase';
 import { defaultPic } from '@/utils/default';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, Error } from '@/components';
-import { useCollection, useDocument } from '@/hooks';
+import { useCollection, useDocument, useNextQuery } from '@/hooks';
 import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [rerender, setRerender] = useState(false);
 
-  const router = useRouter();
-  const { id } = router.query;
+  const { push, query: q } = useRouter();
+  const id = useNextQuery('id');
   const { data } = useAuth();
 
   const [room, loading] = useRoom(id);
-  const { creator, dateAdded, requests, id: roomID } = room!;
+  const { creator, dateAdded, requests } = room!;
 
-  const creatorRef = doc(db, `users/${creator}`);
-  const roomRef = doc(db, `rooms/${roomID}`);
+  const roomRef = doc(db, `rooms/${id}`);
 
-  const [roomCreator] = useDocument<IUser>(creatorRef, {
-    deps: [roomID],
-  });
+  const [roomCreator] = useUser(creator);
   const [roomMembers] = useCollection<IUser>(
     query(
       collection(db, 'users'),
-      where('roomsJoined', 'array-contains', roomID ?? '')
+      where('roomsJoined', 'array-contains', id ?? '')
     ),
     {
-      deps: [roomID],
+      deps: [id],
     }
   );
 
@@ -62,12 +59,12 @@ const Info: React.FC = () => {
       error: 'error deleting room',
     });
 
-    const roomTasks = await getDocs(collection(db, `rooms/${roomID}/tasks`));
+    const roomTasks = await getDocs(collection(db, `rooms/${id}/tasks`));
     roomTasks.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${roomID}/tasks/${task.id}`));
+      await deleteDoc(doc(db, `rooms/${id}/tasks/${task.id}`));
     });
 
-    router.push('/home');
+    push('/home');
   };
 
   const leaveRoom = async () => {
@@ -83,12 +80,12 @@ const Info: React.FC = () => {
         }
       );
 
-      router.push('/home');
+      push('/home');
     }
   };
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${roomID}`);
+    navigator.clipboard.writeText(`${id}`);
     toast.success('copied to clipboard');
   };
 
@@ -106,11 +103,12 @@ const Info: React.FC = () => {
       <Header title='Room Info' />
 
       <InfoSection
-        title={roomID ?? ''}
+        title={id ?? ''}
         label='room id'
         onClick={copyRoomID}
         Icon={IoMdKey}
       />
+
       <InfoSection
         title={dateAdded?.toDate().toDateString()}
         label='room created'
@@ -136,7 +134,7 @@ const Info: React.FC = () => {
           <InfoBtn
             className='mb-2'
             desc={`VIEW REQUESTS (${requests?.length})`}
-            handleClick={() => router.push(`${roomID}?tab=requests`)}
+            handleClick={() => push({ query: { ...q, tab: 'requests' } })}
           />
         )}
 
@@ -158,7 +156,7 @@ const Info: React.FC = () => {
           <InfoBtn
             desc='GO BACK'
             className='bg-secondary text-primary'
-            handleClick={() => router.push(`/room/${roomID}`)}
+            handleClick={() => push({ pathname: '/room', query: { id } })}
           />
         </div>
       </div>
