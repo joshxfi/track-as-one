@@ -1,13 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 import { useUser } from '@/services';
 import { db } from '@/config/firebase';
 import { defaultPic } from '@/utils/default';
 import { AiOutlineIdcard } from 'react-icons/ai';
+import PendingContainer from '../PendingContainer';
 
 interface userRequestProps {
   userId: string;
@@ -16,7 +16,6 @@ interface userRequestProps {
 
 const UserRequest = ({ userId, roomId }: userRequestProps) => {
   const [user] = useUser(userId);
-  const { push, query } = useRouter();
 
   const acceptRequest = async () => {
     toast.promise(
@@ -30,16 +29,23 @@ const UserRequest = ({ userId, roomId }: userRequestProps) => {
         error: 'could not accept request.',
       }
     );
+  };
 
-    push({ query: { ...query, tab: 'info' } });
+  const declineRequest = async () => {
+    toast.promise(
+      updateDoc(doc(db, `rooms/${roomId}`), {
+        requests: arrayRemove(userId),
+      }),
+      {
+        loading: 'declining request...',
+        success: 'request declined!',
+        error: 'could not decline request.',
+      }
+    );
   };
 
   return (
-    <button
-      type='button'
-      onClick={acceptRequest}
-      className='flex-between card h-[70px] mb-2 btn-ring w-full text-left'
-    >
+    <PendingContainer check={acceptRequest} close={declineRequest}>
       <div className='flex'>
         <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
           <Image
@@ -50,15 +56,12 @@ const UserRequest = ({ userId, roomId }: userRequestProps) => {
           />
         </div>
         <div className='leading-5'>
-          <p className='text-f9'>
-            {user?.username} →
-            <span className='text-secondary'> {user?.id}</span>
-          </p>
-          <p className='text-sm'>accept request</p>
+          <p className='text-f9'>{user?.username}</p>
+          <p className='text-sm'>{user?.id}</p>
         </div>
       </div>
       <AiOutlineIdcard className='icon text-xl' />
-    </button>
+    </PendingContainer>
   );
 };
 

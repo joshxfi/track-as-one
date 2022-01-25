@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import { BiDoorOpen } from 'react-icons/bi';
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
+import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
-import { useDocument } from '@/hooks';
+import PendingContainer from '../PendingContainer';
 
 interface InvitationProps {
   roomId: string;
@@ -14,15 +15,10 @@ interface InvitationProps {
 
 const Invitation = ({ roomId, user }: InvitationProps) => {
   const { push } = useRouter();
-  const [room] = useDocument<IRoom>(doc(db, `rooms/${roomId}`));
+  const [room] = useRoom(roomId);
 
   const acceptInvite = async () => {
     if (roomId) {
-      await updateDoc(doc(db, `users/${user.id}`), {
-        invites: arrayRemove(roomId),
-        roomsJoined: arrayUnion(roomId),
-      });
-
       toast.promise(
         updateDoc(doc(db, `rooms/${roomId}`), {
           members: arrayUnion(user.id),
@@ -38,20 +34,30 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
     }
   };
 
+  const declineInvite = async () => {
+    if (roomId) {
+      toast.promise(
+        updateDoc(doc(db, `users/${user.id}`), {
+          invites: arrayRemove(roomId),
+        }),
+        {
+          loading: 'declining invite...',
+          success: 'invite declined!',
+          error: 'could not decline invite.',
+        }
+      );
+    }
+  };
+
   return (
-    <button
-      type='button'
-      onClick={acceptInvite}
-      key={roomId}
-      className='card w-full text-left btn-ring flex-between h-[70px] mb-2'
-    >
+    <PendingContainer close={declineInvite} check={acceptInvite}>
       <div className='leading-5'>
         <p className='text-f9'>{room?.name}</p>
-        <p className='text-sm'>Accept Invitation</p>
+        <p className='text-sm'>room id: {room?.id}</p>
       </div>
 
       <BiDoorOpen className='icon' />
-    </button>
+    </PendingContainer>
   );
 };
 

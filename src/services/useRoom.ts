@@ -1,5 +1,4 @@
 import { db } from '@/config/firebase';
-import { useAuth } from '@/context/AuthContext';
 import { doc } from 'firebase/firestore';
 import { useDocument } from '../hooks';
 
@@ -9,8 +8,10 @@ import { useDocument } from '../hooks';
  * @returns [room, loading]
  */
 
-const useRoom = (id: string | string[] | undefined) => {
-  const [room, loading] = useDocument<IRoom>(doc(db, `rooms/${id}`));
+const useRoom = (id: string | string[] | undefined, listen?: boolean) => {
+  const [room, loading] = useDocument<IRoom>(doc(db, `rooms/${id}`), {
+    listen,
+  });
   return [room, loading] as const;
 };
 

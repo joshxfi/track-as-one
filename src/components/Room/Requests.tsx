@@ -1,13 +1,13 @@
 /* eslint-disable import/order */
 import React from 'react';
-import { RoomSettings, UserRequest } from '.';
 import { useRoom } from '@/services';
 import { useNextQuery } from '@/hooks';
+import { RoomSettings, UserRequest } from '.';
 import { Layout, Header, EmptyMsg } from '@/components';
 
 const Requests = () => {
   const id = useNextQuery('id');
-  const [room, loading] = useRoom(id);
+  const [room, loading] = useRoom(id, true);
 
   return (
     <Layout loaders={[loading]}>

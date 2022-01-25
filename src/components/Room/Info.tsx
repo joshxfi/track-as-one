@@ -111,20 +111,20 @@ const Info: React.FC = () => {
         <div className='flex'>
           {creator === data.id ? (
             <InfoBtn
-              desc='DELETE ROOM'
+              desc='Delete Room'
               className='info-red-btn'
               handleClick={deleteRoom}
             />
           ) : (
             <InfoBtn
-              desc='LEAVE ROOM'
+              desc='Leave Room'
               className='info-red-btn'
               handleClick={leaveRoom}
             />
           )}
 
           <InfoBtn
-            desc='GO BACK &rarr;'
+            desc='Back To Room'
             className='bg-secondary text-primary'
             handleClick={() => push({ pathname: '/room', query: { id } })}
           />
