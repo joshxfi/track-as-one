@@ -124,7 +124,7 @@ const Info: React.FC = () => {
           )}
 
           <InfoBtn
-            desc='GO BACK'
+            desc='GO BACK &rarr;'
             className='bg-secondary text-primary'
             handleClick={() => push({ pathname: '/room', query: { id } })}
           />

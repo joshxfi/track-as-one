@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { RiEye2Fill } from 'react-icons/ri';
 import { FaUserCircle } from 'react-icons/fa';
 import { AiFillSetting } from 'react-icons/ai';
 import { BsFillArrowLeftCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 
+import { useAuth } from '@/context/AuthContext';
+import { SettingBtn } from '@/components/Button';
+
 const RoomNav = ({ room }: { room: IRoom }) => {
   const [showSettings, setShowSettings] = useState(false);
-  const router = useRouter();
-  const { id } = room;
-
-  const handleRoute = (tab: string) => {
-    router.push({ query: { ...router.query, tab } });
-  };
+  const { data } = useAuth();
 
   return (
     <div className='relative mt-4 z-50'>
@@ -32,33 +30,18 @@ const RoomNav = ({ room }: { room: IRoom }) => {
           onMouseLeave={() => setShowSettings(false)}
           className='bg-white absolute top-8 right-0 flex flex-col space-y-4 text-primary rounded p-2 text-sm overflow-hidden shadow-md ring-1 ring-black ring-opacity-5'
         >
-          <button
-            className='room-nav-item'
-            type='button'
-            onClick={() => handleRoute('info')}
-          >
-            <BsInfoCircleFill />
-            <a>room info</a>
-          </button>
+          <SettingBtn label='room info' route='info' Icon={BsInfoCircleFill} />
+          <SettingBtn label='invite user' route='invite' Icon={FaUserCircle} />
 
-          <button
-            type='button'
-            onClick={() => router.push({ pathname: '/room', query: { id } })}
-          >
-            <div className='room-nav-item'>
-              <BsFillArrowLeftCircleFill />
-              <p>go to room</p>
-            </div>
-          </button>
+          <SettingBtn label='got to room' Icon={BsFillArrowLeftCircleFill} />
 
-          <button
-            className='room-nav-item'
-            type='button'
-            onClick={() => handleRoute('invite')}
-          >
-            <FaUserCircle />
-            <a>invite user</a>
-          </button>
+          {room.creator === data.id && (
+            <SettingBtn
+              label='view requests'
+              route='requests'
+              Icon={RiEye2Fill}
+            />
+          )}
         </div>
       )}
     </div>
