@@ -17,6 +17,8 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
   const { push } = useRouter();
   const [room] = useRoom(roomId);
 
+  const userRef = doc(db, `users/${user.id}`);
+
   const acceptInvite = async () => {
     if (roomId) {
       toast.promise(
@@ -24,26 +26,30 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
           members: arrayUnion(user.id),
         }),
         {
-          loading: 'joining room...',
-          success: 'room joined!',
-          error: 'could not join room.',
+          loading: 'Joining Room...',
+          success: 'Room Joined!',
+          error: 'Could Not Join Room.',
         }
       );
 
-      push(`room/${roomId}`);
+      await updateDoc(userRef, {
+        invites: arrayRemove(roomId),
+      });
+
+      push('/home');
     }
   };
 
   const declineInvite = async () => {
     if (roomId) {
       toast.promise(
-        updateDoc(doc(db, `users/${user.id}`), {
+        updateDoc(userRef, {
           invites: arrayRemove(roomId),
         }),
         {
-          loading: 'declining invite...',
-          success: 'invite declined!',
-          error: 'could not decline invite.',
+          loading: 'Declining Invite...',
+          success: 'Invite Declined!',
+          error: 'Could Not Decline Invite.',
         }
       );
     }

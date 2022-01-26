@@ -23,8 +23,16 @@
     @apply bg-primary text-secondary px-[30px] rounded;
   }
 
-  .info-red-btn {
-    @apply mr-2 bg-red-700 text-white hover:bg-red-700/95 transition-all;
+  .room-input {
+    @apply bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base;
+  }
+
+  .room-input-btn {
+    @apply group-hover:opacity-100 text-2xl opacity-0 transition-opacity;
+  }
+
+  .room-input-container {
+    @apply px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full;
   }
 
   .flex-between {

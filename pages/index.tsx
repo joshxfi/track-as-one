@@ -1,12 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
 
 import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
+import { useAuth } from '@/context/AuthContext';
 
 const Index = () => {
+  const { user, signIn } = useAuth();
+  const { push } = useRouter();
+
   return (
     <Layout
       xl
@@ -48,6 +53,7 @@ const Index = () => {
             </div>
 
             <Button
+              onClick={user ? () => push('/home') : signIn}
               className='welcome-btn'
               name='get started'
               Icon={FaSignInAlt}

@@ -26,6 +26,7 @@ import {
   RoomSettings,
   Requests,
   Task,
+  Popup,
 } from '@/components/Room';
 import toast from 'react-hot-toast';
 
@@ -54,27 +55,36 @@ const Room = () => {
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const payload: ITask = {
-      description,
-      addedBy: data.id!,
-      completedBy: [],
-      dateAdded: serverTimestamp(),
-      dueDate,
-      url,
-    };
+    const urlRegExp =
+      // eslint-disable-next-line no-useless-escape
+      /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
-    setDesc('');
-    setUrl('');
-    setDueDate(null);
+    if (!urlRegExp.test(url)) toast.error('Invalid URL');
+    else {
+      const payload: ITask = {
+        description,
+        addedBy: data.id!,
+        completedBy: [],
+        dateAdded: serverTimestamp(),
+        dueDate,
+        url,
+      };
 
-    const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
+      setDesc('');
+      setUrl('');
+      setDueDate(null);
 
-    if (description && tasks.length < 15) {
-      toast.promise(addDoc(tasksRef, payload), {
-        loading: 'adding task...',
-        success: 'task added',
-        error: 'error adding task',
-      });
+      const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
+
+      if (description && tasks.length < 3) {
+        toast.promise(addDoc(tasksRef, payload), {
+          loading: 'Adding Task...',
+          success: 'Task Added',
+          error: 'Error Adding Task',
+        });
+      } else {
+        toast.error('Task Limit Reached');
+      }
     }
   };
 
@@ -84,15 +94,24 @@ const Room = () => {
       completedBy: arrayUnion(data.id),
     });
 
-    toast.success('task completed!');
+    toast.success('Task Completed!');
   };
 
-  const taskDel = async (id: string) => {
-    toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
-      loading: 'deleting task...',
-      success: 'task deleted',
-      error: 'error deleting task',
-    });
+  const taskDel = (id: string) => {
+    toast((t) => (
+      <Popup
+        proceed={() => {
+          toast.dismiss(t.id);
+
+          toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
+            loading: 'Deleting Task...',
+            success: 'Task Deleted',
+            error: 'Error Deleting Task',
+          });
+        }}
+        dismiss={() => toast.dismiss(t.id)}
+      />
+    ));
   };
 
   if (!room || !id) {
@@ -130,45 +149,44 @@ const Room = () => {
       >
         <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group'>
           <input
+            required
             maxLength={150}
             minLength={5}
             onChange={(e) => setDesc(e.target.value)}
             value={description}
             type='text'
-            placeholder='task description'
-            className='bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base'
+            placeholder='Task Description'
+            className='room-input'
           />
-          <button
-            type='submit'
-            className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'
-          >
+          <button type='submit' className='room-input-btn'>
             <BsPlusSquareFill />
           </button>
         </div>
 
         <div className='flex space-x-2 mt-2'>
-          <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group w-full'>
+          <div className='flex-between group room-input-container'>
             <DatePicker
-              placeholderText='add due date'
+              placeholderText='Add Due Date'
               selected={dueDate}
+              showTimeSelect
               onChange={(date: Date) => setDueDate(date)}
               minDate={new Date()}
               ref={dateInputRef}
-              className='bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base'
+              className='room-input'
             />
 
-            <div className='group-hover:opacity-100 text-2xl opacity-0 transition-opacity'>
+            <div className='room-input-btn'>
               <BsXSquareFill onClick={() => setDueDate(null)} />
             </div>
           </div>
 
-          <div className='px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full'>
+          <div className='room-input-container'>
             <input
               onChange={(e) => setUrl(e.target.value)}
               value={url}
               type='text'
-              placeholder='add url'
-              className='bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base'
+              placeholder='Add URL'
+              className='room-input'
             />
           </div>
         </div>
