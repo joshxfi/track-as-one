@@ -38,9 +38,9 @@ const Info: React.FC = () => {
           toast.dismiss(t.id);
 
           toast.promise(deleteDoc(roomRef), {
-            loading: 'deleting room...',
-            success: 'room deleted',
-            error: 'error deleting room',
+            loading: 'Deleting Room...',
+            success: 'Room Deleted',
+            error: 'Error Deleting Room',
           });
 
           const roomTasks = await getDocs(collection(db, `rooms/${id}/tasks`));
@@ -67,9 +67,9 @@ const Info: React.FC = () => {
                 members: arrayRemove(data.id),
               }),
               {
-                loading: 'leaving room...',
-                success: 'left room',
-                error: 'error leaving room',
+                loading: 'Leaving Room...',
+                success: 'Left Room',
+                error: 'Error Leaving Room',
               }
             );
 

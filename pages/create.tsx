@@ -46,9 +46,9 @@ const Create = () => {
       toast.error('max rooms reached (3)');
     } else if (roomName) {
       toast.promise(setDoc(doc(db, 'rooms', roomId), payload), {
-        loading: 'creating room...',
-        success: 'room created!',
-        error: 'room could not be created.',
+        loading: 'Creating Room...',
+        success: 'Room Created!',
+        error: 'Room Could not be Created.',
       });
 
       push(`/home`);

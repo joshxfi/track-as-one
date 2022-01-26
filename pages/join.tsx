@@ -36,9 +36,9 @@ const Join = () => {
           requests: arrayUnion(id),
         }),
         {
-          loading: 'sending request...',
-          success: 'request sent!',
-          error: 'request could not be sent.',
+          loading: 'Sending Request...',
+          success: 'Request Sent!',
+          error: 'Request Could not be Sent.',
         }
       );
     }

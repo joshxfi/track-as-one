@@ -1,14 +1,15 @@
 import React from 'react';
 
 interface PopupProps {
+  title?: React.ReactNode;
   proceed: () => void;
   dismiss: () => void;
 }
 
-const Popup = ({ proceed, dismiss }: PopupProps) => {
+const Popup = ({ title, proceed, dismiss }: PopupProps) => {
   return (
     <div className='grid place-items-center'>
-      <p>Are you sure? 🤔</p>
+      {title || <p>Are you sure? 🤔</p>}
 
       <div className='flex space-x-4 mt-4 text-sm'>
         <button
@@ -20,7 +21,7 @@ const Popup = ({ proceed, dismiss }: PopupProps) => {
         </button>
         <button
           onClick={dismiss}
-          className='py-2 px-4 bg-gray-200 border border-primary rounded w-24'
+          className='py-2 px-4 bg-gray-200 hover:bg-gray-200/90 border border-primary rounded w-24'
           type='button'
         >
           Dismiss

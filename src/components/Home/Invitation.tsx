@@ -26,9 +26,9 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
           members: arrayUnion(user.id),
         }),
         {
-          loading: 'joining room...',
-          success: 'room joined!',
-          error: 'could not join room.',
+          loading: 'Joining Room...',
+          success: 'Room Joined!',
+          error: 'Could Not Join Room.',
         }
       );
 
@@ -47,9 +47,9 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
           invites: arrayRemove(roomId),
         }),
         {
-          loading: 'declining invite...',
-          success: 'invite declined!',
-          error: 'could not decline invite.',
+          loading: 'Declining Invite...',
+          success: 'Invite Declined!',
+          error: 'Could Not Decline Invite.',
         }
       );
     }
