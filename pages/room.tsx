@@ -59,7 +59,7 @@ const Room = () => {
       // eslint-disable-next-line no-useless-escape
       /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
-    if (!urlRegExp.test(url)) toast.error('Invalid URL');
+    if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
     else {
       const payload: ITask = {
         description,

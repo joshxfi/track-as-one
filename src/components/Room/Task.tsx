@@ -2,7 +2,6 @@
 import React from 'react';
 import toast from 'react-hot-toast';
 import { FaLink } from 'react-icons/fa';
-import { useRouter } from 'next/router';
 import { IoCloseCircle } from 'react-icons/io5';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 
@@ -24,15 +23,11 @@ const RoomTask: React.FC<RoomTaskProps> = ({
   taskDone,
   taskDel,
 }) => {
-  const { push } = useRouter();
-
   const goToLink = () => {
     toast((t) => (
       <Popup
-        proceed={() => {
-          toast.dismiss(t.id);
-          if (task.url) push(task.url);
-        }}
+        href={task.url}
+        proceed={() => toast.dismiss(t.id)}
         dismiss={() => toast.dismiss(t.id)}
         title={
           <div className='text-center'>
@@ -52,6 +47,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({
       return 'hover:px-16';
     }
 
+    if (task.url) return 'hover:px-16';
     return 'hover:pl-16';
   };
 
