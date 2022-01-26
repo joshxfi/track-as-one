@@ -75,6 +75,8 @@ const Room = () => {
         success: 'task added',
         error: 'error adding task',
       });
+    } else {
+      toast.error('task limit reached');
     }
   };
 
@@ -151,6 +153,7 @@ const Room = () => {
             <DatePicker
               placeholderText='add due date'
               selected={dueDate}
+              showTimeSelect
               onChange={(date: Date) => setDueDate(date)}
               minDate={new Date()}
               ref={dateInputRef}
