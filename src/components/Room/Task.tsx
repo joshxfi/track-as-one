@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import { TaskBtn } from '@/components/Button';
+import { SideBtn } from '@/components/Button';
 import { IoCloseCircle } from 'react-icons/io5';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 
@@ -20,20 +21,20 @@ const RoomTask: React.FC<RoomTaskProps> = ({
 }) => {
   return (
     <div
-      className={`w-full text-left leading-5 relative px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded transition-all duration-300 flex items-start group overflow-hidden cursor-default ${
+      className={`w-full relative px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded transition-all duration-300 group overflow-hidden cursor-default ${
         isAdmin ? 'hover:px-16' : 'hover:pl-16'
       }`}
     >
-      <TaskBtn
+      <SideBtn
         onClick={() => taskDone(task.id ?? '')}
-        className='bg-green-500 text-green-500 -left-14 group-hover:left-0 rounded-tl rounded-bl'
+        buttonType='check'
         Icon={BsFillCheckCircleFill}
       />
 
       {isAdmin && (
-        <TaskBtn
+        <SideBtn
           onClick={() => taskDel(task.id ?? '')}
-          className='bg-red-500 text-red-500 -right-14 group-hover:right-0'
+          buttonType='close'
           Icon={IoCloseCircle}
           iconStyle='text-xl'
         />

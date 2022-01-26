@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 interface IUser {
   id?: string;
   username?: string;
