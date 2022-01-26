@@ -17,6 +17,8 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
   const { push } = useRouter();
   const [room] = useRoom(roomId);
 
+  const userRef = doc(db, `users/${user.id}`);
+
   const acceptInvite = async () => {
     if (roomId) {
       toast.promise(
@@ -30,14 +32,18 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
         }
       );
 
-      push(`room/${roomId}`);
+      await updateDoc(userRef, {
+        invites: arrayRemove(roomId),
+      });
+
+      push('/home');
     }
   };
 
   const declineInvite = async () => {
     if (roomId) {
       toast.promise(
-        updateDoc(doc(db, `users/${user.id}`), {
+        updateDoc(userRef, {
           invites: arrayRemove(roomId),
         }),
         {
