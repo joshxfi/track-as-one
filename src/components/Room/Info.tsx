@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { AiFillCalendar } from 'react-icons/ai';
 import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
@@ -19,55 +19,66 @@ import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, Error } from '@/components';
 import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
+import Popup from './Popup';
 
 const Info: React.FC = () => {
-  const [rerender, setRerender] = useState(false);
-
+  const { data } = useAuth();
   const { push } = useRouter();
   const id = useNextQuery('id');
-  const { data } = useAuth();
 
   const [room, loading] = useRoom(id);
   const { creator, dateAdded, members } = room!;
 
   const roomRef = doc(db, `rooms/${id}`);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setRerender(!rerender);
-    });
-  }, []);
+  const deleteRoom = () => {
+    toast((t) => (
+      <Popup
+        proceed={async () => {
+          toast.dismiss(t.id);
 
-  const deleteRoom = async () => {
-    toast.promise(deleteDoc(roomRef), {
-      loading: 'deleting room...',
-      success: 'room deleted',
-      error: 'error deleting room',
-    });
+          toast.promise(deleteDoc(roomRef), {
+            loading: 'deleting room...',
+            success: 'room deleted',
+            error: 'error deleting room',
+          });
 
-    const roomTasks = await getDocs(collection(db, `rooms/${id}/tasks`));
-    roomTasks.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${id}/tasks/${task.id}`));
-    });
+          const roomTasks = await getDocs(collection(db, `rooms/${id}/tasks`));
+          roomTasks.forEach(async (task) => {
+            await deleteDoc(doc(db, `rooms/${id}/tasks/${task.id}`));
+          });
 
-    push('/home');
+          push('/home');
+        }}
+        dismiss={() => toast.dismiss(t.id)}
+      />
+    ));
   };
 
-  const leaveRoom = async () => {
-    if (data.id !== creator) {
-      toast.promise(
-        updateDoc(roomRef, {
-          members: arrayRemove(data.id),
-        }),
-        {
-          loading: 'leaving room...',
-          success: 'left room',
-          error: 'error leaving room',
-        }
-      );
+  const leaveRoom = () => {
+    toast((t) => (
+      <Popup
+        proceed={() => {
+          if (data.id !== creator) {
+            toast.dismiss(t.id);
 
-      push('/home');
-    }
+            toast.promise(
+              updateDoc(roomRef, {
+                members: arrayRemove(data.id),
+              }),
+              {
+                loading: 'leaving room...',
+                success: 'left room',
+                error: 'error leaving room',
+              }
+            );
+
+            push('/home');
+          }
+        }}
+        dismiss={() => toast.dismiss(t.id)}
+      />
+    ));
   };
 
   const copyRoomID = () => {
@@ -108,26 +119,12 @@ const Info: React.FC = () => {
           <InfoMember key={member} memberId={member} type='member' />
         ))}
 
-        <div className='flex'>
+        <div className='flex justify-end'>
           {creator === data.id ? (
-            <InfoBtn
-              desc='Delete Room'
-              className='info-red-btn'
-              handleClick={deleteRoom}
-            />
+            <InfoBtn title='Delete Room' handleClick={deleteRoom} />
           ) : (
-            <InfoBtn
-              desc='Leave Room'
-              className='info-red-btn'
-              handleClick={leaveRoom}
-            />
+            <InfoBtn title='Leave Room' handleClick={leaveRoom} />
           )}
-
-          <InfoBtn
-            desc='Back To Room'
-            className='bg-secondary text-primary'
-            handleClick={() => push({ pathname: '/room', query: { id } })}
-          />
         </div>
       </div>
     </Layout>

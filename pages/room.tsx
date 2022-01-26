@@ -26,6 +26,7 @@ import {
   RoomSettings,
   Requests,
   Task,
+  Popup,
 } from '@/components/Room';
 import toast from 'react-hot-toast';
 
@@ -89,12 +90,21 @@ const Room = () => {
     toast.success('task completed!');
   };
 
-  const taskDel = async (id: string) => {
-    toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
-      loading: 'deleting task...',
-      success: 'task deleted',
-      error: 'error deleting task',
-    });
+  const taskDel = (id: string) => {
+    toast((t) => (
+      <Popup
+        proceed={() => {
+          toast.dismiss(t.id);
+
+          toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
+            loading: 'deleting task...',
+            success: 'task deleted',
+            error: 'error deleting task',
+          });
+        }}
+        dismiss={() => toast.dismiss(t.id)}
+      />
+    ));
   };
 
   if (!room || !id) {

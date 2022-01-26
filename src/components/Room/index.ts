@@ -1,5 +1,6 @@
 export { default as Info } from './Info';
 export { default as Task } from './Task';
+export { default as Popup } from './Popup';
 export { default as Requests } from './Requests';
 export { default as InviteUser } from './InviteUser';
 export { default as InfoMember } from './InfoMember';

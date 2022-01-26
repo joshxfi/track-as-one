@@ -23,10 +23,6 @@
     @apply bg-primary text-secondary px-[30px] rounded;
   }
 
-  .info-red-btn {
-    @apply mr-2 bg-red-700 text-white hover:bg-red-700/95 transition-all;
-  }
-
   .flex-between {
     @apply flex justify-between items-center;
   }
