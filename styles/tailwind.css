@@ -35,6 +35,10 @@
     @apply px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full;
   }
 
+  .popup-proceed {
+    @apply py-2 px-4 bg-red-600 hover:bg-red-600/90 border border-primary rounded text-white w-24;
+  }
+
   .flex-between {
     @apply flex justify-between items-center;
   }

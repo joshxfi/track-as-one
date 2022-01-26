@@ -9,7 +9,7 @@ interface MyRoomsProps {
 const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
   return (
     <div className='w-full space-y-2'>
-      <RoomLabel label='Create' rooms={createdRooms} limit='3' />
+      <RoomLabel label='Create' roomLength={createdRooms.length} limit='3' />
 
       {createdRooms?.length ? (
         createdRooms?.map((room) => <ListRooms key={room.id} room={room} />)
@@ -17,7 +17,7 @@ const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
         <NoRooms desc='Create a Room' href='/create' />
       )}
 
-      <RoomLabel label='Join' rooms={joinedRooms} limit='∞' />
+      <RoomLabel label='Join' roomLength={joinedRooms.length} limit='∞' />
 
       {joinedRooms?.length ? (
         joinedRooms?.map((room) => <ListRooms key={room.id} room={room} />)
