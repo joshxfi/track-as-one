@@ -1,3 +1,5 @@
+import { FaDiscord, FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+
 export const defaultPic =
   'https://firebasestorage.googleapis.com/v0/b/trackas1.appspot.com/o/default%2Fdefault.png?alt=media&token=5d2945ad-abc4-42d9-ab39-20408e5169bc';
 
@@ -14,3 +16,10 @@ export const aboutPage = {
     'Images on Tasks',
   ],
 };
+
+export const socials = [
+  { Icon: FaGithub, link: 'https://github.com/joshxfi' },
+  { Icon: FaLinkedin, link: 'https://ph.linkedin.com/in/joshdanielb' },
+  { Icon: FaDiscord, link: '#' },
+  { Icon: FaTwitter, link: 'https://twitter.com/joshxfi' },
+];

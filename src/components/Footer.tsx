@@ -1,14 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import {
-  FaGithub,
-  FaLinkedin,
-  FaDiscord,
-  FaInstagramSquare,
-} from 'react-icons/fa';
 import doodle from '@/assets/doodle.svg';
-
-const socialIcons = [FaGithub, FaLinkedin, FaDiscord, FaInstagramSquare];
+import { socials } from '@/utils/constants';
 
 const Footer: React.FC = () => {
   return (
@@ -81,12 +74,14 @@ const Footer: React.FC = () => {
             <p className='text-secondary mb-4 md:mb-0'>
               Copyright © 2021 Josh Daniel
             </p>
-            <div className='flex text-base lg:text-xl'>
-              {socialIcons.map((Icon) => (
+            <div className='flex text-base lg:text-xl space-x-8'>
+              {socials.map(({ Icon, link }) => (
                 <a
+                  className='hover:text-secondary transition-colors'
                   key={Icon.toString()}
-                  className={Icon === FaInstagramSquare ? 'ml-3' : 'mx-3'}
-                  href='#'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={link}
                 >
                   <Icon />
                 </a>

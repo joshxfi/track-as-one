@@ -17,12 +17,12 @@ const About = () => {
 
       <section className='space-y-12'>
         <div>
-          <h1 className='text-3xl font-semibold mb-4'>Why Build This?</h1>
+          <h1 className='about-h1'>Why Build This?</h1>
           <p>{aboutPage.reason}</p>
         </div>
 
         <div>
-          <h1 className='text-3xl font-semibold mb-4'>Future Updates</h1>
+          <h1 className='about-h1'>Future Updates</h1>
           <ul>
             {aboutPage.futures.map((update) => (
               <li>▸ {update}</li>
@@ -31,19 +31,32 @@ const About = () => {
         </div>
 
         <div>
-          <h1 className='text-3xl font-semibold mb-4'>Contribute</h1>
+          <h1 className='about-h1'>Contribute</h1>
           <ul>
             <li>
-              <Link href='/contact/#bug_report'>
+              <Link href='/contact'>
                 <a className='text-blue-500'>▸ Report Bugs</a>
               </Link>
             </li>
             <li>
-              <Link href='/contact/#feature_request'>
+              <Link href='/contact'>
                 <a className='text-blue-500'>▸ Request Feature</a>
               </Link>
             </li>
           </ul>
+        </div>
+
+        <div>
+          <h1 className='about-h1'>License</h1>
+          <p>
+            This project is licensed under{' '}
+            <a
+              className='text-blue-500'
+              href='https://github.com/joshxfi/trackAsOne/blob/main/LICENSE'
+            >
+              MIT
+            </a>
+          </p>
         </div>
       </section>
     </Layout>
