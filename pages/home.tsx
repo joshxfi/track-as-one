@@ -11,7 +11,7 @@ import { Layout } from '@/components';
 import { db } from '@/config/firebase';
 import { useCollection } from '@/hooks';
 import { MyRooms } from '@/components/Home';
-import { defaultPic } from '@/utils/default';
+import { defaultPic } from '@/utils/constants';
 import { Button } from '@/components/Button';
 import { useCreatedRooms } from '@/services';
 import { useAuth } from '@/context/AuthContext';

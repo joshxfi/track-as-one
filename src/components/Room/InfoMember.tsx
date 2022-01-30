@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { defaultPic } from '@/utils/default';
+import { defaultPic } from '@/utils/constants';
 import { AiFillIdcard, AiOutlineIdcard } from 'react-icons/ai';
 import { useUser } from '@/services';
 

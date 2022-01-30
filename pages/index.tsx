@@ -88,7 +88,7 @@ const Index = () => {
             examples are Messenger and MS Teams. The problem is that they are
             usually cluttered with conversations making it hard to scroll back
             and you have to check multiple platforms just to make sure you won't
-            miss a task."
+            miss an assignment."
         />
       </section>
     </Layout>
