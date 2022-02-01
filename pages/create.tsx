@@ -4,13 +4,7 @@ import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { BiDoorOpen } from 'react-icons/bi';
-import {
-  updateDoc,
-  doc,
-  setDoc,
-  serverTimestamp,
-  arrayUnion,
-} from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
@@ -52,10 +46,6 @@ const Create = () => {
       });
 
       push(`/home`);
-
-      await updateDoc(doc(db, 'users', id!), {
-        roomsCreated: arrayUnion(roomId),
-      });
     }
   };
 
