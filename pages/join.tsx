@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { VscSignIn } from 'react-icons/vsc';
@@ -6,10 +6,11 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
-import { useAuth } from '@/context/AuthContext';
 import { Header, Input } from '@/components';
+import { useAuth } from '@/context/AuthContext';
+import { NextPageWithLayout } from '@/types/page';
 
-const Join = () => {
+const Join: NextPageWithLayout = () => {
   const [roomId, setRoomID] = useState<string>('');
 
   const {
@@ -45,7 +46,7 @@ const Join = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Header title='Join a Room' />
       <div className='w-full flex justify-center items-center flex-col'>
         <Input
@@ -67,8 +68,10 @@ const Join = () => {
           </button>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
+
+Join.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
 export default Join;

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
+
 import { Layout } from '@/components';
 import { aboutPage } from '@/utils/constants';
+import { NextPageWithLayout } from '@/types/page';
 
-const About = () => {
+const About: NextPageWithLayout = () => {
   const version = process.env.NEXT_PUBLIC_VERSION;
 
   return (
-    <Layout className='py-14' xl allowAll>
+    <>
       <div className='flex space-x-2'>
         <h2>{version}</h2>
         <a
@@ -51,8 +53,14 @@ const About = () => {
           </p>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
+
+About.getLayout = (page: ReactElement) => (
+  <Layout className='py-14' xl allowAll>
+    {page}
+  </Layout>
+);
 
 export default About;

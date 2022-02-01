@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
@@ -7,20 +7,14 @@ import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { NextPageWithLayout } from '@/types/page';
 
-const Index = () => {
+const Index: NextPageWithLayout = () => {
   const { user, signIn } = useAuth();
   const { push } = useRouter();
 
   return (
-    <Layout
-      xl
-      allowAll
-      className='pt-20'
-      description='trackAsOne is a collaborative cross-platform app that enables
-    students to track homework & activities together with their
-    friends or classmates.'
-    >
+    <>
       <section className='flex flex-col items-center mx-auto max-w-screen-xl lg:items-start lg:mt-20 lg:flex-row lg:justify-between'>
         <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
           <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
@@ -90,6 +84,21 @@ const Index = () => {
             miss an assignment."
         />
       </section>
+    </>
+  );
+};
+
+Index.getLayout = (page: ReactElement) => {
+  return (
+    <Layout
+      xl
+      allowAll
+      className='pt-20'
+      description='trackAsOne is a collaborative cross-platform app that enables
+  students to track homework & activities together with their
+  friends or classmates.'
+    >
+      {page}
     </Layout>
   );
 };

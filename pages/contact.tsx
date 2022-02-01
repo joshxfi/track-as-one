@@ -1,9 +1,11 @@
-import React from 'react';
-import { Layout } from '@/components';
+import React, { ReactElement } from 'react';
 
-const About = () => {
+import { Layout } from '@/components';
+import { NextPageWithLayout } from '@/types/page';
+
+const Contact: NextPageWithLayout = () => {
   return (
-    <Layout className='py-14' xl allowAll>
+    <>
       <h2>Want to contribute in the project?</h2>
 
       <hr className='my-6' />
@@ -53,8 +55,14 @@ const About = () => {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
 
-export default About;
+Contact.getLayout = (page: ReactElement) => (
+  <Layout className='py-14' xl allowAll>
+    {page}
+  </Layout>
+);
+
+export default Contact;
