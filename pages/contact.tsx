@@ -60,7 +60,7 @@ const Contact: NextPageWithLayout = () => {
 };
 
 Contact.getLayout = (page: ReactElement) => (
-  <Layout className='py-14' xl allowAll>
+  <Layout className='py-14' wide allowAll>
     {page}
   </Layout>
 );

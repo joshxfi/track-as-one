@@ -26,13 +26,13 @@ const About: NextPageWithLayout = () => {
       <section className='space-y-12'>
         <div>
           <h1 className='about-h1'>Why Build This?</h1>
-          <p>{aboutPage.reason}</p>
+          <p>{aboutPage.body1}</p>
         </div>
 
         <div>
           <h1 className='about-h1'>Future Updates</h1>
           <ul>
-            {aboutPage.futures.map((update) => (
+            {aboutPage.body2.map((update) => (
               <li key={update}>▸ {update}</li>
             ))}
           </ul>
@@ -58,7 +58,7 @@ const About: NextPageWithLayout = () => {
 };
 
 About.getLayout = (page: ReactElement) => (
-  <Layout className='py-14' xl allowAll>
+  <Layout className='py-14' wide allowAll>
     {page}
   </Layout>
 );

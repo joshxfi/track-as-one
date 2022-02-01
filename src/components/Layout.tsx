@@ -7,14 +7,14 @@ import { Navbar, Footer, LoaderHandler, Error } from '@/components';
 interface LayoutProps extends NextSeoProps {
   className?: string;
   loaders?: boolean[];
-  xl?: boolean;
+  wide?: boolean;
   allowAll?: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   className,
   loaders,
-  xl,
+  wide,
   allowAll,
   children,
   ...rest
@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({
           <Navbar />
           <main
             className={`text-primary w-[90%] mx-auto min-h-screen ${
-              xl ? 'max-w-screen-xl' : 'max-w-screen-md'
+              wide ? 'max-w-screen-xl' : 'max-w-screen-md'
             }  ${className}`}
           >
             {display()}
