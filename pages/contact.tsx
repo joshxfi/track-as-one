@@ -39,10 +39,18 @@ const About = () => {
         </div>
 
         <div>
-          <h1 className='about-h1'>Contribute Code</h1>
-          <ul>
-            <li>▸ Coming Soon!</li>
-          </ul>
+          <h1 className='about-h1'>Contributing</h1>
+          <div>
+            ▸ More info on the{' '}
+            <a
+              className='text-blue-500'
+              href='https://github.com/joshxfi/trackAsOne#contributing'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              repository &rarr;
+            </a>
+          </div>
         </div>
       </section>
     </Layout>

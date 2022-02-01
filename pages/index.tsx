@@ -75,7 +75,7 @@ const Index = () => {
         </ul>
       </section>
 
-      <section className='mx-auto max-w-screen-xl pb-40 md:space-y-40 space-y-32'>
+      <section className='mx-auto max-w-screen-xl pb-40 md:space-y-40 space-y-24'>
         <Info
           title='Built by a student for students.'
           body='trackAsOne is a responsive web-based app that enables students to track homework & activities together with their friends or classmates. Forgot about a homework? Your friends got your back!'

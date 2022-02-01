@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { Layout } from '@/components';
 import { aboutPage } from '@/utils/constants';
 
@@ -34,22 +33,6 @@ const About = () => {
             {aboutPage.futures.map((update) => (
               <li key={update}>▸ {update}</li>
             ))}
-          </ul>
-        </div>
-
-        <div>
-          <h1 className='about-h1'>Contribute</h1>
-          <ul>
-            <li>
-              <Link href='/contact'>
-                <a className='text-blue-500'>▸ Report Bugs</a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/contact'>
-                <a className='text-blue-500'>▸ Request Feature</a>
-              </Link>
-            </li>
           </ul>
         </div>
 

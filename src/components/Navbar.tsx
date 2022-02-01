@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
                 <Link href={href} key={name}>
                   <a
                     className={`${
-                      asPath.includes(href) && 'text-secondary'
+                      asPath === href && 'text-secondary'
                     }  text-sm hover:text-secondary transition-colors`}
                   >
                     {name}
