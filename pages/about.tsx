@@ -1,13 +1,14 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { ReactElement } from 'react';
+
 import { Layout } from '@/components';
 import { aboutPage } from '@/utils/constants';
+import { NextPageWithLayout } from '@/types/page';
 
-const About = () => {
+const About: NextPageWithLayout = () => {
   const version = process.env.NEXT_PUBLIC_VERSION;
 
   return (
-    <Layout className='py-14' xl allowAll>
+    <>
       <div className='flex space-x-2'>
         <h2>{version}</h2>
         <a
@@ -25,31 +26,15 @@ const About = () => {
       <section className='space-y-12'>
         <div>
           <h1 className='about-h1'>Why Build This?</h1>
-          <p>{aboutPage.reason}</p>
+          <p>{aboutPage.body1}</p>
         </div>
 
         <div>
           <h1 className='about-h1'>Future Updates</h1>
           <ul>
-            {aboutPage.futures.map((update) => (
+            {aboutPage.body2.map((update) => (
               <li key={update}>▸ {update}</li>
             ))}
-          </ul>
-        </div>
-
-        <div>
-          <h1 className='about-h1'>Contribute</h1>
-          <ul>
-            <li>
-              <Link href='/contact'>
-                <a className='text-blue-500'>▸ Report Bugs</a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/contact'>
-                <a className='text-blue-500'>▸ Request Feature</a>
-              </Link>
-            </li>
           </ul>
         </div>
 
@@ -68,8 +53,14 @@ const About = () => {
           </p>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
+
+About.getLayout = (page: ReactElement) => (
+  <Layout className='py-14' wide allowAll>
+    {page}
+  </Layout>
+);
 
 export default About;

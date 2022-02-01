@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
@@ -7,21 +8,15 @@ import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { landingPage } from '@/utils/constants';
+import { NextPageWithLayout } from '@/types/page';
 
-const Index = () => {
+const Index: NextPageWithLayout = () => {
   const { user, signIn } = useAuth();
   const { push } = useRouter();
 
   return (
-    <Layout
-      xl
-      allowAll
-      title='trackAsOne'
-      className='pt-20'
-      description='trackAsOne is a collaborative cross-platform app that enables
-    students to track homework & activities together with their
-    friends or classmates.'
-    >
+    <>
       <section className='flex flex-col items-center mx-auto max-w-screen-xl lg:items-start lg:mt-20 lg:flex-row lg:justify-between'>
         <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
           <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
@@ -45,10 +40,7 @@ const Index = () => {
               </h1>
 
               <p className='mt-2 text-md sm:text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
-                Every now and then, someone would pop in the group chat and say:
-                &quot;What assignments do we have? When is it due?&quot; With
-                this web app, you can track tasks collaboratively with your
-                peers!
+                {landingPage.body1}
               </p>
             </div>
 
@@ -76,21 +68,22 @@ const Index = () => {
         </ul>
       </section>
 
-      <section className='mx-auto max-w-screen-xl pb-40 md:space-y-40 space-y-32'>
+      <section className='mx-auto max-w-screen-xl pb-40 md:space-y-40 space-y-24'>
         <Info
           title='Built by a student for students.'
-          body='trackAsOne is a responsive web-based app that enables students to track homework & activities together with their friends or classmates. Forgot about a homework? Your friends got your back!'
+          body={landingPage.body2}
         />
 
-        <Info
-          title='Why use this task tracker?'
-          body="Tasks given by teachers are usually on different platforms. Few
-            examples are Messenger and MS Teams. The problem is that they are
-            usually cluttered with conversations making it hard to scroll back
-            and you have to check multiple platforms just to make sure you won't
-            miss an assignment."
-        />
+        <Info title='Why use this task tracker?' body={landingPage.body3} />
       </section>
+    </>
+  );
+};
+
+Index.getLayout = (page: ReactElement) => {
+  return (
+    <Layout wide allowAll className='pt-20'>
+      {page}
     </Layout>
   );
 };

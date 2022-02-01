@@ -1,9 +1,11 @@
-import React from 'react';
-import { Layout } from '@/components';
+import React, { ReactElement } from 'react';
 
-const About = () => {
+import { Layout } from '@/components';
+import { NextPageWithLayout } from '@/types/page';
+
+const Contact: NextPageWithLayout = () => {
   return (
-    <Layout className='py-14' xl allowAll>
+    <>
       <h2>Want to contribute in the project?</h2>
 
       <hr className='my-6' />
@@ -39,14 +41,28 @@ const About = () => {
         </div>
 
         <div>
-          <h1 className='about-h1'>Contribute Code</h1>
-          <ul>
-            <li>▸ Coming Soon!</li>
-          </ul>
+          <h1 className='about-h1'>Contributing</h1>
+          <div>
+            ▸ More info on the{' '}
+            <a
+              className='text-blue-500'
+              href='https://github.com/joshxfi/trackAsOne#contributing'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              repository &rarr;
+            </a>
+          </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
 
-export default About;
+Contact.getLayout = (page: ReactElement) => (
+  <Layout className='py-14' wide allowAll>
+    {page}
+  </Layout>
+);
+
+export default Contact;

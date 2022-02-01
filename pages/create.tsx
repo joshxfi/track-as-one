@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
@@ -10,9 +10,10 @@ import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { NextPageWithLayout } from '@/types/page';
 import { Header, Input, Layout } from '@/components';
 
-const Create = () => {
+const Create: NextPageWithLayout = () => {
   const [roomName, setRoomName] = useState<string>('');
 
   const { push } = useRouter();
@@ -50,7 +51,7 @@ const Create = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Header title='Create a Room' />
       <form
         onSubmit={createRoom}
@@ -74,8 +75,10 @@ const Create = () => {
           />
         </div>
       </form>
-    </Layout>
+    </>
   );
 };
+
+Create.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
 export default Create;
