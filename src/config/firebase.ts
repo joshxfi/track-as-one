@@ -3,7 +3,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const firebaseApp = initializeApp({
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  apiKey: 'AIzaSyAaKKaxkBg7wJ6vnfook39MFHN-nJDFgRw',
   authDomain: 'trackas1.firebaseapp.com',
   projectId: 'trackas1',
   storageBucket: 'trackas1.appspot.com',
