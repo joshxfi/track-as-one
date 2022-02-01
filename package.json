@@ -20,6 +20,7 @@
     "nanoid": "^3.1.25",
     "next": "^12.0.8",
     "next-seo": "^4.28.1",
+    "nprogress": "^0.2.0",
     "react": "17.0.2",
     "react-datepicker": "^4.2.1",
     "react-dom": "17.0.2",
@@ -27,6 +28,7 @@
     "react-icons": "^4.3.1"
   },
   "devDependencies": {
+    "@types/nprogress": "^0.2.0",
     "@types/react": "17.0.20",
     "@types/react-datepicker": "^4.1.7",
     "@typescript-eslint/parser": "^4.33.0",
