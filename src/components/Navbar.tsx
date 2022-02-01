@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { NavMenu } from '@/components/Nav';
 import { FaSignInAlt } from 'react-icons/fa';
 import { useAuth } from '@/context/AuthContext';
 
@@ -44,16 +45,20 @@ const Navbar: React.FC = () => {
             })}
           </div>
         </div>
-        <button
-          type='button'
-          onClick={user ? signOut : signIn}
-          className='flex items-center text-sm py-2 px-4 bg-secondary rounded text-primary shadow-sm hover:shadow-lg hover:bg-secondary/90 transition-opacity'
-        >
-          <p suppressHydrationWarning className='text-sm mr-2 font-medium'>
-            {user ? 'sign out' : 'login'}
-          </p>
-          <FaSignInAlt />
-        </button>
+
+        <div className='flex space-x-4'>
+          <NavMenu />
+          <button
+            type='button'
+            onClick={user ? signOut : signIn}
+            className='flex items-center text-sm py-2 px-4 bg-secondary rounded text-primary shadow-sm hover:shadow-lg hover:bg-secondary/90 transition-opacity'
+          >
+            <p suppressHydrationWarning className='text-sm mr-2 font-medium'>
+              {user ? 'sign out' : 'login'}
+            </p>
+            <FaSignInAlt />
+          </button>
+        </div>
       </div>
     </nav>
   );

@@ -7,22 +7,20 @@ import { BsFillArrowLeftCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 
 import { useNextQuery } from '@/hooks';
 import { useAuth } from '@/context/AuthContext';
-import { SettingBtn } from '@/components/Button';
+import { MenuBtn } from '@/components/Button';
 
 const RoomMenu = ({ room }: { room: IRoom }) => {
   const tab = useNextQuery('tab');
   const { data } = useAuth();
 
   return (
-    <Popover className='relative mt-4 z-50'>
+    <Popover className='relative mt-4 z-40'>
       {() => (
         <>
-          <Popover.Button className='flex w-full justify-end space-x-4 items-center'>
+          <Popover.Button className='flex w-full justify-end space-x-2 items-center'>
             <h4 className='text-sm font-medium'>{room.name}</h4>
 
-            <button type='button' className='text-xl text-primary'>
-              <AiFillSetting />
-            </button>
+            <AiFillSetting className='text-xl text-primary' />
           </Popover.Button>
 
           <Transition
@@ -36,7 +34,8 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
           >
             <Popover.Panel className='bg-white absolute top-8 right-0 flex flex-col space-y-4 text-primary rounded p-2 text-sm overflow-hidden shadow-md ring-1 ring-black ring-opacity-5'>
               {tab !== 'info' && (
-                <SettingBtn
+                <MenuBtn
+                  tab
                   label='room info'
                   route='info'
                   Icon={BsInfoCircleFill}
@@ -44,7 +43,8 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
               )}
 
               {tab !== 'invite' && (
-                <SettingBtn
+                <MenuBtn
+                  tab
                   label='invite user'
                   route='invite'
                   Icon={FaUserCircle}
@@ -52,14 +52,12 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
               )}
 
               {tab && (
-                <SettingBtn
-                  label='got to room'
-                  Icon={BsFillArrowLeftCircleFill}
-                />
+                <MenuBtn label='got to room' Icon={BsFillArrowLeftCircleFill} />
               )}
 
               {room.creator === data.id && tab !== 'requests' && (
-                <SettingBtn
+                <MenuBtn
+                  tab
                   label='view requests'
                   route='requests'
                   Icon={RiEye2Fill}

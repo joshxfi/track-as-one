@@ -5,10 +5,11 @@ import { IconType } from 'react-icons';
 interface SettingBtnProps {
   route?: string;
   label: string;
+  tab?: boolean;
   Icon: IconType;
 }
 
-const SettingBtn = ({ route, label, Icon }: SettingBtnProps) => {
+const MenuBtn = ({ route, tab, label, Icon }: SettingBtnProps) => {
   const { push, query: q } = useRouter();
   const query = route ? { ...q, tab: route } : { id: q.id, tab: [] };
 
@@ -16,7 +17,7 @@ const SettingBtn = ({ route, label, Icon }: SettingBtnProps) => {
     <button
       className='flex items-center w-full px-4 py-2 text-gray-700 transition-colors rounded hover:text-black hover:bg-gray-200 space-x-3 cursor-pointer'
       type='button'
-      onClick={() => push({ query })}
+      onClick={() => push(tab ? { query } : `/${route}`)}
     >
       <Icon />
       <a>{label}</a>
@@ -24,4 +25,4 @@ const SettingBtn = ({ route, label, Icon }: SettingBtnProps) => {
   );
 };
 
-export default SettingBtn;
+export default MenuBtn;

@@ -25,7 +25,7 @@ const About = () => {
           <h1 className='about-h1'>Future Updates</h1>
           <ul>
             {aboutPage.futures.map((update) => (
-              <li>▸ {update}</li>
+              <li key={update}>▸ {update}</li>
             ))}
           </ul>
         </div>
@@ -52,6 +52,8 @@ const About = () => {
             This project is licensed under{' '}
             <a
               className='text-blue-500'
+              target='_blank'
+              rel='noopener noreferrer'
               href='https://github.com/joshxfi/trackAsOne/blob/main/LICENSE'
             >
               MIT
