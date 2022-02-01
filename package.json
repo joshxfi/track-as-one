@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.3",
     "firebase": "^9.5.0",
     "framer-motion": "^4.1.17",
     "lint-staged": "^11.2.6",
