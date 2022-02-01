@@ -19,7 +19,7 @@ import { db } from '@/config/firebase';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, Error } from '@/components';
-import { InfoSection, InfoMember, RoomSettings } from '@/components/Room';
+import { InfoSection, InfoMember, RoomMenu } from '@/components/Room';
 import Popup from './Popup';
 
 const Info: React.FC = () => {
@@ -97,7 +97,7 @@ const Info: React.FC = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <RoomSettings room={room!} />
+      <RoomMenu room={room!} />
       <Header title='Room Info' />
 
       <InfoSection

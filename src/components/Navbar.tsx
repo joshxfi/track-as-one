@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 
 const Navbar: React.FC = () => {
   const { user, signIn, signOut } = useAuth();
-  const { push, asPath } = useRouter();
+  const { asPath } = useRouter();
 
   const navItems = [
     { name: 'Home', href: user ? '/home' : '/' },
@@ -22,11 +22,11 @@ const Navbar: React.FC = () => {
     >
       <div className='flex-between w-[90%] max-w-screen-xl mx-auto'>
         <div className='flex space-x-8 items-center'>
-          <button onClick={() => push(user ? '/home' : '/')} type='button'>
+          <Link href='/'>
             <a className='text-secondary font-bold text-3xl cursor-pointer'>
               tAO<span className='text-f9'>.</span>
             </a>
-          </button>
+          </Link>
 
           <div className='space-x-8 hidden md:block'>
             {navItems.map(({ name, href }) => {

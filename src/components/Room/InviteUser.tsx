@@ -7,8 +7,8 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useRoom } from '@/services';
 import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
+import { RoomMenu } from '@/components/Room';
 import { useAuth } from '@/context/AuthContext';
-import { RoomSettings } from '@/components/Room';
 import { Layout, Header, Input } from '@/components';
 
 const RoomInvite = () => {
@@ -49,7 +49,7 @@ const RoomInvite = () => {
 
   return (
     <Layout>
-      <RoomSettings room={room!} />
+      <RoomMenu room={room!} />
       <Header title='Invite a User' />
       <form
         spellCheck='false'
