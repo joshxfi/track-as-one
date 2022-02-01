@@ -76,7 +76,7 @@ const Room = () => {
 
       const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
 
-      if (description && tasks.length < 3) {
+      if (description && tasks.length < 15) {
         toast.promise(addDoc(tasksRef, payload), {
           loading: 'Adding Task...',
           success: 'Task Added',
@@ -158,7 +158,7 @@ const Room = () => {
             placeholder='Task Description'
             className='room-input'
           />
-          <button type='submit' className='room-input-btn'>
+          <button type='submit' className='text-2xl'>
             <BsPlusSquareFill />
           </button>
         </div>

@@ -8,7 +8,12 @@ const About = () => {
     <Layout className='py-14' xl allowAll>
       <div className='flex space-x-2'>
         <h2>v1.0.0</h2>
-        <a className='text-blue-500' href='#'>
+        <a
+          className='text-blue-500'
+          href='https://github.com/joshxfi/trackAsOne/releases/tag/v1.0.0'
+          target='_blank'
+          rel='noreferrer noopener'
+        >
           View Changelog
         </a>
       </div>
