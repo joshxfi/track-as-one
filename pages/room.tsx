@@ -23,7 +23,7 @@ import { useCollection, useNextQuery } from '@/hooks';
 import {
   Info,
   InviteUser,
-  RoomSettings,
+  RoomMenu,
   Requests,
   Task,
   Popup,
@@ -140,7 +140,7 @@ const Room = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <RoomSettings room={room} />
+      <RoomMenu room={room} />
       <form
         spellCheck='false'
         autoComplete='off'

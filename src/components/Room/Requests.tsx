@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRoom } from '@/services';
 import { useNextQuery } from '@/hooks';
-import { RoomSettings, UserRequest } from '.';
+import { RoomMenu, UserRequest } from '.';
 import { Layout, Header, EmptyMsg } from '@/components';
 
 const Requests = () => {
@@ -11,7 +11,7 @@ const Requests = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <RoomSettings room={room!} />
+      <RoomMenu room={room!} />
       <Header title='Requests' />
       {!room?.requests?.length && <EmptyMsg empty='requests' />}
       <div className='w-full mb-4'>

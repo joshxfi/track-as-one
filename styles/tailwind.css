@@ -66,4 +66,8 @@
   .task-btn {
     @apply rounded w-full py-2 px-4 btn-ring flex-between;
   }
+
+  .about-h1 {
+    @apply text-xl md:text-3xl font-semibold mb-4;
+  }
 }

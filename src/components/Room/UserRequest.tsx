@@ -5,7 +5,7 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 import { useUser } from '@/services';
 import { db } from '@/config/firebase';
-import { defaultPic } from '@/utils/default';
+import { defaultPic } from '@/utils/constants';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import PendingContainer from '../PendingContainer';
 
