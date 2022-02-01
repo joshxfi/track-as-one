@@ -4,11 +4,18 @@ import { Layout } from '@/components';
 import { aboutPage } from '@/utils/constants';
 
 const About = () => {
+  const version = process.env.NEXT_PUBLIC_VERSION;
+
   return (
     <Layout className='py-14' xl allowAll>
       <div className='flex space-x-2'>
-        <h2>v1.0.0</h2>
-        <a className='text-blue-500' href='#'>
+        <h2>{version}</h2>
+        <a
+          className='text-blue-500'
+          href={`https://github.com/joshxfi/trackAsOne/releases/tag/${version}`}
+          target='_blank'
+          rel='noreferrer noopener'
+        >
           View Changelog
         </a>
       </div>
