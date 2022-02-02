@@ -26,8 +26,5 @@ jobs:
       - name: Lint files
         run: yarn lint
 
-      - name: Format code
-        run: yarn format
-
       - name: Build project
         run: yarn build
