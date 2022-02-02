@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  lint:
+    name: Check for lint and format errors
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint files
+        run: yarn lint
+
+      - name: Format code
+        run: yarn format
+
+      - name: Build project
+        run: yarn build
