@@ -29,7 +29,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
       completedBy: arrayUnion(data.id),
     });
 
-    toast.success('Task Completed!');
+    toast.success('Task Completed');
   };
 
   const taskDel = (id?: string) => {
