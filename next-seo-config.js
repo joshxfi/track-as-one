@@ -2,7 +2,7 @@ const description =
   'A platform that enables students to track homework, activities, etc. together with their friends or classmates. With this platform, you can create rooms, invite your friends, and track tasks collaboratively!';
 
 const imgUrl =
-  'https://firebasestorage.googleapis.com/v0/b/trackas1.appspot.com/o/seo%2FtrackAsOne.jpg?alt=media&token=df1d098a-a581-4670-96c3-f1c85f128947';
+  'https://firebasestorage.googleapis.com/v0/b/trackas1.appspot.com/o/seo%2FtrackAsOne_Logo.png?alt=media&token=cddef829-6dc2-4368-a2d8-57db7a974e16';
 
 export default {
   title: 'trackAsOne | Task Tracker',
