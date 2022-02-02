@@ -5,16 +5,18 @@ interface ModalProps {
   title: string;
   description: string;
   isOpen: boolean;
-  proceed: () => void;
+  href?: string;
+  proceed?: () => void;
   dismiss: () => void;
 }
 
 const Modal = ({
   title,
   description,
+  isOpen,
+  href,
   proceed,
   dismiss,
-  isOpen,
 }: ModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -57,13 +59,24 @@ const Modal = ({
               </div>
 
               <div className='mt-4 space-x-4'>
-                <button
-                  type='button'
-                  className='bg-secondary modal-btn'
-                  onClick={proceed}
-                >
-                  Proceed
-                </button>
+                {href ? (
+                  <a
+                    href={href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='bg-secondary modal-btn'
+                  >
+                    Proceed
+                  </a>
+                ) : (
+                  <button
+                    type='button'
+                    className='bg-secondary modal-btn'
+                    onClick={proceed}
+                  >
+                    Proceed
+                  </button>
+                )}
 
                 <button
                   type='button'
