@@ -5,14 +5,10 @@ import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   addDoc,
-  arrayUnion,
   collection,
-  deleteDoc,
-  doc,
   orderBy,
   query,
   serverTimestamp,
-  updateDoc,
 } from 'firebase/firestore';
 
 import { useRoom } from '@/services';
@@ -20,14 +16,7 @@ import { db } from '@/config/firebase';
 import { Layout, Error } from '@/components';
 import { useAuth } from '@/context/AuthContext';
 import { useCollection, useNextQuery } from '@/hooks';
-import {
-  Info,
-  InviteUser,
-  RoomMenu,
-  Requests,
-  Task,
-  Popup,
-} from '@/components/Room';
+import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
 import toast from 'react-hot-toast';
 
 const Room = () => {
@@ -86,32 +75,6 @@ const Room = () => {
         toast.error('Task Limit Reached');
       }
     }
-  };
-
-  const taskDone = async (id: string) => {
-    const taskRef = doc(db, `rooms/${room?.id}/tasks/${id}`);
-    await updateDoc(taskRef, {
-      completedBy: arrayUnion(data.id),
-    });
-
-    toast.success('Task Completed!');
-  };
-
-  const taskDel = (id: string) => {
-    toast((t) => (
-      <Popup
-        proceed={() => {
-          toast.dismiss(t.id);
-
-          toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
-            loading: 'Deleting Task...',
-            success: 'Task Deleted',
-            error: 'Error Deleting Task',
-          });
-        }}
-        dismiss={() => toast.dismiss(t.id)}
-      />
-    ));
   };
 
   if (!room || !id) {
@@ -193,14 +156,7 @@ const Room = () => {
       </form>
       <section className='mt-4 mb-8 space-y-2'>
         {tasks?.map((task) => (
-          <Task
-            isAdmin={room.creator === data.id}
-            key={task.id}
-            taskDone={taskDone}
-            taskDel={taskDel}
-            task={task}
-            members={room?.members?.length + 1}
-          />
+          <Task key={task.id} room={room} task={task} />
         ))}
       </section>
     </Layout>

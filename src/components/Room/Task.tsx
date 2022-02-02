@@ -1,44 +1,46 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
+
 import toast from 'react-hot-toast';
 import { FaLink } from 'react-icons/fa';
 import { IoCloseCircle } from 'react-icons/io5';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 
-import { Popup } from '@/components/Room';
+import { Modal } from '@/components';
+import { db } from '@/config/firebase';
 import { SideBtn } from '@/components/Button';
+import { useAuth } from '@/context/AuthContext';
+import { arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 interface RoomTaskProps {
   task: ITask;
-  members: number;
-  isAdmin: boolean;
-  taskDone: (id: string) => void;
-  taskDel: (id: string) => void;
+  room: IRoom;
 }
 
-const RoomTask: React.FC<RoomTaskProps> = ({
-  task,
-  members,
-  isAdmin,
-  taskDone,
-  taskDel,
-}) => {
-  const goToLink = () => {
-    toast((t) => (
-      <Popup
-        href={task.url}
-        proceed={() => toast.dismiss(t.id)}
-        dismiss={() => toast.dismiss(t.id)}
-        title={
-          <div className='text-center'>
-            <p>Go to URL?</p>{' '}
-            <p className='text-sm underline text-blue-500 break-all'>
-              {task.url}
-            </p>
-          </div>
-        }
-      />
-    ));
+const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
+  const [delModal, setDelModal] = useState(false);
+  const [urlModal, setUrlModal] = useState(false);
+  const { data } = useAuth();
+
+  const isAdmin = room.creator === data.id;
+
+  const taskDone = async (id?: string) => {
+    const taskRef = doc(db, `rooms/${room?.id}/tasks/${id}`);
+    await updateDoc(taskRef, {
+      completedBy: arrayUnion(data.id),
+    });
+
+    toast.success('Task Completed!');
+  };
+
+  const taskDel = (id?: string) => {
+    setDelModal(false);
+    setTimeout(() => {
+      toast.promise(deleteDoc(doc(db, `rooms/${room?.id}/tasks/${id}`)), {
+        loading: 'Deleting Task...',
+        success: 'Task Deleted',
+        error: 'Error Deleting Task',
+      });
+    }, 300);
   };
 
   const padding = () => {
@@ -55,15 +57,31 @@ const RoomTask: React.FC<RoomTaskProps> = ({
     <div
       className={`w-full relative px-[30px] min-h-[70px] py-4 bg-primary text-secondary rounded transition-all duration-300 group overflow-hidden cursor-default ${padding()}`}
     >
+      <Modal
+        title='Delete Task'
+        description='Are you sure you want to delete this task? This action cannot be undone.'
+        proceed={() => taskDel(task.id)}
+        dismiss={() => setDelModal(false)}
+        isOpen={delModal}
+      />
+
+      <Modal
+        title='Visit URL'
+        description={`Are you sure you want to go to this URL? ${task.url}`}
+        href={task.url}
+        dismiss={() => setUrlModal(false)}
+        isOpen={urlModal}
+      />
+
       <SideBtn
-        onClick={() => taskDone(task.id ?? '')}
+        onClick={() => taskDone(task.id)}
         buttonType='check'
         Icon={BsFillCheckCircleFill}
       />
 
       {isAdmin && (
         <SideBtn
-          onClick={() => taskDel(task.id ?? '')}
+          onClick={() => setDelModal(true)}
           buttonType='close'
           Icon={IoCloseCircle}
           iconStyle='text-xl'
@@ -72,7 +90,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({
 
       {task.url && (
         <button
-          onClick={goToLink}
+          onClick={() => setUrlModal(true)}
           className={`absolute h-full top-0 w-12 flex justify-center items-center group-hover:text-white transition-all duration-300 bg-yellow-500 text-yellow-500 -right-14 ${
             isAdmin ? 'group-hover:right-12' : 'group-hover:right-0'
           }`}
@@ -99,7 +117,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({
               : 'No Due Date'}
           </p>
           <p>
-            Done: {task.completedBy?.length}/{members}
+            Done: {task.completedBy?.length}/{room?.members?.length + 1}
           </p>
         </div>
       </div>

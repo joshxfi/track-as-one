@@ -6,8 +6,8 @@ import { Popover, Transition } from '@headlessui/react';
 import { BsFillArrowLeftCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 
 import { useNextQuery } from '@/hooks';
-import { useAuth } from '@/context/AuthContext';
 import { MenuBtn } from '@/components/Button';
+import { useAuth } from '@/context/AuthContext';
 
 const RoomMenu = ({ room }: { room: IRoom }) => {
   const tab = useNextQuery('tab');
@@ -34,32 +34,25 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
           >
             <Popover.Panel className='bg-white absolute top-8 right-0 flex flex-col space-y-4 text-primary rounded p-2 text-sm overflow-hidden shadow-md ring-1 ring-black ring-opacity-5'>
               {tab !== 'info' && (
-                <MenuBtn
-                  tab
-                  label='room info'
-                  route='info'
-                  Icon={BsInfoCircleFill}
-                />
+                <MenuBtn label='room info' tab='info' Icon={BsInfoCircleFill} />
               )}
 
               {tab !== 'invite' && (
-                <MenuBtn
-                  tab
-                  label='invite user'
-                  route='invite'
-                  Icon={FaUserCircle}
-                />
+                <MenuBtn label='invite user' tab='invite' Icon={FaUserCircle} />
               )}
 
               {tab && (
-                <MenuBtn label='got to room' Icon={BsFillArrowLeftCircleFill} />
+                <MenuBtn
+                  tab='room'
+                  label='got to room'
+                  Icon={BsFillArrowLeftCircleFill}
+                />
               )}
 
               {room.creator === data.id && tab !== 'requests' && (
                 <MenuBtn
-                  tab
                   label='view requests'
-                  route='requests'
+                  tab='requests'
                   Icon={RiEye2Fill}
                 />
               )}

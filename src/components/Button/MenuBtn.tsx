@@ -5,13 +5,13 @@ import { IconType } from 'react-icons';
 interface SettingBtnProps {
   route?: string;
   label: string;
-  tab?: boolean;
+  tab?: string;
   Icon: IconType;
 }
 
 const MenuBtn = ({ route, tab, label, Icon }: SettingBtnProps) => {
   const { push, query: q } = useRouter();
-  const query = route ? { ...q, tab: route } : { id: q.id, tab: [] };
+  const query = tab === 'room' ? { id: q.id, tab: [] } : { ...q, tab };
 
   return (
     <button
