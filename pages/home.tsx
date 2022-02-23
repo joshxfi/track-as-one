@@ -20,16 +20,11 @@ const Homepage: React.FC = () => {
   const { push } = useRouter();
   const {
     data: { id, username, photoURL },
-    loading,
   } = useAuth();
-
-  const roomRef = collection(db, 'rooms');
-  const deps = { deps: [loading] };
 
   const [createdRooms, crLoading] = useCreatedRooms(id);
   const [joinedRooms, jrLoading] = useCollection<IRoom>(
-    query(roomRef, where('members', 'array-contains', id ?? '')),
-    deps
+    query(collection(db, 'rooms'), where('members', 'array-contains', id ?? ''))
   );
 
   const copyTag = () => {
