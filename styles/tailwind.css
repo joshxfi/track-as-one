@@ -32,7 +32,7 @@
   }
 
   .modal-btn {
-    @apply py-2 px-4 border border-transparent rounded-md text-sm cursor-pointer;
+    @apply text-white py-2 px-4 border border-transparent rounded-md text-sm cursor-pointer;
   }
 
   .room-input-container {

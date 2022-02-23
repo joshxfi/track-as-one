@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { IoMdCloseCircle } from 'react-icons/io';
 import { Dialog, Transition } from '@headlessui/react';
 
 interface ModalProps {
@@ -54,48 +55,46 @@ const Modal = ({
             <div className='md:w-full max-w-md w-[350px] p-6 overflow-hidden text-left transition-all bg-white shadow-xl rounded-xl transform'>
               <Dialog.Title
                 as='h3'
-                className='text-lg font-medium leading-6 text-gray-800 mb-2'
+                className='text-lg font-medium leading-6 text-gray-800 mb-2 flex justify-between'
               >
-                {title}
+                <p>{title}</p>
+
+                <button type='button' onClick={dismiss} className='md:text-2xl'>
+                  <IoMdCloseCircle />
+                </button>
               </Dialog.Title>
 
               {description ? (
-                <p className='text-sm text-gray-500'>{description}</p>
+                <p className='text-sm md:text-base text-gray-500 break-words'>
+                  {description}
+                </p>
               ) : (
                 body
               )}
 
-              <div className='mt-4 space-x-2 flex justify-end'>
+              <div className='mt-4 space-x-2 flex justify-end flex-wrap'>
                 {href && (
                   <a
                     href={href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='bg-secondary modal-btn text-gray-700'
+                    className='bg-amber-500 modal-btn'
                   >
-                    Proceed
+                    Continue
                   </a>
                 )}
 
                 {proceed && (
                   <button
                     type='button'
-                    className='bg-secondary modal-btn text-gray-700'
+                    className='bg-amber-500 modal-btn'
                     onClick={proceed}
                   >
-                    Proceed
+                    Continue
                   </button>
                 )}
 
                 {buttons}
-
-                <button
-                  type='button'
-                  className='bg-gray-200 modal-btn'
-                  onClick={dismiss}
-                >
-                  Dismiss
-                </button>
               </div>
             </div>
           </Transition.Child>

@@ -65,11 +65,13 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
     },
     {
       title: 'Due Date',
-      info: dateWithTime(task.dueDate.toDate()),
+      info: task.dueDate
+        ? dateWithTime(task.dueDate.toDate())
+        : 'No Due Date Specified',
     },
     {
       title: 'Date Added',
-      info: task.dateAdded.toDate().toDateString(),
+      info: task.dateAdded?.toDate().toDateString(),
     },
     {
       title: 'Added By',
@@ -104,7 +106,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
         isOpen={optionsModal}
         dismiss={() => setOptionsModal(false)}
         body={
-          <div className='mt-2 space-y-2 text-gray-800 pb-4'>
+          <div className='mt-2 space-y-2 text-gray-800 pb-4 text-sm md:text-base'>
             <hr className='my-4' />
 
             {taskInfo.map((val) => (
@@ -133,6 +135,22 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                 className='bg-red-600 text-white modal-btn'
               >
                 Delete
+              </button>
+            )}
+
+            {task.url && (
+              <button
+                onClick={() => {
+                  setOptionsModal(false);
+
+                  setTimeout(() => {
+                    setUrlModal(true);
+                  }, 500);
+                }}
+                type='button'
+                className='bg-amber-500 text-white modal-btn'
+              >
+                Go to URL
               </button>
             )}
 
