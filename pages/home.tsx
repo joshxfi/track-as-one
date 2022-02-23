@@ -24,7 +24,11 @@ const Homepage: React.FC = () => {
 
   const [createdRooms, crLoading] = useCreatedRooms(id);
   const [joinedRooms, jrLoading] = useCollection<IRoom>(
-    query(collection(db, 'rooms'), where('members', 'array-contains', id ?? ''))
+    query(
+      collection(db, 'rooms'),
+      where('members', 'array-contains', id ?? '')
+    ),
+    { listen: true }
   );
 
   const copyTag = () => {

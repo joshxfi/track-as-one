@@ -36,7 +36,7 @@ const useAuth = () => {
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(() => auth.currentUser);
-  const { push } = useRouter();
+  const { push, asPath } = useRouter();
 
   const [userLoading, setUserLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
@@ -96,7 +96,7 @@ const AuthProvider: React.FC = ({ children }) => {
           })[0]
         );
 
-        push(`/home`);
+        if (asPath === '/') push('/home');
       }
 
       setDataLoading(() => false);
