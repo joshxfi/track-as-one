@@ -6,7 +6,7 @@ import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {
   const { data } = useAuth();
-  const [user, loading] = useUser(data.id, true);
+  const [user, loading] = useUser(data.id);
 
   return (
     <Layout loaders={[loading]}>

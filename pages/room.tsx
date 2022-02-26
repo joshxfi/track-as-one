@@ -15,7 +15,7 @@ import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { Layout, Error } from '@/components';
 import { useAuth } from '@/context/AuthContext';
-import { useCollection, useNextQuery } from '@/hooks';
+import { useCol, useNextQuery } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
 import toast from 'react-hot-toast';
 
@@ -30,12 +30,8 @@ const Room = () => {
 
   const [room, loading] = useRoom(id);
 
-  const [tasks] = useCollection<ITask>(
-    query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc')),
-    {
-      listen: true,
-      deps: [room?.id],
-    }
+  const [tasks] = useCol<ITask>(
+    query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc'))
   );
 
   const { data } = useAuth();
@@ -65,13 +61,13 @@ const Room = () => {
 
       const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
 
-      if (description && tasks.length < 15) {
+      if (description) {
         toast.promise(addDoc(tasksRef, payload), {
           loading: 'Adding Task...',
           success: 'Task Added',
           error: 'Error Adding Task',
         });
-      } else {
+      } else if (tasks && tasks.length < 15) {
         toast.error('Task Limit Reached');
       }
     }

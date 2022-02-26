@@ -26,4 +26,5 @@ interface ITask {
   url?: string;
   dueDate?: any;
   completedBy: string[];
+  photoUrls?: string[];
 }

@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 import { Layout } from '@/components';
 import { db } from '@/config/firebase';
-import { useCollection } from '@/hooks';
+import { useCol } from '@/hooks';
 import { MyRooms } from '@/components/Home';
 import { defaultPic } from '@/utils/constants';
 import { Button } from '@/components/Button';
@@ -23,12 +23,8 @@ const Homepage: React.FC = () => {
   } = useAuth();
 
   const [createdRooms, crLoading] = useCreatedRooms(id);
-  const [joinedRooms, jrLoading] = useCollection<IRoom>(
-    query(
-      collection(db, 'rooms'),
-      where('members', 'array-contains', id ?? '')
-    ),
-    { listen: true }
+  const [joinedRooms, jrLoading] = useCol<IRoom>(
+    query(collection(db, 'rooms'), where('members', 'array-contains', id ?? ''))
   );
 
   const copyTag = () => {
