@@ -35,7 +35,11 @@ const Modal = ({
         className='fixed inset-0 z-50 bg-gray-600/60'
         onClose={dismiss}
       >
-        <div className='min-h-screen px-4 text-center grid place-items-center'>
+        <div
+          className={`min-h-screen ${
+            !empty && 'px-4'
+          } text-center grid place-items-center`}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -61,7 +65,7 @@ const Modal = ({
               <div
                 className={
                   empty
-                    ? 'transform'
+                    ? ''
                     : 'md:w-full max-w-md w-[350px] p-6 text-left transition-all bg-white shadow-xl rounded-xl transform'
                 }
               >

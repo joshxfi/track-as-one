@@ -204,12 +204,10 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
         isOpen={displayImageModal}
         dismiss={() => setDisplayImageModal(false)}
         body={
-          <div className='relative lg:w-[854px] lg:h-[480px] md:w-[640px] md:h-[360px] w-[400px] h-[225px] transform mr-4'>
-            <Image
+          <div className='max-w-screen-md w-screen grid place-items-center md:mr-4'>
+            <img
               src={displayImage ?? defaultPic}
-              layout='fill'
-              objectFit='contain'
-              className='rounded'
+              className='rounded object-contain md:w-full w-[90%]'
               alt='task img'
             />
           </div>
