@@ -1,8 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useState,
+  useRef,
+  ChangeEventHandler,
+  useCallback,
+} from 'react';
 
 import { BsPlusSquareFill, BsXSquareFill } from 'react-icons/bs';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import toast from 'react-hot-toast';
 import {
   addDoc,
   collection,
@@ -14,14 +20,15 @@ import {
 import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { Layout, Error } from '@/components';
+import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/context/AuthContext';
-import { useCol, useNextQuery } from '@/hooks';
+import { useCol, useNextQuery, useUpload } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
-import toast from 'react-hot-toast';
 
 const Room = () => {
   const [description, setDesc] = useState('');
   const [dueDate, setDueDate] = useState<Date | null>(null);
+  const [images, setImages] = useState<File[]>([]);
   const [url, setUrl] = useState('');
 
   // eslint-disable-next-line prefer-destructuring
@@ -29,6 +36,7 @@ const Room = () => {
   const tab = useNextQuery('tab');
 
   const [room, loading] = useRoom(id);
+  const upload = useUpload();
 
   const [tasks] = useCol<ITask>(
     query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc'))
@@ -36,39 +44,55 @@ const Room = () => {
 
   const { data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const imgHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      const { files } = e.target;
+
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].size > 3 * 1024 * 1024) {
+            toast.error('max image size is 3MB');
+            return;
+          }
+        }
+
+        if (files.length > 3) toast.error('you can only upload up to 3 images');
+        else setImages(Array.from(files));
+      }
+    },
+    [setImages]
+  );
 
   const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const urlRegExp =
-      // eslint-disable-next-line no-useless-escape
-      /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-
     if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
+    else if (tasks && tasks.length > 15) toast.error('Task Limit Reached');
     else {
+      setDesc('');
+      setUrl('');
+      setImages([]);
+      setDueDate(null);
+
+      const imgPaths = await upload(`rooms/${id}/images`, images);
+
       const payload: ITask = {
         description,
         addedBy: data.id!,
         completedBy: [],
         dateAdded: serverTimestamp(),
+        imgPaths,
         dueDate,
         url,
       };
 
-      setDesc('');
-      setUrl('');
-      setDueDate(null);
-
       const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
 
       if (description) {
-        toast.promise(addDoc(tasksRef, payload), {
-          loading: 'Adding Task...',
-          success: 'Task Added',
-          error: 'Error Adding Task',
-        });
-      } else if (tasks && tasks.length < 15) {
-        toast.error('Task Limit Reached');
+        await addDoc(tasksRef, payload);
+        toast.success('Task Added');
       }
     }
   };
@@ -100,6 +124,15 @@ const Room = () => {
   return (
     <Layout loaders={[loading]}>
       <RoomMenu room={room} />
+      <input
+        ref={fileRef}
+        multiple
+        accept='image/png,image/gif,image/jpeg'
+        className='hidden'
+        type='file'
+        onChange={imgHandler}
+      />
+
       <form
         spellCheck='false'
         autoComplete='off'
@@ -109,7 +142,7 @@ const Room = () => {
         <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group'>
           <input
             required
-            maxLength={150}
+            maxLength={300}
             minLength={5}
             onChange={(e) => setDesc(e.target.value)}
             value={description}
@@ -148,6 +181,16 @@ const Room = () => {
               className='room-input'
             />
           </div>
+
+          <button
+            onClick={() => fileRef.current?.click()}
+            type='button'
+            className='room-input-container'
+          >
+            <p className='text-[#9CA3AF] text-left text-sm md:text-base'>
+              Add Image {images.length}/3
+            </p>
+          </button>
         </div>
       </form>
       <section className='mt-4 mb-8 space-y-2'>
