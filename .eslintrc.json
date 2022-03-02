@@ -15,6 +15,7 @@
     "arrow-body-style": "off",
     "no-use-before-define": "off",
     "no-undef": "off",
+    "no-plusplus": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react/require-default-props": "off",
     "react/prop-types": "off",

@@ -7,7 +7,7 @@ import { Layout, Header, EmptyMsg } from '@/components';
 
 const Requests = () => {
   const id = useNextQuery('id');
-  const [room, loading] = useRoom(id, true);
+  const [room, loading] = useRoom(id);
 
   return (
     <Layout loaders={[loading]}>

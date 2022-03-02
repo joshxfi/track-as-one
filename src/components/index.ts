@@ -9,3 +9,4 @@ export { default as Loader } from './Loader';
 export { default as EmptyMsg } from './EmptyMsg';
 export { default as LoaderHandler } from './LoaderHandler';
 export { default as PendingContainer } from './PendingContainer';
+export { default as UnderConstruction } from './UnderConstruction';

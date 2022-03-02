@@ -1,7 +1,7 @@
 import { FaDiscord, FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
 export const defaultPic =
-  'https://firebasestorage.googleapis.com/v0/b/trackas1.appspot.com/o/default%2Fdefault.png?alt=media&token=5d2945ad-abc4-42d9-ab39-20408e5169bc';
+  'https://firebasestorage.googleapis.com/v0/b/trackas1.appspot.com/o/default%2Ffallback.png?alt=media&token=83a287b4-4513-437b-890c-dc17b224cbbf';
 
 export const aboutPage = {
   body1:
@@ -34,3 +34,7 @@ export const socials = [
   { Icon: FaDiscord, link: '#' },
   { Icon: FaTwitter, link: 'https://twitter.com/joshxfi' },
 ];
+
+export const urlRegExp =
+  // eslint-disable-next-line no-useless-escape
+  /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;

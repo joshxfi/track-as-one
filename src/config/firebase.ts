@@ -1,8 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
 
-const firebaseApp = initializeApp({
+const app = initializeApp({
   apiKey: 'AIzaSyAaKKaxkBg7wJ6vnfook39MFHN-nJDFgRw',
   authDomain: 'trackas1.firebaseapp.com',
   projectId: 'trackas1',
@@ -11,7 +12,8 @@ const firebaseApp = initializeApp({
   appId: '1:672092906058:web:f3589aa30b780eb08a7cb3',
 });
 
-const db = getFirestore(firebaseApp);
-const auth = getAuth(firebaseApp);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-export { db, auth };
+export { db, auth, storage };

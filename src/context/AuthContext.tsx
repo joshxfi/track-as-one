@@ -36,7 +36,7 @@ const useAuth = () => {
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(() => auth.currentUser);
-  const router = useRouter();
+  const { push, asPath } = useRouter();
 
   const [userLoading, setUserLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
@@ -77,7 +77,7 @@ const AuthProvider: React.FC = ({ children }) => {
         await setDoc(doc(db, 'users', userTag), payload);
       }
 
-      router.push('/home');
+      push('/home');
     } catch (err) {
       console.log(err);
     }
@@ -95,6 +95,8 @@ const AuthProvider: React.FC = ({ children }) => {
             return { ...doc.data(), id: doc.id } as IUser;
           })[0]
         );
+
+        if (asPath === '/') push('/home');
       }
 
       setDataLoading(() => false);
@@ -111,7 +113,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const signOut = async () => {
     try {
       await auth.signOut();
-      router.push('/');
+      push('/');
     } catch (err) {
       console.log(err);
     }

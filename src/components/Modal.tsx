@@ -1,31 +1,45 @@
 import React, { Fragment } from 'react';
+import { IoMdCloseCircle } from 'react-icons/io';
 import { Dialog, Transition } from '@headlessui/react';
+import Loader from './Loader';
 
 interface ModalProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  body?: React.ReactNode;
+  buttons?: React.ReactNode;
   isOpen: boolean;
   href?: string;
   proceed?: () => void;
   dismiss: () => void;
+  isLoading?: boolean;
+  empty?: boolean;
 }
 
 const Modal = ({
   title,
   description,
+  body,
+  buttons,
   isOpen,
   href,
   proceed,
   dismiss,
+  isLoading,
+  empty,
 }: ModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as='div'
-        className='fixed inset-0 z-50 overflow-y-auto bg-gray-100/40'
+        className='fixed inset-0 z-50 bg-gray-600/60'
         onClose={dismiss}
       >
-        <div className='min-h-screen px-4 text-center grid place-items-center'>
+        <div
+          className={`min-h-screen ${
+            !empty && 'px-4'
+          } text-center grid place-items-center`}
+        >
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
@@ -47,46 +61,71 @@ const Modal = ({
             leaveFrom='opacity-100 scale-100'
             leaveTo='opacity-0 scale-95'
           >
-            <div className='md:w-full max-w-md w-[350px] p-6 overflow-hidden text-left transition-all bg-white shadow-xl rounded-2xl transform'>
-              <Dialog.Title
-                as='h3'
-                className='text-lg font-medium leading-6 text-gray-900'
+            {!isLoading ? (
+              <div
+                className={
+                  empty
+                    ? ''
+                    : 'md:w-full max-w-md w-[350px] p-6 text-left transition-all bg-white shadow-xl rounded-xl transform'
+                }
               >
-                {title}
-              </Dialog.Title>
-              <div className='mt-2'>
-                <p className='text-sm text-gray-500'>{description}</p>
-              </div>
+                {!empty && (
+                  <Dialog.Title
+                    as='h3'
+                    className='text-lg font-medium leading-6 text-gray-800 mb-2 flex justify-between'
+                  >
+                    <p>{title}</p>
 
-              <div className='mt-4 space-x-4'>
-                {href ? (
-                  <a
-                    href={href}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='bg-secondary modal-btn'
-                  >
-                    Proceed
-                  </a>
-                ) : (
-                  <button
-                    type='button'
-                    className='bg-secondary modal-btn'
-                    onClick={proceed}
-                  >
-                    Proceed
-                  </button>
+                    <button
+                      type='button'
+                      onClick={dismiss}
+                      className='md:text-2xl'
+                    >
+                      <IoMdCloseCircle />
+                    </button>
+                  </Dialog.Title>
                 )}
 
-                <button
-                  type='button'
-                  className='bg-gray-200 modal-btn'
-                  onClick={dismiss}
-                >
-                  Dismiss
-                </button>
+                {description ? (
+                  <p className='text-sm md:text-base text-gray-500 break-words'>
+                    {description}
+                  </p>
+                ) : (
+                  body
+                )}
+
+                {!empty && (
+                  <div className='mt-4 space-x-2 flex justify-end flex-wrap'>
+                    {href && (
+                      <a
+                        href={href}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='bg-secondary modal-btn'
+                      >
+                        Continue
+                      </a>
+                    )}
+
+                    {proceed && (
+                      <button
+                        type='button'
+                        className='bg-secondary modal-btn'
+                        onClick={proceed}
+                      >
+                        Continue
+                      </button>
+                    )}
+
+                    {buttons}
+                  </div>
+                )}
               </div>
-            </div>
+            ) : (
+              <div>
+                <Loader />
+              </div>
+            )}
           </Transition.Child>
         </div>
       </Dialog>
