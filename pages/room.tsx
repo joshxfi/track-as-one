@@ -145,7 +145,7 @@ const Room = () => {
         }}
         className='w-full mt-4'
       >
-        <div className='flex-between px-4 rounded bg-[#e5e5e5] text-primary placeholder-inputfg focus-within:border-primary border-2 border-gray-300 group'>
+        <div className='flex-between px-4 rounded bg-[#E7E7E7] text-primary placeholder-inputfg focus-within:border-primary border-2 border-gray-300 group'>
           <input
             required
             maxLength={300}

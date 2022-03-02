@@ -24,7 +24,7 @@
   }
 
   .room-input {
-    @apply bg-inputbg h-[45px] outline-none w-full text-sm md:text-base;
+    @apply bg-[#f5f5f5] h-[45px] outline-none w-full text-sm md:text-base;
   }
 
   .room-input-btn {
@@ -36,7 +36,7 @@
   }
 
   .room-input-container {
-    @apply px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full;
+    @apply px-4 rounded bg-[#f9f9f9] text-primary placeholder-inputfg focus-within:border-primary border-2 w-full;
   }
 
   .popup-proceed {
@@ -72,6 +72,6 @@
   }
 
   .about-h1 {
-    @apply text-xl md:text-3xl font-semibold mb-4;
+    @apply md:text-3xl font-semibold mb-4;
   }
 }
