@@ -26,11 +26,14 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   const [delModal, setDelModal] = useState(false);
   const [urlModal, setUrlModal] = useState(false);
   const [optionsModal, setOptionsModal] = useState(false);
-  const { data } = useAuth();
 
+  const [displayImage, setDisplayImage] = useState('');
+  const [displayImageModal, setDisplayImageModal] = useState(false);
+
+  const { data } = useAuth();
   const isAdmin = room.creator === data.id;
-  const completedByUser = task.completedBy.includes(data.id ?? '');
   const taskRef = doc(db, `rooms/${room?.id}/tasks/${task.id}`);
+  const completedByUser = task.completedBy.includes(data.id ?? '');
 
   const hasImg = task.imgUrls && task.imgUrls?.length > 0;
 
@@ -196,10 +199,34 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           </div>
         </div>
       </div>
+      <Modal
+        empty
+        isOpen={displayImageModal}
+        dismiss={() => setDisplayImageModal(false)}
+        body={
+          <div className='relative lg:w-[854px] lg:h-[480px] md:w-[640px] md:h-[360px] w-[400px] h-[225px] transform mr-4'>
+            <Image
+              src={displayImage ?? defaultPic}
+              layout='fill'
+              objectFit='contain'
+              className='rounded'
+              alt='task img'
+            />
+          </div>
+        }
+      />
+
       {task.imgUrls && task.imgUrls?.length > 0 && (
-        <div className='flex space-x-2 bg-primary bg-opacity-90 rounded-b p-2'>
+        <div className='flex sm:space-x-2 space-x-1 bg-primary bg-opacity-90 rounded-b sm:p-2 p-1'>
           {task.imgUrls.map((url) => (
-            <div className='relative w-20 h-20'>
+            <button
+              type='button'
+              onClick={() => {
+                setDisplayImage(url);
+                setDisplayImageModal(true);
+              }}
+              className='relative sm:w-20 sm:h-20 w-14 h-14'
+            >
               <Image
                 src={url ?? defaultPic}
                 layout='fill'
@@ -207,7 +234,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                 className='rounded'
                 alt='task img'
               />
-            </div>
+            </button>
           ))}
         </div>
       )}

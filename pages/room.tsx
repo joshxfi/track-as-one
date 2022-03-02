@@ -145,7 +145,7 @@ const Room = () => {
         }}
         className='w-full mt-4'
       >
-        <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group'>
+        <div className='flex-between px-4 rounded bg-[#e5e5e5] text-primary placeholder-inputfg focus-within:border-primary border-2 border-gray-300 group'>
           <input
             required
             maxLength={300}
@@ -154,7 +154,7 @@ const Room = () => {
             value={description}
             type='text'
             placeholder='Task Description'
-            className='room-input'
+            className='bg-[#e5e5e5] h-[45px] outline-none w-full text-sm md:text-base'
           />
           <button type='submit' className='text-2xl'>
             <BsPlusSquareFill />

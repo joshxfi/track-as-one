@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import Loader from './Loader';
 
 interface ModalProps {
-  title: string;
+  title?: string;
   description?: string;
   body?: React.ReactNode;
   buttons?: React.ReactNode;
@@ -13,6 +13,7 @@ interface ModalProps {
   proceed?: () => void;
   dismiss: () => void;
   isLoading?: boolean;
+  empty?: boolean;
 }
 
 const Modal = ({
@@ -25,6 +26,7 @@ const Modal = ({
   proceed,
   dismiss,
   isLoading,
+  empty,
 }: ModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -56,21 +58,29 @@ const Modal = ({
             leaveTo='opacity-0 scale-95'
           >
             {!isLoading ? (
-              <div className='md:w-full max-w-md w-[350px] p-6 text-left transition-all bg-white shadow-xl rounded-xl transform'>
-                <Dialog.Title
-                  as='h3'
-                  className='text-lg font-medium leading-6 text-gray-800 mb-2 flex justify-between'
-                >
-                  <p>{title}</p>
-
-                  <button
-                    type='button'
-                    onClick={dismiss}
-                    className='md:text-2xl'
+              <div
+                className={
+                  empty
+                    ? 'transform'
+                    : 'md:w-full max-w-md w-[350px] p-6 text-left transition-all bg-white shadow-xl rounded-xl transform'
+                }
+              >
+                {!empty && (
+                  <Dialog.Title
+                    as='h3'
+                    className='text-lg font-medium leading-6 text-gray-800 mb-2 flex justify-between'
                   >
-                    <IoMdCloseCircle />
-                  </button>
-                </Dialog.Title>
+                    <p>{title}</p>
+
+                    <button
+                      type='button'
+                      onClick={dismiss}
+                      className='md:text-2xl'
+                    >
+                      <IoMdCloseCircle />
+                    </button>
+                  </Dialog.Title>
+                )}
 
                 {description ? (
                   <p className='text-sm md:text-base text-gray-500 break-words'>
@@ -80,30 +90,32 @@ const Modal = ({
                   body
                 )}
 
-                <div className='mt-4 space-x-2 flex justify-end flex-wrap'>
-                  {href && (
-                    <a
-                      href={href}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='bg-amber-500 modal-btn'
-                    >
-                      Continue
-                    </a>
-                  )}
+                {!empty && (
+                  <div className='mt-4 space-x-2 flex justify-end flex-wrap'>
+                    {href && (
+                      <a
+                        href={href}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='bg-secondary modal-btn'
+                      >
+                        Continue
+                      </a>
+                    )}
 
-                  {proceed && (
-                    <button
-                      type='button'
-                      className='bg-amber-500 modal-btn'
-                      onClick={proceed}
-                    >
-                      Continue
-                    </button>
-                  )}
+                    {proceed && (
+                      <button
+                        type='button'
+                        className='bg-secondary modal-btn'
+                        onClick={proceed}
+                      >
+                        Continue
+                      </button>
+                    )}
 
-                  {buttons}
-                </div>
+                    {buttons}
+                  </div>
+                )}
               </div>
             ) : (
               <div>
