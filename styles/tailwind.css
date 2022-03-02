@@ -24,7 +24,7 @@
   }
 
   .room-input {
-    @apply bg-inputbg h-[45px] outline-none w-full pr-4 text-sm md:text-base;
+    @apply bg-inputbg h-[45px] outline-none w-full text-sm md:text-base;
   }
 
   .room-input-btn {

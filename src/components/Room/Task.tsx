@@ -198,7 +198,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           </div>
         </div>
       </div>
-      {task.imgPaths && (
+      {task.imgPaths && task.imgPaths?.length > 0 && (
         <div className='flex space-x-2 bg-primary bg-opacity-90 rounded-b p-2'>
           {task.imgPaths.map((path) => (
             <TaskImgs key={path} path={path} />

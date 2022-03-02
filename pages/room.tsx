@@ -19,7 +19,7 @@ import {
 
 import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
-import { Layout, Error } from '@/components';
+import { Layout, Error, Modal } from '@/components';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/context/AuthContext';
 import { useCol, useNextQuery, useUpload } from '@/hooks';
@@ -30,12 +30,14 @@ const Room = () => {
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const [images, setImages] = useState<File[]>([]);
   const [url, setUrl] = useState('');
+  const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // eslint-disable-next-line prefer-destructuring
   const id = useNextQuery('id');
   const tab = useNextQuery('tab');
 
-  const [room, loading] = useRoom(id);
+  const [room, roomLoading] = useRoom(id);
   const upload = useUpload();
 
   const [tasks] = useCol<ITask>(
@@ -65,12 +67,12 @@ const Room = () => {
     [setImages]
   );
 
-  const addTask = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const addTask = async () => {
     if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (tasks && tasks.length > 15) toast.error('Task Limit Reached');
+    else if (tasks && tasks.length >= 15) toast.error('Task Limit Reached');
     else {
+      setLoading(true);
+
       setDesc('');
       setUrl('');
       setImages([]);
@@ -90,10 +92,11 @@ const Room = () => {
 
       const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
 
-      if (description) {
-        await addDoc(tasksRef, payload);
-        toast.success('Task Added');
-      }
+      await addDoc(tasksRef, payload);
+      toast.success('Task Added');
+
+      setModal(false);
+      setTimeout(() => setLoading(false), 300);
     }
   };
 
@@ -122,7 +125,7 @@ const Room = () => {
   if (tab === 'requests') return <Requests />;
 
   return (
-    <Layout loaders={[loading]}>
+    <Layout loaders={[roomLoading]}>
       <RoomMenu room={room} />
       <input
         ref={fileRef}
@@ -136,7 +139,10 @@ const Room = () => {
       <form
         spellCheck='false'
         autoComplete='off'
-        onSubmit={addTask}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setModal(true);
+        }}
         className='w-full mt-4'
       >
         <div className='flex-between px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 group'>
@@ -155,43 +161,52 @@ const Room = () => {
           </button>
         </div>
 
-        <div className='flex space-x-2 mt-2'>
-          <div className='flex-between group room-input-container'>
-            <DatePicker
-              placeholderText='Add Due Date'
-              selected={dueDate}
-              showTimeSelect
-              onChange={(date: Date) => setDueDate(date)}
-              minDate={new Date()}
-              ref={dateInputRef}
-              className='room-input'
-            />
+        <Modal
+          isOpen={modal}
+          dismiss={() => setModal(false)}
+          title='Add Task'
+          proceed={addTask}
+          isLoading={loading}
+          body={
+            <div className='flex flex-col space-y-4 mt-4'>
+              <div className='flex-between group room-input-container'>
+                <DatePicker
+                  placeholderText='Add Due Date (optional)'
+                  selected={dueDate}
+                  showTimeSelect
+                  onChange={(date: Date) => setDueDate(date)}
+                  minDate={new Date()}
+                  ref={dateInputRef}
+                  className='room-input pr-2'
+                />
 
-            <div className='room-input-btn'>
-              <BsXSquareFill onClick={() => setDueDate(null)} />
+                <div className='room-input-btn'>
+                  <BsXSquareFill onClick={() => setDueDate(null)} />
+                </div>
+              </div>
+
+              <div className='room-input-container'>
+                <input
+                  onChange={(e) => setUrl(e.target.value)}
+                  value={url}
+                  type='text'
+                  placeholder='Add URL (optional)'
+                  className='room-input'
+                />
+              </div>
+
+              <button
+                onClick={() => fileRef.current?.click()}
+                type='button'
+                className='room-input-container flex'
+              >
+                <p className='text-[#9CA3AF] text-left text-sm md:text-base h-[45px] flex items-center'>
+                  Add Image {images.length}/3 (optional)
+                </p>
+              </button>
             </div>
-          </div>
-
-          <div className='room-input-container'>
-            <input
-              onChange={(e) => setUrl(e.target.value)}
-              value={url}
-              type='text'
-              placeholder='Add URL'
-              className='room-input'
-            />
-          </div>
-
-          <button
-            onClick={() => fileRef.current?.click()}
-            type='button'
-            className='room-input-container'
-          >
-            <p className='text-[#9CA3AF] text-left text-sm md:text-base'>
-              Add Image {images.length}/3
-            </p>
-          </button>
-        </div>
+          }
+        />
       </form>
       <section className='mt-4 mb-8 space-y-2'>
         {tasks?.map((task) => (
