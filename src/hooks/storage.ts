@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { useUploadFile } from 'react-firebase-hooks/storage';
 import { storage } from '@/config/firebase';
-import { ref } from 'firebase/storage';
+import { ref, getDownloadURL } from 'firebase/storage';
 import { nanoid } from 'nanoid';
 
 export const useUpload = () => {
@@ -17,7 +17,9 @@ export const useUpload = () => {
           files[i]
         );
 
-        if (img?.ref.fullPath) imgUrls.push(img?.ref?.fullPath);
+        const imgUrl = await getDownloadURL(ref(storage, img?.ref.fullPath));
+
+        if (img?.ref.fullPath) imgUrls.push(imgUrl);
       }
 
       return imgUrls;

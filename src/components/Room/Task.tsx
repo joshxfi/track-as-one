@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { MdMoreVert } from 'react-icons/md';
 
 import { Modal } from '@/components';
-import { db, storage } from '@/config/firebase';
+import { db } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import {
   arrayRemove,
@@ -15,8 +15,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { dateWithTime } from '@/utils/functions';
-import { useDownloadURL } from 'react-firebase-hooks/storage';
-import { ref } from 'firebase/storage';
 import { defaultPic } from '@/utils/constants';
 
 interface RoomTaskProps {
@@ -34,7 +32,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   const completedByUser = task.completedBy.includes(data.id ?? '');
   const taskRef = doc(db, `rooms/${room?.id}/tasks/${task.id}`);
 
-  const hasImg = task.imgPaths && task.imgPaths?.length > 0;
+  const hasImg = task.imgUrls && task.imgUrls?.length > 0;
 
   const taskDone = async () => {
     if (completedByUser) {
@@ -198,29 +196,21 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           </div>
         </div>
       </div>
-      {task.imgPaths && task.imgPaths?.length > 0 && (
+      {task.imgUrls && task.imgUrls?.length > 0 && (
         <div className='flex space-x-2 bg-primary bg-opacity-90 rounded-b p-2'>
-          {task.imgPaths.map((path) => (
-            <TaskImgs key={path} path={path} />
+          {task.imgUrls.map((url) => (
+            <div className='relative w-20 h-20'>
+              <Image
+                src={url ?? defaultPic}
+                layout='fill'
+                objectFit='cover'
+                className='rounded'
+                alt='task img'
+              />
+            </div>
           ))}
         </div>
       )}
-    </div>
-  );
-};
-
-const TaskImgs = ({ path }: { path: string }) => {
-  const [url] = useDownloadURL(ref(storage, path));
-
-  return (
-    <div className='relative w-20 h-20'>
-      <Image
-        src={url ?? defaultPic}
-        layout='fill'
-        objectFit='cover'
-        className='rounded'
-        alt='task img'
-      />
     </div>
   );
 };

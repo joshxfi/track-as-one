@@ -78,14 +78,14 @@ const Room = () => {
       setImages([]);
       setDueDate(null);
 
-      const imgPaths = await upload(`rooms/${id}/images`, images);
+      const imgUrls = await upload(`rooms/${id}/images`, images);
 
       const payload: ITask = {
         description,
         addedBy: data.id!,
         completedBy: [],
         dateAdded: serverTimestamp(),
-        imgPaths,
+        imgUrls,
         dueDate,
         url,
       };
