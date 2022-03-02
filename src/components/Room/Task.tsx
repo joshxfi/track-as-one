@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { MdMoreVert } from 'react-icons/md';
 
 import { Modal } from '@/components';
-import { db } from '@/config/firebase';
+import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/context/AuthContext';
 import {
   arrayRemove,
@@ -16,6 +16,7 @@ import {
 } from 'firebase/firestore';
 import { dateWithTime } from '@/utils/functions';
 import { defaultPic } from '@/utils/constants';
+import { deleteObject, ref } from 'firebase/storage';
 
 interface RoomTaskProps {
   task: ITask;
@@ -61,6 +62,12 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
         success: 'Task Deleted',
         error: 'Error Deleting Task',
       });
+
+      if (task.imgUrls && task.imgUrls?.length > 0) {
+        task.imgUrls.forEach(async (url) => {
+          await deleteObject(ref(storage, url));
+        });
+      }
     }, 300);
   };
 
