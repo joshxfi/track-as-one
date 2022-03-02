@@ -163,7 +163,7 @@ const Room = () => {
 
         <Modal
           isOpen={modal}
-          dismiss={() => setModal(false)}
+          setIsOpen={setModal}
           title='Add Task'
           proceed={addTask}
           isLoading={loading}

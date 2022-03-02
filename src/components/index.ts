@@ -7,6 +7,7 @@ export { default as Header } from './Header';
 export { default as Layout } from './Layout';
 export { default as Loader } from './Loader';
 export { default as EmptyMsg } from './EmptyMsg';
+export { default as RoomInput } from './RoomInput';
 export { default as LoaderHandler } from './LoaderHandler';
-export { default as PendingContainer } from './PendingContainer';
+export { default as Confirmation } from './Confirmation';
 export { default as UnderConstruction } from './UnderConstruction';

@@ -6,7 +6,7 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
-import { Header, Input } from '@/components';
+import { RoomInput } from '@/components';
 import { useAuth } from '@/context/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
 
@@ -17,7 +17,8 @@ const Join: NextPageWithLayout = () => {
     data: { id },
   } = useAuth();
 
-  const requestJoin = async () => {
+  const requestJoin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setRoomID('');
 
     const roomRef = doc(db, 'rooms', roomId);
@@ -46,29 +47,15 @@ const Join: NextPageWithLayout = () => {
   };
 
   return (
-    <>
-      <Header title='Join a Room' />
-      <div className='w-full flex justify-center items-center flex-col'>
-        <Input
-          onChange={(e) => setRoomID(e.target.value)}
-          value={roomId}
-          placeholder='enter room id'
-          minLength={5}
-          maxLength={15}
-        />
-
-        <div className='inline-block mx-auto mt-2'>
-          <button
-            type='button'
-            onClick={roomId ? requestJoin : () => null}
-            className='btn btn-ring'
-          >
-            <p className='mr-4'>request join</p>
-            <VscSignIn className='icon' />
-          </button>
-        </div>
-      </div>
-    </>
+    <RoomInput
+      title='Join a Room'
+      btnLabel='request join'
+      Icon={VscSignIn}
+      onSubmit={requestJoin}
+      onChange={(e) => setRoomID(e.target.value)}
+      value={roomId}
+      placeholder='enter room id'
+    />
   );
 };
 

@@ -11,7 +11,7 @@ interface ModalProps {
   isOpen: boolean;
   href?: string;
   proceed?: () => void;
-  dismiss: () => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading?: boolean;
   empty?: boolean;
 }
@@ -24,7 +24,7 @@ const Modal = ({
   isOpen,
   href,
   proceed,
-  dismiss,
+  setIsOpen,
   isLoading,
   empty,
 }: ModalProps) => {
@@ -33,7 +33,7 @@ const Modal = ({
       <Dialog
         as='div'
         className='fixed inset-0 z-50 bg-gray-600/60'
-        onClose={dismiss}
+        onClose={setIsOpen}
       >
         <div
           className={`min-h-screen ${
@@ -78,7 +78,7 @@ const Modal = ({
 
                     <button
                       type='button'
-                      onClick={dismiss}
+                      onClick={() => setIsOpen(false)}
                       className='md:text-2xl'
                     >
                       <IoMdCloseCircle />

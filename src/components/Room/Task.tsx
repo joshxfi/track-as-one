@@ -107,7 +107,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           title='Delete Task'
           description='Are you sure you want to delete this task? This action cannot be undone.'
           proceed={taskDel}
-          dismiss={() => setDelModal(false)}
+          setIsOpen={setDelModal}
           isOpen={delModal}
         />
 
@@ -115,14 +115,14 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           title='Visit URL'
           description={`Are you sure you want to go to this URL? ${task.url}`}
           href={task.url}
-          dismiss={() => setUrlModal(false)}
+          setIsOpen={setUrlModal}
           isOpen={urlModal}
         />
 
         <Modal
           title='Task Info'
           isOpen={optionsModal}
-          dismiss={() => setOptionsModal(false)}
+          setIsOpen={setOptionsModal}
           body={
             <div className='mt-2 space-y-2 text-gray-800 pb-4 text-sm md:text-base'>
               <hr className='my-4' />
@@ -209,7 +209,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
       <Modal
         empty
         isOpen={displayImageModal}
-        dismiss={() => setDisplayImageModal(false)}
+        setIsOpen={() => setDisplayImageModal(false)}
         body={
           <div className='max-w-screen-md w-screen grid place-items-center md:mr-4'>
             <img

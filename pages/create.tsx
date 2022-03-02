@@ -8,10 +8,9 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
-import { Button } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
+import { Layout, RoomInput } from '@/components';
 import { NextPageWithLayout } from '@/types/page';
-import { Header, Input, Layout } from '@/components';
 
 const Create: NextPageWithLayout = () => {
   const [roomName, setRoomName] = useState<string>('');
@@ -51,31 +50,15 @@ const Create: NextPageWithLayout = () => {
   };
 
   return (
-    <>
-      <Header title='Create a Room' />
-      <form
-        onSubmit={createRoom}
-        className='w-full flex justify-center flex-col items-center'
-      >
-        <Input
-          onChange={(e) => setRoomName(e.target.value)}
-          value={roomName}
-          placeholder='enter room name'
-          minLength={5}
-          maxLength={15}
-        />
-
-        <div className='inline-block mx-auto mt-2'>
-          <Button
-            name='create room'
-            type='submit'
-            className='btn btn-effect'
-            iconStyles='text-secondary text-xl'
-            Icon={BiDoorOpen}
-          />
-        </div>
-      </form>
-    </>
+    <RoomInput
+      title='Create a Room'
+      btnLabel='create room'
+      Icon={BiDoorOpen}
+      onSubmit={createRoom}
+      onChange={(e) => setRoomName(e.target.value)}
+      value={roomName}
+      placeholder='enter room name'
+    />
   );
 };
 

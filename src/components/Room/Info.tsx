@@ -90,7 +90,7 @@ const Info: React.FC = () => {
         title='Delete Room'
         description='Are you sure you want to delete this room? This action cannot be undone.'
         proceed={deleteRoom}
-        dismiss={() => setDeleteModal(false)}
+        setIsOpen={setDeleteModal}
         isOpen={deleteModal}
       />
 
@@ -98,7 +98,7 @@ const Info: React.FC = () => {
         title='Leave Room'
         description='Are you sure you want to leave this room? You need to request or get an invite before you can join again.'
         proceed={leaveRoom}
-        dismiss={() => setLeaveModal(false)}
+        setIsOpen={setLeaveModal}
         isOpen={leaveModal}
       />
 
