@@ -99,9 +99,9 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   return (
     <div className='flex flex-col'>
       <div
-        className={`w-full relative px-[30px] min-h-[70px] py-4 bg-primary text-secondary ${
+        className={`w-full relative p-4 md:px-7 min-h-[70px] bg-primary text-secondary ${
           hasImg ? 'rounded-t' : 'rounded'
-        } transition-all duration-300 group overflow-hidden cursor-default hover:pr-16`}
+        } transition-all duration-300 group overflow-hidden cursor-default hover:pr-14`}
       >
         <Modal
           title='Delete Task'
@@ -185,7 +185,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
 
         <button
           onClick={() => setOptionsModal(true)}
-          className='absolute h-full top-0 w-12 flex justify-center items-center group-hover:text-white transition-all duration-300 bg-yellow-500 text-yellow-500 -right-14 group-hover:right-0 text-xl'
+          className='absolute h-full top-0 w-10 flex justify-center items-center group-hover:text-white transition-all duration-300 bg-secondary -right-14 group-hover:right-0 text-2xl'
           type='button'
         >
           <MdMoreVert />
