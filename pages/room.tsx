@@ -143,9 +143,9 @@ const Room = () => {
           e.preventDefault();
           setModal(true);
         }}
-        className='w-full mt-4'
+        className='mt-4 w-full'
       >
-        <div className='flex-between px-4 rounded bg-[#E7E7E7] text-primary placeholder-inputfg focus-within:border-primary border-2 border-gray-300 group'>
+        <div className='flex-between group rounded border-2 border-gray-300 bg-[#E7E7E7] px-4 text-primary placeholder-inputfg focus-within:border-primary'>
           <input
             required
             maxLength={300}
@@ -154,7 +154,7 @@ const Room = () => {
             value={description}
             type='text'
             placeholder='Task Description'
-            className='bg-[#e5e5e5] h-[45px] outline-none w-full text-sm md:text-base'
+            className='h-[45px] w-full bg-[#e5e5e5] text-sm outline-none md:text-base'
           />
           <button type='submit' className='text-2xl'>
             <BsPlusSquareFill />
@@ -168,8 +168,8 @@ const Room = () => {
           proceed={addTask}
           isLoading={loading}
           body={
-            <div className='flex flex-col space-y-4 mt-4'>
-              <div className='flex-between group room-input-container'>
+            <div className='mt-4 flex flex-col space-y-4'>
+              <div className='flex-between room-input-container group'>
                 <DatePicker
                   placeholderText='Add Due Date (optional)'
                   selected={dueDate}
@@ -200,7 +200,7 @@ const Room = () => {
                 type='button'
                 className='room-input-container flex'
               >
-                <p className='text-[#9CA3AF] text-left text-sm md:text-base h-[45px] flex items-center'>
+                <p className='flex h-[45px] items-center text-left text-sm text-[#9CA3AF] md:text-base'>
                   Add Image {images.length}/3 (optional)
                 </p>
               </button>
@@ -208,11 +208,13 @@ const Room = () => {
           }
         />
       </form>
-      <section className='mt-4 mb-8 space-y-2'>
-        {tasks?.map((task) => (
-          <Task key={task.id} room={room} task={task} />
-        ))}
-      </section>
+      {tasks && (
+        <section className='mt-4 mb-8 space-y-2'>
+          {tasks.map((task) => (
+            <Task key={task.id} room={room} task={task} />
+          ))}
+        </section>
+      )}
     </Layout>
   );
 };

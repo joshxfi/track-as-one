@@ -96,13 +96,44 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
     },
   ];
 
+  const nearDeadline = () => {
+    const threeDaysFromNow = new Date();
+    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
+
+    if (task.dueDate && task.dueDate.toDate() <= threeDaysFromNow) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const pastDeadline = () => {
+    const today = new Date();
+    if (today > task.dueDate?.toDate()) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const displayIndicator = () => {
+    if (data.id && task.completedBy.includes(data.id)) return 'bg-green-500';
+    if (pastDeadline()) return 'bg-red-500';
+    if (nearDeadline()) return 'bg-secondary';
+    return 'bg-gray-400';
+  };
+
   return (
     <div className='flex flex-col'>
       <div
-        className={`w-full relative p-4 md:px-7 min-h-[70px] bg-primary text-secondary ${
+        className={`relative min-h-[70px] w-full bg-primary p-4 px-6 text-secondary md:px-7 ${
           hasImg ? 'rounded-t' : 'rounded'
-        } transition-all duration-300 group overflow-hidden cursor-default hover:pr-14`}
+        } group cursor-default overflow-hidden transition-all duration-300 hover:pr-14`}
       >
+        <div
+          className={`absolute left-0 top-0 h-full p-1 ${displayIndicator()}`}
+        />
+
         <Modal
           title='Delete Task'
           description='Are you sure you want to delete this task? This action cannot be undone.'
@@ -124,13 +155,13 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           isOpen={optionsModal}
           setIsOpen={setOptionsModal}
           body={
-            <div className='mt-2 space-y-2 text-gray-800 pb-4 text-sm md:text-base'>
+            <div className='mt-2 space-y-2 pb-4 text-sm text-gray-800 md:text-base'>
               <hr className='my-4' />
 
               {taskInfo.map((val) => (
                 <div
                   key={nanoid()}
-                  className='flex justify-between text-right space-x-4'
+                  className='flex justify-between space-x-4 text-right'
                 >
                   <p>{val.title}: </p>
                   <p>{val.info}</p>
@@ -150,7 +181,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                     }, 500);
                   }}
                   type='button'
-                  className='bg-red-500 text-white modal-btn'
+                  className='modal-btn bg-red-500 text-white'
                 >
                   Delete
                 </button>
@@ -166,7 +197,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                     }, 500);
                   }}
                   type='button'
-                  className='bg-amber-500 text-white modal-btn'
+                  className='modal-btn bg-amber-500 text-white'
                 >
                   Go to URL
                 </button>
@@ -175,7 +206,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
               <button
                 onClick={taskDone}
                 type='button'
-                className='bg-green-500 text-white modal-btn'
+                className='modal-btn bg-green-500 text-white'
               >
                 {completedByUser ? 'Undo' : 'Done'}
               </button>
@@ -185,16 +216,16 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
 
         <button
           onClick={() => setOptionsModal(true)}
-          className='absolute h-full top-0 w-10 flex justify-center items-center group-hover:text-white transition-all duration-300 bg-secondary -right-14 group-hover:right-0 text-2xl'
+          className='absolute top-0 -right-14 flex h-full w-10 items-center justify-center bg-secondary text-2xl transition-all duration-300 group-hover:right-0 group-hover:text-white'
           type='button'
         >
           <MdMoreVert />
         </button>
         <div className='w-full'>
-          <p className='text-f9 break-words text-sm md:text-base'>
+          <p className='break-words text-sm text-f9 md:text-base'>
             {task.description}
           </p>
-          <div className='text-xs md:text-sm pt-2 flex-between'>
+          <div className='flex-between pt-2 text-xs md:text-sm'>
             <p>
               {task.dueDate
                 ? dateWithTime(task.dueDate.toDate())
@@ -211,10 +242,10 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
         isOpen={displayImageModal}
         setIsOpen={() => setDisplayImageModal(false)}
         body={
-          <div className='max-w-screen-md w-screen grid place-items-center md:mr-4'>
+          <div className='grid w-screen max-w-screen-md place-items-center md:mr-4'>
             <img
               src={displayImage ?? defaultPic}
-              className='rounded object-contain md:w-full w-[90%]'
+              className='w-[90%] rounded object-contain md:w-full'
               alt='task img'
             />
           </div>
@@ -222,7 +253,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
       />
 
       {task.imgUrls && task.imgUrls?.length > 0 && (
-        <div className='flex sm:space-x-2 space-x-1 bg-primary bg-opacity-90 rounded-b sm:p-2 p-1'>
+        <div className='flex space-x-1 rounded-b bg-primary bg-opacity-90 p-1 sm:space-x-2 sm:p-2'>
           {task.imgUrls.map((url) => (
             <button
               type='button'
@@ -230,7 +261,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                 setDisplayImage(url);
                 setDisplayImageModal(true);
               }}
-              className='relative sm:w-20 sm:h-20 w-14 h-14'
+              className='relative h-14 w-14 sm:h-20 sm:w-20'
             >
               <Image
                 src={url ?? defaultPic}
