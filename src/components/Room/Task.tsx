@@ -73,10 +73,6 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
 
   const taskInfo = [
     {
-      title: 'Description',
-      info: task.description,
-    },
-    {
       title: 'Due Date',
       info: task.dueDate
         ? dateWithTime(task.dueDate.toDate())
@@ -128,11 +124,9 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
       <div
         className={`relative min-h-[70px] w-full bg-primary p-4 px-6 text-secondary md:px-7 ${
           hasImg ? 'rounded-t' : 'rounded'
-        } group cursor-default overflow-hidden transition-all duration-300 hover:pr-14`}
+        } group cursor-default overflow-hidden transition-all duration-300 hover:pr-12`}
       >
-        <div
-          className={`absolute left-0 top-0 h-full p-1 ${displayIndicator()}`}
-        />
+        <div className={`task-indicator ${displayIndicator()}`} />
 
         <Modal
           title='Delete Task'
@@ -216,7 +210,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
 
         <button
           onClick={() => setOptionsModal(true)}
-          className='absolute top-0 -right-14 flex h-full w-10 items-center justify-center bg-secondary text-2xl transition-all duration-300 group-hover:right-0 group-hover:text-white'
+          className='absolute top-0 -right-14 flex h-full w-8 items-center justify-center bg-secondary text-2xl transition-all duration-300 group-hover:right-0 group-hover:text-white'
           type='button'
         >
           <MdMoreVert />
@@ -253,7 +247,8 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
       />
 
       {task.imgUrls && task.imgUrls?.length > 0 && (
-        <div className='flex space-x-1 rounded-b bg-primary bg-opacity-90 p-1 sm:space-x-2 sm:p-2'>
+        <div className='relative flex space-x-1 rounded-b bg-primary bg-opacity-90 py-1 px-4 sm:space-x-2 md:py-2'>
+          <div className={`task-indicator ${displayIndicator()}`} />
           {task.imgUrls.map((url) => (
             <button
               type='button'

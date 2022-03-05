@@ -5,7 +5,11 @@ import React, {
   useCallback,
 } from 'react';
 
-import { BsPlusSquareFill, BsXSquareFill } from 'react-icons/bs';
+import {
+  BsCheckCircleFill,
+  BsPlusSquareFill,
+  BsXSquareFill,
+} from 'react-icons/bs';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import toast from 'react-hot-toast';
@@ -47,6 +51,11 @@ const Room = () => {
   const { data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const completedByAll = useCallback(
+    (task: ITask) => task.completedBy.length === room.members.length + 1,
+    [room]
+  );
 
   const imgHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -210,7 +219,20 @@ const Room = () => {
       </form>
       {tasks && (
         <section className='mt-4 mb-8 space-y-2'>
-          {tasks.map((task) => (
+          {tasks
+            .filter((task) => !completedByAll(task))
+            .map((task) => (
+              <Task key={task.id} room={room} task={task} />
+            ))}
+
+          {tasks.filter(completedByAll).length > 0 && (
+            <div className='flex items-center space-x-2 py-2'>
+              <BsCheckCircleFill className='flex-none' />
+              <div className='h-[1px] w-full bg-primary' />
+            </div>
+          )}
+
+          {tasks.filter(completedByAll).map((task) => (
             <Task key={task.id} room={room} task={task} />
           ))}
         </section>

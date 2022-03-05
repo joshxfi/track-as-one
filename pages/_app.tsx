@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AuthProvider>
       <DefaultSeo {...SEO} />
-      <Toaster />
+      <Toaster position='bottom-center' />
       {getLayout(<Component {...pageProps} />)}
     </AuthProvider>
   );
