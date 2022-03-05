@@ -17,10 +17,10 @@ const Create: NextPageWithLayout = () => {
 
   const { push } = useRouter();
   const {
-    data: { id },
+    data: { userTag },
   } = useAuth();
 
-  const [roomsCreated] = useCreatedRooms(id);
+  const [roomsCreated] = useCreatedRooms(userTag);
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ const Create: NextPageWithLayout = () => {
 
     const payload: IRoom = {
       name: roomName,
-      creator: id!,
+      creator: userTag,
       admin: [],
       members: [],
       dateAdded: serverTimestamp(),

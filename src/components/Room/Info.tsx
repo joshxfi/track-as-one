@@ -59,7 +59,7 @@ const Info: React.FC = () => {
     setTimeout(() => {
       toast.promise(
         updateDoc(roomRef, {
-          members: arrayRemove(data.id),
+          members: arrayRemove(data.userTag),
         }),
         {
           loading: 'Leaving Room...',
@@ -118,7 +118,7 @@ const Info: React.FC = () => {
         Icon={AiFillCalendar}
       />
 
-      <div className='w-full mb-4'>
+      <div className='mb-4 w-full'>
         <InfoMember memberId={creator} type='creator' />
 
         {members?.map((member) => (
@@ -126,7 +126,7 @@ const Info: React.FC = () => {
         ))}
 
         <div className='flex justify-end'>
-          {creator === data.id ? (
+          {creator === data.userTag ? (
             <InfoBtn
               title='Delete Room'
               handleClick={() => setDeleteModal(true)}

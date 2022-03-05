@@ -23,9 +23,9 @@ import {
 
 import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
-import { Layout, Error, Modal } from '@/components';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/context/AuthContext';
+import { Layout, Error, Modal } from '@/components';
 import { useCol, useNextQuery, useUpload } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
 
@@ -36,6 +36,9 @@ const Room = () => {
   const [url, setUrl] = useState('');
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { data } = useAuth();
+  const { userTag } = data;
 
   // eslint-disable-next-line prefer-destructuring
   const id = useNextQuery('id');
@@ -48,7 +51,6 @@ const Room = () => {
     query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc'))
   );
 
-  const { data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -91,7 +93,7 @@ const Room = () => {
 
       const payload: ITask = {
         description,
-        addedBy: data.id!,
+        addedBy: userTag,
         completedBy: [],
         dateAdded: serverTimestamp(),
         imgUrls,
@@ -117,16 +119,8 @@ const Room = () => {
     );
   }
 
-  if (
-    data.id &&
-    !room.members?.includes(data?.id) &&
-    room.creator !== data.id
-  ) {
-    return (
-      <Layout>
-        <p className='hidden'>nothing to see here...</p>
-      </Layout>
-    );
+  if (userTag && !room.members?.includes(userTag) && room.creator !== userTag) {
+    return <Layout />;
   }
 
   if (tab === 'info') return <Info />;

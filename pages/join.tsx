@@ -14,7 +14,7 @@ const Join: NextPageWithLayout = () => {
   const [roomId, setRoomID] = useState<string>('');
 
   const {
-    data: { id },
+    data: { userTag },
   } = useAuth();
 
   const requestJoin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,15 +27,16 @@ const Join: NextPageWithLayout = () => {
     const _room: IRoom = room.data() as IRoom;
 
     if (!room.exists()) toast.error('room does not exist');
-    else if (_room.members.includes(id!))
+    else if (_room.members.includes(userTag!))
       toast.error('you are already a member');
-    else if (_room.requests.includes(id!))
+    else if (_room.requests.includes(userTag!))
       toast.error('you already sent a request');
-    else if (_room.creator === id) toast.error('You are the owner of the room');
+    else if (_room.creator === userTag)
+      toast.error('You are the owner of the room');
     else {
       toast.promise(
         updateDoc(roomRef, {
-          requests: arrayUnion(id),
+          requests: arrayUnion(userTag),
         }),
         {
           loading: 'Sending Request...',

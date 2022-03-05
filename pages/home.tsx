@@ -19,23 +19,26 @@ import { useAuth } from '@/context/AuthContext';
 const Homepage: React.FC = () => {
   const { push } = useRouter();
   const {
-    data: { id, username, photoURL },
+    data: { username, photoURL, userTag },
   } = useAuth();
 
-  const [createdRooms, crLoading] = useCreatedRooms(id);
+  const [createdRooms, crLoading] = useCreatedRooms(userTag);
   const [joinedRooms, jrLoading] = useCol<IRoom>(
-    query(collection(db, 'rooms'), where('members', 'array-contains', id ?? ''))
+    query(
+      collection(db, 'rooms'),
+      where('members', 'array-contains', userTag ?? '')
+    )
   );
 
   const copyTag = () => {
-    navigator.clipboard.writeText(id ?? '');
+    navigator.clipboard.writeText(userTag ?? '');
     toast.success('copied to clipboard');
   };
 
   return (
     <Layout loaders={[crLoading, jrLoading]} className='mb-16'>
-      <div className='flex flex-col items-center mt-8 w-full space-y-4'>
-        <div className='h-[100px] w-[100px] rounded-full p-2 primary-gradient'>
+      <div className='mt-8 flex w-full flex-col items-center space-y-4'>
+        <div className='primary-gradient h-[100px] w-[100px] rounded-full p-2'>
           <Image
             src={photoURL ?? defaultPic}
             height={100}
@@ -49,12 +52,12 @@ const Homepage: React.FC = () => {
         <div className='text-center'>
           <div>
             <h1 className='text-2xl font-bold'>{username}</h1>
-            <p>{id}</p>
+            <p>{userTag}</p>
           </div>
         </div>
       </div>
 
-      <div className='primary-gradient h-[2px] my-4 w-full' />
+      <div className='primary-gradient my-4 h-[2px] w-full' />
 
       <div className='flex-between space-x-2'>
         <Button

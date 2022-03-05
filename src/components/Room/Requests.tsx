@@ -14,7 +14,7 @@ const Requests = () => {
       <RoomMenu room={room!} />
       <Header title='Requests' />
       {!room?.requests?.length && <EmptyMsg empty='requests' />}
-      <div className='w-full mb-4'>
+      <div className='mb-4 w-full space-y-2'>
         {room?.requests?.map((user) => (
           <UserRequest key={user} userId={user} roomId={id} />
         ))}
