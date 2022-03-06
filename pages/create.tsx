@@ -8,7 +8,7 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Layout, RoomInput } from '@/components';
 import { NextPageWithLayout } from '@/types/page';
 

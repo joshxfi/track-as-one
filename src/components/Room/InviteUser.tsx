@@ -8,7 +8,7 @@ import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
 import { Header, Input } from '@/components';
 import { RoomMenu } from '@/components/Room';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');

@@ -16,7 +16,7 @@ import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { useNextQuery } from '@/hooks';
 import { InfoBtn } from '@/components/Button';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Layout, Header, Error, Modal } from '@/components';
 import { InfoSection, InfoMember, RoomMenu } from '@/components/Room';
 

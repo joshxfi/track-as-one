@@ -24,7 +24,7 @@ import {
 import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { urlRegExp } from '@/utils/constants';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
 import { Layout, Error, Modal } from '@/components';
 import { useCol, useNextQuery, useUpload } from '@/hooks';

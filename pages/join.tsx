@@ -7,7 +7,7 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
 import { RoomInput } from '@/components';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
 
 const Join: NextPageWithLayout = () => {

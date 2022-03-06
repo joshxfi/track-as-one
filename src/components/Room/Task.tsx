@@ -6,7 +6,7 @@ import { MdMoreVert } from 'react-icons/md';
 
 import { Modal } from '@/components';
 import { db, storage } from '@/config/firebase';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   arrayRemove,
   arrayUnion,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUser } from '@/services';
 import { Invitation } from '@/components/Home';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {

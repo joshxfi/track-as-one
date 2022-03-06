@@ -14,7 +14,7 @@ import { MyRooms } from '@/components/Home';
 import { defaultPic } from '@/utils/constants';
 import { Button } from '@/components/Button';
 import { useCreatedRooms } from '@/services';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Homepage: React.FC = () => {
   const { push } = useRouter();

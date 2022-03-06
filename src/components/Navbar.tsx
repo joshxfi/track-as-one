@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { NavMenu } from '@/components/Nav';
 import { FaSignInAlt } from 'react-icons/fa';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const { user, signIn, signOut } = useAuth();
@@ -17,26 +17,26 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`w-full bg-primary py-4 transition-all duration-300 text-f9 shadow-lg ${
+      className={`w-full bg-primary py-4 text-f9 shadow-lg transition-all duration-300 ${
         asPath === '/' && 'fixed z-50'
       }`}
     >
-      <div className='flex-between w-[90%] max-w-screen-xl mx-auto'>
-        <div className='flex space-x-8 items-center'>
+      <div className='flex-between mx-auto w-[90%] max-w-screen-xl'>
+        <div className='flex items-center space-x-8'>
           <Link href='/'>
-            <a className='text-secondary font-bold text-3xl cursor-pointer'>
+            <a className='cursor-pointer text-3xl font-bold text-secondary'>
               tAO<span className='text-f9'>.</span>
             </a>
           </Link>
 
-          <div className='space-x-8 hidden md:block'>
+          <div className='hidden space-x-8 md:block'>
             {navItems.map(({ name, href }) => {
               return (
                 <Link href={href} key={name}>
                   <a
                     className={`${
                       asPath === href && 'text-secondary'
-                    }  text-sm hover:text-secondary transition-colors`}
+                    }  text-sm transition-colors hover:text-secondary`}
                   >
                     {name}
                   </a>
@@ -51,9 +51,9 @@ const Navbar: React.FC = () => {
           <button
             type='button'
             onClick={user ? signOut : signIn}
-            className='flex items-center text-sm py-2 px-4 bg-secondary rounded text-primary shadow-sm hover:shadow-lg hover:bg-secondary/90 transition-opacity'
+            className='flex items-center rounded bg-secondary py-2 px-4 text-sm text-primary shadow-sm transition-opacity hover:bg-secondary/90 hover:shadow-lg'
           >
-            <p suppressHydrationWarning className='text-sm mr-2 font-medium'>
+            <p suppressHydrationWarning className='mr-2 text-sm font-medium'>
               {user ? 'sign out' : 'login'}
             </p>
             <FaSignInAlt />

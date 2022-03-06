@@ -7,7 +7,7 @@ import { BsFillArrowLeftCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 
 import { useNextQuery } from '@/hooks';
 import { MenuBtn } from '@/components/Button';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const RoomMenu = ({ room }: { room: IRoom }) => {
   const tab = useNextQuery('tab');

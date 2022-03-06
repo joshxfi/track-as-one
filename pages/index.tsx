@@ -7,7 +7,7 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { landingPage } from '@/utils/constants';
 import { NextPageWithLayout } from '@/types/page';
 
@@ -17,16 +17,16 @@ const Index: NextPageWithLayout = () => {
 
   return (
     <>
-      <section className='flex flex-col items-center mx-auto max-w-screen-xl lg:items-start lg:mt-20 lg:flex-row lg:justify-between'>
-        <div className='pt-8 lg:flex lg:justify-between lg:flex-col lg:items-start text-center'>
-          <h1 className='text-5xl font-bold md:text-7xl xl:text-8xl lg:mb-2'>
+      <section className='mx-auto flex max-w-screen-xl flex-col items-center lg:mt-20 lg:flex-row lg:items-start lg:justify-between'>
+        <div className='pt-8 text-center lg:flex lg:flex-col lg:items-start lg:justify-between'>
+          <h1 className='text-5xl font-bold md:text-7xl lg:mb-2 xl:text-8xl'>
             trackAs
             <span className='gradient-text'>One</span>
           </h1>
 
-          <div className='flex flex-col items-center lg:items-start max-w-screen-xl lg:pl-2'>
+          <div className='flex max-w-screen-xl flex-col items-center lg:items-start lg:pl-2'>
             <div className='text-center lg:text-left'>
-              <div className='my-8 w-[300px] mx-auto lg:hidden'>
+              <div className='my-8 mx-auto w-[300px] lg:hidden'>
                 <Image
                   priority
                   src={avatar}
@@ -35,11 +35,11 @@ const Index: NextPageWithLayout = () => {
                 />
               </div>
 
-              <h1 className='text-2xl font-semibold xl:text-3xl xl:w-auto font-serif'>
+              <h1 className='font-serif text-2xl font-semibold xl:w-auto xl:text-3xl'>
                 A collaborative task tracker.
               </h1>
 
-              <p className='mt-2 text-md sm:text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
+              <p className='text-md mt-2 sm:text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
                 {landingPage.body1}
               </p>
             </div>
@@ -53,13 +53,13 @@ const Index: NextPageWithLayout = () => {
           </div>
         </div>
 
-        <div className='w-[400px] hidden lg:block pt-12'>
+        <div className='hidden w-[400px] pt-12 lg:block'>
           <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
         </div>
       </section>
 
-      <section className='md:my-40 my-20 border-y-2 border-primary md:py-12 py-5'>
-        <ul className='text-md sm:text-2xl md:text-3xl xl:text-5xl text-primary flex justify-between text-opacity-90'>
+      <section className='my-20 border-y-2 border-primary py-5 md:my-40 md:py-12'>
+        <ul className='text-md flex justify-between text-primary text-opacity-90 sm:text-2xl md:text-3xl xl:text-5xl'>
           {['User-Friendly', 'Collaborative', 'Open-Source'].map((i) => (
             <li key={i}>
               <p className='font-serif font-semibold'>{i}</p>
@@ -68,7 +68,7 @@ const Index: NextPageWithLayout = () => {
         </ul>
       </section>
 
-      <section className='mx-auto max-w-screen-xl pb-40 md:space-y-40 space-y-24'>
+      <section className='mx-auto max-w-screen-xl space-y-24 pb-40 md:space-y-40'>
         <Info
           title='Built by a student for students.'
           body={landingPage.body2}
@@ -96,10 +96,10 @@ interface InfoProps {
 const Info = ({ title, body }: InfoProps) => {
   return (
     <div className='flex flex-col items-center'>
-      <h1 className='text-xl sm:text-2xl lg:text-4xl font-semibold font-serif'>
+      <h1 className='font-serif text-xl font-semibold sm:text-2xl lg:text-4xl'>
         {title}
       </h1>
-      <p className='text-md mt-2 sm:text-lg lg:w-[490px] xl:w-[670px] xl:text-xl text-center'>
+      <p className='text-md mt-2 text-center sm:text-lg lg:w-[490px] xl:w-[670px] xl:text-xl'>
         {body}
       </p>
     </div>
