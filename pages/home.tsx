@@ -29,6 +29,12 @@ const Homepage: React.FC = () => {
       where('members', 'array-contains', userTag ?? '')
     )
   );
+  const [joinedRoomsAsAdmin, jraLoading] = useCol<IRoom>(
+    query(
+      collection(db, 'rooms'),
+      where('admin', 'array-contains', userTag ?? '')
+    )
+  );
 
   const copyTag = () => {
     navigator.clipboard.writeText(userTag ?? '');
@@ -36,7 +42,7 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <Layout loaders={[crLoading, jrLoading]} className='mb-16'>
+    <Layout loaders={[crLoading, jrLoading, jraLoading]} className='mb-16'>
       <div className='mt-8 flex w-full flex-col items-center space-y-4'>
         <div className='primary-gradient h-[100px] w-[100px] rounded-full p-2'>
           <Image
@@ -77,7 +83,10 @@ const Homepage: React.FC = () => {
         />
       </div>
 
-      <MyRooms createdRooms={createdRooms} joinedRooms={joinedRooms} />
+      <MyRooms
+        createdRooms={createdRooms}
+        joinedRooms={[...(joinedRooms ?? []), ...(joinedRoomsAsAdmin ?? [])]}
+      />
     </Layout>
   );
 };

@@ -14,6 +14,7 @@ interface ModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading?: boolean;
   empty?: boolean;
+  containerStyle?: string;
 }
 
 const Modal = ({
@@ -27,6 +28,7 @@ const Modal = ({
   setIsOpen,
   isLoading,
   empty,
+  containerStyle,
 }: ModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -38,7 +40,7 @@ const Modal = ({
         <div
           className={`min-h-screen ${
             !empty && 'px-4'
-          } text-center grid place-items-center`}
+          } grid place-items-center text-center`}
         >
           <Transition.Child
             as={Fragment}
@@ -66,13 +68,15 @@ const Modal = ({
                 className={
                   empty
                     ? ''
-                    : 'md:w-full max-w-md w-[350px] p-6 text-left transition-all bg-white shadow-xl rounded-xl transform'
+                    : `max-w-md ${
+                        containerStyle || 'w-[350px] p-6 md:w-full'
+                      } transform rounded-xl bg-white text-left shadow-xl transition-all`
                 }
               >
                 {!empty && (
                   <Dialog.Title
                     as='h3'
-                    className='text-lg font-medium leading-6 text-gray-800 mb-2 flex justify-between'
+                    className='mb-2 flex justify-between text-lg font-medium leading-6 text-gray-800'
                   >
                     <p>{title}</p>
 
@@ -87,7 +91,7 @@ const Modal = ({
                 )}
 
                 {description ? (
-                  <p className='text-sm md:text-base text-gray-500 break-words'>
+                  <p className='break-words text-sm text-gray-500 md:text-base'>
                     {description}
                   </p>
                 ) : (
@@ -95,13 +99,13 @@ const Modal = ({
                 )}
 
                 {!empty && (
-                  <div className='mt-4 space-x-2 flex justify-end flex-wrap'>
+                  <div className='mt-4 flex flex-wrap justify-end space-x-2'>
                     {href && (
                       <a
                         href={href}
                         target='_blank'
                         rel='noopener noreferrer'
-                        className='bg-secondary modal-btn'
+                        className='modal-btn bg-secondary'
                       >
                         Continue
                       </a>
@@ -110,7 +114,7 @@ const Modal = ({
                     {proceed && (
                       <button
                         type='button'
-                        className='bg-secondary modal-btn'
+                        className='modal-btn bg-secondary'
                         onClick={proceed}
                       >
                         Continue

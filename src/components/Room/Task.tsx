@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
@@ -14,8 +14,9 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
-import { dateWithTime } from '@/utils/functions';
+import { useUserByTag } from '@/services';
 import { defaultPic } from '@/utils/constants';
+import { dateWithTime } from '@/utils/functions';
 import { deleteObject, ref } from 'firebase/storage';
 
 interface RoomTaskProps {
@@ -31,23 +32,33 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   const [displayImage, setDisplayImage] = useState('');
   const [displayImageModal, setDisplayImageModal] = useState(false);
 
-  const { data } = useAuth();
-  const isAdmin = room.creator === data.id;
+  const {
+    data: { userTag },
+  } = useAuth();
   const taskRef = doc(db, `rooms/${room?.id}/tasks/${task.id}`);
-  const completedByUser = task.completedBy.includes(data.id ?? '');
+  const completedByUser = task.completedBy.includes(userTag ?? '');
+
+  const [taskCreator] = useUserByTag(task.addedBy);
 
   const hasImg = task.imgUrls && task.imgUrls?.length > 0;
+
+  const canDelete = useCallback(() => {
+    if (room.creator === userTag || room.admin.includes(userTag)) {
+      return true;
+    }
+    return task.addedBy === userTag;
+  }, [task, userTag]);
 
   const taskDone = async () => {
     if (completedByUser) {
       await updateDoc(taskRef, {
-        completedBy: arrayRemove(data.id),
+        completedBy: arrayRemove(userTag),
       });
 
       toast.success('Undo Successful');
     } else {
       await updateDoc(taskRef, {
-        completedBy: arrayUnion(data.id),
+        completedBy: arrayUnion(userTag),
       });
 
       toast.success('Task Completed');
@@ -84,11 +95,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
     },
     {
       title: 'Added By',
-      info: task.addedBy,
-    },
-    {
-      title: 'Completed By',
-      info: `${task.completedBy.length} member(s)`,
+      info: taskCreator.username,
     },
   ];
 
@@ -113,8 +120,8 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   };
 
   const displayIndicator = () => {
-    if (data.id && task.completedBy.includes(data.id)) return 'bg-green-500';
-    if (pastDeadline()) return 'bg-red-500';
+    if (userTag && task.completedBy.includes(userTag)) return 'bg-green-600';
+    if (pastDeadline()) return 'bg-red-600';
     if (nearDeadline()) return 'bg-secondary';
     return 'bg-gray-400';
   };
@@ -131,9 +138,17 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
         <Modal
           title='Delete Task'
           description='Are you sure you want to delete this task? This action cannot be undone.'
-          proceed={taskDel}
           setIsOpen={setDelModal}
           isOpen={delModal}
+          buttons={
+            <button
+              type='button'
+              onClick={taskDel}
+              className='modal-btn bg-red-600'
+            >
+              Delete
+            </button>
+          }
         />
 
         <Modal
@@ -165,7 +180,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           }
           buttons={
             <>
-              {isAdmin && (
+              {canDelete() && (
                 <button
                   onClick={() => {
                     setOptionsModal(false);
@@ -175,7 +190,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                     }, 500);
                   }}
                   type='button'
-                  className='modal-btn bg-red-500 text-white'
+                  className='modal-btn bg-red-600 text-white'
                 >
                   Delete
                 </button>
@@ -200,7 +215,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
               <button
                 onClick={taskDone}
                 type='button'
-                className='modal-btn bg-green-500 text-white'
+                className='modal-btn bg-green-600 text-white'
               >
                 {completedByUser ? 'Undo' : 'Done'}
               </button>

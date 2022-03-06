@@ -119,7 +119,12 @@ const Room = () => {
     );
   }
 
-  if (userTag && !room.members?.includes(userTag) && room.creator !== userTag) {
+  if (
+    userTag &&
+    !room.members?.includes(userTag) &&
+    room.creator !== userTag &&
+    !room.admin?.includes(userTag)
+  ) {
     return <Layout />;
   }
 
@@ -148,7 +153,7 @@ const Room = () => {
         }}
         className='mt-4 w-full'
       >
-        <div className='flex-between group rounded border-2 border-gray-300 bg-[#E7E7E7] px-4 text-primary placeholder-inputfg focus-within:border-primary'>
+        <div className='flex-between group rounded border-2 border-gray-300 bg-inputbg px-4 text-primary placeholder-inputfg focus-within:border-primary'>
           <input
             required
             maxLength={300}
@@ -157,7 +162,7 @@ const Room = () => {
             value={description}
             type='text'
             placeholder='Task Description'
-            className='h-[45px] w-full bg-[#e5e5e5] text-sm outline-none md:text-base'
+            className='h-[45px] w-full bg-inputbg text-sm outline-none md:text-base'
           />
           <button type='submit' className='text-2xl'>
             <BsPlusSquareFill />
