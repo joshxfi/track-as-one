@@ -11,7 +11,7 @@ const ImageFill = ({ src, className, ...rest }: ImageFillProps) => {
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <Image
-        src={src ?? defaultPic}
+        src={src || defaultPic}
         layout='fill'
         objectFit='cover'
         {...rest}

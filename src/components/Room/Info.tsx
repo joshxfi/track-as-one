@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { AiFillCalendar } from 'react-icons/ai';
 import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
@@ -14,8 +13,8 @@ import {
 } from 'firebase/firestore';
 
 import { useRoom } from '@/services';
-import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
+import { useNextQuery } from '@/hooks';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Layout, Header, Error, Modal } from '@/components';
@@ -30,7 +29,7 @@ const Info: React.FC = () => {
   const id = useNextQuery('id');
 
   const [room, loading] = useRoom(id);
-  const { creator, dateAdded, members } = room!;
+  const { creator, dateAdded, members, admin } = room!;
 
   const roomRef = doc(db, `rooms/${id}`);
 
@@ -120,6 +119,10 @@ const Info: React.FC = () => {
 
       <div className='mb-4 w-full'>
         <InfoMember memberId={creator} type='creator' />
+
+        {admin?.map((_admin) => (
+          <InfoMember key={_admin} memberId={_admin} type='admin' />
+        ))}
 
         {members?.map((member) => (
           <InfoMember key={member} memberId={member} type='member' />

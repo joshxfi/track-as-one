@@ -14,10 +14,10 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
   const { data } = useAuth();
 
   return (
-    <Popover className='relative mt-4 z-40'>
+    <Popover className='relative z-40 mt-4'>
       {() => (
         <>
-          <Popover.Button className='flex w-full justify-end space-x-2 items-center'>
+          <Popover.Button className='flex w-full items-center justify-end space-x-2'>
             <h4 className='text-sm font-medium'>{room.name}</h4>
 
             <AiFillSetting className='text-xl text-primary' />
@@ -32,7 +32,7 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
             leaveFrom='opacity-100 translate-y-0'
             leaveTo='opacity-0 translate-y-1'
           >
-            <Popover.Panel className='bg-white absolute top-8 right-0 flex flex-col space-y-4 text-primary rounded p-2 text-sm overflow-hidden shadow-md ring-1 ring-black ring-opacity-5'>
+            <Popover.Panel className='absolute top-8 right-0 flex flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
               {tab !== 'info' && (
                 <MenuBtn label='room info' tab='info' Icon={BsInfoCircleFill} />
               )}
@@ -44,12 +44,12 @@ const RoomMenu = ({ room }: { room: IRoom }) => {
               {tab && (
                 <MenuBtn
                   tab='room'
-                  label='got to room'
+                  label='go to room'
                   Icon={BsFillArrowLeftCircleFill}
                 />
               )}
 
-              {room.creator === data.id && tab !== 'requests' && (
+              {room.creator === data.userTag && tab !== 'requests' && (
                 <MenuBtn
                   label='view requests'
                   tab='requests'

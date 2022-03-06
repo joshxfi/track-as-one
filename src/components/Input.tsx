@@ -11,7 +11,7 @@ const Input: React.FC<
       {...rest}
       spellCheck='false'
       autoComplete='off'
-      className='w-[95%] md:w-[550px] h-[36px] mb-2 bg-inputbg rounded-[36px] px-[20px] text-sm outline-none border-2 focus:border-primary border-gray-300'
+      className='mb-2 h-[36px] w-[95%] rounded-[36px] border-2 border-gray-300 bg-inputbg px-[20px] text-sm outline-none focus:border-primary md:w-[550px]'
       type='text'
     />
   );
