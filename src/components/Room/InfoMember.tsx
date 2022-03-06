@@ -8,6 +8,8 @@ import { db } from '@/config/firebase';
 import { useNextQuery } from '@/hooks';
 import { useUserByTag } from '@/services';
 import { Modal, ImageFill } from '@/components';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRoomContext } from '@/contexts/RoomContext';
 
 interface InfoSectionProps {
   memberId: string;
@@ -21,8 +23,11 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
   const [kickMemberModal, setKickMemberModal] = useState(false);
   const { username, photoURL } = member;
 
+  const { room } = useRoomContext();
+  const { data } = useAuth();
   const roomRef = doc(db, `rooms/${id}`);
   const isAdmin = type === 'admin';
+  const isCreator = room.creator === data.userTag && type !== 'creator';
 
   const Icon = () => {
     switch (type) {
@@ -72,8 +77,12 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
   return (
     <button
       type='button'
-      onClick={() => setUserModal(true)}
-      className='flex-between card mb-2 h-[70px] w-full cursor-pointer text-left transition-opacity hover:bg-opacity-95'
+      onClick={() => {
+        if (isCreator) setUserModal(true);
+      }}
+      className={`flex-between card mb-2 h-[70px] w-full cursor-default text-left ${
+        isCreator && 'cursor-pointer transition-opacity hover:bg-opacity-95'
+      }`}
     >
       <Modal
         title='Remove Member'
