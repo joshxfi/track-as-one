@@ -5,12 +5,12 @@ import { Header, Input } from '.';
 import { Button } from './Button';
 
 interface RoomInputProps
-  extends Pick<
+  extends Omit<
     React.DetailedHTMLProps<
       React.InputHTMLAttributes<HTMLInputElement>,
       HTMLInputElement
     >,
-    'onChange' | 'value' | 'placeholder'
+    'onSubmit'
   > {
   title: string;
   Icon: IconType;
@@ -31,11 +31,11 @@ const RoomInput = ({
       <Header title={title} />
       <form
         onSubmit={onSubmit}
-        className='w-full flex justify-center flex-col items-center'
+        className='flex w-full flex-col items-center justify-center'
       >
-        <Input {...rest} required minLength={5} maxLength={15} />
+        <Input {...rest} required />
 
-        <div className='inline-block mx-auto mt-2'>
+        <div className='mx-auto mt-2 inline-block'>
           <Button
             name={btnLabel}
             type='submit'

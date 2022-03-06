@@ -56,6 +56,8 @@ const Join: NextPageWithLayout = () => {
       onChange={(e) => setRoomID(e.target.value)}
       value={roomId}
       placeholder='enter room id'
+      minLength={5}
+      maxLength={15}
     />
   );
 };

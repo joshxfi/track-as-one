@@ -36,8 +36,8 @@ const Create: NextPageWithLayout = () => {
     };
 
     setRoomName('');
-    if (roomsCreated && roomsCreated.length >= 3) {
-      toast.error('max rooms reached (3)');
+    if (roomsCreated && roomsCreated.length >= 5) {
+      toast.error('max rooms reached (5)');
     } else if (roomName) {
       toast.promise(setDoc(doc(db, 'rooms', roomId), payload), {
         loading: 'Creating Room...',
@@ -58,6 +58,8 @@ const Create: NextPageWithLayout = () => {
       onChange={(e) => setRoomName(e.target.value)}
       value={roomName}
       placeholder='enter room name'
+      minLength={3}
+      maxLength={25}
     />
   );
 };

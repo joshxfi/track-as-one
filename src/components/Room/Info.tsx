@@ -88,9 +88,17 @@ const Info: React.FC = () => {
       <Modal
         title='Delete Room'
         description='Are you sure you want to delete this room? This action cannot be undone.'
-        proceed={deleteRoom}
         setIsOpen={setDeleteModal}
         isOpen={deleteModal}
+        buttons={
+          <button
+            type='button'
+            onClick={deleteRoom}
+            className='modal-btn bg-red-600'
+          >
+            Delete
+          </button>
+        }
       />
 
       <Modal

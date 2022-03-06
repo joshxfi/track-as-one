@@ -241,7 +241,8 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
                 : 'No Due Date'}
             </p>
             <p>
-              Done: {task.completedBy?.length}/{room?.members?.length + 1}
+              Done: {task.completedBy?.length}/
+              {room?.members?.length + 1 + room.admin.length}
             </p>
           </div>
         </div>
