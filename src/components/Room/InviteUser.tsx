@@ -3,20 +3,18 @@ import toast from 'react-hot-toast';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
-import { useRoom } from '@/services';
-import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
 import { Header, Input } from '@/components';
 import { RoomMenu } from '@/components/Room';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRoomContext } from '@/contexts/RoomContext';
 
 const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
 
-  const id = useNextQuery('id');
   const { data } = useAuth();
+  const { room, roomId } = useRoomContext();
 
-  const [room] = useRoom(id);
   const inviteUser = async () => {
     setUserTag('');
 
@@ -34,7 +32,7 @@ const RoomInvite = () => {
       } else {
         toast.promise(
           updateDoc(doc(db, `users/${userToInv.id}`), {
-            invites: arrayUnion(id),
+            invites: arrayUnion(roomId),
           }),
           {
             loading: 'inviting user...',

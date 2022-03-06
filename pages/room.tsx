@@ -13,23 +13,16 @@ import {
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import toast from 'react-hot-toast';
-import {
-  addDoc,
-  collection,
-  orderBy,
-  query,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
-import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { Error, Modal } from '@/components';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
-import { useCol, useNextQuery, useUpload } from '@/hooks';
+import { useNextQuery, useUpload } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
-import { RoomProvider } from '@/contexts/RoomContext';
+import { RoomProvider, useRoomContext } from '@/contexts/RoomContext';
 
 const Room: NextPageWithLayout = () => {
   const [description, setDesc] = useState('');
@@ -41,17 +34,12 @@ const Room: NextPageWithLayout = () => {
 
   const { data } = useAuth();
   const { userTag } = data;
+  const { room, tasks, roomId } = useRoomContext();
 
   // eslint-disable-next-line prefer-destructuring
-  const id = useNextQuery('id');
   const tab = useNextQuery('tab');
 
-  const [room] = useRoom(id);
   const upload = useUpload();
-
-  const [tasks] = useCol<ITask>(
-    query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc'))
-  );
 
   const dateInputRef = useRef<ReactDatePicker>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -91,7 +79,7 @@ const Room: NextPageWithLayout = () => {
       setImages([]);
       setDueDate(null);
 
-      const imgUrls = await upload(`rooms/${id}/images`, images);
+      const imgUrls = await upload(`rooms/${roomId}/images`, images);
 
       const payload: ITask = {
         description,
@@ -103,7 +91,7 @@ const Room: NextPageWithLayout = () => {
         url,
       };
 
-      const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
+      const tasksRef = collection(db, `rooms/${roomId}/tasks`);
 
       await addDoc(tasksRef, payload);
       toast.success('Task Added');
@@ -113,7 +101,7 @@ const Room: NextPageWithLayout = () => {
     }
   };
 
-  if (!room || !id) {
+  if (!room || !roomId) {
     return <Error code='404' info='room not found' />;
   }
 
