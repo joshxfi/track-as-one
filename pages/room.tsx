@@ -23,12 +23,13 @@ import {
 
 import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
+import { Error, Modal } from '@/components';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
-import { Layout, Error, Modal } from '@/components';
 import { useCol, useNextQuery, useUpload } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
+import { RoomProvider } from '@/contexts/RoomContext';
 
 const Room: NextPageWithLayout = () => {
   const [description, setDesc] = useState('');
@@ -237,6 +238,8 @@ const Room: NextPageWithLayout = () => {
   );
 };
 
-Room.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+Room.getLayout = (page: React.ReactElement) => (
+  <RoomProvider>{page}</RoomProvider>
+);
 
 export default Room;
