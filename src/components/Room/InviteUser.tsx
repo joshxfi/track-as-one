@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import toast from 'react-hot-toast';
 import { AiOutlineIdcard } from 'react-icons/ai';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -7,9 +6,9 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useRoom } from '@/services';
 import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
+import { Header, Input } from '@/components';
 import { RoomMenu } from '@/components/Room';
 import { useAuth } from '@/context/AuthContext';
-import { Layout, Header, Input } from '@/components';
 
 const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
@@ -48,12 +47,12 @@ const RoomInvite = () => {
   };
 
   return (
-    <Layout>
+    <>
       <RoomMenu room={room!} />
       <Header title='Invite a User' />
       <form
         spellCheck='false'
-        className='w-full flex justify-center items-center flex-col'
+        className='flex w-full flex-col items-center justify-center'
       >
         <Input
           onChange={(e) => setUserTag(e.target.value)}
@@ -63,14 +62,14 @@ const RoomInvite = () => {
           maxLength={20}
         />
 
-        <div className='inline-block mx-auto mt-2'>
+        <div className='mx-auto mt-2 inline-block'>
           <button onClick={inviteUser} className='btn btn-ring' type='button'>
             <p className='mr-4'>invite user</p>
             <AiOutlineIdcard className='icon' />
           </button>
         </div>
       </form>
-    </Layout>
+    </>
   );
 };
 

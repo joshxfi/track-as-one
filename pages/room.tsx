@@ -25,11 +25,12 @@ import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/context/AuthContext';
+import { NextPageWithLayout } from '@/types/page';
 import { Layout, Error, Modal } from '@/components';
 import { useCol, useNextQuery, useUpload } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
 
-const Room = () => {
+const Room: NextPageWithLayout = () => {
   const [description, setDesc] = useState('');
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -44,7 +45,7 @@ const Room = () => {
   const id = useNextQuery('id');
   const tab = useNextQuery('tab');
 
-  const [room, roomLoading] = useRoom(id);
+  const [room] = useRoom(id);
   const upload = useUpload();
 
   const [tasks] = useCol<ITask>(
@@ -112,11 +113,7 @@ const Room = () => {
   };
 
   if (!room || !id) {
-    return (
-      <Layout>
-        <Error code='404' info='room not found' />
-      </Layout>
-    );
+    return <Error code='404' info='room not found' />;
   }
 
   if (
@@ -125,7 +122,7 @@ const Room = () => {
     room.creator !== userTag &&
     !room.admin?.includes(userTag)
   ) {
-    return <Layout />;
+    return <></>;
   }
 
   if (tab === 'info') return <Info />;
@@ -133,7 +130,7 @@ const Room = () => {
   if (tab === 'requests') return <Requests />;
 
   return (
-    <Layout loaders={[roomLoading]}>
+    <>
       <RoomMenu room={room} />
       <input
         ref={fileRef}
@@ -236,8 +233,10 @@ const Room = () => {
           ))}
         </section>
       )}
-    </Layout>
+    </>
   );
 };
+
+Room.getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
 export default Room;

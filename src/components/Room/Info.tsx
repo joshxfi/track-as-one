@@ -28,7 +28,7 @@ const Info: React.FC = () => {
   const { push } = useRouter();
   const id = useNextQuery('id');
 
-  const [room, loading] = useRoom(id);
+  const [room] = useRoom(id);
   const { creator, dateAdded, members, admin } = room!;
 
   const roomRef = doc(db, `rooms/${id}`);
@@ -84,7 +84,7 @@ const Info: React.FC = () => {
   }
 
   return (
-    <Layout loaders={[loading]}>
+    <>
       <Modal
         title='Delete Room'
         description='Are you sure you want to delete this room? This action cannot be undone.'
@@ -150,7 +150,7 @@ const Info: React.FC = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

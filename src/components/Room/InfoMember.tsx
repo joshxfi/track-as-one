@@ -41,13 +41,15 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
     setUserModal(false);
 
     setTimeout(async () => {
-      await updateDoc(roomRef, {
-        admin: isAdmin ? arrayRemove(memberId) : arrayUnion(memberId),
-      });
+      await Promise.all([
+        updateDoc(roomRef, {
+          members: isAdmin ? arrayUnion(memberId) : arrayRemove(memberId),
+        }),
 
-      await updateDoc(roomRef, {
-        members: isAdmin ? arrayUnion(memberId) : arrayRemove(memberId),
-      });
+        updateDoc(roomRef, {
+          admin: isAdmin ? arrayRemove(memberId) : arrayUnion(memberId),
+        }),
+      ]);
 
       toast.success(`${username} is ${isAdmin ? 'no longer' : 'now'} an admin`);
     }, 500);
@@ -70,9 +72,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
   return (
     <button
       type='button'
-      onClick={() => {
-        setUserModal(true);
-      }}
+      onClick={() => setUserModal(true)}
       className='flex-between card mb-2 h-[70px] w-full cursor-pointer text-left transition-opacity hover:bg-opacity-95'
     >
       <Modal
@@ -95,7 +95,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
         isOpen={userModal}
         setIsOpen={setUserModal}
         title='Manage User'
-        containerStyle='w-auto p-8'
+        containerStyle='w-auto p-6'
         body={
           <>
             <hr className='my-4' />
