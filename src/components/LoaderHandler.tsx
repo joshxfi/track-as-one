@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 import { Loader } from '.';
 
@@ -23,9 +23,9 @@ const LoaderHandler: React.FC<ILoader> = ({ loaders, children }) => {
 
   if (loading || _loading()) {
     return (
-        <div className='h-screen grid place-items-center'>
-          <Loader />
-        </div>
+      <div className='grid h-screen place-items-center'>
+        <Loader />
+      </div>
     );
   }
 

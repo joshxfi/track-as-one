@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUser } from '@/services';
 import { Invitation } from '@/components/Home';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Layout, Header, EmptyMsg } from '@/components';
 
 const Invites: React.FC = () => {
@@ -12,7 +12,7 @@ const Invites: React.FC = () => {
     <Layout loaders={[loading]}>
       <Header title='Invitation' />
       {!user?.invites?.length && <EmptyMsg empty='invites' />}
-      <div className='w-full mb-4'>
+      <div className='mb-4 w-full space-y-2'>
         {user?.invites?.map((roomId) => (
           <Invitation user={user} key={roomId} roomId={roomId} />
         ))}

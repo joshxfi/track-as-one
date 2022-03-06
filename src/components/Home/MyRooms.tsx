@@ -12,7 +12,7 @@ const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
       <RoomLabel
         label='Create'
         roomLength={createdRooms?.length ?? 0}
-        limit='3'
+        limit='5'
       />
 
       {createdRooms?.length ? (

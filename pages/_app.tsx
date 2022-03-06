@@ -8,7 +8,7 @@ import NProgress from 'nprogress';
 import { DefaultSeo } from 'next-seo';
 import { Toaster } from 'react-hot-toast';
 import { AppPropsWithLayout } from '@/types/page';
-import { AuthProvider } from '@/context/AuthContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 import SEO from '../next-seo-config';
 
@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AuthProvider>
       <DefaultSeo {...SEO} />
-      <Toaster />
+      <Toaster position='bottom-center' />
       {getLayout(<Component {...pageProps} />)}
     </AuthProvider>
   );

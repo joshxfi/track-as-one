@@ -6,7 +6,7 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
-import PendingContainer from '../PendingContainer';
+import Confirmation from '../Confirmation';
 
 interface InvitationProps {
   roomId: string;
@@ -56,14 +56,14 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
   };
 
   return (
-    <PendingContainer close={declineInvite} check={acceptInvite}>
+    <Confirmation close={declineInvite} check={acceptInvite}>
       <div className='leading-5'>
         <p className='text-f9'>{room?.name}</p>
         <p className='text-sm'>room id: {room?.id}</p>
       </div>
 
       <BiDoorOpen className='icon' />
-    </PendingContainer>
+    </Confirmation>
   );
 };
 

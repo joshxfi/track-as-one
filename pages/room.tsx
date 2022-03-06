@@ -5,27 +5,26 @@ import React, {
   useCallback,
 } from 'react';
 
-import { BsPlusSquareFill, BsXSquareFill } from 'react-icons/bs';
+import {
+  BsCheckCircleFill,
+  BsPlusSquareFill,
+  BsXSquareFill,
+} from 'react-icons/bs';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import toast from 'react-hot-toast';
-import {
-  addDoc,
-  collection,
-  orderBy,
-  query,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
-import { useRoom } from '@/services';
 import { db } from '@/config/firebase';
-import { Layout, Error, Modal } from '@/components';
+import { Error, Modal } from '@/components';
 import { urlRegExp } from '@/utils/constants';
-import { useAuth } from '@/context/AuthContext';
-import { useCol, useNextQuery, useUpload } from '@/hooks';
+import { useAuth } from '@/contexts/AuthContext';
+import { NextPageWithLayout } from '@/types/page';
+import { useNextQuery, useUpload } from '@/hooks';
 import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
+import { RoomProvider, useRoomContext } from '@/contexts/RoomContext';
 
-const Room = () => {
+const Room: NextPageWithLayout = () => {
   const [description, setDesc] = useState('');
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -33,20 +32,22 @@ const Room = () => {
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { data } = useAuth();
+  const { userTag } = data;
+  const { room, tasks, roomId } = useRoomContext();
+
   // eslint-disable-next-line prefer-destructuring
-  const id = useNextQuery('id');
   const tab = useNextQuery('tab');
 
-  const [room, roomLoading] = useRoom(id);
   const upload = useUpload();
 
-  const [tasks] = useCol<ITask>(
-    query(collection(db, `rooms/${id}/tasks`), orderBy('dateAdded', 'desc'))
-  );
-
-  const { data } = useAuth();
   const dateInputRef = useRef<ReactDatePicker>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const completedByAll = useCallback(
+    (task: ITask) => task.completedBy.length === room.members.length + 1,
+    [room]
+  );
 
   const imgHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -78,11 +79,11 @@ const Room = () => {
       setImages([]);
       setDueDate(null);
 
-      const imgUrls = await upload(`rooms/${id}/images`, images);
+      const imgUrls = await upload(`rooms/${roomId}/images`, images);
 
       const payload: ITask = {
         description,
-        addedBy: data.id!,
+        addedBy: userTag,
         completedBy: [],
         dateAdded: serverTimestamp(),
         imgUrls,
@@ -90,7 +91,7 @@ const Room = () => {
         url,
       };
 
-      const tasksRef = collection(db, `rooms/${room?.id}/tasks`);
+      const tasksRef = collection(db, `rooms/${roomId}/tasks`);
 
       await addDoc(tasksRef, payload);
       toast.success('Task Added');
@@ -100,24 +101,17 @@ const Room = () => {
     }
   };
 
-  if (!room || !id) {
-    return (
-      <Layout>
-        <Error code='404' info='room not found' />
-      </Layout>
-    );
+  if (!room || !roomId) {
+    return <Error code='404' info='room not found' />;
   }
 
   if (
-    data.id &&
-    !room.members?.includes(data?.id) &&
-    room.creator !== data.id
+    userTag &&
+    !room.members?.includes(userTag) &&
+    room.creator !== userTag &&
+    !room.admin?.includes(userTag)
   ) {
-    return (
-      <Layout>
-        <p className='hidden'>nothing to see here...</p>
-      </Layout>
-    );
+    return <></>;
   }
 
   if (tab === 'info') return <Info />;
@@ -125,7 +119,7 @@ const Room = () => {
   if (tab === 'requests') return <Requests />;
 
   return (
-    <Layout loaders={[roomLoading]}>
+    <>
       <RoomMenu room={room} />
       <input
         ref={fileRef}
@@ -143,9 +137,9 @@ const Room = () => {
           e.preventDefault();
           setModal(true);
         }}
-        className='w-full mt-4'
+        className='mt-4 w-full'
       >
-        <div className='flex-between px-4 rounded bg-[#e5e5e5] text-primary placeholder-inputfg focus-within:border-primary border-2 border-gray-300 group'>
+        <div className='flex-between group rounded border-2 border-gray-300 bg-inputbg px-4 text-primary placeholder-inputfg focus-within:border-primary'>
           <input
             required
             maxLength={300}
@@ -154,7 +148,7 @@ const Room = () => {
             value={description}
             type='text'
             placeholder='Task Description'
-            className='bg-[#e5e5e5] h-[45px] outline-none w-full text-sm md:text-base'
+            className='h-[45px] w-full bg-inputbg text-sm outline-none md:text-base'
           />
           <button type='submit' className='text-2xl'>
             <BsPlusSquareFill />
@@ -163,13 +157,13 @@ const Room = () => {
 
         <Modal
           isOpen={modal}
-          dismiss={() => setModal(false)}
+          setIsOpen={setModal}
           title='Add Task'
           proceed={addTask}
           isLoading={loading}
           body={
-            <div className='flex flex-col space-y-4 mt-4'>
-              <div className='flex-between group room-input-container'>
+            <div className='mt-4 flex flex-col space-y-4'>
+              <div className='flex-between room-input-container group'>
                 <DatePicker
                   placeholderText='Add Due Date (optional)'
                   selected={dueDate}
@@ -200,7 +194,7 @@ const Room = () => {
                 type='button'
                 className='room-input-container flex'
               >
-                <p className='text-[#9CA3AF] text-left text-sm md:text-base h-[45px] flex items-center'>
+                <p className='flex h-[45px] items-center text-left text-sm text-[#9CA3AF] md:text-base'>
                   Add Image {images.length}/3 (optional)
                 </p>
               </button>
@@ -208,13 +202,32 @@ const Room = () => {
           }
         />
       </form>
-      <section className='mt-4 mb-8 space-y-2'>
-        {tasks?.map((task) => (
-          <Task key={task.id} room={room} task={task} />
-        ))}
-      </section>
-    </Layout>
+      {tasks && (
+        <section className='mt-4 mb-8 space-y-2'>
+          {tasks
+            .filter((task) => !completedByAll(task))
+            .map((task) => (
+              <Task key={task.id} room={room} task={task} />
+            ))}
+
+          {tasks.filter(completedByAll).length > 0 && (
+            <div className='flex items-center space-x-2 py-2'>
+              <BsCheckCircleFill className='flex-none' />
+              <div className='h-[1px] w-full bg-primary' />
+            </div>
+          )}
+
+          {tasks.filter(completedByAll).map((task) => (
+            <Task key={task.id} room={room} task={task} />
+          ))}
+        </section>
+      )}
+    </>
   );
 };
+
+Room.getLayout = (page: React.ReactElement) => (
+  <RoomProvider>{page}</RoomProvider>
+);
 
 export default Room;

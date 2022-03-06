@@ -8,14 +8,7 @@ import {
 } from 'firebase/auth';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 import { auth, db } from '../config/firebase';
 
@@ -61,20 +54,19 @@ const AuthProvider: React.FC = ({ children }) => {
       const _user = await signInWithPopup(auth, provider);
       const moreInfo = getAdditionalUserInfo(_user);
 
-      const { email, metadata, photoURL } = _user.user;
-
-      const userTag = `user:${nanoid(5)}`;
-
       if (moreInfo?.isNewUser) {
+        const { uid, email, metadata, photoURL } = _user.user;
+        const userTag = `user:${nanoid(5)}`;
+
         const payload: IUser = {
-          email,
+          userTag,
           photoURL,
           invites: [],
           dateJoined: metadata.creationTime,
           username: email?.split('@')[0].toLowerCase(),
         };
 
-        await setDoc(doc(db, 'users', userTag), payload);
+        await setDoc(doc(db, 'users', uid), payload);
       }
 
       push('/home');
@@ -87,14 +79,8 @@ const AuthProvider: React.FC = ({ children }) => {
     setDataLoading(() => true);
     const getUserData = async () => {
       if (user) {
-        const res = await getDocs(
-          query(collection(db, 'users'), where('email', '==', user.email))
-        );
-        setData(
-          res.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id } as IUser;
-          })[0]
-        );
+        const res = await getDoc(doc(db, 'users', user.uid));
+        setData({ ...res.data(), id: res.id } as IUser);
 
         if (asPath === '/') push('/home');
       }

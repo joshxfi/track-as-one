@@ -3,12 +3,12 @@ import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { IoCloseCircle } from 'react-icons/io5';
 import { SideBtn } from './Button';
 
-interface PendingContainerProps {
+interface ConfirmationProps {
   check: () => void;
   close: () => void;
 }
 
-const PendingContainer: React.FC<PendingContainerProps> = ({
+const Confirmation: React.FC<ConfirmationProps> = ({
   check,
   close,
   children,
@@ -36,4 +36,4 @@ const PendingContainer: React.FC<PendingContainerProps> = ({
   );
 };
 
-export default PendingContainer;
+export default Confirmation;

@@ -4,51 +4,51 @@
 
 @layer components {
   .btn {
-    @apply flex items-center w-full justify-between text-f9 bg-primary rounded-[36px] text-sm h-[40px] px-[40px] mb-3;
+    @apply mb-3 flex h-[40px] w-full items-center justify-between rounded-[36px] bg-primary px-[40px] text-sm text-f9;
   }
 
   .sq-btn {
-    @apply flex items-center w-full justify-between text-f9 bg-primary rounded text-sm h-[40px] px-[20px] mb-2 btn-ring;
+    @apply btn-ring mb-2 flex h-[40px] w-full items-center justify-between rounded bg-primary px-[20px] text-sm text-f9;
   }
 
   .icon {
-    @apply text-secondary text-lg;
+    @apply text-lg text-secondary;
   }
 
   .btn-ring {
-    @apply hover:opacity-95 transition-all duration-300 focus:ring-4 focus:ring-offset-1 focus:ring-secondary;
+    @apply transition-all duration-300 hover:opacity-95 focus:ring-4 focus:ring-secondary focus:ring-offset-1;
   }
 
   .card {
-    @apply bg-primary text-secondary px-[30px] rounded;
+    @apply rounded bg-primary px-[30px] text-secondary;
   }
 
   .room-input {
-    @apply bg-inputbg h-[45px] outline-none w-full text-sm md:text-base;
+    @apply h-[45px] w-full bg-[#f5f5f5] text-sm outline-none md:text-base;
   }
 
   .room-input-btn {
-    @apply group-hover:opacity-100 text-2xl opacity-0 transition-opacity;
+    @apply text-2xl opacity-0 transition-opacity group-hover:opacity-100;
   }
 
   .modal-btn {
-    @apply text-white py-2 px-4 border border-transparent rounded-md text-sm cursor-pointer;
+    @apply cursor-pointer rounded-md border border-transparent py-2 px-4 text-sm text-white;
   }
 
   .room-input-container {
-    @apply px-4 rounded bg-inputbg text-primary placeholder-inputfg focus-within:border-primary border-2 w-full;
+    @apply w-full rounded border-2 bg-[#f9f9f9] px-4 text-primary placeholder-inputfg focus-within:border-primary;
   }
 
   .popup-proceed {
-    @apply py-2 px-4 bg-red-600 hover:bg-red-600/90 border border-primary rounded text-white w-24;
+    @apply w-24 rounded border border-primary bg-red-600 py-2 px-4 text-white hover:bg-red-600/90;
   }
 
   .flex-between {
-    @apply flex justify-between items-center;
+    @apply flex items-center justify-between;
   }
 
   .gradient-text {
-    @apply text-transparent bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text;
+    @apply bg-gradient-to-tr from-secondary to-[#FFDC54] bg-clip-text text-transparent;
   }
 
   .primary-gradient {
@@ -56,22 +56,26 @@
   }
 
   .footer-h1 {
-    @apply font-semibold text-secondary mb-2;
+    @apply mb-2 font-semibold text-secondary;
   }
 
   .home-btn {
-    @apply rounded-[36px] bg-primary text-f9 py-2 w-full px-[50px] mt-4 btn-ring flex-between text-sm;
+    @apply btn-ring flex-between mt-4 w-full rounded-[36px] bg-primary py-2 px-[50px] text-sm text-f9;
   }
 
   .welcome-btn {
-    @apply rounded bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 w-[230px] px-[50px] font-medium mt-4 btn-ring flex-between;
+    @apply btn-ring flex-between mt-4 w-[230px] rounded bg-gradient-to-tr from-secondary to-[#FFDC54] p-2 px-[50px] font-medium;
   }
 
   .task-btn {
-    @apply rounded w-full py-2 px-4 btn-ring flex-between;
+    @apply btn-ring flex-between w-full rounded py-2 px-4;
   }
 
   .about-h1 {
-    @apply text-xl md:text-3xl font-semibold mb-4;
+    @apply mb-4 font-semibold md:text-3xl;
+  }
+
+  .task-indicator {
+    @apply absolute left-0 top-0 h-full w-2;
   }
 }

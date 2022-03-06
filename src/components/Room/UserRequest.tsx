@@ -7,7 +7,7 @@ import { useUser } from '@/services';
 import { db } from '@/config/firebase';
 import { defaultPic } from '@/utils/constants';
 import { AiOutlineIdcard } from 'react-icons/ai';
-import PendingContainer from '../PendingContainer';
+import Confirmation from '../Confirmation';
 
 interface userRequestProps {
   userId: string;
@@ -45,7 +45,7 @@ const UserRequest = ({ userId, roomId }: userRequestProps) => {
   };
 
   return (
-    <PendingContainer check={acceptRequest} close={declineRequest}>
+    <Confirmation check={acceptRequest} close={declineRequest}>
       <div className='flex'>
         <div className='h-9 w-9 bg-secondary rounded-full mr-4 overflow-hidden'>
           <Image
@@ -61,7 +61,7 @@ const UserRequest = ({ userId, roomId }: userRequestProps) => {
         </div>
       </div>
       <AiOutlineIdcard className='icon text-xl' />
-    </PendingContainer>
+    </Confirmation>
   );
 };
 

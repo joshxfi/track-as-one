@@ -8,20 +8,19 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
-import { Button } from '@/components/Button';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Layout, RoomInput } from '@/components';
 import { NextPageWithLayout } from '@/types/page';
-import { Header, Input, Layout } from '@/components';
 
 const Create: NextPageWithLayout = () => {
   const [roomName, setRoomName] = useState<string>('');
 
   const { push } = useRouter();
   const {
-    data: { id },
+    data: { userTag },
   } = useAuth();
 
-  const [roomsCreated] = useCreatedRooms(id);
+  const [roomsCreated] = useCreatedRooms(userTag);
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,7 +28,7 @@ const Create: NextPageWithLayout = () => {
 
     const payload: IRoom = {
       name: roomName,
-      creator: id!,
+      creator: userTag,
       admin: [],
       members: [],
       dateAdded: serverTimestamp(),
@@ -37,8 +36,8 @@ const Create: NextPageWithLayout = () => {
     };
 
     setRoomName('');
-    if (roomsCreated && roomsCreated.length >= 3) {
-      toast.error('max rooms reached (3)');
+    if (roomsCreated && roomsCreated.length >= 5) {
+      toast.error('max rooms reached (5)');
     } else if (roomName) {
       toast.promise(setDoc(doc(db, 'rooms', roomId), payload), {
         loading: 'Creating Room...',
@@ -51,31 +50,17 @@ const Create: NextPageWithLayout = () => {
   };
 
   return (
-    <>
-      <Header title='Create a Room' />
-      <form
-        onSubmit={createRoom}
-        className='w-full flex justify-center flex-col items-center'
-      >
-        <Input
-          onChange={(e) => setRoomName(e.target.value)}
-          value={roomName}
-          placeholder='enter room name'
-          minLength={5}
-          maxLength={15}
-        />
-
-        <div className='inline-block mx-auto mt-2'>
-          <Button
-            name='create room'
-            type='submit'
-            className='btn btn-effect'
-            iconStyles='text-secondary text-xl'
-            Icon={BiDoorOpen}
-          />
-        </div>
-      </form>
-    </>
+    <RoomInput
+      title='Create a Room'
+      btnLabel='create room'
+      Icon={BiDoorOpen}
+      onSubmit={createRoom}
+      onChange={(e) => setRoomName(e.target.value)}
+      value={roomName}
+      placeholder='enter room name'
+      minLength={3}
+      maxLength={25}
+    />
   );
 };
 

@@ -19,13 +19,13 @@ export const aboutPage = {
 
 export const landingPage = {
   body1:
-    'Every now and then, someone would pop in the group chat and say: &quot;What assignments do we have? When is it due?&quot; With this web app, you can track tasks collaboratively with your peers!',
+    'Every now and then, someone would pop in the group chat and say: "What assignments do we have? When is it due?" With this web app, you can track tasks collaboratively with your peers!',
 
   body2:
     'trackAsOne is a responsive web-based app that enables students to track homework & activities together with their friends or classmates. Forgot about a homework? Your friends got your back!',
 
   body3:
-    'Tasks given by teachers are usually on different platforms. Few examples are Messenger and MS Teams. The problem is that they are usually cluttered with conversations making it hard to scroll back and you have to check multiple platforms just to make sure you won&apos;t miss an assignment.',
+    "Tasks given by teachers are usually on different platforms. Few examples are Messenger and MS Teams. The problem is that they are usually cluttered with conversations making it hard to scroll back and you have to check multiple platforms just to make sure you won't miss an assignment.",
 };
 
 export const socials = [

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 interface IUser {
   id?: string;
+  userTag: string;
   username?: string;
   photoURL?: string | null;
   email?: string | null;

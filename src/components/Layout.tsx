@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextSeo, NextSeoProps } from 'next-seo';
 
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Navbar, Footer, LoaderHandler, Error } from '@/components';
 
 interface LayoutProps extends NextSeoProps {
@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({
         <LoaderHandler loaders={loaders}>
           <Navbar />
           <main
-            className={`text-primary w-[90%] mx-auto min-h-screen ${
+            className={`mx-auto min-h-screen w-[90%] text-primary ${
               wide ? 'max-w-screen-xl' : 'max-w-screen-md'
             }  ${className}`}
           >

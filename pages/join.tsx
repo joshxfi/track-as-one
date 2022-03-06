@@ -6,18 +6,19 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
-import { Header, Input } from '@/components';
-import { useAuth } from '@/context/AuthContext';
+import { RoomInput } from '@/components';
+import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
 
 const Join: NextPageWithLayout = () => {
   const [roomId, setRoomID] = useState<string>('');
 
   const {
-    data: { id },
+    data: { userTag },
   } = useAuth();
 
-  const requestJoin = async () => {
+  const requestJoin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setRoomID('');
 
     const roomRef = doc(db, 'rooms', roomId);
@@ -26,15 +27,16 @@ const Join: NextPageWithLayout = () => {
     const _room: IRoom = room.data() as IRoom;
 
     if (!room.exists()) toast.error('room does not exist');
-    else if (_room.members.includes(id!))
+    else if (_room.members.includes(userTag!))
       toast.error('you are already a member');
-    else if (_room.requests.includes(id!))
+    else if (_room.requests.includes(userTag!))
       toast.error('you already sent a request');
-    else if (_room.creator === id) toast.error('You are the owner of the room');
+    else if (_room.creator === userTag)
+      toast.error('You are the owner of the room');
     else {
       toast.promise(
         updateDoc(roomRef, {
-          requests: arrayUnion(id),
+          requests: arrayUnion(userTag),
         }),
         {
           loading: 'Sending Request...',
@@ -46,29 +48,17 @@ const Join: NextPageWithLayout = () => {
   };
 
   return (
-    <>
-      <Header title='Join a Room' />
-      <div className='w-full flex justify-center items-center flex-col'>
-        <Input
-          onChange={(e) => setRoomID(e.target.value)}
-          value={roomId}
-          placeholder='enter room id'
-          minLength={5}
-          maxLength={15}
-        />
-
-        <div className='inline-block mx-auto mt-2'>
-          <button
-            type='button'
-            onClick={roomId ? requestJoin : () => null}
-            className='btn btn-ring'
-          >
-            <p className='mr-4'>request join</p>
-            <VscSignIn className='icon' />
-          </button>
-        </div>
-      </div>
-    </>
+    <RoomInput
+      title='Join a Room'
+      btnLabel='request join'
+      Icon={VscSignIn}
+      onSubmit={requestJoin}
+      onChange={(e) => setRoomID(e.target.value)}
+      value={roomId}
+      placeholder='enter room id'
+      minLength={5}
+      maxLength={15}
+    />
   );
 };
 

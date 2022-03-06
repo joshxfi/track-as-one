@@ -1,23 +1,14 @@
 import React, { useState } from 'react';
-
 import { AiFillCalendar } from 'react-icons/ai';
 import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
-import {
-  doc,
-  deleteDoc,
-  updateDoc,
-  collection,
-  arrayRemove,
-  getDocs,
-} from 'firebase/firestore';
+import { doc, deleteDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 
-import { useRoom } from '@/services';
-import { useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
 import { InfoBtn } from '@/components/Button';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRoomContext } from '@/contexts/RoomContext';
 import { Layout, Header, Error, Modal } from '@/components';
 import { InfoSection, InfoMember, RoomMenu } from '@/components/Room';
 
@@ -27,12 +18,11 @@ const Info: React.FC = () => {
 
   const { data } = useAuth();
   const { push } = useRouter();
-  const id = useNextQuery('id');
+  const { room, roomId, tasks } = useRoomContext();
 
-  const [room, loading] = useRoom(id);
-  const { creator, dateAdded, members } = room!;
+  const { creator, dateAdded, members, admin } = room!;
 
-  const roomRef = doc(db, `rooms/${id}`);
+  const roomRef = doc(db, `rooms/${roomId}`);
 
   const deleteRoom = async () => {
     setDeleteModal(false);
@@ -45,9 +35,8 @@ const Info: React.FC = () => {
       });
     }, 300);
 
-    const roomTasks = await getDocs(collection(db, `rooms/${id}/tasks`));
-    roomTasks.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${id}/tasks/${task.id}`));
+    tasks?.forEach(async (task) => {
+      await deleteDoc(doc(db, `rooms/${roomId}/tasks/${task.id}`));
     });
 
     push('/home');
@@ -59,7 +48,7 @@ const Info: React.FC = () => {
     setTimeout(() => {
       toast.promise(
         updateDoc(roomRef, {
-          members: arrayRemove(data.id),
+          members: arrayRemove(data.userTag),
         }),
         {
           loading: 'Leaving Room...',
@@ -72,7 +61,7 @@ const Info: React.FC = () => {
   };
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${id}`);
+    navigator.clipboard.writeText(`${roomId}`);
     toast.success('copied to clipboard');
   };
 
@@ -85,20 +74,28 @@ const Info: React.FC = () => {
   }
 
   return (
-    <Layout loaders={[loading]}>
+    <>
       <Modal
         title='Delete Room'
         description='Are you sure you want to delete this room? This action cannot be undone.'
-        proceed={deleteRoom}
-        dismiss={() => setDeleteModal(false)}
+        setIsOpen={setDeleteModal}
         isOpen={deleteModal}
+        buttons={
+          <button
+            type='button'
+            onClick={deleteRoom}
+            className='modal-btn bg-red-600'
+          >
+            Delete
+          </button>
+        }
       />
 
       <Modal
         title='Leave Room'
         description='Are you sure you want to leave this room? You need to request or get an invite before you can join again.'
         proceed={leaveRoom}
-        dismiss={() => setLeaveModal(false)}
+        setIsOpen={setLeaveModal}
         isOpen={leaveModal}
       />
 
@@ -106,7 +103,7 @@ const Info: React.FC = () => {
       <Header title='Room Info' />
 
       <InfoSection
-        title={id ?? ''}
+        title={roomId ?? ''}
         label='room id'
         onClick={copyRoomID}
         Icon={IoMdKey}
@@ -118,15 +115,19 @@ const Info: React.FC = () => {
         Icon={AiFillCalendar}
       />
 
-      <div className='w-full mb-4'>
+      <div className='mb-4 w-full'>
         <InfoMember memberId={creator} type='creator' />
+
+        {admin?.map((_admin) => (
+          <InfoMember key={_admin} memberId={_admin} type='admin' />
+        ))}
 
         {members?.map((member) => (
           <InfoMember key={member} memberId={member} type='member' />
         ))}
 
         <div className='flex justify-end'>
-          {creator === data.id ? (
+          {creator === data.userTag ? (
             <InfoBtn
               title='Delete Room'
               handleClick={() => setDeleteModal(true)}
@@ -139,7 +140,7 @@ const Info: React.FC = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 
