@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { AiOutlineIdcard } from 'react-icons/ai';
-import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  doc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  collection,
+  arrayUnion,
+} from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { Header, Input } from '@/components';
@@ -21,9 +29,11 @@ const RoomInvite = () => {
     if (invUserTag === '') {
       toast.error('example → user:nTWS_');
     } else {
-      const userToInv = await getDoc(doc(db, 'users', invUserTag));
+      const userToInv = await getDocs(
+        query(collection(db, 'users'), where('userTag', '==', invUserTag))
+      );
 
-      if (!userToInv.exists()) {
+      if (userToInv.empty) {
         toast.error('user tag could not be found');
       } else if (invUserTag === data.id) {
         toast.error('you are already in the room');
@@ -31,7 +41,7 @@ const RoomInvite = () => {
         toast.error('user is already in the room');
       } else {
         toast.promise(
-          updateDoc(doc(db, `users/${userToInv.id}`), {
+          updateDoc(doc(db, `users/${userToInv.docs[0].id}`), {
             invites: arrayUnion(roomId),
           }),
           {
