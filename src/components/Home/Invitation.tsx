@@ -23,7 +23,7 @@ const Invitation = ({ roomId, user }: InvitationProps) => {
     if (roomId) {
       toast.promise(
         updateDoc(doc(db, `rooms/${roomId}`), {
-          members: arrayUnion(user.id),
+          members: arrayUnion(user.userTag),
         }),
         {
           loading: 'Joining Room...',
