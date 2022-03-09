@@ -17,6 +17,7 @@
     "firebase": "^9.6.7",
     "nanoid": "^3.3.1",
     "next": "^12.1.0",
+    "next-pwa": "^5.4.5",
     "next-seo": "^5.1.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",

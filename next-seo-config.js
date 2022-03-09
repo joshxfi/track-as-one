@@ -36,4 +36,10 @@ export default {
   twitter: {
     cardType: 'summary_large_image',
   },
+  additionalLinkTags: [
+    {
+      rel: 'manifest',
+      href: '/manifest.json',
+    },
+  ],
 };
