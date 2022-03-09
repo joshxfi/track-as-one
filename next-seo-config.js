@@ -38,6 +38,15 @@ export default {
   },
   additionalLinkTags: [
     {
+      rel: 'icon',
+      href: '/favicon.ico',
+    },
+    {
+      rel: 'apple-touch-icon',
+      href: '/icon-96x96.png',
+      sizes: '96x96',
+    },
+    {
       rel: 'manifest',
       href: '/manifest.json',
     },
