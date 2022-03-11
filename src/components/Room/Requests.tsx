@@ -5,7 +5,7 @@ import { Header, EmptyMsg } from '@/components';
 import { useRoomContext } from '@/contexts/RoomContext';
 
 const Requests = () => {
-  const { room, roomId, isAdmin } = useRoomContext();
+  const { room, isAdmin } = useRoomContext();
 
   if (!isAdmin) return <div />;
   return (
@@ -14,7 +14,7 @@ const Requests = () => {
       {!room?.requests?.length && <EmptyMsg empty='requests' />}
       <div className='mb-4 w-full space-y-2'>
         {room?.requests?.map((user) => (
-          <UserRequest key={user} userId={user} roomId={roomId} />
+          <UserRequest key={user} userId={user} roomId={room.id} />
         ))}
       </div>
     </>

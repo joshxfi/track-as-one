@@ -80,7 +80,6 @@ const TaskFields = ({
                 selected={dueDate}
                 showTimeSelect
                 onChange={(date: Date) => setDueDate(date)}
-                minDate={new Date()}
                 ref={dateInputRef}
                 className='room-input pr-2'
               />

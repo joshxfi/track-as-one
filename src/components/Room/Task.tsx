@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
@@ -8,46 +8,83 @@ import { Modal } from '@/components';
 import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import {
-  arrayRemove,
-  arrayUnion,
-  deleteDoc,
   doc,
   updateDoc,
+  deleteDoc,
+  arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import { useUserByTag } from '@/services';
-import { defaultPic } from '@/utils/constants';
+import { TaskFields } from '@/components/Room';
 import { dateWithTime } from '@/utils/functions';
+import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
+import { useRoomContext } from '@/contexts/RoomContext';
+import { defaultPic, urlRegExp } from '@/utils/constants';
 
-interface RoomTaskProps {
-  task: ITask;
-  room: IRoom;
-}
-
-const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
+const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
   const [urlModal, setUrlModal] = useState(false);
   const [optionsModal, setOptionsModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [displayImage, setDisplayImage] = useState('');
   const [displayImageModal, setDisplayImageModal] = useState(false);
 
+  const { props, reset } = useTaskFields(task);
+  const upload = useUpload();
+  const { description, url, dueDate, images } = props;
+
   const {
     data: { userTag },
   } = useAuth();
+  const { room } = useRoomContext();
+
   const taskRef = doc(db, `rooms/${room?.id}/tasks/${task.id}`);
   const completedByUser = task.completedBy.includes(userTag ?? '');
 
   const [taskCreator] = useUserByTag(task.addedBy);
+  const hasImg = useMemo(
+    () => task.imgUrls && task.imgUrls?.length > 0,
+    [task]
+  );
 
-  const hasImg = task.imgUrls && task.imgUrls?.length > 0;
-
-  const canDelete = useCallback(() => {
+  const canModify = useMemo(() => {
     if (room.creator === userTag || room.admin.includes(userTag)) {
       return true;
     }
     return task.addedBy === userTag;
   }, [task, userTag]);
+
+  const editTask = async () => {
+    if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
+    else if (!description) toast.error('Task Description is Required');
+    else {
+      setLoading(true);
+
+      let payload: Partial<ITask> = {
+        description,
+        dueDate,
+        url,
+      };
+
+      if (images.length > 0) {
+        const imgUrls = await upload(`rooms/${room.id}/images`, images);
+        payload = {
+          ...payload,
+          imgUrls,
+        };
+      }
+
+      const taskRef = doc(db, `rooms/${room.id}/tasks/${task.id}`);
+      await updateDoc(taskRef, payload);
+      toast.success('Task Edited');
+
+      setEditModal(false);
+      setTimeout(() => setLoading(false), 300);
+    }
+  };
 
   const taskDone = async () => {
     if (completedByUser) {
@@ -135,6 +172,16 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
       >
         <div className={`task-indicator ${displayIndicator()}`} />
 
+        <TaskFields
+          {...props}
+          proceed={editTask}
+          title='Edit Task'
+          proceedText='Edit'
+          isOpen={editModal}
+          setIsOpen={setEditModal}
+          isLoading={loading}
+          onDismiss={reset}
+        />
         <Modal
           title='Delete Task'
           description='Are you sure you want to delete this task? This action cannot be undone.'
@@ -180,7 +227,7 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
           }
           buttons={
             <>
-              {canDelete() && (
+              {canModify && (
                 <button
                   onClick={() => {
                     setOptionsModal(false);
@@ -219,6 +266,22 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
               >
                 {completedByUser ? 'Undo' : 'Done'}
               </button>
+
+              {canModify && (
+                <button
+                  onClick={() => {
+                    setOptionsModal(false);
+
+                    setTimeout(() => {
+                      setEditModal(true);
+                    }, 500);
+                  }}
+                  type='button'
+                  className='modal-btn bg-blue-600 text-white'
+                >
+                  Edit
+                </button>
+              )}
             </>
           }
         />
@@ -289,4 +352,4 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   );
 };
 
-export default RoomTask;
+export default Task;

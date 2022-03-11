@@ -24,12 +24,12 @@ const Room: NextPageWithLayout = () => {
   const { props, reset } = useTaskFields();
   const { description, url, dueDate, images } = props;
 
-  const [modal, setModal] = useState(false);
+  const [addTaskModal, setAddTaskModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { data } = useAuth();
   const { userTag } = data;
-  const { room, tasks, roomId } = useRoomContext();
+  const { room, tasks } = useRoomContext();
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
@@ -49,29 +49,33 @@ const Room: NextPageWithLayout = () => {
       setLoading(true);
       reset();
 
-      const imgUrls = await upload(`rooms/${roomId}/images`, images);
-
-      const payload: ITask = {
+      let payload: ITask = {
         description,
         addedBy: userTag,
         completedBy: [],
         dateAdded: serverTimestamp(),
-        imgUrls,
         dueDate,
         url,
       };
 
-      const tasksRef = collection(db, `rooms/${roomId}/tasks`);
+      if (images.length > 0) {
+        const imgUrls = await upload(`rooms/${room.id}/images`, images);
+        payload = {
+          ...payload,
+          imgUrls,
+        };
+      }
 
+      const tasksRef = collection(db, `rooms/${room.id}/tasks`);
       await addDoc(tasksRef, payload);
       toast.success('Task Added');
 
-      setModal(false);
+      setAddTaskModal(false);
       setTimeout(() => setLoading(false), 300);
     }
   };
 
-  if (!room || !roomId) {
+  if (!room || !room.id) {
     return <Error code='404' info='room not found' />;
   }
 
@@ -95,7 +99,7 @@ const Room: NextPageWithLayout = () => {
         <div className='flex space-x-2'>
           <button
             type='button'
-            onClick={() => setModal(true)}
+            onClick={() => setAddTaskModal(true)}
             className='room-btn'
           >
             <AiOutlinePlus />
@@ -109,8 +113,8 @@ const Room: NextPageWithLayout = () => {
         proceed={addTask}
         title='Add Task'
         proceedText='Add'
-        isOpen={modal}
-        setIsOpen={setModal}
+        isOpen={addTaskModal}
+        setIsOpen={setAddTaskModal}
         isLoading={loading}
       />
 
@@ -119,7 +123,7 @@ const Room: NextPageWithLayout = () => {
           {tasks
             .filter((task) => !completedByAll(task))
             .map((task) => (
-              <Task key={task.id} room={room} task={task} />
+              <Task key={task.id} task={task} />
             ))}
 
           {tasks.filter(completedByAll).length > 0 && (
@@ -130,7 +134,7 @@ const Room: NextPageWithLayout = () => {
           )}
 
           {tasks.filter(completedByAll).map((task) => (
-            <Task key={task.id} room={room} task={task} />
+            <Task key={task.id} task={task} />
           ))}
         </section>
       )}

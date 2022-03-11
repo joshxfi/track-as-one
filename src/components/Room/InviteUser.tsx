@@ -20,7 +20,7 @@ const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
 
   const { data } = useAuth();
-  const { room, roomId, isAdmin } = useRoomContext();
+  const { room, isAdmin } = useRoomContext();
 
   const inviteUser = async () => {
     setUserTag('');
@@ -41,7 +41,7 @@ const RoomInvite = () => {
       } else {
         toast.promise(
           updateDoc(doc(db, `users/${userToInv.docs[0].id}`), {
-            invites: arrayUnion(roomId),
+            invites: arrayUnion(room.id),
           }),
           {
             loading: 'inviting user...',

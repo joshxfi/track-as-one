@@ -8,7 +8,6 @@ import { useAuth } from './AuthContext';
 
 interface RoomContextValues {
   room: IRoom;
-  roomId?: string;
   tasks?: ITask[];
   isAdmin: boolean;
 }
@@ -31,12 +30,12 @@ const RoomProvider: React.FC = ({ children }) => {
   );
 
   const isAdmin = useMemo(
-    () => room.creator === userTag || room.admin.includes(userTag),
+    () => room.creator === userTag || room.admin?.includes(userTag),
     [room]
   );
 
   const contextValues = useMemo(
-    () => ({ room, tasks, roomId, isAdmin }),
+    () => ({ room, tasks, isAdmin }),
     [room, tasks, roomId]
   );
 

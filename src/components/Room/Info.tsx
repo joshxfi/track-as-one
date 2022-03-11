@@ -18,10 +18,10 @@ const Info: React.FC = () => {
 
   const { data } = useAuth();
   const { push } = useRouter();
-  const { room, roomId, tasks } = useRoomContext();
+  const { room, tasks } = useRoomContext();
   const { creator, dateAdded, members, admin } = room;
 
-  const roomRef = doc(db, `rooms/${roomId}`);
+  const roomRef = doc(db, `rooms/${room.id}`);
 
   const deleteRoom = async () => {
     setDeleteModal(false);
@@ -35,7 +35,7 @@ const Info: React.FC = () => {
     }, 300);
 
     tasks?.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${roomId}/tasks/${task.id}`));
+      await deleteDoc(doc(db, `rooms/${room.id}/tasks/${task.id}`));
     });
 
     push('/home');
@@ -60,7 +60,7 @@ const Info: React.FC = () => {
   };
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${roomId}`);
+    navigator.clipboard.writeText(`${room.id}`);
     toast.success('copied to clipboard');
   };
 
@@ -101,7 +101,7 @@ const Info: React.FC = () => {
       <Header title='Room Info' backBtn />
 
       <InfoSection
-        title={roomId ?? ''}
+        title={room.id ?? ''}
         label='room id'
         onClick={copyRoomID}
         Icon={IoMdKey}

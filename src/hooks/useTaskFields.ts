@@ -1,12 +1,6 @@
-import { useMemo, useState } from 'react';
-import { useRoomContext } from '@/contexts/RoomContext';
+import { useState } from 'react';
 
-const useTaskFields = (taskId?: string) => {
-  const { tasks } = useRoomContext();
-  const task = taskId
-    ? useMemo(() => tasks?.find((t) => t.id === taskId), [tasks, taskId])
-    : undefined;
-
+const useTaskFields = (task?: ITask) => {
   const [description, setDesc] = useState(task?.description ?? '');
   const [dueDate, setDueDate] = useState<Date | null>(
     task?.dueDate ? task.dueDate.toDate() : null
