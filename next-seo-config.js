@@ -40,11 +40,12 @@ export default {
     {
       rel: 'icon',
       href: '/favicon.ico',
+      type: 'image/x-icon',
     },
     {
       rel: 'apple-touch-icon',
-      href: '/icon-96x96.png',
-      sizes: '96x96',
+      href: '/icons/apple-touch-icon.png',
+      sizes: '180x180',
     },
     {
       rel: 'manifest',
