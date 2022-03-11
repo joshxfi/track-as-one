@@ -4,5 +4,6 @@ export { default as Requests } from './Requests';
 export { default as RoomMenu } from './RoomMenu';
 export { default as InviteUser } from './InviteUser';
 export { default as InfoMember } from './InfoMember';
+export { default as TaskFields } from './TaskFields';
 export { default as InfoSection } from './InfoSection';
 export { default as UserRequest } from './UserRequest';

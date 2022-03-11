@@ -120,8 +120,8 @@ const RoomTask: React.FC<RoomTaskProps> = ({ task, room }) => {
   };
 
   const displayIndicator = () => {
-    if (userTag && task.completedBy.includes(userTag)) return 'bg-green-600';
-    if (pastDeadline()) return 'bg-red-600';
+    if (userTag && task.completedBy.includes(userTag)) return 'bg-green-500';
+    if (pastDeadline()) return 'bg-red-500';
     if (nearDeadline()) return 'bg-secondary';
     return 'bg-gray-400';
   };
