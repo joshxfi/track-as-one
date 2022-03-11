@@ -10,7 +10,7 @@ const Requests = () => {
   if (!isAdmin) return <div />;
   return (
     <>
-      <Header title='Requests' />
+      <Header title='Requests' backBtn={room.requests.length > 0} />
       {!room?.requests?.length && <EmptyMsg empty='requests' />}
       <div className='mb-4 w-full space-y-2'>
         {room?.requests?.map((user) => (

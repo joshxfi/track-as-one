@@ -19,8 +19,7 @@ const Info: React.FC = () => {
   const { data } = useAuth();
   const { push } = useRouter();
   const { room, roomId, tasks } = useRoomContext();
-
-  const { creator, dateAdded, members, admin } = room!;
+  const { creator, dateAdded, members, admin } = room;
 
   const roomRef = doc(db, `rooms/${roomId}`);
 
@@ -99,7 +98,7 @@ const Info: React.FC = () => {
         isOpen={leaveModal}
       />
 
-      <Header title='Room Info' />
+      <Header title='Room Info' backBtn />
 
       <InfoSection
         title={roomId ?? ''}

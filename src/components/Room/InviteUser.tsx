@@ -57,7 +57,7 @@ const RoomInvite = () => {
 
   return (
     <>
-      <Header title='Invite a User' />
+      <Header title='Invite a User' backBtn />
       <form
         spellCheck='false'
         className='flex w-full flex-col items-center justify-center'
