@@ -1,15 +1,15 @@
 /* eslint-disable import/order */
 import React from 'react';
-import { RoomMenu, UserRequest } from '.';
+import { UserRequest } from '.';
 import { Header, EmptyMsg } from '@/components';
 import { useRoomContext } from '@/contexts/RoomContext';
 
 const Requests = () => {
-  const { room, roomId } = useRoomContext();
+  const { room, roomId, isAdmin } = useRoomContext();
 
+  if (!isAdmin) return <div />;
   return (
     <>
-      <RoomMenu room={room!} />
       <Header title='Requests' />
       {!room?.requests?.length && <EmptyMsg empty='requests' />}
       <div className='mb-4 w-full space-y-2'>

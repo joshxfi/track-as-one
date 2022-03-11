@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
 import { AiOutlineIdcard } from 'react-icons/ai';
+import toast from 'react-hot-toast';
 import {
   doc,
   query,
@@ -13,7 +13,6 @@ import {
 
 import { db } from '@/config/firebase';
 import { Header, Input } from '@/components';
-import { RoomMenu } from '@/components/Room';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoomContext } from '@/contexts/RoomContext';
 
@@ -21,7 +20,7 @@ const RoomInvite = () => {
   const [invUserTag, setUserTag] = useState<string>('');
 
   const { data } = useAuth();
-  const { room, roomId } = useRoomContext();
+  const { room, roomId, isAdmin } = useRoomContext();
 
   const inviteUser = async () => {
     setUserTag('');
@@ -54,9 +53,10 @@ const RoomInvite = () => {
     }
   };
 
+  if (!isAdmin) return <div />;
+
   return (
     <>
-      <RoomMenu room={room!} />
       <Header title='Invite a User' />
       <form
         spellCheck='false'

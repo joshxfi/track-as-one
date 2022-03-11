@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import { doc, deleteDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { AiFillCalendar } from 'react-icons/ai';
 import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
-import { doc, deleteDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { Layout, Header, Error, Modal } from '@/components';
-import { InfoSection, InfoMember, RoomMenu } from '@/components/Room';
+import { InfoSection, InfoMember } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -99,7 +99,6 @@ const Info: React.FC = () => {
         isOpen={leaveModal}
       />
 
-      <RoomMenu room={room!} />
       <Header title='Room Info' />
 
       <InfoSection

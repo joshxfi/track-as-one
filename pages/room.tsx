@@ -100,7 +100,7 @@ const Room: NextPageWithLayout = () => {
           >
             <AiOutlinePlus />
           </button>
-          <RoomMenu room={room} />
+          <RoomMenu />
         </div>
       </div>
 
