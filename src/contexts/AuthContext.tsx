@@ -1,5 +1,11 @@
 /* eslint-disable no-console */
-import React, { useContext, createContext, useState, useEffect } from 'react';
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+} from 'react';
 import {
   getAdditionalUserInfo,
   GoogleAuthProvider,
@@ -105,8 +111,13 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
+  const contextValues = useMemo(
+    () => ({ user, signIn, signOut, data, loading }),
+    [user, signIn, signOut, data, loading]
+  );
+
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, data, loading }}>
+    <AuthContext.Provider value={contextValues}>
       {children}
     </AuthContext.Provider>
   );

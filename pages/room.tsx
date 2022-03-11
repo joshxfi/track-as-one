@@ -111,7 +111,7 @@ const Room: NextPageWithLayout = () => {
     room.creator !== userTag &&
     !room.admin?.includes(userTag)
   ) {
-    return <></>;
+    return <div />;
   }
 
   if (tab === 'info') return <Info />;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { collection, orderBy, query } from 'firebase/firestore';
 import { useCol, useNextQuery } from '@/hooks';
 import { db } from '@/config/firebase';
@@ -25,8 +25,13 @@ const RoomProvider: React.FC = ({ children }) => {
     query(collection(db, `rooms/${roomId}/tasks`), orderBy('dateAdded', 'desc'))
   );
 
+  const contextValues = useMemo(
+    () => ({ room, tasks, roomId }),
+    [room, tasks, roomId]
+  );
+
   return (
-    <RoomContext.Provider value={{ room, tasks, roomId }}>
+    <RoomContext.Provider value={contextValues}>
       <Layout loaders={[loading]}>{children}</Layout>
     </RoomContext.Provider>
   );

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-
 import { Loader } from '.';
 
 type ILoader = {
@@ -10,7 +9,7 @@ type ILoader = {
 const LoaderHandler: React.FC<ILoader> = ({ loaders, children }) => {
   const { loading } = useAuth();
 
-  const _loading = () => {
+  const _loading = useMemo(() => {
     if (loaders) {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < loaders.length; i++) {
@@ -19,9 +18,9 @@ const LoaderHandler: React.FC<ILoader> = ({ loaders, children }) => {
     }
 
     return false;
-  };
+  }, [loaders]);
 
-  if (loading || _loading()) {
+  if (loading || _loading) {
     return (
       <div className='grid h-screen place-items-center'>
         <Loader />
@@ -29,7 +28,7 @@ const LoaderHandler: React.FC<ILoader> = ({ loaders, children }) => {
     );
   }
 
-  return <>{children}</>;
+  return <div>{children}</div>;
 };
 
 export default LoaderHandler;

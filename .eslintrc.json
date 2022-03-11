@@ -23,7 +23,8 @@
     "no-shadow": "off",
     "import/extensions": ["error", "never"],
     "no-underscore-dangle": "off",
-    "no-console": "warn"
+    "no-console": "warn",
+    "react/function-component-definition": "off"
   },
   "settings": {
     "import/resolver": {
