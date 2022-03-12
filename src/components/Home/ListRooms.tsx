@@ -18,7 +18,7 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
       <div className='leading-5'>
         <p className='text-f9'>{room?.name}</p>
         <p className='text-sm'>
-          members: {room.members?.length + 1 + room.admin.length}
+          members: {room.members.length + 1 + room.admin.length}
         </p>
       </div>
 

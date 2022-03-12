@@ -36,4 +36,20 @@ export default {
   twitter: {
     cardType: 'summary_large_image',
   },
+  additionalLinkTags: [
+    {
+      rel: 'icon',
+      href: '/favicon.ico',
+      type: 'image/x-icon',
+    },
+    {
+      rel: 'apple-touch-icon',
+      href: '/icons/apple-touch-icon.png',
+      sizes: '180x180',
+    },
+    {
+      rel: 'manifest',
+      href: '/manifest.json',
+    },
+  ],
 };

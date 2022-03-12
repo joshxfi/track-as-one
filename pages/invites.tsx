@@ -10,7 +10,7 @@ const Invites: React.FC = () => {
 
   return (
     <Layout loaders={[loading]}>
-      <Header title='Invitation' />
+      <Header title='Invitation' backBtn={user.invites?.length > 0} />
       {!user?.invites?.length && <EmptyMsg empty='invites' />}
       <div className='mb-4 w-full space-y-2'>
         {user?.invites?.map((roomId) => (

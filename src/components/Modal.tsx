@@ -3,14 +3,16 @@ import { IoMdCloseCircle } from 'react-icons/io';
 import { Dialog, Transition } from '@headlessui/react';
 import Loader from './Loader';
 
-interface ModalProps {
+export interface ModalProps {
   title?: string;
   description?: string;
   body?: React.ReactNode;
   buttons?: React.ReactNode;
   isOpen: boolean;
+  onDismiss?: () => void;
   href?: string;
   proceed?: () => void;
+  proceedText?: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading?: boolean;
   empty?: boolean;
@@ -23,8 +25,10 @@ const Modal = ({
   body,
   buttons,
   isOpen,
+  onDismiss,
   href,
   proceed,
+  proceedText,
   setIsOpen,
   isLoading,
   empty,
@@ -35,7 +39,10 @@ const Modal = ({
       <Dialog
         as='div'
         className='fixed inset-0 z-50 bg-gray-600/60'
-        onClose={setIsOpen}
+        onClose={() => {
+          setIsOpen(false);
+          if (onDismiss) onDismiss();
+        }}
       >
         <div
           className={`min-h-screen ${
@@ -82,7 +89,10 @@ const Modal = ({
 
                     <button
                       type='button'
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => {
+                        setIsOpen(false);
+                        if (onDismiss) onDismiss();
+                      }}
                       className='md:text-2xl'
                     >
                       <IoMdCloseCircle />
@@ -117,7 +127,7 @@ const Modal = ({
                         className='modal-btn bg-secondary'
                         onClick={proceed}
                       >
-                        Continue
+                        {proceedText || 'Continue'}
                       </button>
                     )}
 

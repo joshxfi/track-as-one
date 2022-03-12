@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import { doc, deleteDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { AiFillCalendar } from 'react-icons/ai';
 import { IoMdKey } from 'react-icons/io';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
-import { doc, deleteDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { InfoBtn } from '@/components/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { Layout, Header, Error, Modal } from '@/components';
-import { InfoSection, InfoMember, RoomMenu } from '@/components/Room';
+import { InfoSection, InfoMember } from '@/components/Room';
 
 const Info: React.FC = () => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -18,11 +18,10 @@ const Info: React.FC = () => {
 
   const { data } = useAuth();
   const { push } = useRouter();
-  const { room, roomId, tasks } = useRoomContext();
+  const { room, tasks } = useRoomContext();
+  const { creator, dateAdded, members, admin } = room;
 
-  const { creator, dateAdded, members, admin } = room!;
-
-  const roomRef = doc(db, `rooms/${roomId}`);
+  const roomRef = doc(db, `rooms/${room.id}`);
 
   const deleteRoom = async () => {
     setDeleteModal(false);
@@ -36,7 +35,7 @@ const Info: React.FC = () => {
     }, 300);
 
     tasks?.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${roomId}/tasks/${task.id}`));
+      await deleteDoc(doc(db, `rooms/${room.id}/tasks/${task.id}`));
     });
 
     push('/home');
@@ -61,7 +60,7 @@ const Info: React.FC = () => {
   };
 
   const copyRoomID = () => {
-    navigator.clipboard.writeText(`${roomId}`);
+    navigator.clipboard.writeText(`${room.id}`);
     toast.success('copied to clipboard');
   };
 
@@ -99,11 +98,10 @@ const Info: React.FC = () => {
         isOpen={leaveModal}
       />
 
-      <RoomMenu room={room!} />
-      <Header title='Room Info' />
+      <Header title='Room Info' backBtn />
 
       <InfoSection
-        title={roomId ?? ''}
+        title={room.id ?? ''}
         label='room id'
         onClick={copyRoomID}
         Icon={IoMdKey}

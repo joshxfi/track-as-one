@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaIdCardAlt } from 'react-icons/fa';
 import { AiFillIdcard, AiOutlineIdcard } from 'react-icons/ai';
@@ -29,7 +29,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
   const isAdmin = type === 'admin';
   const isCreator = room.creator === data.userTag && type !== 'creator';
 
-  const Icon = () => {
+  const Icon = useMemo(() => {
     switch (type) {
       case 'creator':
         return <FaIdCardAlt />;
@@ -40,7 +40,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
       default:
         return <AiOutlineIdcard />;
     }
-  };
+  }, [type]);
 
   const handleAdmin = () => {
     setUserModal(false);
@@ -161,7 +161,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
           <p className='text-sm'>{type}</p>
         </div>
       </div>
-      <div className='icon text-xl'>{Icon()}</div>
+      <div className='icon text-xl'>{Icon}</div>
     </button>
   );
 };

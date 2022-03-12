@@ -7,20 +7,39 @@ interface SettingBtnProps {
   label: string;
   tab?: string;
   Icon: IconType;
+  href?: string;
+  onClick?: () => void;
 }
 
-const MenuBtn = ({ route, tab, label, Icon }: SettingBtnProps) => {
+const MenuBtn = ({
+  route,
+  tab,
+  label,
+  Icon,
+  href,
+  onClick,
+}: SettingBtnProps) => {
   const { push, query: q } = useRouter();
   const query = tab === 'room' ? { id: q.id, tab: [] } : { ...q, tab };
 
-  return (
-    <button
-      className='flex items-center w-full px-4 py-2 text-gray-700 transition-colors rounded hover:text-black hover:bg-gray-200 space-x-3 cursor-pointer'
-      type='button'
-      onClick={() => push(tab ? { query } : `/${route}`)}
+  return href ? (
+    <a
+      href={href}
+      target='_blank'
+      rel='noreferrer noopener'
+      className='menu-btn'
     >
       <Icon />
-      <a>{label}</a>
+      <p>{label}</p>
+    </a>
+  ) : (
+    <button
+      className='menu-btn'
+      type='button'
+      onClick={onClick || (() => push(tab ? { query } : `/${route}`))}
+    >
+      <Icon />
+      <p>{label}</p>
     </button>
   );
 };

@@ -1,12 +1,39 @@
 import React, { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
+import { AiFillHome, AiFillGithub, AiFillSwitcher } from 'react-icons/ai';
 
 import { MenuBtn } from '@/components/Button';
-import { AiFillContacts, AiFillHome, AiFillInfoCircle } from 'react-icons/ai';
 import { useAuth } from '@/contexts/AuthContext';
 
 const NavMenu = () => {
-  const { user } = useAuth();
+  const { user, signIn, signOut } = useAuth();
+  const menuItems = [
+    {
+      label: 'Home',
+      route: user ? 'home' : '',
+      Icon: AiFillHome,
+    },
+    // {
+    //   label: 'About',
+    //   route: 'about',
+    //   Icon: AiFillInfoCircle,
+    // },
+    // {
+    //   label: 'Contact',
+    //   route: 'contact',
+    //   Icon: AiFillContacts,
+    // },
+    {
+      label: 'GitHub',
+      href: 'https://github.com/joshxfi/trackAsOne',
+      Icon: AiFillGithub,
+    },
+    {
+      label: user ? 'Sign Out' : 'Login',
+      onClick: user ? signOut : signIn,
+      Icon: AiFillSwitcher,
+    },
+  ];
 
   return (
     <Popover className='relative z-50'>
@@ -25,14 +52,10 @@ const NavMenu = () => {
             leaveFrom='opacity-100 translate-y-0'
             leaveTo='opacity-0 translate-y-1'
           >
-            <Popover.Panel className=' absolute top-14 right-0 flex flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
-              <MenuBtn
-                label='home'
-                route={user ? 'home' : ''}
-                Icon={AiFillHome}
-              />
-              <MenuBtn label='about' route='about' Icon={AiFillInfoCircle} />
-              <MenuBtn label='contact' route='contact' Icon={AiFillContacts} />
+            <Popover.Panel className='absolute top-14 right-0 flex w-[150px] flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
+              {menuItems.map((props) => (
+                <MenuBtn key={props.label} {...props} />
+              ))}
             </Popover.Panel>
           </Transition>
         </>

@@ -38,3 +38,8 @@ yarn-error.log*
 
 #tsconfig
 tsconfig.tsbuildinfo
+
+# PWA
+sw.js
+workbox-*.js
+fallback-*.js

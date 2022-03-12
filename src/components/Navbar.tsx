@@ -11,8 +11,8 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { name: 'Home', href: user ? '/home' : '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
+    // { name: 'About', href: '/about' },
+    // { name: 'Contact', href: '/contact' },
   ];
 
   return (
@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     >
       <div className='flex-between mx-auto w-[90%] max-w-screen-xl'>
         <div className='flex items-center space-x-8'>
-          <Link href='/'>
+          <Link href={user ? '/home' : '/'}>
             <a className='cursor-pointer text-3xl font-bold text-secondary'>
               tAO<span className='text-f9'>.</span>
             </a>
@@ -43,6 +43,15 @@ const Navbar: React.FC = () => {
                 </Link>
               );
             })}
+
+            <a
+              href='https://github.com/joshxfi/trackAsOne'
+              rel='noopener noreferrer'
+              target='_blank'
+              className='text-sm transition-colors hover:text-secondary'
+            >
+              GitHub
+            </a>
           </div>
         </div>
 
@@ -51,7 +60,7 @@ const Navbar: React.FC = () => {
           <button
             type='button'
             onClick={user ? signOut : signIn}
-            className='flex items-center rounded bg-secondary py-2 px-4 text-sm text-primary shadow-sm transition-opacity hover:bg-secondary/90 hover:shadow-lg'
+            className='hidden items-center rounded bg-secondary py-2 px-4 text-sm text-primary shadow-sm transition-opacity hover:bg-secondary/90 hover:shadow-lg md:flex'
           >
             <p suppressHydrationWarning className='mr-2 text-sm font-medium'>
               {user ? 'sign out' : 'login'}

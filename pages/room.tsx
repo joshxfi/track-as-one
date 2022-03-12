@@ -1,107 +1,81 @@
-import React, {
-  useState,
-  useRef,
-  ChangeEventHandler,
-  useCallback,
-} from 'react';
-
-import {
-  BsCheckCircleFill,
-  BsPlusSquareFill,
-  BsXSquareFill,
-} from 'react-icons/bs';
-import DatePicker, { ReactDatePicker } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import React, { useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
+import { BsCheckCircleFill } from 'react-icons/bs';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
+import { Error } from '@/components';
 import { db } from '@/config/firebase';
-import { Error, Modal } from '@/components';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
-import { useNextQuery, useUpload } from '@/hooks';
-import { Info, InviteUser, RoomMenu, Requests, Task } from '@/components/Room';
+import { useNextQuery, useTaskFields, useUpload } from '@/hooks';
 import { RoomProvider, useRoomContext } from '@/contexts/RoomContext';
+import {
+  Info,
+  InviteUser,
+  RoomMenu,
+  Requests,
+  Task,
+  TaskFields,
+} from '@/components/Room';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 const Room: NextPageWithLayout = () => {
-  const [description, setDesc] = useState('');
-  const [dueDate, setDueDate] = useState<Date | null>(null);
-  const [images, setImages] = useState<File[]>([]);
-  const [url, setUrl] = useState('');
-  const [modal, setModal] = useState(false);
+  const { props, reset } = useTaskFields();
+  const { description, url, dueDate, images } = props;
+
+  const [addTaskModal, setAddTaskModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { data } = useAuth();
   const { userTag } = data;
-  const { room, tasks, roomId } = useRoomContext();
+  const { room, tasks } = useRoomContext();
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
-
   const upload = useUpload();
 
-  const dateInputRef = useRef<ReactDatePicker>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
-
   const completedByAll = useCallback(
-    (task: ITask) => task.completedBy.length === room.members.length + 1,
+    (task: ITask) =>
+      task.completedBy.length === room.members.length + room.admin.length + 1,
     [room]
-  );
-
-  const imgHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      const { files } = e.target;
-
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          if (files[i].size > 3 * 1024 * 1024) {
-            toast.error('max image size is 3MB');
-            return;
-          }
-        }
-
-        if (files.length > 3) toast.error('you can only upload up to 3 images');
-        else setImages(Array.from(files));
-      }
-    },
-    [setImages]
   );
 
   const addTask = async () => {
     if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
     else if (tasks && tasks.length >= 15) toast.error('Task Limit Reached');
+    else if (!description) toast.error('Task Description is Required');
     else {
       setLoading(true);
+      reset();
 
-      setDesc('');
-      setUrl('');
-      setImages([]);
-      setDueDate(null);
-
-      const imgUrls = await upload(`rooms/${roomId}/images`, images);
-
-      const payload: ITask = {
+      let payload: ITask = {
         description,
         addedBy: userTag,
         completedBy: [],
         dateAdded: serverTimestamp(),
-        imgUrls,
         dueDate,
         url,
       };
 
-      const tasksRef = collection(db, `rooms/${roomId}/tasks`);
+      if (images.length > 0) {
+        const imgUrls = await upload(`rooms/${room.id}/images`, images);
+        payload = {
+          ...payload,
+          imgUrls,
+        };
+      }
 
+      const tasksRef = collection(db, `rooms/${room.id}/tasks`);
       await addDoc(tasksRef, payload);
       toast.success('Task Added');
 
-      setModal(false);
+      setAddTaskModal(false);
       setTimeout(() => setLoading(false), 300);
     }
   };
 
-  if (!room || !roomId) {
+  if (!room || !room.id) {
     return <Error code='404' info='room not found' />;
   }
 
@@ -111,7 +85,7 @@ const Room: NextPageWithLayout = () => {
     room.creator !== userTag &&
     !room.admin?.includes(userTag)
   ) {
-    return <></>;
+    return <div />;
   }
 
   if (tab === 'info') return <Info />;
@@ -120,94 +94,36 @@ const Room: NextPageWithLayout = () => {
 
   return (
     <>
-      <RoomMenu room={room} />
-      <input
-        ref={fileRef}
-        multiple
-        accept='image/png,image/gif,image/jpeg'
-        className='hidden'
-        type='file'
-        onChange={imgHandler}
+      <div className='my-4 flex items-center justify-between font-medium'>
+        <h2 className='text-sm'>{room.name}</h2>
+        <div className='flex space-x-2'>
+          <button
+            type='button'
+            onClick={() => setAddTaskModal(true)}
+            className='room-btn'
+          >
+            <AiOutlinePlus />
+          </button>
+          <RoomMenu />
+        </div>
+      </div>
+
+      <TaskFields
+        {...props}
+        proceed={addTask}
+        title='Add Task'
+        proceedText='Add'
+        isOpen={addTaskModal}
+        setIsOpen={setAddTaskModal}
+        isLoading={loading}
       />
 
-      <form
-        spellCheck='false'
-        autoComplete='off'
-        onSubmit={(e) => {
-          e.preventDefault();
-          setModal(true);
-        }}
-        className='mt-4 w-full'
-      >
-        <div className='flex-between group rounded border-2 border-gray-300 bg-inputbg px-4 text-primary placeholder-inputfg focus-within:border-primary'>
-          <input
-            required
-            maxLength={300}
-            minLength={5}
-            onChange={(e) => setDesc(e.target.value)}
-            value={description}
-            type='text'
-            placeholder='Task Description'
-            className='h-[45px] w-full bg-inputbg text-sm outline-none md:text-base'
-          />
-          <button type='submit' className='text-2xl'>
-            <BsPlusSquareFill />
-          </button>
-        </div>
-
-        <Modal
-          isOpen={modal}
-          setIsOpen={setModal}
-          title='Add Task'
-          proceed={addTask}
-          isLoading={loading}
-          body={
-            <div className='mt-4 flex flex-col space-y-4'>
-              <div className='flex-between room-input-container group'>
-                <DatePicker
-                  placeholderText='Add Due Date (optional)'
-                  selected={dueDate}
-                  showTimeSelect
-                  onChange={(date: Date) => setDueDate(date)}
-                  minDate={new Date()}
-                  ref={dateInputRef}
-                  className='room-input pr-2'
-                />
-
-                <div className='room-input-btn'>
-                  <BsXSquareFill onClick={() => setDueDate(null)} />
-                </div>
-              </div>
-
-              <div className='room-input-container'>
-                <input
-                  onChange={(e) => setUrl(e.target.value)}
-                  value={url}
-                  type='text'
-                  placeholder='Add URL (optional)'
-                  className='room-input'
-                />
-              </div>
-
-              <button
-                onClick={() => fileRef.current?.click()}
-                type='button'
-                className='room-input-container flex'
-              >
-                <p className='flex h-[45px] items-center text-left text-sm text-[#9CA3AF] md:text-base'>
-                  Add Image {images.length}/3 (optional)
-                </p>
-              </button>
-            </div>
-          }
-        />
-      </form>
       {tasks && (
-        <section className='mt-4 mb-8 space-y-2'>
+        <section className='mb-8 space-y-2'>
           {tasks
             .filter((task) => !completedByAll(task))
             .map((task) => (
-              <Task key={task.id} room={room} task={task} />
+              <Task key={task.id} task={task} />
             ))}
 
           {tasks.filter(completedByAll).length > 0 && (
@@ -218,7 +134,7 @@ const Room: NextPageWithLayout = () => {
           )}
 
           {tasks.filter(completedByAll).map((task) => (
-            <Task key={task.id} room={room} task={task} />
+            <Task key={task.id} task={task} />
           ))}
         </section>
       )}
