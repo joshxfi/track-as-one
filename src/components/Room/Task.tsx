@@ -2,7 +2,14 @@ import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
-import { MdMoreVert } from 'react-icons/md';
+import {
+  MdMoreVert,
+  MdCheck,
+  MdLink,
+  MdEdit,
+  MdDelete,
+  MdUndo,
+} from 'react-icons/md';
 
 import { Modal } from '@/components';
 import { db, storage } from '@/config/firebase';
@@ -13,6 +20,7 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { useUserByTag } from '@/services';
 import { TaskFields } from '@/components/Room';
@@ -45,6 +53,8 @@ const Task = ({ task }: { task: ITask }) => {
   const completedByUser = task.completedBy.includes(userTag ?? '');
 
   const [taskCreator] = useUserByTag(task.addedBy);
+  const [taskEditor] = useUserByTag(task.editedBy);
+
   const hasImg = useMemo(
     () => task.imgUrls && task.imgUrls?.length > 0,
     [task]
@@ -65,6 +75,8 @@ const Task = ({ task }: { task: ITask }) => {
 
       let payload: Partial<ITask> = {
         description,
+        editedBy: userTag,
+        dateEdited: serverTimestamp(),
         dueDate,
         url,
       };
@@ -121,18 +133,20 @@ const Task = ({ task }: { task: ITask }) => {
 
   const taskInfo = [
     {
-      title: 'Due Date',
-      info: task.dueDate
-        ? dateWithTime(task.dueDate.toDate())
-        : 'No Due Date Specified',
-    },
-    {
       title: 'Date Added',
       info: task.dateAdded?.toDate().toDateString(),
     },
     {
       title: 'Added By',
       info: taskCreator.username,
+    },
+    {
+      title: 'Recent Edit',
+      info: task.dateEdited?.toDate().toDateString(),
+    },
+    {
+      title: 'Recent Edit By',
+      info: taskEditor.username,
     },
   ];
 
@@ -200,7 +214,14 @@ const Task = ({ task }: { task: ITask }) => {
 
         <Modal
           title='Visit URL'
-          description={`Are you sure you want to go to this URL? ${task.url}`}
+          body={
+            <div>
+              <p className='text-gray-500'>
+                Are you sure you want to go to this URL?
+              </p>
+              <p className='text-blue-500 underline'>{task.url}</p>
+            </div>
+          }
           href={task.url}
           setIsOpen={setUrlModal}
           isOpen={urlModal}
@@ -214,33 +235,52 @@ const Task = ({ task }: { task: ITask }) => {
             <div className='mt-2 space-y-2 pb-4 text-sm text-gray-800 md:text-base'>
               <hr className='my-4' />
 
-              {taskInfo.map((val) => (
-                <div
-                  key={nanoid()}
-                  className='flex justify-between space-x-4 text-right'
-                >
-                  <p>{val.title}: </p>
-                  <p>{val.info}</p>
-                </div>
-              ))}
+              {taskInfo.map(
+                (val) =>
+                  val.info && (
+                    <div
+                      key={nanoid()}
+                      className='flex justify-between space-x-4 text-right'
+                    >
+                      <p>{val.title}: </p>
+                      <p>{val.info}</p>
+                    </div>
+                  )
+              )}
             </div>
           }
           buttons={
             <>
               {canModify && (
-                <button
-                  onClick={() => {
-                    setOptionsModal(false);
+                <>
+                  <button
+                    onClick={() => {
+                      setOptionsModal(false);
 
-                    setTimeout(() => {
-                      setDelModal(true);
-                    }, 500);
-                  }}
-                  type='button'
-                  className='modal-btn bg-red-600 text-white'
-                >
-                  Delete
-                </button>
+                      setTimeout(() => {
+                        setDelModal(true);
+                      }, 500);
+                    }}
+                    type='button'
+                    className='task-option-btn bg-red-600 text-white'
+                  >
+                    <MdDelete />
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setOptionsModal(false);
+
+                      setTimeout(() => {
+                        setEditModal(true);
+                      }, 500);
+                    }}
+                    type='button'
+                    className='task-option-btn bg-blue-600 text-white'
+                  >
+                    <MdEdit />
+                  </button>
+                </>
               )}
 
               {task.url && (
@@ -253,35 +293,19 @@ const Task = ({ task }: { task: ITask }) => {
                     }, 500);
                   }}
                   type='button'
-                  className='modal-btn bg-amber-500 text-white'
+                  className='task-option-btn bg-amber-500 text-white'
                 >
-                  Go to URL
+                  <MdLink />
                 </button>
               )}
 
               <button
                 onClick={taskDone}
                 type='button'
-                className='modal-btn bg-green-600 text-white'
+                className='task-option-btn bg-green-600 text-white'
               >
-                {completedByUser ? 'Undo' : 'Done'}
+                {completedByUser ? <MdUndo /> : <MdCheck />}
               </button>
-
-              {canModify && (
-                <button
-                  onClick={() => {
-                    setOptionsModal(false);
-
-                    setTimeout(() => {
-                      setEditModal(true);
-                    }, 500);
-                  }}
-                  type='button'
-                  className='modal-btn bg-blue-600 text-white'
-                >
-                  Edit
-                </button>
-              )}
             </>
           }
         />

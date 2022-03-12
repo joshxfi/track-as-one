@@ -75,6 +75,10 @@
     @apply btn-ring flex-between w-full rounded py-2 px-4;
   }
 
+  .task-option-btn {
+    @apply rounded p-2 text-xl;
+  }
+
   .about-h1 {
     @apply mb-4 font-semibold md:text-3xl;
   }

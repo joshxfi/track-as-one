@@ -25,7 +25,7 @@ interface ITask {
   addedBy: string;
   dateAdded: any;
   editedBy?: string;
-  dateEdited?: string;
+  dateEdited?: any;
   url?: string;
   dueDate?: any;
   completedBy: string[];
