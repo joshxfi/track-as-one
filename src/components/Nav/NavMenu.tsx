@@ -1,12 +1,6 @@
 import React, { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import {
-  AiFillContacts,
-  AiFillHome,
-  AiFillInfoCircle,
-  AiFillGithub,
-  AiFillSwitcher,
-} from 'react-icons/ai';
+import { AiFillHome, AiFillGithub, AiFillSwitcher } from 'react-icons/ai';
 
 import { MenuBtn } from '@/components/Button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -19,16 +13,16 @@ const NavMenu = () => {
       route: user ? 'home' : '',
       Icon: AiFillHome,
     },
-    {
-      label: 'About',
-      route: 'about',
-      Icon: AiFillInfoCircle,
-    },
-    {
-      label: 'Contact',
-      route: 'contact',
-      Icon: AiFillContacts,
-    },
+    // {
+    //   label: 'About',
+    //   route: 'about',
+    //   Icon: AiFillInfoCircle,
+    // },
+    // {
+    //   label: 'Contact',
+    //   route: 'contact',
+    //   Icon: AiFillContacts,
+    // },
     {
       label: 'GitHub',
       href: 'https://github.com/joshxfi/trackAsOne',
@@ -60,7 +54,7 @@ const NavMenu = () => {
           >
             <Popover.Panel className='absolute top-14 right-0 flex w-[150px] flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
               {menuItems.map((props) => (
-                <MenuBtn {...props} />
+                <MenuBtn key={props.label} {...props} />
               ))}
             </Popover.Panel>
           </Transition>

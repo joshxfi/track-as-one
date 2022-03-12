@@ -354,6 +354,7 @@ const Task = ({ task }: { task: ITask }) => {
           <div className={`task-indicator ${displayIndicator()}`} />
           {task.imgUrls.map((url) => (
             <button
+              key={url}
               type='button'
               onClick={() => {
                 setDisplayImage(url);
