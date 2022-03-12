@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { NextSeo, NextSeoProps } from 'next-seo';
-
 import { useAuth } from '@/contexts/AuthContext';
 import { Navbar, Footer, LoaderHandler, Error } from '@/components';
 
@@ -21,10 +20,10 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   const { user } = useAuth();
 
-  const display = () => {
+  const display = useMemo(() => {
     if (user || allowAll) return children;
     return <Error code='401' info='you are not authenticated' />;
-  };
+  }, [user, allowAll, children]);
 
   return (
     <>
@@ -37,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({
               wide ? 'max-w-screen-xl' : 'max-w-screen-md'
             }  ${className}`}
           >
-            {display()}
+            {display}
           </main>
           <Footer />
         </LoaderHandler>

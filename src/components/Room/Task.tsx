@@ -150,7 +150,7 @@ const Task = ({ task }: { task: ITask }) => {
     },
   ];
 
-  const nearDeadline = () => {
+  const nearDeadline = useMemo(() => {
     const threeDaysFromNow = new Date();
     threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
 
@@ -159,21 +159,21 @@ const Task = ({ task }: { task: ITask }) => {
     }
 
     return false;
-  };
+  }, [task.dueDate]);
 
-  const pastDeadline = () => {
+  const pastDeadline = useMemo(() => {
     const today = new Date();
     if (today > task.dueDate?.toDate()) {
       return true;
     }
 
     return false;
-  };
+  }, [task.dueDate]);
 
   const displayIndicator = () => {
     if (userTag && task.completedBy.includes(userTag)) return 'bg-green-500';
-    if (pastDeadline()) return 'bg-red-500';
-    if (nearDeadline()) return 'bg-secondary';
+    if (pastDeadline) return 'bg-red-500';
+    if (nearDeadline) return 'bg-secondary';
     return 'bg-gray-400';
   };
 

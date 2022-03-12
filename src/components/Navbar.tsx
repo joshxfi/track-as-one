@@ -10,6 +10,7 @@ const Navbar: React.FC = () => {
   const { asPath } = useRouter();
 
   const navItems = [
+    { name: 'Home', href: user ? '/home' : '/' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
@@ -29,14 +30,6 @@ const Navbar: React.FC = () => {
           </Link>
 
           <div className='hidden space-x-8 md:block'>
-            <a
-              href='https://github.com/joshxfi/trackAsOne'
-              rel='noopener noreferrer'
-              target='_blank'
-              className='text-sm transition-colors hover:text-secondary'
-            >
-              GitHub
-            </a>
             {navItems.map(({ name, href }) => {
               return (
                 <Link href={href} key={name}>
@@ -50,6 +43,15 @@ const Navbar: React.FC = () => {
                 </Link>
               );
             })}
+
+            <a
+              href='https://github.com/joshxfi/trackAsOne'
+              rel='noopener noreferrer'
+              target='_blank'
+              className='text-sm transition-colors hover:text-secondary'
+            >
+              GitHub
+            </a>
           </div>
         </div>
 
