@@ -118,7 +118,7 @@ const Room: NextPageWithLayout = () => {
         isLoading={loading}
       />
 
-      {tasks && (
+      {tasks && tasks?.length > 0 ? (
         <section className='mb-8 space-y-2'>
           {tasks
             .filter((task) => !completedByAll(task))
@@ -137,6 +137,8 @@ const Room: NextPageWithLayout = () => {
             <Task key={task.id} task={task} />
           ))}
         </section>
+      ) : (
+        <Error code='' info='get started by clicking the plus icon' />
       )}
     </>
   );
