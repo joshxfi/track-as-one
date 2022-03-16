@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { BsCheckCircleFill } from 'react-icons/bs';
+import ReactTooltip from 'react-tooltip';
+import { BsCheckCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 import { Error } from '@/components';
@@ -107,7 +108,18 @@ const Room: NextPageWithLayout = () => {
         <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
       )}
       <div className='my-4 flex items-center justify-between font-medium'>
-        <h2 className='text-sm'>{room.name}</h2>
+        <div
+          data-tip='Task Indicator: <br/> Gray - To do <br/> Green - Completed <br/> Yellow - Almost due <br /> Red - Past due'
+          data-place='bottom'
+          data-for='status'
+          className='flex items-center space-x-2'
+        >
+          <h2 className='text-sm'>{room.name}</h2>
+          <div>
+            <BsInfoCircleFill />
+          </div>
+          <ReactTooltip id='status' html />
+        </div>
         <div className='flex space-x-2'>
           <button
             type='button'

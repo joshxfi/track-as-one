@@ -382,7 +382,7 @@ const Task = ({ task }: { task: ITask }) => {
       />
 
       {task.imgUrls && task.imgUrls?.length > 0 && (
-        <div className='relative flex space-x-1 rounded-b bg-primary bg-opacity-90 py-1 px-4 sm:space-x-2 md:py-2'>
+        <div className='relative flex space-x-1 overflow-hidden rounded-b bg-primary bg-opacity-90 py-1 px-4 sm:space-x-2 md:py-2'>
           <div className={`task-indicator ${displayIndicator}`} />
           {task.imgUrls.map((url) => (
             <button
