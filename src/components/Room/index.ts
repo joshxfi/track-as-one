@@ -2,6 +2,7 @@ export { default as Info } from './Info';
 export { default as Task } from './Task';
 export { default as Requests } from './Requests';
 export { default as RoomMenu } from './RoomMenu';
+export { default as TaskLoader } from './TaskLoader';
 export { default as InviteUser } from './InviteUser';
 export { default as InfoMember } from './InfoMember';
 export { default as TaskFields } from './TaskFields';

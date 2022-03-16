@@ -17,6 +17,7 @@ import {
   Requests,
   Task,
   TaskFields,
+  TaskLoader,
 } from '@/components/Room';
 import { AiOutlinePlus } from 'react-icons/ai';
 
@@ -33,7 +34,7 @@ const Room: NextPageWithLayout = () => {
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
-  const upload = useUpload();
+  const [upload, uploading, error] = useUpload();
 
   const completedByAll = useCallback(
     (task: ITask) =>
@@ -43,9 +44,11 @@ const Room: NextPageWithLayout = () => {
 
   const addTask = async () => {
     if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (tasks && tasks.length >= 15) toast.error('Task Limit Reached');
-    else if (!description) toast.error('Task Description is Required');
+    else if (tasks && tasks.length >= 20)
+      toast.error('Task limit reached (20)');
+    else if (!description) toast.error('Task description is required');
     else {
+      setAddTaskModal(false);
       setLoading(true);
       reset();
 
@@ -54,6 +57,8 @@ const Room: NextPageWithLayout = () => {
         addedBy: userTag,
         completedBy: [],
         dateAdded: serverTimestamp(),
+        dateEdited: null,
+        editedBy: '',
         dueDate,
         url,
       };
@@ -64,19 +69,19 @@ const Room: NextPageWithLayout = () => {
           ...payload,
           imgUrls,
         };
+
+        if (error) toast.error('An error occurred while uploading images');
       }
 
       const tasksRef = collection(db, `rooms/${room.id}/tasks`);
       await addDoc(tasksRef, payload);
       toast.success('Task Added');
-
-      setAddTaskModal(false);
       setTimeout(() => setLoading(false), 300);
     }
   };
 
   if (!room || !room.id) {
-    return <Error code='404' info='room not found' />;
+    return <Error info='room not found' />;
   }
 
   if (
@@ -94,6 +99,9 @@ const Room: NextPageWithLayout = () => {
 
   return (
     <>
+      {loading && (
+        <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
+      )}
       <div className='my-4 flex items-center justify-between font-medium'>
         <h2 className='text-sm'>{room.name}</h2>
         <div className='flex space-x-2'>
@@ -115,7 +123,6 @@ const Room: NextPageWithLayout = () => {
         proceedText='Add'
         isOpen={addTaskModal}
         setIsOpen={setAddTaskModal}
-        isLoading={loading}
       />
 
       {tasks && tasks?.length > 0 ? (

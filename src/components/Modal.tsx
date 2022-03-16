@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { Dialog, Transition } from '@headlessui/react';
-import Loader from './Loader';
 
 export interface ModalProps {
   title?: string;
@@ -14,7 +13,6 @@ export interface ModalProps {
   proceed?: () => void;
   proceedText?: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading?: boolean;
   empty?: boolean;
   containerStyle?: string;
 }
@@ -30,7 +28,6 @@ const Modal = ({
   proceed,
   proceedText,
   setIsOpen,
-  isLoading,
   empty,
   containerStyle,
 }: ModalProps) => {
@@ -70,76 +67,70 @@ const Modal = ({
             leaveFrom='opacity-100 scale-100'
             leaveTo='opacity-0 scale-95'
           >
-            {!isLoading ? (
-              <div
-                className={
-                  empty
-                    ? ''
-                    : `max-w-md ${
-                        containerStyle || 'w-[350px] p-6 md:w-full'
-                      } transform rounded-xl bg-white text-left shadow-xl transition-all`
-                }
-              >
-                {!empty && (
-                  <Dialog.Title
-                    as='h3'
-                    className='mb-2 flex justify-between text-lg font-medium leading-6 text-gray-800'
-                  >
-                    <p>{title}</p>
+            <div
+              className={
+                empty
+                  ? ''
+                  : `max-w-md ${
+                      containerStyle || 'w-[350px] p-6 md:w-full'
+                    } transform rounded-xl bg-white text-left shadow-xl transition-all`
+              }
+            >
+              {!empty && (
+                <Dialog.Title
+                  as='h3'
+                  className='mb-2 flex justify-between text-lg font-medium leading-6 text-gray-800'
+                >
+                  <p>{title}</p>
 
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setIsOpen(false);
+                      if (onDismiss) onDismiss();
+                    }}
+                    className='md:text-2xl'
+                  >
+                    <IoMdCloseCircle />
+                  </button>
+                </Dialog.Title>
+              )}
+
+              {description ? (
+                <p className='break-words text-sm text-gray-500 md:text-base'>
+                  {description}
+                </p>
+              ) : (
+                body
+              )}
+
+              {!empty && (
+                <div className='mt-4 flex flex-wrap justify-end space-x-2'>
+                  {href && (
+                    <a
+                      href={href}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='modal-btn bg-secondary'
+                    >
+                      Continue
+                    </a>
+                  )}
+
+                  {proceed && (
                     <button
                       type='button'
-                      onClick={() => {
-                        setIsOpen(false);
-                        if (onDismiss) onDismiss();
-                      }}
-                      className='md:text-2xl'
+                      className='modal-btn bg-secondary'
+                      onClick={proceed}
                     >
-                      <IoMdCloseCircle />
+                      {proceedText || 'Continue'}
                     </button>
-                  </Dialog.Title>
-                )}
+                  )}
 
-                {description ? (
-                  <p className='break-words text-sm text-gray-500 md:text-base'>
-                    {description}
-                  </p>
-                ) : (
-                  body
-                )}
-
-                {!empty && (
-                  <div className='mt-4 flex flex-wrap justify-end space-x-2'>
-                    {href && (
-                      <a
-                        href={href}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='modal-btn bg-secondary'
-                      >
-                        Continue
-                      </a>
-                    )}
-
-                    {proceed && (
-                      <button
-                        type='button'
-                        className='modal-btn bg-secondary'
-                        onClick={proceed}
-                      >
-                        {proceedText || 'Continue'}
-                      </button>
-                    )}
-
-                    {buttons}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div>
-                <Loader />
-              </div>
-            )}
+                  {buttons}
+                </div>
+              )}
+            </div>
           </Transition.Child>
         </div>
       </Dialog>
