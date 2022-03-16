@@ -52,8 +52,10 @@ const Task = ({ task }: { task: ITask }) => {
   const taskRef = doc(db, `rooms/${room?.id}/tasks/${task.id}`);
   const completedByUser = task.completedBy.includes(userTag ?? '');
 
+  const editedBy = useMemo(() => task.editedBy ?? task.addedBy, [task]);
+
   const [taskCreator] = useUserByTag(task.addedBy);
-  const [taskEditor] = useUserByTag(task.editedBy);
+  const [taskEditor] = useUserByTag(editedBy);
 
   const hasImg = useMemo(
     () => task.imgUrls && task.imgUrls?.length > 0,
@@ -165,7 +167,7 @@ const Task = ({ task }: { task: ITask }) => {
       },
       {
         title: 'Added By',
-        info: taskCreator.username,
+        info: taskCreator?.username,
       },
       {
         title: 'Recent Edit',
@@ -173,10 +175,10 @@ const Task = ({ task }: { task: ITask }) => {
       },
       {
         title: 'Recent Edit By',
-        info: taskEditor.username,
+        info: taskEditor?.username,
       },
     ],
-    [task, taskCreator.username, taskEditor.username]
+    [task, taskCreator?.username, taskEditor?.username]
   );
 
   const nearDeadline = useMemo(() => {

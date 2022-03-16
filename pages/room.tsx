@@ -58,8 +58,6 @@ const Room: NextPageWithLayout = () => {
         addedBy: userTag,
         completedBy: [],
         dateAdded: serverTimestamp(),
-        dateEdited: null,
-        editedBy: '',
         dueDate,
         url,
       };
