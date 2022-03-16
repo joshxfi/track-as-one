@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { IconType } from 'react-icons';
+import Indicator from '../Indicator';
 
 interface SettingBtnProps {
   route?: string;
@@ -8,6 +9,7 @@ interface SettingBtnProps {
   tab?: string;
   Icon: IconType;
   href?: string;
+  indicator?: boolean;
   onClick?: () => void;
 }
 
@@ -17,6 +19,7 @@ const MenuBtn = ({
   label,
   Icon,
   href,
+  indicator,
   onClick,
 }: SettingBtnProps) => {
   const { push, query: q } = useRouter();
@@ -34,12 +37,13 @@ const MenuBtn = ({
     </a>
   ) : (
     <button
-      className='menu-btn'
+      className='menu-btn relative'
       type='button'
       onClick={onClick || (() => push(tab ? { query } : `/${route}`))}
     >
       <Icon />
       <p>{label}</p>
+      {indicator && <Indicator />}
     </button>
   );
 };

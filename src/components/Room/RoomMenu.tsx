@@ -5,18 +5,20 @@ import { AiOutlineSetting } from 'react-icons/ai';
 import { BsInfoCircleFill } from 'react-icons/bs';
 import { Popover, Transition } from '@headlessui/react';
 
+import { Indicator } from '@/components';
 import { MenuBtn } from '@/components/Button';
 import { useRoomContext } from '@/contexts/RoomContext';
 
 const RoomMenu = () => {
-  const { isAdmin } = useRoomContext();
+  const { isAdmin, room } = useRoomContext();
 
   return (
     <Popover className='relative z-40'>
       {() => (
         <>
-          <Popover.Button className='room-btn'>
+          <Popover.Button className='room-btn relative'>
             <AiOutlineSetting />
+            {room.requests.length > 0 && <Indicator />}
           </Popover.Button>
 
           <Transition
@@ -43,6 +45,7 @@ const RoomMenu = () => {
                     label='view requests'
                     tab='requests'
                     Icon={RiEye2Fill}
+                    indicator={room.requests.length > 0}
                   />
                 </>
               )}
