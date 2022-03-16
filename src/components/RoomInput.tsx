@@ -28,7 +28,7 @@ const RoomInput = ({
 }: RoomInputProps) => {
   return (
     <>
-      <Header title={title} />
+      <Header backBtn title={title} />
       <form
         onSubmit={onSubmit}
         className='flex w-full flex-col items-center justify-center'

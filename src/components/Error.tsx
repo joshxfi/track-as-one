@@ -7,21 +7,16 @@ interface ErrorProps {
   info?: string;
 }
 
-const Error: React.FC<ErrorProps> = ({ code, info }) => {
+const Error = ({ code = '404', info = 'page not found' }: ErrorProps) => {
   return (
     <section className='flex flex-col items-center'>
-      <div className='w-[200px] mt-10'>
+      <div className='mt-10 w-[200px]'>
         <Image src={mascot} objectFit='contain' alt='error cat mascot' />
       </div>
-      <h1 className='font-bold text-7xl'>{code}</h1>
+      <h1 className='text-7xl font-bold'>{code}</h1>
       <p className='text-lg'>{info}</p>
     </section>
   );
-};
-
-Error.defaultProps = {
-  code: '404',
-  info: 'page not found',
 };
 
 export default Error;

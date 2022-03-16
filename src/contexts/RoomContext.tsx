@@ -36,7 +36,7 @@ const RoomProvider: React.FC = ({ children }) => {
 
   const contextValues = useMemo(
     () => ({ room, tasks, isAdmin }),
-    [room, tasks, roomId]
+    [room, tasks]
   );
 
   return (
