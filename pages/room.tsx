@@ -74,8 +74,12 @@ const Room: NextPageWithLayout = () => {
       }
 
       const tasksRef = collection(db, `rooms/${room.id}/tasks`);
-      await addDoc(tasksRef, payload);
-      toast.success('Task Added');
+      try {
+        await addDoc(tasksRef, payload);
+        toast.success('Task Added');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
       setTimeout(() => setLoading(false), 300);
     }
   };

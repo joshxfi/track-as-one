@@ -23,12 +23,12 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { useUserByTag } from '@/services';
-import { TaskFields } from '@/components/Room';
 import { dateWithTime } from '@/utils/functions';
 import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
+import { TaskFields, TaskLoader } from '@/components/Room';
 
 const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
@@ -41,7 +41,7 @@ const Task = ({ task }: { task: ITask }) => {
   const [displayImageModal, setDisplayImageModal] = useState(false);
 
   const { props, reset } = useTaskFields(task);
-  const upload = useUpload();
+  const [upload, uploading, error] = useUpload();
   const { description, url, dueDate, images } = props;
 
   const {
@@ -69,8 +69,9 @@ const Task = ({ task }: { task: ITask }) => {
 
   const editTask = async () => {
     if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (!description) toast.error('Task Description is Required');
+    else if (!description) toast.error('Task description is required');
     else {
+      setEditModal(false);
       setLoading(true);
 
       let payload: Partial<ITask> = {
@@ -87,68 +88,96 @@ const Task = ({ task }: { task: ITask }) => {
           ...payload,
           imgUrls,
         };
+
+        if (task.imgUrls && task.imgUrls?.length > 0) {
+          task.imgUrls.forEach(async (url) => {
+            try {
+              await deleteObject(ref(storage, url));
+            } catch (e: any) {
+              toast.error(e.message);
+            }
+          });
+        }
+
+        if (error) toast.error('An error occurred while uploading images');
       }
 
       const taskRef = doc(db, `rooms/${room.id}/tasks/${task.id}`);
-      await updateDoc(taskRef, payload);
-      toast.success('Task Edited');
-
-      setEditModal(false);
+      try {
+        await updateDoc(taskRef, payload);
+        toast.success('Task Edited');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
       setTimeout(() => setLoading(false), 300);
     }
   };
 
   const taskDone = async () => {
     if (completedByUser) {
-      await updateDoc(taskRef, {
-        completedBy: arrayRemove(userTag),
-      });
-
-      toast.success('Undo Successful');
+      try {
+        await updateDoc(taskRef, {
+          completedBy: arrayRemove(userTag),
+        });
+        toast.success('Undo Successful');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
     } else {
-      await updateDoc(taskRef, {
-        completedBy: arrayUnion(userTag),
-      });
-
-      toast.success('Task Completed');
+      try {
+        await updateDoc(taskRef, {
+          completedBy: arrayUnion(userTag),
+        });
+        toast.success('Task Completed');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
     }
   };
 
   const taskDel = () => {
     setDelModal(false);
-    setTimeout(() => {
-      toast.promise(deleteDoc(taskRef), {
-        loading: 'Deleting Task...',
-        success: 'Task Deleted',
-        error: 'Error Deleting Task',
-      });
+    setTimeout(async () => {
+      try {
+        await deleteDoc(taskRef);
+        toast.success('Task Deleted');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
 
       if (task.imgUrls && task.imgUrls?.length > 0) {
         task.imgUrls.forEach(async (url) => {
-          await deleteObject(ref(storage, url));
+          try {
+            await deleteObject(ref(storage, url));
+          } catch (e: any) {
+            toast.error(e.message);
+          }
         });
       }
     }, 300);
   };
 
-  const taskInfo = [
-    {
-      title: 'Date Added',
-      info: task.dateAdded?.toDate().toDateString(),
-    },
-    {
-      title: 'Added By',
-      info: taskCreator.username,
-    },
-    {
-      title: 'Recent Edit',
-      info: task.dateEdited?.toDate().toDateString(),
-    },
-    {
-      title: 'Recent Edit By',
-      info: taskEditor.username,
-    },
-  ];
+  const taskInfo = useMemo(
+    () => [
+      {
+        title: 'Date Added',
+        info: task.dateAdded?.toDate().toDateString(),
+      },
+      {
+        title: 'Added By',
+        info: taskCreator.username,
+      },
+      {
+        title: 'Recent Edit',
+        info: task.dateEdited?.toDate().toDateString(),
+      },
+      {
+        title: 'Recent Edit By',
+        info: taskEditor.username,
+      },
+    ],
+    [task, taskCreator.username, taskEditor.username]
+  );
 
   const nearDeadline = useMemo(() => {
     const threeDaysFromNow = new Date();
@@ -170,21 +199,25 @@ const Task = ({ task }: { task: ITask }) => {
     return false;
   }, [task.dueDate]);
 
-  const displayIndicator = () => {
+  const displayIndicator = useMemo(() => {
     if (userTag && task.completedBy.includes(userTag)) return 'bg-green-500';
     if (pastDeadline) return 'bg-red-500';
     if (nearDeadline) return 'bg-secondary';
     return 'bg-gray-400';
-  };
+  }, [userTag, task.completedBy, pastDeadline, nearDeadline]);
 
   return (
     <div className='flex flex-col'>
+      {loading && (
+        <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
+      )}
+
       <div
         className={`relative min-h-[70px] w-full bg-primary p-4 px-6 text-secondary md:px-7 ${
           hasImg ? 'rounded-t' : 'rounded'
         } group cursor-default overflow-hidden transition-all duration-300 hover:pr-12`}
       >
-        <div className={`task-indicator ${displayIndicator()}`} />
+        <div className={`task-indicator ${displayIndicator}`} />
 
         <TaskFields
           {...props}
@@ -193,7 +226,6 @@ const Task = ({ task }: { task: ITask }) => {
           proceedText='Edit'
           isOpen={editModal}
           setIsOpen={setEditModal}
-          isLoading={loading}
           onDismiss={reset}
         />
         <Modal
@@ -325,7 +357,7 @@ const Task = ({ task }: { task: ITask }) => {
             <p>
               {task.dueDate
                 ? dateWithTime(task.dueDate.toDate())
-                : 'No Due Date'}
+                : 'No Due Date Specified'}
             </p>
             <p>
               Done: {task.completedBy?.length}/
@@ -351,7 +383,7 @@ const Task = ({ task }: { task: ITask }) => {
 
       {task.imgUrls && task.imgUrls?.length > 0 && (
         <div className='relative flex space-x-1 rounded-b bg-primary bg-opacity-90 py-1 px-4 sm:space-x-2 md:py-2'>
-          <div className={`task-indicator ${displayIndicator()}`} />
+          <div className={`task-indicator ${displayIndicator}`} />
           {task.imgUrls.map((url) => (
             <button
               key={url}
