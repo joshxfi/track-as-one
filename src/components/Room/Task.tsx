@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { nanoid } from 'nanoid';
+import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
 import {
   MdMoreVert,
@@ -287,59 +288,66 @@ const Task = ({ task }: { task: ITask }) => {
             <>
               {canModify && (
                 <>
-                  <button
-                    onClick={() => {
-                      setOptionsModal(false);
+                  <Tippy content='Delete Task'>
+                    <button
+                      onClick={() => {
+                        setOptionsModal(false);
 
-                      setTimeout(() => {
-                        setDelModal(true);
-                      }, 500);
-                    }}
-                    type='button'
-                    className='task-option-btn bg-red-600 text-white'
-                  >
-                    <MdDelete />
-                  </button>
+                        setTimeout(() => {
+                          setDelModal(true);
+                        }, 500);
+                      }}
+                      type='button'
+                      className='task-option-btn bg-red-600 text-white'
+                    >
+                      <MdDelete />
+                    </button>
+                  </Tippy>
 
-                  <button
-                    onClick={() => {
-                      setOptionsModal(false);
+                  <Tippy content='Edit Task'>
+                    <button
+                      onClick={() => {
+                        setOptionsModal(false);
 
-                      setTimeout(() => {
-                        setEditModal(true);
-                      }, 500);
-                    }}
-                    type='button'
-                    className='task-option-btn bg-blue-600 text-white'
-                  >
-                    <MdEdit />
-                  </button>
+                        setTimeout(() => {
+                          setEditModal(true);
+                        }, 500);
+                      }}
+                      type='button'
+                      className='task-option-btn bg-blue-600 text-white'
+                    >
+                      <MdEdit />
+                    </button>
+                  </Tippy>
                 </>
               )}
 
               {task.url && (
-                <button
-                  onClick={() => {
-                    setOptionsModal(false);
+                <Tippy content='Visit URL'>
+                  <button
+                    onClick={() => {
+                      setOptionsModal(false);
 
-                    setTimeout(() => {
-                      setUrlModal(true);
-                    }, 500);
-                  }}
-                  type='button'
-                  className='task-option-btn bg-amber-500 text-white'
-                >
-                  <MdLink />
-                </button>
+                      setTimeout(() => {
+                        setUrlModal(true);
+                      }, 500);
+                    }}
+                    type='button'
+                    className='task-option-btn bg-amber-500 text-white'
+                  >
+                    <MdLink />
+                  </button>
+                </Tippy>
               )}
-
-              <button
-                onClick={taskDone}
-                type='button'
-                className='task-option-btn bg-green-600 text-white'
-              >
-                {completedByUser ? <MdUndo /> : <MdCheck />}
-              </button>
+              <Tippy content={completedByUser ? 'Undo Task' : 'Complete Task'}>
+                <button
+                  onClick={taskDone}
+                  type='button'
+                  className='task-option-btn bg-green-600 text-white'
+                >
+                  {completedByUser ? <MdUndo /> : <MdCheck />}
+                </button>
+              </Tippy>
             </>
           }
         />

@@ -1,4 +1,5 @@
 import React from 'react';
+import Tippy from '@tippyjs/react';
 import { useRouter } from 'next/router';
 
 interface RoomLabelProps {
@@ -11,17 +12,19 @@ const RoomLabel = ({ roomLength, label, limit }: RoomLabelProps) => {
   const { push } = useRouter();
 
   return (
-    <button
-      type='button'
-      onClick={() => push(`/${label.toLowerCase()}`)}
-      className='w-full primary-gradient text-primary rounded py-1 px-[30px] text-sm font-medium flex-between hover:shadow-lg transition-shadow'
-    >
-      <h2 className='font-medium'>
-        {roomLength} out of {limit} rooms
-      </h2>
+    <Tippy content={`${label} Room`} placement='right'>
+      <button
+        type='button'
+        onClick={() => push(`/${label.toLowerCase()}`)}
+        className='primary-gradient flex-between w-full rounded py-1 px-[30px] text-sm font-medium text-primary transition-shadow hover:shadow-lg'
+      >
+        <h2 className='font-medium'>
+          {roomLength} out of {limit} rooms
+        </h2>
 
-      <p>{label} &rarr;</p>
-    </button>
+        <p>{label} &rarr;</p>
+      </button>
+    </Tippy>
   );
 };
 

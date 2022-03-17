@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
+import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
-import ReactTooltip from 'react-tooltip';
 import { BsCheckCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
@@ -21,6 +21,9 @@ import {
   TaskLoader,
 } from '@/components/Room';
 import { AiOutlinePlus } from 'react-icons/ai';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'tippy.js/dist/tippy.css';
 
 const Room: NextPageWithLayout = () => {
   const { props, reset } = useTaskFields();
@@ -106,26 +109,41 @@ const Room: NextPageWithLayout = () => {
         <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
       )}
       <div className='my-4 flex items-center justify-between font-medium'>
-        <div
-          data-tip='Task Indicator: <br/> Gray - To do <br/> Green - Completed <br/> Yellow - Almost due <br /> Red - Past due'
-          data-place='bottom'
-          data-for='status'
-          className='flex items-center space-x-2'
-        >
+        <div className='flex items-center space-x-2'>
           <h2 className='text-sm'>{room.name}</h2>
-          <div>
-            <BsInfoCircleFill />
-          </div>
-          <ReactTooltip id='status' html />
+          <Tippy
+            placement='bottom'
+            content={
+              <div className='space-y-2 font-normal'>
+                <p>Task Indicator:</p>
+                <ul className='space-y-1'>
+                  <li className='border-l-4 border-gray-400 pl-2'>To do</li>
+                  <li className='border-l-4 border-green-500 pl-2'>
+                    Completed
+                  </li>
+                  <li className='border-l-4 border-secondary pl-2'>
+                    Almost due
+                  </li>
+                  <li className='border-l-4 border-red-500 pl-2'>Past due</li>
+                </ul>
+              </div>
+            }
+          >
+            <div>
+              <BsInfoCircleFill />
+            </div>
+          </Tippy>
         </div>
         <div className='flex space-x-2'>
-          <button
-            type='button'
-            onClick={() => setAddTaskModal(true)}
-            className='room-btn'
-          >
-            <AiOutlinePlus />
-          </button>
+          <Tippy content='Add Task'>
+            <button
+              type='button'
+              onClick={() => setAddTaskModal(true)}
+              className='room-btn'
+            >
+              <AiOutlinePlus />
+            </button>
+          </Tippy>
           <RoomMenu />
         </div>
       </div>

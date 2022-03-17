@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
+    "@tippyjs/react": "^4.2.6",
     "firebase": "^9.6.8",
     "nanoid": "^3.3.1",
     "next": "^12.1.0",
@@ -25,8 +26,7 @@
     "react-dom": "17.0.2",
     "react-firebase-hooks": "^5.0.3",
     "react-hot-toast": "^2.2.0",
-    "react-icons": "^4.3.1",
-    "react-tooltip": "^4.2.21"
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
