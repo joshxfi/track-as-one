@@ -34,7 +34,7 @@ const Room: NextPageWithLayout = () => {
 
   const { data } = useAuth();
   const { userTag } = data;
-  const { room, tasks } = useRoomContext();
+  const { room, tasks, tasksLoading } = useRoomContext();
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
@@ -86,17 +86,14 @@ const Room: NextPageWithLayout = () => {
     }
   };
 
-  if (!room || !room.id) {
-    return <Error info='room not found' />;
-  }
-
+  if (!room.creator) return <Error info='room not found' />;
   if (
     userTag &&
     !room.members?.includes(userTag) &&
     room.creator !== userTag &&
     !room.admin?.includes(userTag)
   ) {
-    return <div />;
+    return <Error code='403' info='you are not a member' />;
   }
 
   if (tab === 'info') return <Info />;
@@ -175,7 +172,9 @@ const Room: NextPageWithLayout = () => {
           ))}
         </section>
       ) : (
-        <Error code='' info='get started by clicking the plus icon' />
+        !tasksLoading && (
+          <Error code='' info='get started by clicking the plus icon' />
+        )
       )}
     </>
   );
