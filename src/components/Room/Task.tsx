@@ -254,7 +254,7 @@ const Task = ({ task }: { task: ITask }) => {
               <p className='text-gray-500'>
                 Are you sure you want to go to this URL?
               </p>
-              <p className='text-blue-500 underline'>{task.url}</p>
+              <p className='break-all text-blue-500 underline'>{task.url}</p>
             </div>
           }
           href={task.url}
