@@ -53,7 +53,7 @@ const Task = ({ task }: { task: ITask }) => {
   const taskRef = doc(db, `rooms/${room?.id}/tasks/${task.id}`);
   const completedByUser = task.completedBy.includes(userTag ?? '');
 
-  const editedBy = useMemo(() => task.editedBy ?? task.addedBy, [task]);
+  const editedBy = useMemo(() => task.editedBy ?? 'default', [task]);
 
   const [taskCreator] = useUserByTag(task.addedBy);
   const [taskEditor] = useUserByTag(editedBy);

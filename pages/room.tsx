@@ -114,7 +114,7 @@ const Room: NextPageWithLayout = () => {
           <Tippy
             placement='bottom'
             content={
-              <div className='space-y-2 font-normal'>
+              <div className='space-y-2 p-2 font-normal'>
                 <p>Task Indicator:</p>
                 <ul className='space-y-1'>
                   <li className='border-l-4 border-gray-400 pl-2'>To do</li>
@@ -135,15 +135,13 @@ const Room: NextPageWithLayout = () => {
           </Tippy>
         </div>
         <div className='flex space-x-2'>
-          <Tippy content='Add Task'>
-            <button
-              type='button'
-              onClick={() => setAddTaskModal(true)}
-              className='room-btn'
-            >
-              <AiOutlinePlus />
-            </button>
-          </Tippy>
+          <button
+            type='button'
+            onClick={() => setAddTaskModal(true)}
+            className='room-btn'
+          >
+            <AiOutlinePlus />
+          </button>
           <RoomMenu />
         </div>
       </div>

@@ -2,6 +2,9 @@ import React from 'react';
 import Tippy from '@tippyjs/react';
 import { useRouter } from 'next/router';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'tippy.js/dist/tippy.css';
+
 interface RoomLabelProps {
   roomLength: number;
   label: string;
