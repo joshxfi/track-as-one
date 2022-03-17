@@ -9,7 +9,7 @@ const useUserByTag = (userTag?: string) => {
       )
     : [null, false, null];
 
-  const member: IUser = _member ? _member[0] : ({} as IUser);
+  const member = _member ? _member[0] : null;
   return [member, loading, error] as const;
 };
 

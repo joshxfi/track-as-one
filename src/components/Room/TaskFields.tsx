@@ -39,12 +39,12 @@ const TaskFields = ({
       if (files) {
         for (let i = 0; i < files.length; i++) {
           if (files[i].size > 3 * 1024 * 1024) {
-            toast.error('max image size is 3MB');
+            toast.error('Max image size is 3MB');
             return;
           }
         }
 
-        if (files.length > 3) toast.error('you can only upload up to 3 images');
+        if (files.length > 3) toast.error('You can only upload up to 3 images');
         else setImages(Array.from(files));
       }
     },

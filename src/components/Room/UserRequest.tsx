@@ -5,43 +5,47 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import { useUserByTag } from '@/services';
+import { Confirmation } from '@/components';
 import { defaultPic } from '@/utils/constants';
+import { userInRoom } from '@/utils/functions';
 import { AiOutlineIdcard } from 'react-icons/ai';
-import Confirmation from '../Confirmation';
+import { useRoomContext } from '@/contexts/RoomContext';
 
-interface userRequestProps {
-  userId: string;
-  roomId?: string;
-}
-
-const UserRequest = ({ userId, roomId }: userRequestProps) => {
+const UserRequest = ({ userId }: { userId: string }) => {
+  const { room } = useRoomContext();
   const [user] = useUserByTag(userId);
+  const roomRef = doc(db, `rooms/${room.id}`);
 
   const acceptRequest = async () => {
-    toast.promise(
-      updateDoc(doc(db, `rooms/${roomId}`), {
+    if (userInRoom(user?.userTag ?? '', room)) {
+      toast.error('User is Already a Member');
+      await updateDoc(roomRef, {
+        requests: arrayRemove(userId),
+      });
+      return;
+    }
+
+    try {
+      await updateDoc(roomRef, {
         requests: arrayRemove(userId),
         members: arrayUnion(userId),
-      }),
-      {
-        loading: 'accepting request...',
-        success: 'request accepted!',
-        error: 'could not accept request.',
-      }
-    );
+      });
+
+      toast.success('Request Accepted');
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   const declineRequest = async () => {
-    toast.promise(
-      updateDoc(doc(db, `rooms/${roomId}`), {
+    try {
+      await updateDoc(roomRef, {
         requests: arrayRemove(userId),
-      }),
-      {
-        loading: 'declining request...',
-        success: 'request declined!',
-        error: 'could not decline request.',
-      }
-    );
+      });
+      toast.success('Request Declined');
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   return (

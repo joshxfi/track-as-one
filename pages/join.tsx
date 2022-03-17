@@ -9,6 +9,7 @@ import Layout from '@/components/Layout';
 import { RoomInput } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
+import { userInRoom } from '@/utils/functions';
 
 const Join: NextPageWithLayout = () => {
   const [roomId, setRoomID] = useState<string>('');
@@ -26,24 +27,22 @@ const Join: NextPageWithLayout = () => {
     const room = await getDoc(roomRef);
     const _room: IRoom = room.data() as IRoom;
 
-    if (!room.exists()) toast.error('room does not exist');
-    else if (_room.members.includes(userTag!))
-      toast.error('you are already a member');
-    else if (_room.requests.includes(userTag!))
-      toast.error('you already sent a request');
+    if (!room.exists()) toast.error('Room Does Not Exist');
+    else if (userInRoom(userTag, _room))
+      toast.error('You Are Already a Member');
+    else if (_room.requests.includes(userTag))
+      toast.error('You Already Sent a Request');
     else if (_room.creator === userTag)
-      toast.error('You are the owner of the room');
+      toast.error('You Are the Owner of the Room');
     else {
-      toast.promise(
-        updateDoc(roomRef, {
+      try {
+        await updateDoc(roomRef, {
           requests: arrayUnion(userTag),
-        }),
-        {
-          loading: 'Sending Request...',
-          success: 'Request Sent!',
-          error: 'Request Could not be Sent.',
-        }
-      );
+        });
+        toast.success('Request Sent');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
     }
   };
 

@@ -4,8 +4,13 @@ import { storage } from '@/config/firebase';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { nanoid } from 'nanoid';
 
+/**
+ * @returns [upload, uploading, error]
+ */
+
 export const useUpload = () => {
-  const [uploadFile] = useUploadFile();
+  // eslint-disable-next-line no-unused-vars
+  const [uploadFile, uploading, _, error] = useUploadFile();
 
   const upload = async (storagePath: string, files: File[]) => {
     if (files.length > 0) {
@@ -28,5 +33,5 @@ export const useUpload = () => {
     return [];
   };
 
-  return upload;
+  return [upload, uploading, error] as const;
 };

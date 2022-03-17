@@ -21,7 +21,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
   const [member] = useUserByTag(memberId);
   const [userModal, setUserModal] = useState(false);
   const [kickMemberModal, setKickMemberModal] = useState(false);
-  const { username, photoURL } = member;
+  const { username, photoURL } = member ?? {};
 
   const { room } = useRoomContext();
   const { data } = useAuth();

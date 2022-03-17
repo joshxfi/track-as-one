@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
+import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
-import { BsCheckCircleFill } from 'react-icons/bs';
+import { BsCheckCircleFill, BsInfoCircleFill } from 'react-icons/bs';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 import { Error } from '@/components';
@@ -17,8 +18,12 @@ import {
   Requests,
   Task,
   TaskFields,
+  TaskLoader,
 } from '@/components/Room';
 import { AiOutlinePlus } from 'react-icons/ai';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'tippy.js/dist/tippy.css';
 
 const Room: NextPageWithLayout = () => {
   const { props, reset } = useTaskFields();
@@ -29,11 +34,11 @@ const Room: NextPageWithLayout = () => {
 
   const { data } = useAuth();
   const { userTag } = data;
-  const { room, tasks } = useRoomContext();
+  const { room, tasks, tasksLoading } = useRoomContext();
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
-  const upload = useUpload();
+  const [upload, uploading, error] = useUpload();
 
   const completedByAll = useCallback(
     (task: ITask) =>
@@ -43,9 +48,11 @@ const Room: NextPageWithLayout = () => {
 
   const addTask = async () => {
     if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (tasks && tasks.length >= 15) toast.error('Task Limit Reached');
-    else if (!description) toast.error('Task Description is Required');
+    else if (tasks && tasks.length >= 20)
+      toast.error('Task limit reached (20)');
+    else if (!description) toast.error('Task description is required');
     else {
+      setAddTaskModal(false);
       setLoading(true);
       reset();
 
@@ -64,28 +71,29 @@ const Room: NextPageWithLayout = () => {
           ...payload,
           imgUrls,
         };
+
+        if (error) toast.error('An error occurred while uploading images');
       }
 
       const tasksRef = collection(db, `rooms/${room.id}/tasks`);
-      await addDoc(tasksRef, payload);
-      toast.success('Task Added');
-
-      setAddTaskModal(false);
+      try {
+        await addDoc(tasksRef, payload);
+        toast.success('Task Added');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
       setTimeout(() => setLoading(false), 300);
     }
   };
 
-  if (!room || !room.id) {
-    return <Error code='404' info='room not found' />;
-  }
-
+  if (!room.creator) return <Error info='room not found' />;
   if (
     userTag &&
     !room.members?.includes(userTag) &&
     room.creator !== userTag &&
     !room.admin?.includes(userTag)
   ) {
-    return <div />;
+    return <Error code='403' info='you are not a member' />;
   }
 
   if (tab === 'info') return <Info />;
@@ -94,8 +102,35 @@ const Room: NextPageWithLayout = () => {
 
   return (
     <>
+      {loading && (
+        <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
+      )}
       <div className='my-4 flex items-center justify-between font-medium'>
-        <h2 className='text-sm'>{room.name}</h2>
+        <div className='flex items-center space-x-2'>
+          <h2 className='text-sm'>{room.name}</h2>
+          <Tippy
+            placement='bottom'
+            content={
+              <div className='space-y-2 p-2 font-normal'>
+                <p>Task Indicator:</p>
+                <ul className='space-y-1'>
+                  <li className='border-l-4 border-gray-400 pl-2'>To do</li>
+                  <li className='border-l-4 border-green-500 pl-2'>
+                    Completed
+                  </li>
+                  <li className='border-l-4 border-secondary pl-2'>
+                    Almost due
+                  </li>
+                  <li className='border-l-4 border-red-500 pl-2'>Past due</li>
+                </ul>
+              </div>
+            }
+          >
+            <div>
+              <BsInfoCircleFill />
+            </div>
+          </Tippy>
+        </div>
         <div className='flex space-x-2'>
           <button
             type='button'
@@ -115,10 +150,9 @@ const Room: NextPageWithLayout = () => {
         proceedText='Add'
         isOpen={addTaskModal}
         setIsOpen={setAddTaskModal}
-        isLoading={loading}
       />
 
-      {tasks && (
+      {tasks && tasks?.length > 0 ? (
         <section className='mb-8 space-y-2'>
           {tasks
             .filter((task) => !completedByAll(task))
@@ -137,6 +171,10 @@ const Room: NextPageWithLayout = () => {
             <Task key={task.id} task={task} />
           ))}
         </section>
+      ) : (
+        !tasksLoading && (
+          <Error code='' info='get started by clicking the plus icon' />
+        )
       )}
     </>
   );

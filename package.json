@@ -1,6 +1,6 @@
 {
   "name": "track-as-one",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
+    "@tippyjs/react": "^4.2.6",
     "firebase": "^9.6.8",
     "nanoid": "^3.3.1",
     "next": "^12.1.0",

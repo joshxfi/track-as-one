@@ -14,7 +14,7 @@ const Requests = () => {
       {!room?.requests?.length && <EmptyMsg empty='requests' />}
       <div className='mb-4 w-full space-y-2'>
         {room?.requests?.map((user) => (
-          <UserRequest key={user} userId={user} roomId={room.id} />
+          <UserRequest key={user} userId={user} />
         ))}
       </div>
     </>
