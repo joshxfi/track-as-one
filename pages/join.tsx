@@ -35,16 +35,14 @@ const Join: NextPageWithLayout = () => {
     else if (_room.creator === userTag)
       toast.error('You Are the Owner of the Room');
     else {
-      toast.promise(
-        updateDoc(roomRef, {
+      try {
+        await updateDoc(roomRef, {
           requests: arrayUnion(userTag),
-        }),
-        {
-          loading: 'Sending Request...',
-          success: 'Request Sent!',
-          error: 'Request Could not be Sent.',
-        }
-      );
+        });
+        toast.success('Request Sent');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
     }
   };
 
