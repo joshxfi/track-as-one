@@ -226,7 +226,7 @@ const Task = ({ task }: { task: ITask }) => {
           {...props}
           proceed={editTask}
           title='Edit Task'
-          proceedText='Edit'
+          proceedText='Confirm'
           isOpen={editModal}
           setIsOpen={setEditModal}
           onDismiss={reset}
