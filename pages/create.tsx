@@ -24,28 +24,28 @@ const Create: NextPageWithLayout = () => {
 
   const createRoom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const roomId = nanoid(5);
+    try {
+      const roomId = nanoid(5);
 
-    const payload: IRoom = {
-      name: roomName,
-      creator: userTag,
-      admin: [],
-      members: [],
-      dateAdded: serverTimestamp(),
-      requests: [],
-    };
+      const payload: IRoom = {
+        name: roomName,
+        creator: userTag,
+        admin: [],
+        members: [],
+        dateAdded: serverTimestamp(),
+        requests: [],
+      };
 
-    setRoomName('');
-    if (roomsCreated && roomsCreated.length >= 5) {
-      toast.error('max rooms reached (5)');
-    } else if (roomName) {
-      toast.promise(setDoc(doc(db, 'rooms', roomId), payload), {
-        loading: 'Creating Room...',
-        success: 'Room Created!',
-        error: 'Room Could not be Created.',
-      });
-
-      push(`/home`);
+      setRoomName('');
+      if (roomsCreated && roomsCreated.length >= 5) {
+        toast.error('max rooms reached (5)');
+      } else if (roomName) {
+        await setDoc(doc(db, 'rooms', roomId), payload);
+        toast.success('Room Created!');
+        push(`/home`);
+      }
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 

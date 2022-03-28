@@ -17,20 +17,19 @@ const UserRequest = ({ userId }: { userId: string }) => {
   const roomRef = doc(db, `rooms/${room.id}`);
 
   const acceptRequest = async () => {
-    if (userInRoom(user?.userTag ?? '', room)) {
-      toast.error('User is Already a Member');
-      await updateDoc(roomRef, {
-        requests: arrayRemove(userId),
-      });
-      return;
-    }
-
     try {
+      if (userInRoom(user?.userTag ?? '', room)) {
+        toast.error('User is Already a Member');
+        await updateDoc(roomRef, {
+          requests: arrayRemove(userId),
+        });
+        return;
+      }
+
       await updateDoc(roomRef, {
         requests: arrayRemove(userId),
         members: arrayUnion(userId),
       });
-
       toast.success('Request Accepted');
     } catch (e: any) {
       toast.error(e.message);

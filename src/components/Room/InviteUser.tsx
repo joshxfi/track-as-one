@@ -25,32 +25,31 @@ const RoomInvite = () => {
 
   const inviteUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setUserTag('');
+    try {
+      setUserTag('');
 
-    if (!invUserTag) {
-      toast.error('example → user:Tas_1');
-    } else {
-      const userToInv = await getDocs(
-        query(collection(db, 'users'), where('userTag', '==', invUserTag))
-      );
-
-      if (userToInv.empty) {
-        toast.error('user tag could not be found');
-      } else if (invUserTag === data.userTag) {
-        toast.error('you are already in the room');
-      } else if (userInRoom(invUserTag, room)) {
-        toast.error('user is already in the room');
+      if (!invUserTag) {
+        toast.error('example → user:Tas_1');
       } else {
-        try {
+        const userToInv = await getDocs(
+          query(collection(db, 'users'), where('userTag', '==', invUserTag))
+        );
+
+        if (userToInv.empty) {
+          toast.error('user tag could not be found');
+        } else if (invUserTag === data.userTag) {
+          toast.error('you are already in the room');
+        } else if (userInRoom(invUserTag, room)) {
+          toast.error('user is already in the room');
+        } else {
           await updateDoc(doc(db, `users/${userToInv.docs[0].id}`), {
             invites: arrayUnion(room.id),
           });
-
           toast.success('User Invited');
-        } catch (e: any) {
-          toast.error(e.message);
         }
       }
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 

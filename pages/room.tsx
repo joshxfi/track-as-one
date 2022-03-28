@@ -47,42 +47,42 @@ const Room: NextPageWithLayout = () => {
   );
 
   const addTask = async () => {
-    if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (tasks && tasks.length >= 20)
-      toast.error('Task limit reached (20)');
-    else if (!description) toast.error('Task description is required');
-    else {
-      setAddTaskModal(false);
-      setLoading(true);
-      reset();
+    try {
+      if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
+      else if (tasks && tasks.length >= 20)
+        toast.error('Task limit reached (20)');
+      else if (!description) toast.error('Task description is required');
+      else {
+        setAddTaskModal(false);
+        setLoading(true);
+        reset();
 
-      let payload: ITask = {
-        description,
-        addedBy: userTag,
-        completedBy: [],
-        dateAdded: serverTimestamp(),
-        dueDate,
-        url,
-      };
-
-      if (images.length > 0) {
-        const imgUrls = await upload(`rooms/${room.id}/images`, images);
-        payload = {
-          ...payload,
-          imgUrls,
+        let payload: ITask = {
+          description,
+          addedBy: userTag,
+          completedBy: [],
+          dateAdded: serverTimestamp(),
+          dueDate,
+          url,
         };
 
-        if (error) toast.error('An error occurred while uploading images');
-      }
+        if (images.length > 0) {
+          const imgUrls = await upload(`rooms/${room.id}/images`, images);
+          payload = {
+            ...payload,
+            imgUrls,
+          };
 
-      const tasksRef = collection(db, `rooms/${room.id}/tasks`);
-      try {
+          if (error) toast.error('An error occurred while uploading images');
+        }
+
+        const tasksRef = collection(db, `rooms/${room.id}/tasks`);
         await addDoc(tasksRef, payload);
         toast.success('Task Added');
-      } catch (e: any) {
-        toast.error(e.message);
+        setTimeout(() => setLoading(false), 300);
       }
-      setTimeout(() => setLoading(false), 300);
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 

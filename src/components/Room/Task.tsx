@@ -71,93 +71,84 @@ const Task = ({ task }: { task: ITask }) => {
   }, [task, userTag]);
 
   const editTask = async () => {
-    if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (!description) toast.error('Task description is required');
-    else {
-      setEditModal(false);
-      setLoading(true);
+    try {
+      if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
+      else if (!description) toast.error('Task description is required');
+      else {
+        setEditModal(false);
+        setLoading(true);
 
-      let payload: Partial<ITask> = {
-        description,
-        editedBy: userTag,
-        dateEdited: serverTimestamp(),
-        dueDate,
-        url,
-      };
-
-      if (images.length > 0) {
-        const imgUrls = await upload(`rooms/${room.id}/images`, images);
-        payload = {
-          ...payload,
-          imgUrls,
+        let payload: Partial<ITask> = {
+          description,
+          editedBy: userTag,
+          dateEdited: serverTimestamp(),
+          dueDate,
+          url,
         };
 
-        if (task.imgUrls && task.imgUrls?.length > 0) {
-          task.imgUrls.forEach(async (url) => {
-            try {
-              await deleteObject(ref(storage, url));
-            } catch (e: any) {
-              toast.error(e.message);
-            }
-          });
+        if (images.length > 0) {
+          const imgUrls = await upload(`rooms/${room.id}/images`, images);
+          payload = {
+            ...payload,
+            imgUrls,
+          };
+
+          if (task.imgUrls && task.imgUrls?.length > 0) {
+            task.imgUrls.forEach(async (url) => {
+              try {
+                await deleteObject(ref(storage, url));
+              } catch (e: any) {
+                toast.error(e.message);
+              }
+            });
+          }
+
+          if (error) toast.error('An error occurred while uploading images');
         }
 
-        if (error) toast.error('An error occurred while uploading images');
-      }
-
-      const taskRef = doc(db, `rooms/${room.id}/tasks/${task.id}`);
-      try {
         await updateDoc(taskRef, payload);
         toast.success('Task Edited');
-      } catch (e: any) {
-        toast.error(e.message);
+        setTimeout(() => setLoading(false), 300);
       }
-      setTimeout(() => setLoading(false), 300);
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 
   const taskDone = async () => {
-    if (completedByUser) {
-      try {
+    try {
+      if (completedByUser) {
         await updateDoc(taskRef, {
           completedBy: arrayRemove(userTag),
         });
         toast.success('Undo Successful');
-      } catch (e: any) {
-        toast.error(e.message);
-      }
-    } else {
-      try {
+      } else {
         await updateDoc(taskRef, {
           completedBy: arrayUnion(userTag),
         });
         toast.success('Task Completed');
-      } catch (e: any) {
-        toast.error(e.message);
       }
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 
   const taskDel = () => {
-    setDelModal(false);
-    setTimeout(async () => {
-      try {
+    try {
+      setDelModal(false);
+      setTimeout(async () => {
         await deleteDoc(taskRef);
         toast.success('Task Deleted');
-      } catch (e: any) {
-        toast.error(e.message);
-      }
 
-      if (task.imgUrls && task.imgUrls?.length > 0) {
-        task.imgUrls.forEach(async (url) => {
-          try {
+        if (task.imgUrls && task.imgUrls?.length > 0) {
+          task.imgUrls.forEach(async (url) => {
             await deleteObject(ref(storage, url));
-          } catch (e: any) {
-            toast.error(e.message);
-          }
-        });
-      }
-    }, 300);
+          });
+        }
+      }, 300);
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   const taskInfo = useMemo(
