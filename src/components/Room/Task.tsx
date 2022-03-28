@@ -261,7 +261,6 @@ const Task = ({ task }: { task: ITask }) => {
           setIsOpen={setUrlModal}
           isOpen={urlModal}
         />
-
         <Modal
           title='Task Info'
           isOpen={optionsModal}

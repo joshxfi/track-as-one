@@ -58,8 +58,7 @@ const RoomInvite = () => {
 
   return (
     <RoomInput
-      title='Invite a User'
-      btnLabel='inviteUser'
+      btnLabel='invite user'
       Icon={AiOutlineIdcard}
       onSubmit={inviteUser}
       onChange={(e) => setUserTag(e.target.value.trim())}

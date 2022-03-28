@@ -51,7 +51,6 @@ const Create: NextPageWithLayout = () => {
 
   return (
     <RoomInput
-      title='Create a Room'
       btnLabel='create room'
       Icon={BiDoorOpen}
       onSubmit={createRoom}

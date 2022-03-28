@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 
 import toast from 'react-hot-toast';
-import { VscSignIn } from 'react-icons/vsc';
+import { BiDoorOpen } from 'react-icons/bi';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
@@ -48,13 +48,12 @@ const Join: NextPageWithLayout = () => {
 
   return (
     <RoomInput
-      title='Join a Room'
-      btnLabel='request join'
-      Icon={VscSignIn}
+      btnLabel='request to join'
       onSubmit={requestJoin}
-      onChange={(e) => setRoomID(e.target.value)}
+      onChange={(e) => setRoomID(e.target.value.trim())}
       value={roomId}
       placeholder='enter room id'
+      Icon={BiDoorOpen}
       minLength={5}
       maxLength={15}
     />
