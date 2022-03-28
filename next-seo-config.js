@@ -52,4 +52,10 @@ export default {
       href: '/manifest.json',
     },
   ],
+  additionalMetaTags: [
+    {
+      name: 'viewport',
+      content: 'initial-scale=1, viewport-fit=cover, user-scalable=no',
+    },
+  ],
 };
