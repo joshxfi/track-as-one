@@ -40,7 +40,7 @@
   }
 
   .modal-btn {
-    @apply cursor-pointer rounded-md border border-transparent py-2 px-4 text-sm text-white;
+    @apply cursor-pointer rounded border border-transparent py-2 px-4 text-sm text-white;
   }
 
   .popup-proceed {

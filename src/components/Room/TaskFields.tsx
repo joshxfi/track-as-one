@@ -2,12 +2,13 @@ import React, { useCallback, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { BsXSquareFill } from 'react-icons/bs';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
+
 import Modal, { ModalProps } from '@/components/Modal';
 import 'react-datepicker/dist/react-datepicker.css';
 
 type SetState<T = string> = React.Dispatch<React.SetStateAction<T>>;
 
-interface TaskFieldsProps extends Omit<ModalProps, 'body'> {
+interface TaskFieldsProps extends Omit<ModalProps, 'body' | 'title'> {
   description: string;
   setDesc: SetState;
   dueDate: Date | null;
@@ -63,6 +64,7 @@ const TaskFields = ({
       />
       <Modal
         {...rest}
+        title='Task'
         body={
           <div className='mt-4 flex flex-col space-y-4'>
             <div className='room-input-container'>

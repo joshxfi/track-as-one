@@ -215,12 +215,10 @@ const Task = ({ task }: { task: ITask }) => {
 
         <TaskFields
           {...props}
-          proceed={editTask}
-          title='Edit Task'
-          proceedText='Confirm'
           isOpen={editModal}
           setIsOpen={setEditModal}
           onDismiss={reset}
+          proceed={{ action: editTask, text: 'Edit Task' }}
         />
         <Modal
           title='Delete Task'

@@ -197,11 +197,9 @@ const Room: NextPageWithLayout = () => {
 
       <TaskFields
         {...props}
-        proceed={addTask}
-        title='Add Task'
-        proceedText='Add'
         isOpen={addTaskModal}
         setIsOpen={setAddTaskModal}
+        proceed={{ action: addTask, text: 'Add Task' }}
       />
 
       <Modal

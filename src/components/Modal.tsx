@@ -1,6 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback } from 'react';
 import { IoMdCloseCircle } from 'react-icons/io';
 import { Dialog, Transition } from '@headlessui/react';
+
+type Proceed = {
+  action: () => void;
+  text?: string;
+  style?: string;
+};
 
 export interface ModalProps {
   title?: string;
@@ -10,8 +16,7 @@ export interface ModalProps {
   isOpen: boolean;
   onDismiss?: () => void;
   href?: string;
-  proceed?: () => void;
-  proceedText?: string;
+  proceed?: Proceed;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   empty?: boolean;
   containerStyle?: string;
@@ -26,20 +31,21 @@ const Modal = ({
   onDismiss,
   href,
   proceed,
-  proceedText,
   setIsOpen,
   empty,
   containerStyle,
 }: ModalProps) => {
+  const dismiss = useCallback(() => {
+    setIsOpen(false);
+    if (onDismiss) onDismiss();
+  }, [onDismiss]);
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as='div'
         className='fixed inset-0 z-50 bg-gray-600/60'
-        onClose={() => {
-          setIsOpen(false);
-          if (onDismiss) onDismiss();
-        }}
+        onClose={dismiss}
       >
         <div
           className={`min-h-screen ${
@@ -85,10 +91,7 @@ const Modal = ({
 
                   <button
                     type='button'
-                    onClick={() => {
-                      setIsOpen(false);
-                      if (onDismiss) onDismiss();
-                    }}
+                    onClick={dismiss}
                     className='md:text-2xl'
                   >
                     <IoMdCloseCircle />
@@ -106,12 +109,23 @@ const Modal = ({
 
               {!empty && (
                 <div className='mt-4 flex flex-wrap justify-end space-x-2'>
+                  {href ||
+                    (proceed && (
+                      <button
+                        type='button'
+                        onClick={dismiss}
+                        className='mr-4 text-sm font-medium text-gray-800'
+                      >
+                        Cancel
+                      </button>
+                    ))}
+
                   {href && (
                     <a
                       href={href}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='modal-btn bg-secondary'
+                      className='modal-btn bg-green-500'
                     >
                       Continue
                     </a>
@@ -120,10 +134,10 @@ const Modal = ({
                   {proceed && (
                     <button
                       type='button'
-                      className='modal-btn bg-secondary'
-                      onClick={proceed}
+                      className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
+                      onClick={proceed.action}
                     >
-                      {proceedText || 'Continue'}
+                      {proceed.text ?? 'Continue'}
                     </button>
                   )}
 
