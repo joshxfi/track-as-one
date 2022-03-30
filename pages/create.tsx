@@ -38,10 +38,10 @@ const Create: NextPageWithLayout = () => {
 
       setRoomName('');
       if (roomsCreated && roomsCreated.length >= 5) {
-        toast.error('max rooms reached (5)');
+        toast.error('Max rooms reached (5)');
       } else if (roomName) {
         await setDoc(doc(db, 'rooms', roomId), payload);
-        toast.success('Room Created!');
+        toast.success('Room Created');
         push(`/home`);
       }
     } catch (e: any) {

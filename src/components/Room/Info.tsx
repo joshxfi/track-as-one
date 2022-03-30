@@ -94,7 +94,7 @@ const Info: React.FC = () => {
         isOpen={leaveModal}
       />
 
-      <Header title='Room Info' backBtn />
+      <Header title='Info' backBtn />
 
       <InfoSection
         title={room.id ?? ''}

@@ -37,7 +37,7 @@ const RoomInput = ({ Icon, btnLabel, onSubmit, ...rest }: RoomInputProps) => {
             type='button'
             onClick={back}
             Icon={IoIosArrowBack}
-            className='h-[40px] rounded-l-[36px] rounded-r bg-primary px-2'
+            className='btn-ring h-[40px] rounded-l-[36px] rounded-r bg-primary px-2'
             iconStyles='text-secondary text-xl'
           />
           <Button

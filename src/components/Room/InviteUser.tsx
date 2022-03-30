@@ -28,7 +28,7 @@ const RoomInvite = () => {
     try {
       setUserTag('');
 
-      if (!invUserTag) {
+      if (!invUserTag.includes('user:')) {
         toast.error('example → user:Tas_1');
       } else {
         const userToInv = await getDocs(
@@ -63,7 +63,6 @@ const RoomInvite = () => {
       onChange={(e) => setUserTag(e.target.value.trim())}
       value={invUserTag}
       placeholder='enter user tag'
-      minLength={10}
       maxLength={10}
     />
   );

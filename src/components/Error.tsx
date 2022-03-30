@@ -14,7 +14,7 @@ const Error = ({ code = '404', info = 'page not found' }: ErrorProps) => {
         <Image src={mascot} objectFit='contain' alt='error cat mascot' />
       </div>
       <h1 className='text-7xl font-bold'>{code}</h1>
-      <p className='text-lg'>{info}</p>
+      <p className='text-base md:text-lg'>{info}</p>
     </section>
   );
 };
