@@ -114,7 +114,7 @@ const Room: NextPageWithLayout = () => {
     }
   };
 
-  const RadioFilter = ({ label, value }: { label: string; value: SortDate }) =>
+  const RadioSort = ({ label, value }: { label: string; value: SortDate }) =>
     useMemo(() => {
       const id = nanoid();
 
@@ -131,7 +131,7 @@ const Room: NextPageWithLayout = () => {
           <p>{label}</p>
         </label>
       );
-    }, []);
+    }, [sortBy]);
 
   if (!room.creator) return <Error info='room not found' />;
   if (
@@ -214,18 +214,18 @@ const Room: NextPageWithLayout = () => {
 
             <div className='space-y-8'>
               <div>
-                <h2 className='font-medium'>Due Date</h2>
-                <div className='mt-2 flex items-center space-x-4'>
-                  <RadioFilter label='Ascending' value='due_date_asc' />
-                  <RadioFilter label='Descending' value='due_date_desc' />
+                <h2 className='font-medium'>Date Added</h2>
+                <div className='sort-container'>
+                  <RadioSort label='Ascending' value='date_added_asc' />
+                  <RadioSort label='Descending' value='date_added_desc' />
                 </div>
               </div>
 
               <div>
-                <h2 className='font-medium'>Date Added</h2>
-                <div className='mt-2 flex items-center space-x-4'>
-                  <RadioFilter label='Ascending' value='date_added_asc' />
-                  <RadioFilter label='Descending' value='date_added_desc' />
+                <h2 className='font-medium'>Due Date</h2>
+                <div className='sort-container'>
+                  <RadioSort label='Ascending' value='due_date_asc' />
+                  <RadioSort label='Descending' value='due_date_desc' />
                 </div>
               </div>
             </div>

@@ -90,4 +90,8 @@
   .task-indicator {
     @apply absolute left-0 top-0 h-full w-2;
   }
+
+  .sort-container {
+    @apply mt-2 flex items-center space-x-4;
+  }
 }
