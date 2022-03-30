@@ -12,9 +12,6 @@ import {
   MdUndo,
 } from 'react-icons/md';
 
-import { Modal } from '@/components';
-import { db, storage } from '@/config/firebase';
-import { useAuth } from '@/contexts/AuthContext';
 import {
   doc,
   updateDoc,
@@ -23,8 +20,15 @@ import {
   arrayRemove,
   serverTimestamp,
 } from 'firebase/firestore';
+import {
+  dateWithTime,
+  isNearDeadline,
+  isPastDeadline,
+} from '@/utils/functions';
+import { Modal } from '@/components';
 import { useUserByTag } from '@/services';
-import { dateWithTime } from '@/utils/functions';
+import { db, storage } from '@/config/firebase';
+import { useAuth } from '@/contexts/AuthContext';
 import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
@@ -173,25 +177,14 @@ const Task = ({ task }: { task: ITask }) => {
     [task, taskCreator?.username, taskEditor?.username]
   );
 
-  const nearDeadline = useMemo(() => {
-    const threeDaysFromNow = new Date();
-    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
-
-    if (task.dueDate && task.dueDate.toDate() <= threeDaysFromNow) {
-      return true;
-    }
-
-    return false;
-  }, [task.dueDate]);
-
-  const pastDeadline = useMemo(() => {
-    const today = new Date();
-    if (today > task.dueDate?.toDate()) {
-      return true;
-    }
-
-    return false;
-  }, [task.dueDate]);
+  const nearDeadline = useMemo(
+    () => isNearDeadline(task.dueDate),
+    [task.dueDate]
+  );
+  const pastDeadline = useMemo(
+    () => isPastDeadline(task.dueDate),
+    [task.dueDate]
+  );
 
   const displayIndicator = useMemo(() => {
     if (userTag && task.completedBy.includes(userTag)) return 'bg-green-500';

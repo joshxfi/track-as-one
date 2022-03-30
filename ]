@@ -1,13 +1,12 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { nanoid } from 'nanoid';
+import React, { useState, useCallback } from 'react';
 import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { BsCheckCircleFill, BsInfoCircleFill, BsFilter } from 'react-icons/bs';
 
-import { db } from '@/config/firebase';
 import { Error, Modal } from '@/components';
+import { db } from '@/config/firebase';
 import { Button } from '@/components/Button';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
@@ -26,15 +25,6 @@ import {
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tippy.js/dist/tippy.css';
-import { isNearDeadline, isPastDeadline } from '@/utils/functions';
-
-type SortDate =
-  | 'date_added_asc'
-  | 'date_added_desc'
-  | 'due_date_asc'
-  | 'due_date_desc';
-
-type FilterStatus = 'All' | 'Completed' | 'Almost Due' | 'Past Due';
 
 const Room: NextPageWithLayout = () => {
   const { props, reset } = useTaskFields();
@@ -44,36 +34,9 @@ const Room: NextPageWithLayout = () => {
   const [filterModal, setFilterModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [sortBy, setSortBy] = useState<SortDate>('date_added_desc');
-  const [filterBy, setFilterBy] = useState<FilterStatus>('All');
-
   const { data } = useAuth();
   const { userTag } = data;
   const { room, tasks, tasksLoading } = useRoomContext();
-
-  const sortedTasks = useMemo(() => {
-    return tasks
-      ?.filter((task) => {
-        if (filterBy === 'Completed') return task.completedBy.includes(userTag);
-        if (filterBy === 'Almost Due') return isNearDeadline(task.dueDate);
-        if (filterBy === 'Past Due') return isPastDeadline(task.dueDate);
-
-        return true;
-      })
-      ?.filter((task) => (sortBy?.includes('due') ? task.dueDate : task))
-      .sort((a, b) => {
-        if (sortBy && sortBy !== 'date_added_desc') {
-          if (sortBy.includes('added')) {
-            if (sortBy.includes('asc')) return a.dateAdded - b.dateAdded;
-          }
-
-          if (sortBy.includes('asc')) return a.dueDate - b.dueDate;
-          return b.dueDate - a.dueDate;
-        }
-
-        return 0;
-      });
-  }, [tasks, sortBy, filterBy]);
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
@@ -124,44 +87,6 @@ const Room: NextPageWithLayout = () => {
       toast.error(e.message);
     }
   };
-
-  const SortDate = ({ label, value }: { label: string; value: SortDate }) =>
-    useMemo(() => {
-      const id = nanoid();
-
-      return (
-        <label htmlFor={id} className='flex cursor-pointer space-x-2'>
-          <input
-            type='radio'
-            name='sort_date'
-            id={id}
-            value={value}
-            checked={sortBy === value}
-            onChange={() => setSortBy(value)}
-          />
-          <p>{label}</p>
-        </label>
-      );
-    }, [sortBy]);
-
-  const SortStatus = ({ label }: { label: FilterStatus }) =>
-    useMemo(() => {
-      const id = nanoid();
-
-      return (
-        <label htmlFor={id} className='flex cursor-pointer space-x-2'>
-          <input
-            type='radio'
-            name='sort_status'
-            id={id}
-            value={label}
-            checked={filterBy === label}
-            onChange={() => setFilterBy(label)}
-          />
-          <p>{label}</p>
-        </label>
-      );
-    }, [filterBy]);
 
   if (!room.creator) return <Error info='room not found' />;
   if (
@@ -227,9 +152,11 @@ const Room: NextPageWithLayout = () => {
 
       <TaskFields
         {...props}
+        proceed={addTask}
+        title='Add Task'
+        proceedText='Add'
         isOpen={addTaskModal}
         setIsOpen={setAddTaskModal}
-        proceed={{ action: addTask, text: 'Add Task' }}
       />
 
       <Modal
@@ -242,31 +169,18 @@ const Room: NextPageWithLayout = () => {
 
             <div className='space-y-8'>
               <div>
-                <h2 className='font-medium'>Date Added</h2>
-                <div className='radio-sort'>
-                  <SortDate label='Ascending' value='date_added_asc' />
-                  <SortDate label='Descending' value='date_added_desc' />
-                </div>
-              </div>
-
-              <div>
                 <h2 className='font-medium'>Due Date</h2>
-                <p className='text-xs text-gray-700'>
-                  No specified due dates will be hidden.
-                </p>
-                <div className='radio-sort'>
-                  <SortDate label='Ascending' value='due_date_asc' />
-                  <SortDate label='Descending' value='due_date_desc' />
+                <div className='mt-2 flex items-center space-x-4'>
+                  <RadioFilter group='due_date' label='Ascending' />
+                  <RadioFilter group='due_date' label='Descending' />
                 </div>
               </div>
 
               <div>
-                <h2 className='font-medium'>Status</h2>
-                <div className='mt-2 grid grid-cols-2 gap-y-2'>
-                  <SortStatus label='All' />
-                  <SortStatus label='Completed' />
-                  <SortStatus label='Almost Due' />
-                  <SortStatus label='Past Due' />
+                <h2 className='font-medium'>Date Added</h2>
+                <div className='mt-2 flex items-center space-x-4'>
+                  <RadioFilter group='date_added' label='Ascending' />
+                  <RadioFilter group='date_added' label='Descending' />
                 </div>
               </div>
             </div>
@@ -274,35 +188,28 @@ const Room: NextPageWithLayout = () => {
         }
       />
 
-      {sortedTasks && sortedTasks?.length > 0 ? (
+      {tasks && tasks?.length > 0 ? (
         <section className='mb-8 space-y-2'>
-          {sortedTasks
+          {tasks
             .filter((task) => !completedByAll(task))
             .map((task) => (
               <Task key={task.id} task={task} />
             ))}
 
-          {sortedTasks.filter(completedByAll).length > 0 && (
+          {tasks.filter(completedByAll).length > 0 && (
             <div className='flex items-center space-x-2 py-2'>
               <BsCheckCircleFill className='flex-none' />
               <div className='h-[1px] w-full bg-primary' />
             </div>
           )}
 
-          {sortedTasks.filter(completedByAll).map((task) => (
+          {tasks.filter(completedByAll).map((task) => (
             <Task key={task.id} task={task} />
           ))}
         </section>
       ) : (
         !tasksLoading && (
-          <Error
-            code=''
-            info={
-              filterBy !== 'All'
-                ? `there are no ${filterBy.toLowerCase()} task(s)`
-                : 'get started by clicking the plus icon'
-            }
-          />
+          <Error code='' info='get started by clicking the plus icon' />
         )
       )}
     </>
@@ -312,5 +219,19 @@ const Room: NextPageWithLayout = () => {
 Room.getLayout = (page: React.ReactElement) => (
   <RoomProvider>{page}</RoomProvider>
 );
+
+interface RadioFilerProps {
+  group: string;
+  label: string;
+}
+
+const RadioFilter = ({ group, label }: RadioFilerProps) => {
+  return (
+    <label htmlFor={label} className='flex space-x-2 cursor-pointer'>
+      <input type='radio' id={label} name={group} value={label} />
+      <p>{label}</p>
+    </label>
+  );
+};
 
 export default Room;
