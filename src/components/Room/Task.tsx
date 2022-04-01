@@ -25,10 +25,10 @@ import {
   isNearDeadline,
   isPastDeadline,
 } from '@/utils/functions';
-import { Modal } from '@/components';
 import { useUserByTag } from '@/services';
 import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/contexts/AuthContext';
+import { Modal, EmptyModal } from '@/components';
 import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
@@ -357,10 +357,9 @@ const Task = ({ task }: { task: ITask }) => {
           </div>
         </div>
       </div>
-      <Modal
-        empty
+      <EmptyModal
         isOpen={displayImageModal}
-        setIsOpen={() => setDisplayImageModal(false)}
+        setIsOpen={setDisplayImageModal}
         body={
           <div className='grid w-screen max-w-screen-md place-items-center md:mr-4'>
             <img
