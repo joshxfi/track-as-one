@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export const dateWithTime = (date: Date) =>
   date.toLocaleDateString([], {
     year: 'numeric',
@@ -21,4 +23,17 @@ export const isNearDeadline = (dueDate: any) => {
 export const isPastDeadline = (dueDate: any) => {
   const today = new Date();
   return today > dueDate?.toDate();
+};
+
+type SetBooleanState = Dispatch<SetStateAction<boolean>>;
+
+export const timeoutModal = (
+  prevModal: SetBooleanState,
+  showModal: SetBooleanState
+) => {
+  prevModal(false);
+
+  setTimeout(() => {
+    showModal(true);
+  }, 500);
 };

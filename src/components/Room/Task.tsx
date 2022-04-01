@@ -23,6 +23,7 @@ import {
   dateWithTime,
   isNearDeadline,
   isPastDeadline,
+  timeoutModal,
 } from '@/utils/functions';
 import { useUserByTag } from '@/services';
 import { db, storage } from '@/config/firebase';
@@ -309,13 +310,7 @@ const Task = ({ task }: { task: ITask }) => {
               {task.url && (
                 <Tippy content='Visit URL'>
                   <button
-                    onClick={() => {
-                      setOptionsModal(false);
-
-                      setTimeout(() => {
-                        setUrlModal(true);
-                      }, 500);
-                    }}
+                    onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
                     type='button'
                     className='task-option-btn bg-amber-500 text-white'
                   >
@@ -362,9 +357,9 @@ const Task = ({ task }: { task: ITask }) => {
       </div>
 
       <Modal
+        title='View Image'
         isOpen={imgModal}
         setIsOpen={setImgModal}
-        title='View Image'
         proceed={{ href: displayImage }}
         description='Do you want to open the image in a new tab?'
       />
@@ -375,13 +370,7 @@ const Task = ({ task }: { task: ITask }) => {
         body={
           <button
             type='button'
-            onClick={() => {
-              setDisplayImageModal(false);
-
-              setTimeout(() => {
-                setImgModal(true);
-              }, 500);
-            }}
+            onClick={() => timeoutModal(setDisplayImageModal, setImgModal)}
             className='grid w-screen max-w-screen-md place-items-center md:mr-4'
           >
             <img
