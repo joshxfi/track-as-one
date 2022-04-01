@@ -4,7 +4,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { modalTransitions } from '@/utils/constants';
 
 type Proceed = {
-  action: () => void;
+  action?: () => void;
+  href?: string;
   text?: string;
   style?: string;
 };
@@ -16,7 +17,6 @@ export interface ModalProps {
   buttons?: React.ReactNode;
   isOpen: boolean;
   onDismiss?: () => void;
-  href?: string;
   proceed?: Proceed;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   containerStyle?: string;
@@ -29,7 +29,6 @@ const Modal = ({
   buttons,
   isOpen,
   onDismiss,
-  href,
   proceed,
   setIsOpen,
   containerStyle,
@@ -77,29 +76,28 @@ const Modal = ({
               )}
 
               <div className='mt-4 flex flex-wrap justify-end space-x-3'>
-                {href ||
-                  (proceed && (
-                    <button
-                      type='button'
-                      onClick={dismiss}
-                      className='mr-4 text-sm font-medium text-gray-800'
-                    >
-                      Cancel
-                    </button>
-                  ))}
+                {proceed && (
+                  <button
+                    type='button'
+                    onClick={dismiss}
+                    className='mr-4 text-sm font-medium text-gray-800'
+                  >
+                    Cancel
+                  </button>
+                )}
 
-                {href && (
+                {proceed?.href && (
                   <a
-                    href={href}
+                    href={proceed.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='modal-btn bg-green-500'
+                    className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
                   >
-                    Continue
+                    {proceed.text ?? 'Continue'}
                   </a>
                 )}
 
-                {proceed && (
+                {proceed?.action && (
                   <button
                     type='button'
                     className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}

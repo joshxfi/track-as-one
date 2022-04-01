@@ -40,6 +40,7 @@ const Task = ({ task }: { task: ITask }) => {
   const [urlModal, setUrlModal] = useState(false);
   const [optionsModal, setOptionsModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [imgModal, setImgModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [displayImage, setDisplayImage] = useState('');
@@ -213,6 +214,7 @@ const Task = ({ task }: { task: ITask }) => {
           onDismiss={reset}
           proceed={{ action: editTask, text: 'Edit Task' }}
         />
+
         <Modal
           title='Delete Task'
           description='Are you sure you want to delete this task? This action cannot be undone.'
@@ -239,10 +241,11 @@ const Task = ({ task }: { task: ITask }) => {
               <p className='break-all text-blue-500 underline'>{task.url}</p>
             </div>
           }
-          href={task.url}
+          proceed={{ href: task.url }}
           setIsOpen={setUrlModal}
           isOpen={urlModal}
         />
+
         <Modal
           title='Task Info'
           isOpen={optionsModal}
@@ -335,7 +338,7 @@ const Task = ({ task }: { task: ITask }) => {
 
         <button
           onClick={() => setOptionsModal(true)}
-          className='absolute top-0 -right-14 flex h-full w-8 items-center justify-center bg-secondary text-2xl transition-all duration-300 group-hover:right-0 group-hover:text-white'
+          className='absolute top-0 -right-14 flex h-full w-8 items-center justify-center bg-secondary text-2xl text-white transition-all duration-300 group-hover:right-0'
           type='button'
         >
           <MdMoreVert />
@@ -357,14 +360,28 @@ const Task = ({ task }: { task: ITask }) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={imgModal}
+        setIsOpen={setImgModal}
+        title='View Image'
+        proceed={{ href: displayImage }}
+        description='Do you want to open the image in a new tab?'
+      />
+
       <EmptyModal
         isOpen={displayImageModal}
         setIsOpen={setDisplayImageModal}
         body={
-          <a
-            href={displayImage}
-            target='_blank'
-            rel='noreferrer'
+          <button
+            type='button'
+            onClick={() => {
+              setDisplayImageModal(false);
+
+              setTimeout(() => {
+                setImgModal(true);
+              }, 500);
+            }}
             className='grid w-screen max-w-screen-md place-items-center md:mr-4'
           >
             <img
@@ -372,7 +389,7 @@ const Task = ({ task }: { task: ITask }) => {
               className='w-[90%] rounded object-contain md:w-full'
               alt='task info'
             />
-          </a>
+          </button>
         }
       />
 
