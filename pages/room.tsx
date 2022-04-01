@@ -163,6 +163,11 @@ const Room: NextPageWithLayout = () => {
       );
     }, [filterBy]);
 
+  const resetFilter = () => {
+    setSortBy('date_added_desc');
+    setFilterBy('All');
+  };
+
   if (!room.creator) return <Error info='room not found' />;
   if (
     userTag &&
@@ -236,8 +241,9 @@ const Room: NextPageWithLayout = () => {
         isOpen={filterModal}
         setIsOpen={setFilterModal}
         title='Sort Tasks'
+        proceed={{ action: resetFilter, text: 'Reset', style: 'bg-blue-500' }}
         body={
-          <div>
+          <div className='mb-4'>
             <hr className='my-4' />
 
             <div className='space-y-8'>
@@ -270,6 +276,7 @@ const Room: NextPageWithLayout = () => {
                 </div>
               </div>
             </div>
+            <hr className='my-4' />
           </div>
         }
       />

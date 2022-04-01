@@ -76,10 +76,7 @@ const Modal = ({
                 body
               )}
 
-              <div className='mt-4 flex flex-wrap justify-end space-x-2'>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label
-                 */}
-                <button type='button' className='h-0 w-0 overflow-hidden' />
+              <div className='mt-4 flex flex-wrap justify-end space-x-3'>
                 {href ||
                   (proceed && (
                     <button
