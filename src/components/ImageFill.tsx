@@ -2,7 +2,8 @@ import React from 'react';
 import Image, { ImageProps } from 'next/image';
 import { defaultPic } from '@/utils/constants';
 
-interface ImageFillProps extends Omit<ImageProps, 'src' | 'className'> {
+interface ImageFillProps
+  extends Omit<ImageProps, 'src' | 'className' | 'layout' | 'objectFit'> {
   src?: string;
   className?: string;
 }

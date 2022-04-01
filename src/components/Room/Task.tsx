@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import Image from 'next/image';
 import { nanoid } from 'nanoid';
 import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
@@ -34,6 +33,7 @@ import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
 import { TaskFields, TaskLoader } from '@/components/Room';
+import ImageFill from '../ImageFill';
 
 const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
@@ -361,13 +361,18 @@ const Task = ({ task }: { task: ITask }) => {
         isOpen={displayImageModal}
         setIsOpen={setDisplayImageModal}
         body={
-          <div className='grid w-screen max-w-screen-md place-items-center md:mr-4'>
+          <a
+            href={displayImage}
+            target='_blank'
+            rel='noreferrer'
+            className='grid w-screen max-w-screen-md place-items-center md:mr-4'
+          >
             <img
               src={displayImage ?? defaultPic}
               className='w-[90%] rounded object-contain md:w-full'
-              alt='task img'
+              alt='task info'
             />
-          </div>
+          </a>
         }
       />
 
@@ -382,14 +387,12 @@ const Task = ({ task }: { task: ITask }) => {
                 setDisplayImage(url);
                 setDisplayImageModal(true);
               }}
-              className='relative h-14 w-14 sm:h-20 sm:w-20'
             >
-              <Image
+              <ImageFill
                 src={url ?? defaultPic}
-                layout='fill'
-                objectFit='cover'
-                className='rounded'
-                alt='task img'
+                className='h-14 w-14 rounded sm:h-20 sm:w-20'
+                alt='task thumbnail'
+                quality={1}
               />
             </button>
           ))}
