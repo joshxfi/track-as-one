@@ -243,7 +243,7 @@ const Room: NextPageWithLayout = () => {
         title='Sort Tasks'
         proceed={{ action: resetFilter, text: 'Reset', style: 'bg-blue-500' }}
         body={
-          <div className='mb-4'>
+          <div>
             <hr className='my-4' />
 
             <div className='space-y-8'>

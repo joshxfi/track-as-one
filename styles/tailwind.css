@@ -94,4 +94,8 @@
   .radio-sort {
     @apply mt-2 flex items-center space-x-4;
   }
+
+  .task-img-container {
+    @apply h-[90px] w-[90px] rounded;
+  }
 }
