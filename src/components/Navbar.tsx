@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { BsGithub } from 'react-icons/bs';
 import { NavMenu } from '@/components/Nav';
 import { FaSignInAlt } from 'react-icons/fa';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,11 +10,11 @@ const Navbar: React.FC = () => {
   const { user, signIn, signOut } = useAuth();
   const { asPath } = useRouter();
 
-  const navItems = [
-    { name: 'Home', href: user ? '/home' : '/' },
-    // { name: 'About', href: '/about' },
-    // { name: 'Contact', href: '/contact' },
-  ];
+  /* const navItems = [
+   *   { name: 'Home', href: user ? '/home' : '/' },
+   *   { name: 'About', href: '/about' },
+   *   { name: 'Contact', href: '/contact' },
+   * ]; */
 
   return (
     <nav
@@ -24,39 +25,39 @@ const Navbar: React.FC = () => {
       <div className='flex-between mx-auto w-[90%] max-w-screen-xl'>
         <div className='flex items-center space-x-8'>
           <Link href={user ? '/home' : '/'}>
-            <a className='cursor-pointer text-3xl font-bold text-secondary'>
-              tAO<span className='text-f9'>.</span>
+            <a className='flex cursor-pointer'>
+              <p className='gradient-text text-2xl font-bold'>trackAsOne</p>
+              <p className='ml-1 text-xs font-semibold'>BETA</p>
             </a>
           </Link>
 
-          <div className='hidden space-x-8 md:block'>
-            {navItems.map(({ name, href }) => {
-              return (
-                <Link href={href} key={name}>
-                  <a
-                    className={`${
-                      asPath === href && 'text-secondary'
-                    }  text-sm transition-colors hover:text-secondary`}
-                  >
-                    {name}
-                  </a>
-                </Link>
-              );
-            })}
-
-            <a
-              href='https://github.com/joshxfi/trackAsOne'
-              rel='noopener noreferrer'
-              target='_blank'
-              className='text-sm transition-colors hover:text-secondary'
-            >
-              GitHub
-            </a>
-          </div>
+          {/* <div className='hidden space-x-8 md:block'>
+           *   {navItems.map(({ name, href }) => {
+           *     return (
+           *       <Link href={href} key={name}>
+           *         <a
+           *           className={`${
+           *             asPath === href && 'text-secondary'
+           *           }  text-sm transition-colors hover:text-secondary`}
+           *         >
+           *           {name}
+           *         </a>
+           *       </Link>
+           *     );
+           *   })}
+           * </div> */}
         </div>
 
-        <div className='flex space-x-4'>
+        <div className='flex items-center space-x-4'>
           <NavMenu />
+          <a
+            href='https://github.com/joshxfi/trackAsOne'
+            rel='noopener noreferrer'
+            target='_blank'
+            className='hidden text-2xl text-f9 md:block'
+          >
+            <BsGithub />
+          </a>
           <button
             type='button'
             onClick={user ? signOut : signIn}

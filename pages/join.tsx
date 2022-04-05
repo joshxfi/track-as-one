@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 
 import toast from 'react-hot-toast';
-import { VscSignIn } from 'react-icons/vsc';
+import { BiDoorOpen } from 'react-icons/bi';
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
@@ -20,41 +20,40 @@ const Join: NextPageWithLayout = () => {
 
   const requestJoin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setRoomID('');
+    try {
+      setRoomID('');
 
-    const roomRef = doc(db, 'rooms', roomId);
+      const roomRef = doc(db, 'rooms', roomId);
 
-    const room = await getDoc(roomRef);
-    const _room: IRoom = room.data() as IRoom;
+      const room = await getDoc(roomRef);
+      const _room: IRoom = room.data() as IRoom;
 
-    if (!room.exists()) toast.error('Room Does Not Exist');
-    else if (userInRoom(userTag, _room))
-      toast.error('You Are Already a Member');
-    else if (_room.requests.includes(userTag))
-      toast.error('You Already Sent a Request');
-    else if (_room.creator === userTag)
-      toast.error('You Are the Owner of the Room');
-    else {
-      try {
+      if (!room.exists()) toast.error('Room Does Not Exist');
+      else if (userInRoom(userTag, _room))
+        toast.error('You Are Already a Member');
+      else if (_room.requests.includes(userTag))
+        toast.error('You Already Sent a Request');
+      else if (_room.creator === userTag)
+        toast.error('You Are the Owner of the Room');
+      else {
         await updateDoc(roomRef, {
           requests: arrayUnion(userTag),
         });
         toast.success('Request Sent');
-      } catch (e: any) {
-        toast.error(e.message);
       }
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 
   return (
     <RoomInput
-      title='Join a Room'
-      btnLabel='request join'
-      Icon={VscSignIn}
+      btnLabel='request to join'
       onSubmit={requestJoin}
-      onChange={(e) => setRoomID(e.target.value)}
+      onChange={(e) => setRoomID(e.target.value.trim())}
       value={roomId}
       placeholder='enter room id'
+      Icon={BiDoorOpen}
       minLength={5}
       maxLength={15}
     />

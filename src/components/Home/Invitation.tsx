@@ -18,15 +18,15 @@ const Invitation = ({ roomId }: { roomId: string }) => {
   const userRef = doc(db, `users/${data.id}`);
 
   const acceptInvite = async () => {
-    if (userInRoom(data.userTag, room)) {
-      toast.error('You Are Already a Member');
-      await updateDoc(userRef, {
-        invites: arrayRemove(roomId),
-      });
-      return;
-    }
-
     try {
+      if (userInRoom(data.userTag, room)) {
+        toast.error('You Are Already a Member');
+        await updateDoc(userRef, {
+          invites: arrayRemove(roomId),
+        });
+        return;
+      }
+
       await Promise.all([
         updateDoc(doc(db, `rooms/${roomId}`), {
           members: arrayUnion(data.userTag),
@@ -35,11 +35,10 @@ const Invitation = ({ roomId }: { roomId: string }) => {
           invites: arrayRemove(roomId),
         }),
       ]);
-
       toast.success('Room Joined');
       push('/home');
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 

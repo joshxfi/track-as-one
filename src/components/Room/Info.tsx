@@ -75,30 +75,26 @@ const Info: React.FC = () => {
   return (
     <>
       <Modal
-        title='Delete Room'
+        title='Room'
         description='Are you sure you want to delete this room? This action cannot be undone.'
         setIsOpen={setDeleteModal}
         isOpen={deleteModal}
-        buttons={
-          <button
-            type='button'
-            onClick={deleteRoom}
-            className='modal-btn bg-red-600'
-          >
-            Delete
-          </button>
-        }
+        proceed={{
+          action: deleteRoom,
+          text: 'Delete Room',
+          style: 'bg-red-600',
+        }}
       />
 
       <Modal
-        title='Leave Room'
+        title='Room'
         description='Are you sure you want to leave this room? You need to request or get an invite before you can join again.'
-        proceed={leaveRoom}
+        proceed={{ action: leaveRoom, text: 'Leave Room', style: 'bg-red-600' }}
         setIsOpen={setLeaveModal}
         isOpen={leaveModal}
       />
 
-      <Header title='Room Info' backBtn />
+      <Header title='Info' backBtn />
 
       <InfoSection
         title={room.id ?? ''}

@@ -1,11 +1,14 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import { nanoid } from 'nanoid';
 import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
-import { BsCheckCircleFill, BsInfoCircleFill } from 'react-icons/bs';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { BsCheckCircleFill, BsInfoCircleFill, BsFilter } from 'react-icons/bs';
 
-import { Error } from '@/components';
 import { db } from '@/config/firebase';
+import { Error, Modal } from '@/components';
+import { Button } from '@/components/Button';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
 import { NextPageWithLayout } from '@/types/page';
@@ -20,21 +23,57 @@ import {
   TaskFields,
   TaskLoader,
 } from '@/components/Room';
-import { AiOutlinePlus } from 'react-icons/ai';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tippy.js/dist/tippy.css';
+import { isNearDeadline, isPastDeadline } from '@/utils/functions';
+
+type SortDate =
+  | 'date_added_asc'
+  | 'date_added_desc'
+  | 'due_date_asc'
+  | 'due_date_desc';
+
+type FilterStatus = 'All' | 'Completed' | 'Almost Due' | 'Past Due';
 
 const Room: NextPageWithLayout = () => {
   const { props, reset } = useTaskFields();
   const { description, url, dueDate, images } = props;
 
   const [addTaskModal, setAddTaskModal] = useState(false);
+  const [filterModal, setFilterModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [sortBy, setSortBy] = useState<SortDate>('date_added_desc');
+  const [filterBy, setFilterBy] = useState<FilterStatus>('All');
 
   const { data } = useAuth();
   const { userTag } = data;
   const { room, tasks, tasksLoading } = useRoomContext();
+
+  const sortedTasks = useMemo(() => {
+    return tasks
+      ?.filter((task) => {
+        if (filterBy === 'Completed') return task.completedBy.includes(userTag);
+        if (filterBy === 'Almost Due') return isNearDeadline(task.dueDate);
+        if (filterBy === 'Past Due') return isPastDeadline(task.dueDate);
+
+        return true;
+      })
+      ?.filter((task) => (sortBy?.includes('due') ? task.dueDate : task))
+      .sort((a, b) => {
+        if (sortBy && sortBy !== 'date_added_desc') {
+          if (sortBy.includes('added')) {
+            if (sortBy.includes('asc')) return a.dateAdded - b.dateAdded;
+          }
+
+          if (sortBy.includes('asc')) return a.dueDate - b.dueDate;
+          return b.dueDate - a.dueDate;
+        }
+
+        return 0;
+      });
+  }, [tasks, sortBy, filterBy]);
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
@@ -47,43 +86,86 @@ const Room: NextPageWithLayout = () => {
   );
 
   const addTask = async () => {
-    if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (tasks && tasks.length >= 20)
-      toast.error('Task limit reached (20)');
-    else if (!description) toast.error('Task description is required');
-    else {
-      setAddTaskModal(false);
-      setLoading(true);
-      reset();
+    try {
+      if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
+      else if (tasks && tasks.length >= 20)
+        toast.error('Task limit reached (20)');
+      else if (!description) toast.error('Task description is required');
+      else {
+        setAddTaskModal(false);
+        setLoading(true);
+        reset();
 
-      let payload: ITask = {
-        description,
-        addedBy: userTag,
-        completedBy: [],
-        dateAdded: serverTimestamp(),
-        dueDate,
-        url,
-      };
-
-      if (images.length > 0) {
-        const imgUrls = await upload(`rooms/${room.id}/images`, images);
-        payload = {
-          ...payload,
-          imgUrls,
+        let payload: ITask = {
+          description,
+          addedBy: userTag,
+          completedBy: [],
+          dateAdded: serverTimestamp(),
+          dueDate,
+          url,
         };
 
-        if (error) toast.error('An error occurred while uploading images');
-      }
+        if (images.length > 0) {
+          const imgUrls = await upload(`rooms/${room.id}/images`, images);
+          payload = {
+            ...payload,
+            imgUrls,
+          };
 
-      const tasksRef = collection(db, `rooms/${room.id}/tasks`);
-      try {
+          if (error) toast.error('An error occurred while uploading images');
+        }
+
+        const tasksRef = collection(db, `rooms/${room.id}/tasks`);
         await addDoc(tasksRef, payload);
         toast.success('Task Added');
-      } catch (e: any) {
-        toast.error(e.message);
+        setTimeout(() => setLoading(false), 300);
       }
-      setTimeout(() => setLoading(false), 300);
+    } catch (e: any) {
+      toast.error(e.message);
     }
+  };
+
+  const SortDate = ({ label, value }: { label: string; value: SortDate }) =>
+    useMemo(() => {
+      const id = nanoid();
+
+      return (
+        <label htmlFor={id} className='flex cursor-pointer space-x-2'>
+          <input
+            type='radio'
+            name='sort_date'
+            id={id}
+            value={value}
+            checked={sortBy === value}
+            onChange={() => setSortBy(value)}
+          />
+          <p>{label}</p>
+        </label>
+      );
+    }, [sortBy]);
+
+  const SortStatus = ({ label }: { label: FilterStatus }) =>
+    useMemo(() => {
+      const id = nanoid();
+
+      return (
+        <label htmlFor={id} className='flex cursor-pointer space-x-2'>
+          <input
+            type='radio'
+            name='sort_status'
+            id={id}
+            value={label}
+            checked={filterBy === label}
+            onChange={() => setFilterBy(label)}
+          />
+          <p>{label}</p>
+        </label>
+      );
+    }, [filterBy]);
+
+  const resetFilter = () => {
+    setSortBy('date_added_desc');
+    setFilterBy('All');
   };
 
   if (!room.creator) return <Error info='room not found' />;
@@ -132,48 +214,102 @@ const Room: NextPageWithLayout = () => {
           </Tippy>
         </div>
         <div className='flex space-x-2'>
-          <button
+          <Button
             type='button'
+            Icon={AiOutlinePlus}
             onClick={() => setAddTaskModal(true)}
             className='room-btn'
-          >
-            <AiOutlinePlus />
-          </button>
+          />
+          <Button
+            type='button'
+            Icon={BsFilter}
+            onClick={() => setFilterModal(true)}
+            className='room-btn'
+          />
           <RoomMenu />
         </div>
       </div>
 
       <TaskFields
         {...props}
-        proceed={addTask}
-        title='Add Task'
-        proceedText='Add'
         isOpen={addTaskModal}
         setIsOpen={setAddTaskModal}
+        proceed={{ action: addTask, text: 'Add Task' }}
       />
 
-      {tasks && tasks?.length > 0 ? (
+      <Modal
+        isOpen={filterModal}
+        setIsOpen={setFilterModal}
+        title='Sort Tasks'
+        proceed={{ action: resetFilter, text: 'Reset', style: 'bg-blue-500' }}
+        body={
+          <div>
+            <hr className='my-4' />
+
+            <div className='space-y-8'>
+              <div>
+                <h2 className='font-medium'>Date Added</h2>
+                <div className='radio-sort'>
+                  <SortDate label='Ascending' value='date_added_asc' />
+                  <SortDate label='Descending' value='date_added_desc' />
+                </div>
+              </div>
+
+              <div>
+                <h2 className='font-medium'>Due Date</h2>
+                <p className='text-xs text-gray-700'>
+                  No specified due dates will be hidden.
+                </p>
+                <div className='radio-sort'>
+                  <SortDate label='Ascending' value='due_date_asc' />
+                  <SortDate label='Descending' value='due_date_desc' />
+                </div>
+              </div>
+
+              <div>
+                <h2 className='font-medium'>Status</h2>
+                <div className='mt-2 grid grid-cols-2 gap-y-2'>
+                  <SortStatus label='All' />
+                  <SortStatus label='Completed' />
+                  <SortStatus label='Almost Due' />
+                  <SortStatus label='Past Due' />
+                </div>
+              </div>
+            </div>
+            <hr className='my-4' />
+          </div>
+        }
+      />
+
+      {sortedTasks && sortedTasks?.length > 0 ? (
         <section className='mb-8 space-y-2'>
-          {tasks
+          {sortedTasks
             .filter((task) => !completedByAll(task))
             .map((task) => (
               <Task key={task.id} task={task} />
             ))}
 
-          {tasks.filter(completedByAll).length > 0 && (
+          {sortedTasks.filter(completedByAll).length > 0 && (
             <div className='flex items-center space-x-2 py-2'>
               <BsCheckCircleFill className='flex-none' />
               <div className='h-[1px] w-full bg-primary' />
             </div>
           )}
 
-          {tasks.filter(completedByAll).map((task) => (
+          {sortedTasks.filter(completedByAll).map((task) => (
             <Task key={task.id} task={task} />
           ))}
         </section>
       ) : (
         !tasksLoading && (
-          <Error code='' info='get started by clicking the plus icon' />
+          <Error
+            code=''
+            info={
+              filterBy !== 'All'
+                ? `there are no ${filterBy.toLowerCase()} task(s)`
+                : 'get started by clicking the plus icon'
+            }
+          />
         )
       )}
     </>

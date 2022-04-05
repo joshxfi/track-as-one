@@ -40,7 +40,7 @@
   }
 
   .modal-btn {
-    @apply cursor-pointer rounded-md border border-transparent py-2 px-4 text-sm text-white;
+    @apply cursor-pointer rounded border border-transparent py-2 px-4 text-sm text-white;
   }
 
   .popup-proceed {
@@ -89,5 +89,13 @@
 
   .task-indicator {
     @apply absolute left-0 top-0 h-full w-2;
+  }
+
+  .radio-sort {
+    @apply mt-2 flex items-center space-x-4;
+  }
+
+  .task-img-container {
+    @apply h-[90px] w-[90px] rounded;
   }
 }

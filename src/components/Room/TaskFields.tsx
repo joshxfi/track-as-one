@@ -1,13 +1,17 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { BsXSquareFill } from 'react-icons/bs';
+import { AiOutlinePlus } from 'react-icons/ai';
 import DatePicker, { ReactDatePicker } from 'react-datepicker';
+
+import { ImageFill } from '@/components';
 import Modal, { ModalProps } from '@/components/Modal';
 import 'react-datepicker/dist/react-datepicker.css';
+import { nanoid } from 'nanoid';
 
 type SetState<T = string> = React.Dispatch<React.SetStateAction<T>>;
 
-interface TaskFieldsProps extends Omit<ModalProps, 'body'> {
+interface TaskFieldsProps extends Omit<ModalProps, 'body' | 'title'> {
   description: string;
   setDesc: SetState;
   dueDate: Date | null;
@@ -29,8 +33,19 @@ const TaskFields = ({
   setImages,
   ...rest
 }: TaskFieldsProps) => {
+  const [imgUrls, setImgUrls] = useState(['']);
+  const [selectedImg, setSelectedImg] = useState(0);
+
   const dateInputRef = useRef<ReactDatePicker>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const revokeImages = useCallback(
+    () =>
+      imgUrls.forEach((url) => {
+        URL.revokeObjectURL(url);
+      }),
+    [imgUrls]
+  );
 
   const imgHandler: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -44,12 +59,36 @@ const TaskFields = ({
           }
         }
 
-        if (files.length > 3) toast.error('You can only upload up to 3 images');
-        else setImages(Array.from(files));
+        if (files.length > 3) {
+          toast.error('You can only upload up to 3 images');
+          return;
+        }
+
+        if (files.length === 1) {
+          if (images.length === 3) {
+            setImages((prev) => {
+              const copy = prev.map((p) => p);
+              // eslint-disable-next-line prefer-destructuring
+              copy[selectedImg] = files[0];
+
+              return copy;
+            });
+          } else setImages((prev) => [...prev, files[0]]);
+        } else setImages(Array.from(files));
       }
     },
-    [setImages]
+    [images, selectedImg]
   );
+
+  useEffect(() => {
+    revokeImages();
+    const imgsSrc: string[] = [];
+    images.forEach((img) => {
+      imgsSrc.push(URL.createObjectURL(img));
+    });
+
+    setImgUrls(imgsSrc);
+  }, [images]);
 
   return (
     <>
@@ -63,6 +102,8 @@ const TaskFields = ({
       />
       <Modal
         {...rest}
+        title='Task'
+        onDismiss={revokeImages}
         body={
           <div className='mt-4 flex flex-col space-y-4'>
             <div className='room-input-container'>
@@ -99,15 +140,51 @@ const TaskFields = ({
               />
             </div>
 
-            <button
-              onClick={() => fileRef.current?.click()}
-              type='button'
-              className='room-input-container'
-            >
-              <p className='resize-[vertical] flex items-center text-left text-sm text-[#9CA3AF] md:text-base'>
-                Add Image {images.length}/3 (optional)
-              </p>
-            </button>
+            <hr />
+            <p className='text-sm text-gray-600'>Add Images (optional)</p>
+
+            <div className='flex justify-between space-x-4 md:justify-start'>
+              {imgUrls.map((url, i) => (
+                <button
+                  key={nanoid()}
+                  type='button'
+                  onClick={() => {
+                    setSelectedImg(i);
+                    fileRef.current?.click();
+                  }}
+                >
+                  <ImageFill src={url} className='task-img-container' />
+                </button>
+              ))}
+
+              {Array(3 - images.length)
+                .fill(0)
+                .map(() => (
+                  <button
+                    key={nanoid()}
+                    type='button'
+                    onClick={() => fileRef.current?.click()}
+                    className='task-img-container grid place-items-center border-2 bg-f9 text-2xl text-inputfg focus-within:border-primary'
+                  >
+                    <AiOutlinePlus />
+                  </button>
+                ))}
+            </div>
+            {images.length > 0 && (
+              <button
+                type='button'
+                onClick={() => {
+                  revokeImages();
+                  setImages([]);
+                  setImgUrls([]);
+                }}
+                className='self-start text-sm text-gray-700 underline'
+              >
+                Clear Images
+              </button>
+            )}
+
+            <hr />
           </div>
         }
       />

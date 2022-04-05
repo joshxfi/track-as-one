@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import Image from 'next/image';
 import { nanoid } from 'nanoid';
 import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
@@ -12,9 +11,6 @@ import {
   MdUndo,
 } from 'react-icons/md';
 
-import { Modal } from '@/components';
-import { db, storage } from '@/config/firebase';
-import { useAuth } from '@/contexts/AuthContext';
 import {
   doc,
   updateDoc,
@@ -23,19 +19,29 @@ import {
   arrayRemove,
   serverTimestamp,
 } from 'firebase/firestore';
+import {
+  dateWithTime,
+  isNearDeadline,
+  isPastDeadline,
+  timeoutModal,
+} from '@/utils/functions';
 import { useUserByTag } from '@/services';
-import { dateWithTime } from '@/utils/functions';
+import { db, storage } from '@/config/firebase';
+import { useAuth } from '@/contexts/AuthContext';
+import { Modal, EmptyModal } from '@/components';
 import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
 import { TaskFields, TaskLoader } from '@/components/Room';
+import ImageFill from '../ImageFill';
 
 const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
   const [urlModal, setUrlModal] = useState(false);
   const [optionsModal, setOptionsModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [imgModal, setImgModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [displayImage, setDisplayImage] = useState('');
@@ -71,93 +77,84 @@ const Task = ({ task }: { task: ITask }) => {
   }, [task, userTag]);
 
   const editTask = async () => {
-    if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-    else if (!description) toast.error('Task description is required');
-    else {
-      setEditModal(false);
-      setLoading(true);
+    try {
+      if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
+      else if (!description) toast.error('Task description is required');
+      else {
+        setEditModal(false);
+        setLoading(true);
 
-      let payload: Partial<ITask> = {
-        description,
-        editedBy: userTag,
-        dateEdited: serverTimestamp(),
-        dueDate,
-        url,
-      };
-
-      if (images.length > 0) {
-        const imgUrls = await upload(`rooms/${room.id}/images`, images);
-        payload = {
-          ...payload,
-          imgUrls,
+        let payload: Partial<ITask> = {
+          description,
+          editedBy: userTag,
+          dateEdited: serverTimestamp(),
+          dueDate,
+          url,
         };
 
-        if (task.imgUrls && task.imgUrls?.length > 0) {
-          task.imgUrls.forEach(async (url) => {
-            try {
-              await deleteObject(ref(storage, url));
-            } catch (e: any) {
-              toast.error(e.message);
-            }
-          });
+        if (images.length > 0) {
+          const imgUrls = await upload(`rooms/${room.id}/images`, images);
+          payload = {
+            ...payload,
+            imgUrls,
+          };
+
+          if (task.imgUrls && task.imgUrls?.length > 0) {
+            task.imgUrls.forEach(async (url) => {
+              try {
+                await deleteObject(ref(storage, url));
+              } catch (e: any) {
+                toast.error(e.message);
+              }
+            });
+          }
+
+          if (error) toast.error('An error occurred while uploading images');
         }
 
-        if (error) toast.error('An error occurred while uploading images');
-      }
-
-      const taskRef = doc(db, `rooms/${room.id}/tasks/${task.id}`);
-      try {
         await updateDoc(taskRef, payload);
         toast.success('Task Edited');
-      } catch (e: any) {
-        toast.error(e.message);
+        setTimeout(() => setLoading(false), 300);
       }
-      setTimeout(() => setLoading(false), 300);
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 
   const taskDone = async () => {
-    if (completedByUser) {
-      try {
+    try {
+      if (completedByUser) {
         await updateDoc(taskRef, {
           completedBy: arrayRemove(userTag),
         });
         toast.success('Undo Successful');
-      } catch (e: any) {
-        toast.error(e.message);
-      }
-    } else {
-      try {
+      } else {
         await updateDoc(taskRef, {
           completedBy: arrayUnion(userTag),
         });
         toast.success('Task Completed');
-      } catch (e: any) {
-        toast.error(e.message);
       }
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
 
   const taskDel = () => {
-    setDelModal(false);
-    setTimeout(async () => {
-      try {
+    try {
+      setDelModal(false);
+      setTimeout(async () => {
         await deleteDoc(taskRef);
         toast.success('Task Deleted');
-      } catch (e: any) {
-        toast.error(e.message);
-      }
 
-      if (task.imgUrls && task.imgUrls?.length > 0) {
-        task.imgUrls.forEach(async (url) => {
-          try {
+        if (task.imgUrls && task.imgUrls?.length > 0) {
+          task.imgUrls.forEach(async (url) => {
             await deleteObject(ref(storage, url));
-          } catch (e: any) {
-            toast.error(e.message);
-          }
-        });
-      }
-    }, 300);
+          });
+        }
+      }, 300);
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   const taskInfo = useMemo(
@@ -182,25 +179,14 @@ const Task = ({ task }: { task: ITask }) => {
     [task, taskCreator?.username, taskEditor?.username]
   );
 
-  const nearDeadline = useMemo(() => {
-    const threeDaysFromNow = new Date();
-    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
-
-    if (task.dueDate && task.dueDate.toDate() <= threeDaysFromNow) {
-      return true;
-    }
-
-    return false;
-  }, [task.dueDate]);
-
-  const pastDeadline = useMemo(() => {
-    const today = new Date();
-    if (today > task.dueDate?.toDate()) {
-      return true;
-    }
-
-    return false;
-  }, [task.dueDate]);
+  const nearDeadline = useMemo(
+    () => isNearDeadline(task.dueDate),
+    [task.dueDate]
+  );
+  const pastDeadline = useMemo(
+    () => isPastDeadline(task.dueDate),
+    [task.dueDate]
+  );
 
   const displayIndicator = useMemo(() => {
     if (userTag && task.completedBy.includes(userTag)) return 'bg-green-500';
@@ -224,13 +210,12 @@ const Task = ({ task }: { task: ITask }) => {
 
         <TaskFields
           {...props}
-          proceed={editTask}
-          title='Edit Task'
-          proceedText='Edit'
           isOpen={editModal}
           setIsOpen={setEditModal}
           onDismiss={reset}
+          proceed={{ action: editTask, text: 'Edit Task' }}
         />
+
         <Modal
           title='Delete Task'
           description='Are you sure you want to delete this task? This action cannot be undone.'
@@ -257,7 +242,7 @@ const Task = ({ task }: { task: ITask }) => {
               <p className='break-all text-blue-500 underline'>{task.url}</p>
             </div>
           }
-          href={task.url}
+          proceed={{ href: task.url }}
           setIsOpen={setUrlModal}
           isOpen={urlModal}
         />
@@ -325,13 +310,7 @@ const Task = ({ task }: { task: ITask }) => {
               {task.url && (
                 <Tippy content='Visit URL'>
                   <button
-                    onClick={() => {
-                      setOptionsModal(false);
-
-                      setTimeout(() => {
-                        setUrlModal(true);
-                      }, 500);
-                    }}
+                    onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
                     type='button'
                     className='task-option-btn bg-amber-500 text-white'
                   >
@@ -354,7 +333,7 @@ const Task = ({ task }: { task: ITask }) => {
 
         <button
           onClick={() => setOptionsModal(true)}
-          className='absolute top-0 -right-14 flex h-full w-8 items-center justify-center bg-secondary text-2xl transition-all duration-300 group-hover:right-0 group-hover:text-white'
+          className='absolute top-0 -right-14 flex h-full w-8 items-center justify-center bg-secondary text-2xl text-white transition-all duration-300 group-hover:right-0'
           type='button'
         >
           <MdMoreVert />
@@ -376,18 +355,30 @@ const Task = ({ task }: { task: ITask }) => {
           </div>
         </div>
       </div>
+
       <Modal
-        empty
+        title='View Image'
+        isOpen={imgModal}
+        setIsOpen={setImgModal}
+        proceed={{ href: displayImage }}
+        description='Do you want to open the image in a new tab?'
+      />
+
+      <EmptyModal
         isOpen={displayImageModal}
-        setIsOpen={() => setDisplayImageModal(false)}
+        setIsOpen={setDisplayImageModal}
         body={
-          <div className='grid w-screen max-w-screen-md place-items-center md:mr-4'>
+          <button
+            type='button'
+            onClick={() => timeoutModal(setDisplayImageModal, setImgModal)}
+            className='grid w-screen max-w-screen-md place-items-center md:mr-4'
+          >
             <img
               src={displayImage ?? defaultPic}
               className='w-[90%] rounded object-contain md:w-full'
-              alt='task img'
+              alt='task info'
             />
-          </div>
+          </button>
         }
       />
 
@@ -402,14 +393,13 @@ const Task = ({ task }: { task: ITask }) => {
                 setDisplayImage(url);
                 setDisplayImageModal(true);
               }}
-              className='relative h-14 w-14 sm:h-20 sm:w-20'
             >
-              <Image
+              <ImageFill
+                priority
                 src={url ?? defaultPic}
-                layout='fill'
-                objectFit='cover'
-                className='rounded'
-                alt='task img'
+                className='h-14 w-14 rounded sm:h-20 sm:w-20'
+                alt='task thumbnail'
+                quality={1}
               />
             </button>
           ))}
