@@ -395,6 +395,7 @@ const Task = ({ task }: { task: ITask }) => {
               }}
             >
               <ImageFill
+                priority
                 src={url ?? defaultPic}
                 className='h-14 w-14 rounded sm:h-20 sm:w-20'
                 alt='task thumbnail'
