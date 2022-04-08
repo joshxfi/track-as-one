@@ -65,25 +65,21 @@ export const modalTransitions = {
   },
 };
 
-export const _badges: { role: IRoles; styles: string; Icon: IconType }[] = [
+export const _badges: { role: IRoles; Icon: IconType }[] = [
   {
     role: 'Founder',
-    styles: 'text-blue-500 text-lg',
     Icon: HiBadgeCheck,
   },
   {
     role: 'Contributor',
-    styles: 'text-green-500',
     Icon: HiChip,
   },
   {
     role: 'Beta Tester',
-    styles: 'text-pink-500',
     Icon: HiBeaker,
   },
   {
     role: 'OG',
-    styles: 'text-amber-500',
     Icon: HiLightningBolt,
   },
 ];
