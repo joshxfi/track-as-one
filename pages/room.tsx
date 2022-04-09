@@ -130,7 +130,10 @@ const Room: NextPageWithLayout = () => {
       const id = nanoid();
 
       return (
-        <label htmlFor={id} className='flex cursor-pointer space-x-2'>
+        <label
+          htmlFor={id}
+          className='flex cursor-pointer items-center space-x-2'
+        >
           <input
             type='radio'
             name='sort_date'
@@ -149,7 +152,10 @@ const Room: NextPageWithLayout = () => {
       const id = nanoid();
 
       return (
-        <label htmlFor={id} className='flex cursor-pointer space-x-2'>
+        <label
+          htmlFor={id}
+          className='flex cursor-pointer items-center space-x-2'
+        >
           <input
             type='radio'
             name='sort_status'
