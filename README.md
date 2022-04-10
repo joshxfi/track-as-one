@@ -12,7 +12,7 @@ You can use this application using your browser, visit [trackasone.me](https://t
 If you want to contribute, make sure to review our [CODE OF CONDUCT](https://github.com/joshxfi/trackAsOne/blob/main/CODE_OF_CONDUCT.md). For bugs and feature requests, feel free to [open an issue](https://github.com/joshxfi/trackAsOne/issues).
 
 1. Fork this [repository](https://github.com/joshxfi/trackAsOne) and clone your fork.
-2. Create a new branch for your changes:
+3. Create a new branch for your changes:
 ```sh
 $ cd <your_cloned_fork>
 $ git checkout dev
@@ -50,5 +50,4 @@ $ git push origin HEAD
 6. Submit a pull request on the `dev` branch. (resolve conflicts if present)
 
 ## License
-
 **trackAsOne** is licensed under the [MIT license](https://github.com/joshxfi/trackAsOne/blob/main/LICENSE).
