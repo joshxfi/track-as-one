@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { NextPageWithLayout } from '@/types/page';
+import { NextPageWithLayout } from 'types/page';
 import { Layout, UnderConstruction } from '@/components';
 
 const About: NextPageWithLayout = () => {

@@ -9,7 +9,7 @@ import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { landingPage } from '@/utils/constants';
-import { NextPageWithLayout } from '@/types/page';
+import { NextPageWithLayout } from 'types/page';
 
 const Index: NextPageWithLayout = () => {
   const { user, signIn } = useAuth();

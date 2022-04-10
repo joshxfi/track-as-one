@@ -1,4 +1,11 @@
+import { IconType } from 'react-icons';
 import { FaDiscord, FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import {
+  HiBeaker,
+  HiBadgeCheck,
+  HiLightningBolt,
+  HiChip,
+} from 'react-icons/hi';
 
 export const defaultPic =
   'https://firebasestorage.googleapis.com/v0/b/trackas1.appspot.com/o/default%2Ffallback.png?alt=media&token=83a287b4-4513-437b-890c-dc17b224cbbf';
@@ -57,3 +64,22 @@ export const modalTransitions = {
     leaveTo: 'opacity-0 scale-95',
   },
 };
+
+export const _badges: { role: IRoles; Icon: IconType }[] = [
+  {
+    role: 'Founder',
+    Icon: HiBadgeCheck,
+  },
+  {
+    role: 'Contributor',
+    Icon: HiChip,
+  },
+  {
+    role: 'Beta Tester',
+    Icon: HiBeaker,
+  },
+  {
+    role: 'OG',
+    Icon: HiLightningBolt,
+  },
+];

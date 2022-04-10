@@ -10,7 +10,7 @@ import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
 import { useAuth } from '@/contexts/AuthContext';
 import { Layout, RoomInput } from '@/components';
-import { NextPageWithLayout } from '@/types/page';
+import { NextPageWithLayout } from 'types/page';
 
 const Create: NextPageWithLayout = () => {
   const [roomName, setRoomName] = useState<string>('');

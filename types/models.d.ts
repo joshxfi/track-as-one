@@ -1,4 +1,7 @@
 /* eslint-disable no-unused-vars */
+
+type IRoles = 'OG' | 'Beta Tester' | 'Contributor' | 'Founder';
+
 interface IUser {
   id?: string;
   userTag: string;
@@ -7,6 +10,7 @@ interface IUser {
   email?: string | null;
   invites: string[];
   dateJoined: any;
+  roles?: IRoles[];
 }
 
 interface IRoom {

@@ -7,7 +7,7 @@ import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { useNextQuery } from '@/hooks';
 import { useUserByTag } from '@/services';
-import { Modal, ImageFill } from '@/components';
+import { Modal, ImageFill, Badges } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoomContext } from '@/contexts/RoomContext';
 
@@ -157,7 +157,10 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
           alt={`${username} profile`}
         />
         <div className='leading-5'>
-          <p className='text-f9'>{username}</p>
+          <div className='relative'>
+            <p className='text-f9'>{username}</p>
+            <Badges roles={member?.roles} />
+          </div>
           <p className='text-sm'>{type}</p>
         </div>
       </div>
