@@ -83,3 +83,79 @@ export const _badges: { role: IRoles; Icon: IconType }[] = [
     Icon: HiLightningBolt,
   },
 ];
+
+// Footer
+export const footerLinks = [
+  {
+    title: 'Project',
+    links: [
+      {
+        name: 'About',
+        url: '#',
+      },
+      {
+        name: 'Terms',
+        url: '#',
+      },
+      {
+        name: 'Privacy',
+        url: '#',
+      },
+      {
+        name: 'Overview',
+        url: '#',
+      },
+    ],
+  },
+  {
+    title: 'Developer',
+    links: [
+      {
+        name: 'About Me',
+        url: '#',
+      },
+      {
+        name: 'Contact',
+        url: 'mailto:joshxfi.dev@gmail.com',
+      },
+      {
+        name: 'Support',
+        url: '#',
+      },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      {
+        name: 'FAQs',
+        url: '#',
+      },
+      {
+        name: 'Data',
+        url: '#',
+      },
+      {
+        name: 'Tutorials',
+        url: '#',
+      },
+      {
+        name: 'Updates',
+        url: '#',
+      },
+    ],
+  },
+  {
+    title: 'Contribute',
+    links: [
+      {
+        name: 'Report Bugs',
+        url: 'https://github.com/joshxfi/trackAsOne/issues',
+      },
+      {
+        name: 'Feature Request',
+        url: 'https://github.com/joshxfi/trackAsOne/issues',
+      },
+    ],
+  },
+];
