@@ -12,9 +12,16 @@ You can use this application using your browser, visit [trackasone.me](https://t
 If you want to contribute, make sure to review our [CODE OF CONDUCT](https://github.com/joshxfi/trackAsOne/blob/main/CODE_OF_CONDUCT.md). For bugs and feature requests, feel free to [open an issue](https://github.com/joshxfi/trackAsOne/issues).
 
 1. Fork this [repository](https://github.com/joshxfi/trackAsOne) and clone your fork.
-2. Create a new branch for your changes.
+2. Create a new branch for your changes:
 ```sh
 $ cd <your_cloned_fork>
+$ git checkout dev
+$ git checkout -b my-new-branch
+```
+- To create another branch:
+```sh
+$ git checkout dev
+$ git pull
 $ git checkout -b my-new-branch
 ```
 3. Create a `.env.local` file with this content:
