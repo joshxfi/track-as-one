@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import doodle from '@/assets/doodle.svg';
-import { socials , footerLinks } from '@/utils/constants';
+import { socials, footerLinks } from '@/utils/constants';
 
 const Footer: React.FC = () => {
   return (
@@ -30,7 +30,12 @@ const Footer: React.FC = () => {
                 <h1 className='footer-h1'>{data.title}</h1>
                 <div className='flex flex-col leading-5'>
                   {data.links.map((link) => (
-                    <a key={link.name} href={link.url}>
+                    <a
+                      key={link.name}
+                      href={link.url}
+                      target='_blank'
+                      rel="noopener noreferrer"
+                    >
                       {link.name}
                     </a>
                   ))}

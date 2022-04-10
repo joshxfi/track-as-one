@@ -116,7 +116,7 @@ export const footerLinks = [
       },
       {
         name: 'Contact',
-        url: '#',
+        url: 'mailto:joshxfi.dev@gmail.com',
       },
       {
         name: 'Support',
@@ -150,11 +150,11 @@ export const footerLinks = [
     links: [
       {
         name: 'Report Bugs',
-        url: '#',
+        url: 'https://github.com/joshxfi/trackAsOne/issues',
       },
       {
         name: 'Feature Request',
-        url: '#',
+        url: 'https://github.com/joshxfi/trackAsOne/issues',
       },
     ],
   },
