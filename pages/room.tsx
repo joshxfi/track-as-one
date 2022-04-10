@@ -11,7 +11,7 @@ import { Error, Modal } from '@/components';
 import { Button } from '@/components/Button';
 import { urlRegExp } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
-import { NextPageWithLayout } from '@/types/page';
+import { NextPageWithLayout } from 'types/page';
 import { useNextQuery, useTaskFields, useUpload } from '@/hooks';
 import { RoomProvider, useRoomContext } from '@/contexts/RoomContext';
 import {

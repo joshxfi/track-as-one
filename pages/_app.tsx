@@ -1,5 +1,4 @@
 import React from 'react';
-
 import '../styles/global.css';
 import '../styles/tailwind.css';
 import 'nprogress/nprogress.css';
@@ -7,7 +6,7 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 import { DefaultSeo } from 'next-seo';
 import { Toaster } from 'react-hot-toast';
-import { AppPropsWithLayout } from '@/types/page';
+import { AppPropsWithLayout } from 'types/page';
 import { AuthProvider } from '@/contexts/AuthContext';
 
 import SEO from '../next-seo-config';

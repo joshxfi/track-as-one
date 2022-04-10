@@ -8,7 +8,7 @@ import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
 import { RoomInput } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
-import { NextPageWithLayout } from '@/types/page';
+import { NextPageWithLayout } from 'types/page';
 import { userInRoom } from '@/utils/functions';
 
 const Join: NextPageWithLayout = () => {
