@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Error, Layout } from '@/components';
-import { NextPageWithLayout } from '@/types/page';
+import { NextPageWithLayout } from 'types/page';
 
 const Offline: NextPageWithLayout = () => (
   <Error code='Offline' info='you are currently offline' />
