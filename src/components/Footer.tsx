@@ -20,23 +20,18 @@ const Footer: React.FC = () => {
               </h1>
             </div>
 
-            {footerLinks.map((data) => (
-              <div
-                key={data.title}
-                className={`${
-                  data.title === 'Contribute' && 'hidden sm:block'
-                }`}
-              >
-                <h1 className='footer-h1'>{data.title}</h1>
-                <div className='flex flex-col leading-5'>
-                  {data.links.map((link) => (
+            {footerLinks.map(({ title, links }) => (
+              <div key={title}>
+                <h1 className='footer-h1'>{title}</h1>
+                <div className='flex flex-col'>
+                  {links.map(({ name, url }) => (
                     <a
-                      key={link.name}
-                      href={link.url}
-                      target='_blank'
+                      key={name}
+                      href={url || name?.split(' ').join('-').toLowerCase()}
+                      target={url ? '_blank' : '_self'}
                       rel='noopener noreferrer'
                     >
-                      {link.name}
+                      {name}
                     </a>
                   ))}
                 </div>
@@ -44,19 +39,11 @@ const Footer: React.FC = () => {
             ))}
           </div>
 
-          <div className='mt-8 sm:hidden'>
-            <h1 className='footer-h1'>Contribute</h1>
-            <div className='flex flex-col leading-5'>
-              <a href='#'>Report Bugs</a>
-              <a href='#'>Feature Request</a>
-            </div>
-          </div>
-
           <div className='my-8 h-[1px] w-full bg-gray-500' />
 
           <div className='md:flex-between mx-auto flex flex-col items-center md:flex-row'>
             <p className='mb-4 text-secondary md:mb-0'>
-              Copyright © 2021 Josh Daniel
+              trackAsOne © 2022 | Made with 💛
             </p>
             <div className='flex space-x-8 text-base lg:text-xl'>
               {socials.map(({ Icon, link }) => (

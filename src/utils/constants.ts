@@ -87,23 +87,16 @@ export const _badges: { role: IRoles; Icon: IconType }[] = [
 // Footer
 export const footerLinks = [
   {
-    title: 'Project',
+    title: 'Resources',
     links: [
       {
-        name: 'About',
-        url: '#',
+        name: 'The Project',
       },
       {
-        name: 'Terms',
-        url: '#',
+        name: 'Privacy Policy',
       },
       {
-        name: 'Privacy',
-        url: '#',
-      },
-      {
-        name: 'Overview',
-        url: '#',
+        name: 'Code of Conduct',
       },
     ],
   },
@@ -111,37 +104,15 @@ export const footerLinks = [
     title: 'Developer',
     links: [
       {
-        name: 'About Me',
-        url: '#',
+        name: 'GitHub',
+        url: 'https://github.com/joshxfi',
       },
       {
         name: 'Contact',
         url: 'mailto:joshxfi.dev@gmail.com',
       },
       {
-        name: 'Support',
-        url: '#',
-      },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      {
-        name: 'FAQs',
-        url: '#',
-      },
-      {
-        name: 'Data',
-        url: '#',
-      },
-      {
-        name: 'Tutorials',
-        url: '#',
-      },
-      {
-        name: 'Updates',
-        url: '#',
+        name: 'About Me',
       },
     ],
   },
