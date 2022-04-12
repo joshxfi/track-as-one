@@ -27,10 +27,7 @@ const Badges = ({ roles }: { roles?: IRoles[] }) => {
       {_badges.map(({ role, Icon }) => {
         return (
           roles?.includes(role) && (
-            <Tippy
-              key={role}
-              content={role === 'OG' ? 'Pre-v1.1.0 User' : role}
-            >
+            <Tippy key={role} content={role === 'OG' ? 'Early User' : role}>
               <div className={style(role)}>
                 <Icon />
               </div>
