@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
                       key={link.name}
                       href={link.url}
                       target='_blank'
-                      rel="noopener noreferrer"
+                      rel='noopener noreferrer'
                     >
                       {link.name}
                     </a>
@@ -49,7 +49,6 @@ const Footer: React.FC = () => {
             <div className='flex flex-col leading-5'>
               <a href='#'>Report Bugs</a>
               <a href='#'>Feature Request</a>
-              <a href='#'>Suggest Design</a>
             </div>
           </div>
 

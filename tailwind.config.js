@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-extraneous-dependencies */
 module.exports = {
   content: ['./pages/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
   darkMode: 'media', // or 'media' or 'class'
@@ -17,5 +19,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };
