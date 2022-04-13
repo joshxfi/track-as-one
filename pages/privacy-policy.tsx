@@ -8,7 +8,9 @@ const PrivacyPolicy: NextPageWithLayout = () => {
 };
 
 PrivacyPolicy.getLayout = (page: React.ReactElement) => (
-  <Layout className='py-20'>{page}</Layout>
+  <Layout allowAll className='py-20'>
+    {page}
+  </Layout>
 );
 
 export default PrivacyPolicy;

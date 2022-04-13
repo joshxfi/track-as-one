@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({
 
   const display = useMemo(() => {
     if (user || allowAll) return children;
-    if (!loading) <Error code='401' info='you are not authenticated' />;
+    if (!loading) return <Error code='401' info='you are not authenticated' />;
     return <div />;
   }, [user, allowAll, children]);
 

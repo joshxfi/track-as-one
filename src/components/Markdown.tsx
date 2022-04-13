@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 
 const Markdown = ({ content }: { content: string }) => {
   return (
-    <article className='prose max-w-none'>
+    <article className='content prose max-w-none'>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </article>
   );
