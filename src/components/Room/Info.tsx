@@ -23,39 +23,39 @@ const Info: React.FC = () => {
 
   const roomRef = doc(db, `rooms/${room.id}`);
 
-  const deleteRoom = async () => {
+  const deleteRoom = () => {
     setDeleteModal(false);
 
-    setTimeout(() => {
-      toast.promise(deleteDoc(roomRef), {
-        loading: 'Deleting Room...',
-        success: 'Room Deleted',
-        error: 'Error Deleting Room',
-      });
+    setTimeout(async () => {
+      try {
+        await deleteDoc(roomRef);
+        toast.success('Room Deleted');
+
+        push('/home');
+        tasks?.forEach(async (task) => {
+          await deleteDoc(doc(db, `rooms/${room.id}/tasks/${task.id}`));
+        });
+      } catch (e: any) {
+        toast.error(e.message);
+      }
     }, 300);
-
-    tasks?.forEach(async (task) => {
-      await deleteDoc(doc(db, `rooms/${room.id}/tasks/${task.id}`));
-    });
-
-    push('/home');
   };
 
   const leaveRoom = () => {
     setLeaveModal(false);
 
-    setTimeout(() => {
-      toast.promise(
-        updateDoc(roomRef, {
+    setTimeout(async () => {
+      try {
+        await updateDoc(roomRef, {
           members: arrayRemove(data.userTag),
-        }),
-        {
-          loading: 'Leaving Room...',
-          success: 'Room Left',
-          error: 'Error Leaving Room',
-        }
-      );
-      push('/home');
+        });
+
+        toast.success('Room Left');
+
+        push('/home');
+      } catch (e: any) {
+        toast.error(e.message);
+      }
     }, 300);
   };
 
@@ -89,7 +89,11 @@ const Info: React.FC = () => {
       <Modal
         title='Room'
         description='Are you sure you want to leave this room? You need to request or get an invite before you can join again.'
-        proceed={{ action: leaveRoom, text: 'Leave Room', style: 'bg-red-600' }}
+        proceed={{
+          action: leaveRoom,
+          text: 'Leave Room',
+          style: 'bg-red-600',
+        }}
         setIsOpen={setLeaveModal}
         isOpen={leaveModal}
       />
