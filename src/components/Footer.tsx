@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import doodle from '@/assets/doodle.svg';
-import { socials, footerLinks } from '@/utils/constants';
+import { footerLinks } from '@/utils/constants';
 
 const Footer: React.FC = () => {
   return (
@@ -41,23 +41,24 @@ const Footer: React.FC = () => {
 
           <div className='my-8 h-[1px] w-full bg-gray-500' />
 
-          <div className='md:flex-between mx-auto flex flex-col items-center md:flex-row'>
-            <p className='mb-4 text-secondary md:mb-0'>
-              trackAsOne © 2022 | Made with 💛
+          <div className='mx-auto flex items-center justify-center text-secondary md:justify-between'>
+            <p className='mr-1 md:mr-0'>
+              {process.env.NEXT_PUBLIC_VERSION ?? 'v0.0.0'}
             </p>
-            <div className='flex space-x-8 text-base lg:text-xl'>
-              {socials.map(({ Icon, link }) => (
-                <a
-                  className='transition-colors hover:text-secondary'
-                  key={Icon.toString()}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={link}
-                >
-                  <Icon />
-                </a>
-              ))}
-            </div>
+            <p>💛 trackAsOne © 2022</p>
+            {/* <div className='flex space-x-4 text-base lg:text-xl'>
+             *   {socials.map(({ Icon, link }) => (
+             *     <a
+             *       className='transition-colors hover:text-secondary'
+             *       key={Icon.toString()}
+             *       target='_blank'
+             *       rel='noopener noreferrer'
+             *       href={link}
+             *     >
+             *       <Icon />
+             *     </a>
+             *   ))}
+             * </div> */}
           </div>
         </div>
       </div>
