@@ -7,7 +7,7 @@ import 'tippy.js/dist/tippy.css';
 
 const style = (role: IRoles) => {
   switch (role) {
-    case 'Founder':
+    case 'Verified':
       return 'text-lg text-blue-500';
 
     case 'Contributor':
@@ -27,7 +27,7 @@ const Badges = ({ roles }: { roles?: IRoles[] }) => {
       {_badges.map(({ role, Icon }) => {
         return (
           roles?.includes(role) && (
-            <Tippy key={role} content={role === 'OG' ? 'Early User' : role}>
+            <Tippy key={role} content={role}>
               <div className={style(role)}>
                 <Icon />
               </div>

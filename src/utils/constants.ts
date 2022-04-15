@@ -67,7 +67,7 @@ export const modalTransitions = {
 
 export const _badges: { role: IRoles; Icon: IconType }[] = [
   {
-    role: 'Founder',
+    role: 'Verified',
     Icon: HiBadgeCheck,
   },
   {
@@ -79,7 +79,7 @@ export const _badges: { role: IRoles; Icon: IconType }[] = [
     Icon: HiBeaker,
   },
   {
-    role: 'OG',
+    role: 'Early User',
     Icon: HiLightningBolt,
   },
 ];
