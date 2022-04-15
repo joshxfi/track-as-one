@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import doodle from '@/assets/doodle.svg';
-import { socials, footerLinks } from '@/utils/constants';
+import { footerLinks } from '@/utils/constants';
 
 const Footer: React.FC = () => {
   return (
@@ -20,23 +20,18 @@ const Footer: React.FC = () => {
               </h1>
             </div>
 
-            {footerLinks.map((data) => (
-              <div
-                key={data.title}
-                className={`${
-                  data.title === 'Contribute' && 'hidden sm:block'
-                }`}
-              >
-                <h1 className='footer-h1'>{data.title}</h1>
-                <div className='flex flex-col leading-5'>
-                  {data.links.map((link) => (
+            {footerLinks.map(({ title, links }) => (
+              <div key={title}>
+                <h1 className='footer-h1'>{title}</h1>
+                <div className='flex flex-col'>
+                  {links.map(({ name, url }) => (
                     <a
-                      key={link.name}
-                      href={link.url}
-                      target='_blank'
-                      rel="noopener noreferrer"
+                      key={name}
+                      href={url || name?.split(' ').join('-').toLowerCase()}
+                      target={url ? '_blank' : '_self'}
+                      rel='noopener noreferrer'
                     >
-                      {link.name}
+                      {name}
                     </a>
                   ))}
                 </div>
@@ -44,34 +39,26 @@ const Footer: React.FC = () => {
             ))}
           </div>
 
-          <div className='mt-8 sm:hidden'>
-            <h1 className='footer-h1'>Contribute</h1>
-            <div className='flex flex-col leading-5'>
-              <a href='#'>Report Bugs</a>
-              <a href='#'>Feature Request</a>
-              <a href='#'>Suggest Design</a>
-            </div>
-          </div>
-
           <div className='my-8 h-[1px] w-full bg-gray-500' />
 
-          <div className='md:flex-between mx-auto flex flex-col items-center md:flex-row'>
-            <p className='mb-4 text-secondary md:mb-0'>
-              Copyright © 2021 Josh Daniel
+          <div className='mx-auto flex items-center justify-center text-secondary md:justify-between'>
+            <p className='mr-1 md:mr-0'>
+              {process.env.NEXT_PUBLIC_VERSION ?? 'v0.0.0'}
             </p>
-            <div className='flex space-x-8 text-base lg:text-xl'>
-              {socials.map(({ Icon, link }) => (
-                <a
-                  className='transition-colors hover:text-secondary'
-                  key={Icon.toString()}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  href={link}
-                >
-                  <Icon />
-                </a>
-              ))}
-            </div>
+            <p>💛 trackAsOne © 2022</p>
+            {/* <div className='flex space-x-4 text-base lg:text-xl'>
+             *   {socials.map(({ Icon, link }) => (
+             *     <a
+             *       className='transition-colors hover:text-secondary'
+             *       key={Icon.toString()}
+             *       target='_blank'
+             *       rel='noopener noreferrer'
+             *       href={link}
+             *     >
+             *       <Icon />
+             *     </a>
+             *   ))}
+             * </div> */}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-type IRoles = 'OG' | 'Beta Tester' | 'Contributor' | 'Founder';
+type IRoles = 'Early User' | 'Beta Tester' | 'Contributor' | 'Verified';
 
 interface IUser {
   id?: string;

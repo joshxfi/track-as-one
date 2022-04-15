@@ -30,11 +30,11 @@ const Join: NextPageWithLayout = () => {
 
       if (!room.exists()) toast.error('Room Does Not Exist');
       else if (userInRoom(userTag, _room))
-        toast.error('You Are Already a Member');
+        toast.error('You are already a member');
       else if (_room.requests.includes(userTag))
-        toast.error('You Already Sent a Request');
+        toast.error('You already sent a request');
       else if (_room.creator === userTag)
-        toast.error('You Are the Owner of the Room');
+        toast.error('You are the owner of the room');
       else {
         await updateDoc(roomRef, {
           requests: arrayUnion(userTag),

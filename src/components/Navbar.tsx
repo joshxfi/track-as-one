@@ -7,14 +7,8 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar: React.FC = () => {
-  const { user, signIn, signOut } = useAuth();
   const { asPath } = useRouter();
-
-  /* const navItems = [
-   *   { name: 'Home', href: user ? '/home' : '/' },
-   *   { name: 'About', href: '/about' },
-   *   { name: 'Contact', href: '/contact' },
-   * ]; */
+  const { user, signIn, signOut } = useAuth();
 
   return (
     <nav
@@ -30,22 +24,6 @@ const Navbar: React.FC = () => {
               <p className='ml-1 text-xs font-semibold'>BETA</p>
             </a>
           </Link>
-
-          {/* <div className='hidden space-x-8 md:block'>
-           *   {navItems.map(({ name, href }) => {
-           *     return (
-           *       <Link href={href} key={name}>
-           *         <a
-           *           className={`${
-           *             asPath === href && 'text-secondary'
-           *           }  text-sm transition-colors hover:text-secondary`}
-           *         >
-           *           {name}
-           *         </a>
-           *       </Link>
-           *     );
-           *   })}
-           * </div> */}
         </div>
 
         <div className='flex items-center space-x-4'>
