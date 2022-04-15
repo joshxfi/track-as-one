@@ -1,8 +1,90 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.auth != null;
+  	function docExists(collection, docId) {
+    	return exists(/databases/$(database)/documents/$(collection)/$(docId));
+    }
+  
+  	function isAdmin(userId) {
+   		return docExists('admins', userId);
+    }
+    
+    function currentUser() {
+    	return request.auth.uid; 
+    }
+    
+    function userTag() {
+    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userTag;
+    }
+    
+    function allowedFields(condition, fields) {
+    	return condition && request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields);
+    }
+    
+    match /{documents=**} {
+    	allow read, write: if isAdmin(currentUser());
+    }
+    
+    match /admins/{adminId} {
+    	allow read, write: if isAdmin(currentUser());
+    }
+  
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create: if !docExists('users', userId);
+      allow update: if allowedFields(userId.matches(currentUser()), ['username']);
+    }
+    
+    match /rooms/{roomId} {
+    	function isCreator() {
+      	return userTag() == resource.data.creator;
+      }
+      
+      function isRoomAdmin() {
+      	return userTag() in resource.data.admin;
+      }
+    
+    	function isMember() {
+      	return userTag() in resource.data.members;
+      }
+      
+      function members(isReq) {
+      	return isReq ? request.resource.data.members : resource.data.members;
+      }
+      
+      allow read: if true;
+      allow create: if !docExists('rooms', roomId);
+      allow update: if (allowedFields(!(userTag() in members(false)), ['requests']) 
+      							&& members(true).hasAll(members(false)))
+      							|| allowedFields(isCreator(), ['name', 'admin', 'members', 'requests'])
+      					    || allowedFields(isRoomAdmin(), ['members', 'requests'])
+                    || (allowedFields(isMember(), ['members']) 
+                    && !(userTag() in members(true))
+                    && members(true).hasAll(members(false).removeAll([userTag()])));
+      allow delete: if isCreator();
+      
+      match /tasks/{taskId} {
+        function currentRoom() {
+      		return get(/databases/$(database)/documents/rooms/$(roomId)).data;
+      	}
+        
+        function roomAdmin() {
+        	return userTag() in currentRoom().admin || userTag() == currentRoom().creator;
+        }
+        
+  			function roomMember() {
+        	return userTag() in currentRoom().members;
+        }
+        
+        function addedByUser() {
+        	return userTag() == resource.data.addedBy;
+        }
+      
+      	allow read, create: if roomMember() || roomAdmin();
+        allow update: if addedByUser() || roomAdmin()
+											|| allowedFields(roomMember(), ['completedBy']);
+        allow delete: if addedByUser() || roomAdmin();
+      }
     }
   }
-}
+} 
