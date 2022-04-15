@@ -50,4 +50,4 @@ $ git push origin HEAD
 6. Submit a pull request on the `dev` branch. (resolve conflicts if present)
 
 ## License
-**trackAsOne** is licensed under the [MIT license](https://github.com/joshxfi/trackAsOne/blob/main/LICENSE).
+**trackAsOne** is licensed under the [GPL-3.0 license](https://github.com/joshxfi/trackAsOne/blob/main/LICENSE).
