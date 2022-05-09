@@ -7,7 +7,7 @@ import { useCreatedRooms } from '@/services';
 import { defaultPic } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
 import { MyRooms, UserMenu } from '@/components/Home';
-import { Badges, ImageFill, Layout } from '@/components';
+import { Badges, ImageFill, Indicator, Layout } from '@/components';
 
 const Homepage: React.FC = () => {
   const {
@@ -43,7 +43,10 @@ const Homepage: React.FC = () => {
             />
           </div>
           <div className='absolute bottom-0 right-0'>
-            <UserMenu />
+            <div className='relative'>
+              <UserMenu />
+              <Indicator className='absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
+            </div>
           </div>
         </div>
 

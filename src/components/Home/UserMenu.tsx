@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const RoomMenu = () => {
   const {
-    data: { userTag },
+    data: { userTag, invites },
   } = useAuth();
 
   const copyTag = () => {
@@ -41,7 +41,12 @@ const RoomMenu = () => {
                 onClick={copyTag}
               />
               <MenuBtn label='Edit Profile' Icon={HiPencil} route='invites' />
-              <MenuBtn label='View Invites' Icon={HiEye} route='invites' />
+              <MenuBtn
+                label='View Invites'
+                Icon={HiEye}
+                route='invites'
+                indicator={invites.length > 0}
+              />
             </Popover.Panel>
           </Transition>
         </>
