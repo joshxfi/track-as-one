@@ -1,22 +1,15 @@
 import React from 'react';
 import { collection, query, where } from 'firebase/firestore';
-import { AiOutlineIdcard } from 'react-icons/ai';
-import { useRouter } from 'next/router';
-import { BsEye } from 'react-icons/bs';
-import toast from 'react-hot-toast';
-import Image from 'next/image';
 
 import { useCol } from '@/hooks';
 import { db } from '@/config/firebase';
-import { MyRooms } from '@/components/Home';
-import { Button } from '@/components/Button';
 import { useCreatedRooms } from '@/services';
-import { Badges, Layout } from '@/components';
 import { defaultPic } from '@/utils/constants';
 import { useAuth } from '@/contexts/AuthContext';
+import { MyRooms, UserMenu } from '@/components/Home';
+import { Badges, ImageFill, Layout } from '@/components';
 
 const Homepage: React.FC = () => {
-  const { push } = useRouter();
   const {
     data: { username, photoURL, userTag, roles },
   } = useAuth();
@@ -34,58 +27,36 @@ const Homepage: React.FC = () => {
     )
   );
 
-  const copyTag = () => {
-    navigator.clipboard.writeText(userTag ?? '');
-    toast.success('copied to clipboard');
-  };
-
   return (
-    <Layout loaders={[crLoading, jrLoading, jraLoading]} className='mb-16'>
-      <div className='mt-8 flex w-full flex-col items-center space-y-4'>
-        <Image
-          src={photoURL ?? defaultPic}
-          height={100}
-          width={100}
-          objectFit='cover'
-          className='rounded-full'
-          alt='profile picture'
-        />
-
-        <div className='text-center'>
-          <div>
-            <div className='relative'>
-              <h1 className='text-2xl font-bold'>{username}</h1>
-              <Badges roles={roles} />
-            </div>
-            <p>{userTag}</p>
+    <Layout
+      wide
+      loaders={[crLoading, jrLoading, jraLoading]}
+      className='flex justify-between space-x-40 pt-16'
+    >
+      <div className='flex flex-col items-center space-y-4'>
+        <div className='relative'>
+          <ImageFill
+            src={photoURL ?? defaultPic}
+            className='h-[150px] w-[150px] rounded-full'
+            alt='profile picture'
+          />
+          <div className='absolute top-0 right-0'>
+            <UserMenu />
           </div>
+        </div>
+
+        <div className='relative inline-block'>
+          <h1 className='text-2xl font-semibold'>{username}</h1>
+          <Badges roles={roles} />
         </div>
       </div>
 
-      <div className='primary-gradient my-4 h-[2px] w-full' />
-
-      <div className='flex-between space-x-2'>
-        <Button
-          name='copy tag'
-          onClick={copyTag}
-          className='sq-btn'
-          iconStyles='text-secondary text-xl'
-          Icon={AiOutlineIdcard}
-        />
-
-        <Button
-          name='view invites'
-          onClick={() => push('/invites')}
-          className='sq-btn'
-          iconStyles='text-secondary text-xl'
-          Icon={BsEye}
+      <div className='w-full'>
+        <MyRooms
+          createdRooms={createdRooms}
+          joinedRooms={[...(joinedRooms ?? []), ...(joinedRoomsAsAdmin ?? [])]}
         />
       </div>
-
-      <MyRooms
-        createdRooms={createdRooms}
-        joinedRooms={[...(joinedRooms ?? []), ...(joinedRoomsAsAdmin ?? [])]}
-      />
     </Layout>
   );
 };
