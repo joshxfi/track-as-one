@@ -31,7 +31,7 @@ const Homepage: React.FC = () => {
     <Layout
       wide
       loaders={[crLoading, jrLoading, jraLoading]}
-      className='flex justify-between space-x-40 pt-16'
+      className='flex flex-col justify-between py-16 lg:flex-row lg:space-x-40'
     >
       <div className='flex flex-col items-center space-y-4'>
         <div className='relative'>
@@ -40,7 +40,7 @@ const Homepage: React.FC = () => {
             className='h-[150px] w-[150px] rounded-full'
             alt='profile picture'
           />
-          <div className='absolute top-0 right-0'>
+          <div className='absolute bottom-0 right-0'>
             <UserMenu />
           </div>
         </div>
@@ -51,7 +51,7 @@ const Homepage: React.FC = () => {
         </div>
       </div>
 
-      <div className='w-full'>
+      <div className='mt-12 w-full lg:mt-0'>
         <MyRooms
           createdRooms={createdRooms}
           joinedRooms={[...(joinedRooms ?? []), ...(joinedRoomsAsAdmin ?? [])]}
