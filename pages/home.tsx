@@ -35,11 +35,13 @@ const Homepage: React.FC = () => {
     >
       <div className='flex flex-col items-center space-y-4'>
         <div className='relative'>
-          <ImageFill
-            src={photoURL ?? defaultPic}
-            className='h-[150px] w-[150px] rounded-full'
-            alt='profile picture'
-          />
+          <div className='primary-gradient rounded-full p-2'>
+            <ImageFill
+              src={photoURL ?? defaultPic}
+              className='h-[150px] w-[150px] rounded-full'
+              alt='profile picture'
+            />
+          </div>
           <div className='absolute bottom-0 right-0'>
             <UserMenu />
           </div>
