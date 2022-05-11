@@ -11,7 +11,7 @@ import { Badges, ImageFill, Indicator, Layout } from '@/components';
 
 const Homepage: React.FC = () => {
   const {
-    data: { username, photoURL, userTag, roles },
+    data: { username, photoURL, userTag, roles, invites },
   } = useAuth();
   const [createdRooms, crLoading] = useCreatedRooms(userTag);
   const [joinedRooms, jrLoading] = useCol<IRoom>(
@@ -45,7 +45,9 @@ const Homepage: React.FC = () => {
           <div className='absolute bottom-0 right-0'>
             <div className='relative'>
               <UserMenu />
-              <Indicator className='absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
+              {invites.length > 0 && (
+                <Indicator className='absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
+              )}
             </div>
           </div>
         </div>

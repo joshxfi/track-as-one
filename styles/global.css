@@ -10,10 +10,6 @@
   color: #2b2b2b;
 }
 
-body {
-  background: #f9f9f9;
-}
-
 .react-datepicker-popper {
   z-index: 99 !important;
 }
@@ -27,11 +23,13 @@ body {
 ::-webkit-scrollbar-track {
   background-color: #2b2b2b;
 }
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 10px;
   background-color: #2b2b2b;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #e3b04b;
   border-radius: 8px;

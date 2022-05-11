@@ -1,15 +1,13 @@
 import React, { ReactElement } from 'react';
-
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
 
-import { Layout } from '@/components';
 import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
-import { useAuth } from '@/contexts/AuthContext';
 import { landingPage } from '@/utils/constants';
 import { NextPageWithLayout } from 'types/page';
+import { ImageFill, Layout } from '@/components';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index: NextPageWithLayout = () => {
   const { user, signIn } = useAuth();
@@ -26,20 +24,19 @@ const Index: NextPageWithLayout = () => {
 
           <div className='flex max-w-screen-xl flex-col items-center lg:items-start lg:pl-2'>
             <div className='text-center lg:text-left'>
-              <div className='my-8 mx-auto w-[300px] lg:hidden'>
-                <Image
-                  priority
-                  src={avatar}
-                  objectFit='contain'
-                  alt='trackAsOne avatar'
-                />
-              </div>
+              <ImageFill
+                contain
+                priority
+                src={avatar}
+                alt='trackAsOne avatar'
+                className='my-8 mx-auto h-[300px] w-[300px] lg:hidden'
+              />
 
-              <h1 className='font-serif text-2xl font-semibold xl:w-auto xl:text-3xl'>
-                A collaborative task tracker.
+              <h1 className='font-serif text-2xl font-medium xl:w-auto xl:text-3xl'>
+                A free and open-source collaborative task tracker.
               </h1>
 
-              <p className='text-md mt-2 sm:text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
+              <p className='text-md my-8 text-lg lg:w-[540px] xl:w-[650px]'>
                 {landingPage.body1}
               </p>
             </div>
@@ -53,9 +50,13 @@ const Index: NextPageWithLayout = () => {
           </div>
         </div>
 
-        <div className='hidden w-[400px] pt-12 lg:block'>
-          <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
-        </div>
+        <ImageFill
+          contain
+          priority
+          src={avatar}
+          alt='trackAsOne avatar'
+          className='hidden h-[500px] w-[500px] lg:block'
+        />
       </section>
 
       <section className='my-20 border-y-2 border-primary py-5 md:my-40 md:py-12'>
@@ -95,13 +96,14 @@ interface InfoProps {
 
 const Info = ({ title, body }: InfoProps) => {
   return (
-    <div className='flex flex-col items-center'>
-      <h1 className='font-serif text-xl font-semibold sm:text-2xl lg:text-4xl'>
-        {title}
-      </h1>
-      <p className='text-md mt-2 text-center sm:text-lg lg:w-[490px] xl:w-[670px] xl:text-xl'>
-        {body}
-      </p>
+    <div className='mx-auto rounded border-t-[3px] border-l-[3px] border-r-[6px] border-b-[6px] border-primary bg-white md:w-[700px]'>
+      <div className='h-12 border-b-[3px] border-primary bg-secondary' />
+      <div className='p-8 text-center md:p-16'>
+        <h1 className='mb-4 font-serif text-2xl font-medium md:text-4xl'>
+          {title}
+        </h1>
+        <p className='text-md mt-2 text-center md:text-lg'>{body}</p>
+      </div>
     </div>
   );
 };

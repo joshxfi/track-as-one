@@ -20,7 +20,7 @@ const RoomLabel = ({ label, text, Icon }: RoomLabelProps) => {
           className='flex items-center space-x-2'
         >
           <Icon className='text-lg' />
-          <p>{label}</p>
+          <p className='font-medium'>{label}</p>
         </button>
 
         <div className='h-[15px] w-[1px] bg-gray-400' />

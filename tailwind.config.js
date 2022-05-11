@@ -9,6 +9,7 @@ module.exports = {
         f9: '#F9F9F9',
         primary: '#2B2B2B',
         secondary: '#E3B04B',
+        lightsec: '#f9d252',
         inputbg: '#E7E7E7',
         inputfg: '#B5B3B1',
       },
