@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+}
+
 @layer components {
   .btn {
     @apply mb-3 flex h-[40px] w-full items-center justify-between rounded-[36px] bg-primary px-[40px] text-sm text-f9;
@@ -100,10 +106,14 @@
   }
 
   .border-effect {
-    @apply border-t-[3px] border-l-[3px] border-r-[6px] border-b-[6px];
+    @apply border-t-[3px] border-l-[3px] border-r-[5px] border-b-[5px];
   }
 
   .border-btn {
-    @apply border-effect flex items-center rounded border-primary bg-lighter px-4 py-2;
+    @apply border-effect flex translate-x-[-0.2rem] translate-y-[-0.2rem] transform items-center rounded border-primary bg-lighter px-4 py-2 text-sm transition-all group-hover:translate-x-0 group-hover:translate-y-0 md:text-base;
+  }
+
+  .border-btn-parent {
+    @apply rounded bg-primary transition-all hover:bg-opacity-0;
   }
 }
