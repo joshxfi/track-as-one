@@ -98,4 +98,12 @@
   .task-img-container {
     @apply h-[90px] w-[90px] rounded;
   }
+
+  .border-effect {
+    @apply border-t-[3px] border-l-[3px] border-r-[6px] border-b-[6px];
+  }
+
+  .border-btn {
+    @apply border-effect flex items-center rounded border-primary bg-lighter px-4 py-2;
+  }
 }
