@@ -4,7 +4,6 @@ import { FaSignInAlt } from 'react-icons/fa';
 
 import { Layout } from '@/components';
 import { Button } from '@/components/Button';
-import { landingPage } from '@/utils/constants';
 import { NextPageWithLayout } from 'types/page';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -20,7 +19,10 @@ const Index: NextPageWithLayout = () => {
           <h1 className='font-serif'>Task Tracker</h1>
         </div>
 
-        <p className='my-8 max-w-[700px] md:text-lg'>{landingPage.body1}</p>
+        <p className='my-8 max-w-[700px] md:text-lg'>
+          A free and open-source to-do list for you and your classmates! Create
+          multiple rooms and invite your friends!
+        </p>
 
         <div className='flex space-x-4'>
           <div className='border-btn-parent group'>
@@ -40,18 +42,34 @@ const Index: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <div className='my-24 h-1 rounded bg-primary md:my-32' />
-
       <section
         id='info'
-        className='mx-auto max-w-screen-xl scroll-mt-32 space-y-24 pb-40 md:space-y-40'
+        className='mx-auto mt-24 max-w-screen-xl scroll-mt-32 space-y-24 pb-40 md:mt-32 md:space-y-40'
       >
         <Info
           title='Built by a student for students.'
-          body={landingPage.body2}
+          body={
+            <>
+              Hello! I am{' '}
+              <a
+                href='https://github.com/joshxfi'
+                target='_blank'
+                rel='noreferrer noopener'
+                className='hover:underline'
+              >
+                @joshxfi
+              </a>
+              , the creator and maintainer of this open-source project. I
+              created trackAsOne to help me and my classmates keep track of our
+              school activities.
+            </>
+          }
         />
 
-        <Info title='Why use this task tracker?' body={landingPage.body3} />
+        <Info
+          title='Why use this task tracker?'
+          body='With trackAsOne, you can have a single to-do list where all of your invited friends or classmates would see and collaborate. When you add a task, you can attach photos, a due date, and URLs!'
+        />
       </section>
     </>
   );
@@ -59,7 +77,7 @@ const Index: NextPageWithLayout = () => {
 
 Index.getLayout = (page: ReactElement) => {
   return (
-    <Layout wide allowAll className='pt-28'>
+    <Layout wide allowAll className='pt-20 md:pt-28'>
       {page}
     </Layout>
   );
@@ -67,22 +85,22 @@ Index.getLayout = (page: ReactElement) => {
 
 interface InfoProps {
   title: string;
-  body: string;
+  body: React.ReactNode;
 }
 
 const Info = ({ title, body }: InfoProps) => {
   return (
-    <div className='mx-auto rounded border-[3px] border-b-[6px] border-primary bg-f9 md:w-[700px]'>
+    <div className='mx-auto rounded border-[3px] border-b-[6px] border-primary bg-[#fefff3] md:w-[700px]'>
       <div className='flex h-12 items-center space-x-2 border-b-[3px] border-primary bg-primary pl-4'>
         {['bg-red-500', 'bg-amber-500', 'bg-green-500'].map((color) => (
           <i key={color} className={`${color} rounded-full p-[6px]`} />
         ))}
       </div>
-      <div className='p-8 text-center md:p-16'>
+      <div className='p-8 text-center md:py-16 md:px-12'>
         <h1 className='mb-4 font-serif text-2xl font-medium md:text-4xl'>
           {title}
         </h1>
-        <p className='mt-2 text-center md:text-lg'>{body}</p>
+        <div className='mt-2 text-center md:text-lg'>{body}</div>
       </div>
     </div>
   );
