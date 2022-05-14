@@ -34,27 +34,24 @@ const Homepage: React.FC = () => {
       className='flex flex-col justify-between py-16 lg:flex-row lg:space-x-40'
     >
       <div className='flex flex-col items-center space-y-4'>
-        <div className='relative'>
-          <div className='primary-gradient rounded-full p-2'>
-            <ImageFill
-              src={photoURL ?? defaultPic}
-              className='h-[150px] w-[150px] rounded-full'
-              alt='profile picture'
-            />
-          </div>
-          <div className='absolute bottom-0 right-0'>
-            <div className='relative'>
-              <UserMenu />
-              {invites.length > 0 && (
-                <Indicator className='absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
-              )}
-            </div>
-          </div>
-        </div>
+        <ImageFill
+          src={photoURL ?? defaultPic}
+          className='h-[150px] w-[150px] rounded-full'
+          alt='profile picture'
+        />
 
         <div className='relative inline-block'>
           <h1 className='text-2xl font-semibold'>{username}</h1>
           <Badges roles={roles} />
+        </div>
+
+        <div className='border-btn-parent group w-[180px]'>
+          <div className='relative'>
+            <UserMenu />
+            {invites.length > 0 && (
+              <Indicator className=' absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
+            )}
+          </div>
         </div>
       </div>
 

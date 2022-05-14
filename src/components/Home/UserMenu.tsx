@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { AiFillSetting } from 'react-icons/ai';
 import { Popover, Transition } from '@headlessui/react';
 import { HiClipboardCopy, HiEye, HiPencil } from 'react-icons/hi';
 
@@ -21,8 +20,8 @@ const RoomMenu = () => {
     <Popover className='relative z-40'>
       {() => (
         <>
-          <Popover.Button>
-            <AiFillSetting className='text-lg' />
+          <Popover.Button className='border-btn w-full justify-center'>
+            My Profile
           </Popover.Button>
 
           <Transition
@@ -34,7 +33,7 @@ const RoomMenu = () => {
             leaveFrom='opacity-100 translate-y-0'
             leaveTo='opacity-0 translate-y-1'
           >
-            <Popover.Panel className='absolute top-8 right-2 flex w-[180px] flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
+            <Popover.Panel className='absolute top-16 right-0 flex w-[180px] flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
               <MenuBtn
                 label={userTag}
                 Icon={HiClipboardCopy}

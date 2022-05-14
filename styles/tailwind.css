@@ -22,7 +22,7 @@
   }
 
   .btn-ring {
-    @apply transition-all duration-300 hover:opacity-95 focus:ring-4 focus:ring-secondary focus:ring-offset-1;
+    @apply transition-all duration-300 hover:opacity-95 focus:ring-4 focus:ring-lighter focus:ring-offset-1;
   }
 
   .card {
@@ -110,7 +110,7 @@
   }
 
   .border-btn {
-    @apply border-effect flex translate-x-[-0.2rem] translate-y-[-0.2rem] transform items-center rounded border-primary bg-lighter px-4 py-2 text-sm transition-all group-hover:translate-x-0 group-hover:translate-y-0 md:text-base;
+    @apply border-effect flex translate-x-[-0.2rem] translate-y-[-0.2rem] transform items-center rounded border-primary bg-lighter px-4 py-2 text-sm font-medium transition-all group-hover:translate-x-0 group-hover:translate-y-0 md:text-base;
   }
 
   .border-btn-parent {

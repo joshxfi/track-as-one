@@ -68,7 +68,7 @@ const Index: NextPageWithLayout = () => {
 
         <Info
           title='Why use this task tracker?'
-          body='With trackAsOne, you can have a single to-do list where all of your invited friends or classmates would see and collaborate. When you add a task, you can attach photos, a due date, and URLs!'
+          body='With trackAsOne, you can have a single to-do list where all of your invited friends or classmates would see and collaborate. When you add a task, you can attach photos, a due date, and a URL!'
         />
       </section>
     </>
@@ -90,7 +90,7 @@ interface InfoProps {
 
 const Info = ({ title, body }: InfoProps) => {
   return (
-    <div className='mx-auto rounded border-[3px] border-b-[6px] border-primary bg-[#fefff3] md:w-[700px]'>
+    <div className='mx-auto rounded border-[3px] border-b-[6px] border-primary bg-whiteish md:w-[700px]'>
       <div className='flex h-12 items-center space-x-2 border-b-[3px] border-primary bg-primary pl-4'>
         {['bg-red-500', 'bg-amber-500', 'bg-green-500'].map((color) => (
           <i key={color} className={`${color} rounded-full p-[6px]`} />
