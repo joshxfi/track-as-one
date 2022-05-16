@@ -14,16 +14,16 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
     <button
       type='button'
       onClick={() => push({ pathname: '/room', query: { id: room.id } })}
-      className='border-effect btn-ring relative flex h-[80px] w-full transform flex-col justify-center truncate rounded border-primary bg-whiteish p-6 text-left hover:-translate-y-1'
+      className='card flex-between btn-ring relative h-[70px] w-full text-left'
     >
-      <p className='font-medium'>{room?.name}</p>
-      <div className='flex items-center justify-between'>
+      <div className='truncate'>
+        <p className='text-f9'>{room?.name}</p>
         <p className='text-sm'>
           members: {room.members.length + 1 + room.admin.length}
         </p>
-        <BiDoorOpen />
       </div>
 
+      <BiDoorOpen className='icon md:hidden' />
       {room.requests.length > 0 && <Indicator className='top-2 right-2' />}
     </button>
   );

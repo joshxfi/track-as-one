@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
           <button
             type='button'
             onClick={user ? signOut : signIn}
-            className='hidden items-center rounded bg-secondary px-4 py-2 text-primary transition-colors hover:bg-secondary/90 md:flex'
+            className='hidden items-center rounded bg-secondary px-4 py-2 font-medium text-primary transition-colors hover:bg-secondary/90 md:flex'
           >
             <p suppressHydrationWarning className='mr-2 text-sm'>
               {user ? 'Sign Out' : 'Login'}
