@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run build ||
+  (
+    echo '❌ Build failed. Make the required changes listed above, add changes and try to commit again.'
+    false
+  )
+
+echo '✅ All checks passed.'
+echo '✏ Pushin your changes.'
