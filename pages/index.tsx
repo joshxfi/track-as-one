@@ -1,15 +1,11 @@
 import React, { ReactElement } from 'react';
-
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FaSignInAlt } from 'react-icons/fa';
 
 import { Layout } from '@/components';
-import avatar from '@/assets/avatar.svg';
 import { Button } from '@/components/Button';
-import { useAuth } from '@/contexts/AuthContext';
-import { landingPage } from '@/utils/constants';
 import { NextPageWithLayout } from 'types/page';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index: NextPageWithLayout = () => {
   const { user, signIn } = useAuth();
@@ -17,64 +13,63 @@ const Index: NextPageWithLayout = () => {
 
   return (
     <>
-      <section className='mx-auto flex max-w-screen-xl flex-col items-center lg:mt-20 lg:flex-row lg:items-start lg:justify-between'>
-        <div className='pt-8 text-center lg:flex lg:flex-col lg:items-start lg:justify-between'>
-          <h1 className='text-5xl font-bold md:text-7xl lg:mb-2 xl:text-8xl'>
-            trackAs
-            <span className='gradient-text'>One</span>
-          </h1>
+      <section className='mt-20 flex flex-col items-center text-center'>
+        <div className='text-5xl font-semibold md:text-6xl lg:text-7xl'>
+          <h1 className='mb-2 font-serif'>A Collaborative</h1>
+          <h1 className='font-serif'>Task Tracker</h1>
+        </div>
 
-          <div className='flex max-w-screen-xl flex-col items-center lg:items-start lg:pl-2'>
-            <div className='text-center lg:text-left'>
-              <div className='my-8 mx-auto w-[300px] lg:hidden'>
-                <Image
-                  priority
-                  src={avatar}
-                  objectFit='contain'
-                  alt='trackAsOne avatar'
-                />
-              </div>
+        <p className='my-8 max-w-[700px] md:text-lg'>
+          A free and open-source to-do list for you and your classmates! Create
+          multiple rooms and invite your friends!
+        </p>
 
-              <h1 className='font-serif text-2xl font-semibold xl:w-auto xl:text-3xl'>
-                A collaborative task tracker.
-              </h1>
+        <div className='flex space-x-4'>
+          <div className='border-btn-parent group'>
+            <a href='#info' className='border-btn'>
+              Learn more
+            </a>
+          </div>
 
-              <p className='text-md mt-2 sm:text-lg lg:w-[540px] xl:w-[650px] xl:text-xl'>
-                {landingPage.body1}
-              </p>
-            </div>
-
+          <div className='border-btn-parent group'>
             <Button
               onClick={user ? () => push('/home') : signIn}
-              className='welcome-btn'
-              name='get started'
+              className='border-btn'
+              name='Get started'
               Icon={FaSignInAlt}
             />
           </div>
         </div>
-
-        <div className='hidden w-[400px] pt-12 lg:block'>
-          <Image src={avatar} objectFit='contain' alt='trackAsOne avatar' />
-        </div>
       </section>
 
-      <section className='my-20 border-y-2 border-primary py-5 md:my-40 md:py-12'>
-        <ul className='text-md flex justify-between text-primary text-opacity-90 sm:text-2xl md:text-3xl xl:text-5xl'>
-          {['User-Friendly', 'Collaborative', 'Open-Source'].map((i) => (
-            <li key={i}>
-              <p className='font-serif font-semibold'>{i}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className='mx-auto max-w-screen-xl space-y-24 pb-40 md:space-y-40'>
+      <section
+        id='info'
+        className='mx-auto mt-24 max-w-screen-xl scroll-mt-32 space-y-24 pb-40 md:mt-32 md:space-y-40'
+      >
         <Info
           title='Built by a student for students.'
-          body={landingPage.body2}
+          body={
+            <>
+              Hello! I am{' '}
+              <a
+                href='https://github.com/joshxfi'
+                target='_blank'
+                rel='noreferrer noopener'
+                className='hover:underline'
+              >
+                @joshxfi
+              </a>
+              , the creator and maintainer of this open-source project. I
+              created trackAsOne to help me and my classmates keep track of our
+              school activities.
+            </>
+          }
         />
 
-        <Info title='Why use this task tracker?' body={landingPage.body3} />
+        <Info
+          title='Why use this task tracker?'
+          body='With trackAsOne, you can have a single to-do list where all of your invited friends or classmates would see and collaborate. When you add a task, you can attach photos, a due date, and a URL!'
+        />
       </section>
     </>
   );
@@ -82,7 +77,7 @@ const Index: NextPageWithLayout = () => {
 
 Index.getLayout = (page: ReactElement) => {
   return (
-    <Layout wide allowAll className='pt-20'>
+    <Layout wide allowAll className='pt-20 md:pt-28'>
       {page}
     </Layout>
   );
@@ -90,18 +85,23 @@ Index.getLayout = (page: ReactElement) => {
 
 interface InfoProps {
   title: string;
-  body: string;
+  body: React.ReactNode;
 }
 
 const Info = ({ title, body }: InfoProps) => {
   return (
-    <div className='flex flex-col items-center'>
-      <h1 className='font-serif text-xl font-semibold sm:text-2xl lg:text-4xl'>
-        {title}
-      </h1>
-      <p className='text-md mt-2 text-center sm:text-lg lg:w-[490px] xl:w-[670px] xl:text-xl'>
-        {body}
-      </p>
+    <div className='mx-auto rounded border-[3px] border-b-[6px] border-primary bg-whiteish md:w-[700px]'>
+      <div className='flex h-12 items-center space-x-2 border-b-[3px] border-primary bg-primary pl-4'>
+        {['bg-red-500', 'bg-amber-500', 'bg-green-500'].map((color) => (
+          <i key={color} className={`${color} rounded-full p-[6px]`} />
+        ))}
+      </div>
+      <div className='p-8 text-center md:py-16 md:px-12'>
+        <h1 className='mb-4 font-serif text-2xl font-medium md:text-4xl'>
+          {title}
+        </h1>
+        <div className='mt-2 text-center md:text-lg'>{body}</div>
+      </div>
     </div>
   );
 };

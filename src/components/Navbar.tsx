@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { BsGithub } from 'react-icons/bs';
 import { NavMenu } from '@/components/Nav';
 import { FaSignInAlt } from 'react-icons/fa';
 import { useAuth } from '@/contexts/AuthContext';
@@ -26,23 +25,23 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        <div className='flex items-center space-x-4'>
+        <div className='flex items-center space-x-6'>
           <NavMenu />
           <a
             href='https://github.com/joshxfi/trackAsOne'
             rel='noopener noreferrer'
             target='_blank'
-            className='hidden text-2xl text-f9 md:block'
+            className='hidden text-f9 hover:underline md:block'
           >
-            <BsGithub />
+            GitHub
           </a>
           <button
             type='button'
             onClick={user ? signOut : signIn}
-            className='hidden items-center rounded bg-secondary py-2 px-4 text-sm text-primary shadow-sm transition-opacity hover:bg-secondary/90 hover:shadow-lg md:flex'
+            className='hidden items-center rounded bg-secondary px-4 py-2 font-medium text-primary transition-colors hover:bg-secondary/90 md:flex'
           >
-            <p suppressHydrationWarning className='mr-2 text-sm font-medium'>
-              {user ? 'sign out' : 'login'}
+            <p suppressHydrationWarning className='mr-2 text-sm'>
+              {user ? 'Sign Out' : 'Login'}
             </p>
             <FaSignInAlt />
           </button>

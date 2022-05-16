@@ -6,15 +6,16 @@ interface ImageFillProps
   extends Omit<ImageProps, 'src' | 'className' | 'layout' | 'objectFit'> {
   src?: string;
   className?: string;
+  contain?: boolean;
 }
 
-const ImageFill = ({ src, className, ...rest }: ImageFillProps) => {
+const ImageFill = ({ src, className, contain, ...rest }: ImageFillProps) => {
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <Image
         src={src || defaultPic}
         layout='fill'
-        objectFit='cover'
+        objectFit={contain ? 'contain' : 'cover'}
         {...rest}
       />
     </div>
