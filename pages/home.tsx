@@ -48,7 +48,7 @@ const Homepage: React.FC = () => {
         <div className='border-btn-parent group w-[180px]'>
           <div className='relative'>
             <UserMenu />
-            {invites.length > 0 && (
+            {invites?.length > 0 && (
               <Indicator className=' absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
             )}
           </div>
