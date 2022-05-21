@@ -88,8 +88,8 @@ const Room: NextPageWithLayout = () => {
   const addTask = async () => {
     try {
       if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-      else if (tasks && tasks.length >= 20)
-        toast.error('Task limit reached (20)');
+      else if (tasks && tasks.length >= 100)
+        toast.error('Task limit reached (100)');
       else if (!description) toast.error('Task description is required');
       else {
         setAddTaskModal(false);
