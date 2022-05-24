@@ -92,10 +92,12 @@ const RoomMenu = () => {
               type='text'
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
+              minLength={4}
+              maxLength={12}
             />
           </div>
         }
-        proceed={{ text: 'Save', action: handleEditUsername }}
+        proceed={{ onSubmit: handleEditUsername }}
       />
     </>
   );
