@@ -25,6 +25,7 @@ import {
   isPastDeadline,
   timeoutModal,
 } from '@/utils/functions';
+import { IconType } from 'react-icons';
 import { useUserByTag } from '@/services';
 import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/contexts/AuthContext';
@@ -35,6 +36,13 @@ import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
 import { TaskFields, TaskLoader } from '@/components/Room';
 import ImageFill from '../ImageFill';
+
+interface ButtonProps {
+  onClick: () => void;
+  className: string;
+  tooltip: string;
+  Icon: IconType;
+}
 
 const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
@@ -195,6 +203,21 @@ const Task = ({ task }: { task: ITask }) => {
     return 'bg-gray-400';
   }, [userTag, task.completedBy, pastDeadline, nearDeadline]);
 
+  const Button = ({ tooltip, onClick, className, Icon }: ButtonProps) =>
+    useMemo(() => {
+      return (
+        <Tippy content={tooltip}>
+          <button
+            onClick={onClick}
+            type='button'
+            className={`task-option-btn text-white ${className}`}
+          >
+            <Icon />
+          </button>
+        </Tippy>
+      );
+    }, []);
+
   return (
     <div className='flex flex-col'>
       {loading && (
@@ -256,14 +279,17 @@ const Task = ({ task }: { task: ITask }) => {
               <hr className='my-4' />
 
               {taskInfo.map(
-                (val) =>
+                (val, i) =>
                   val.info && (
-                    <div
-                      key={nanoid()}
-                      className='flex justify-between space-x-4 text-right'
-                    >
-                      <p>{val.title}: </p>
-                      <p>{val.info}</p>
+                    <div>
+                      {i === 2 && <hr className='my-5' />}
+                      <div
+                        key={nanoid()}
+                        className='flex justify-between space-x-4 text-right'
+                      >
+                        <p>{val.title}: </p>
+                        <p>{val.info}</p>
+                      </div>
                     </div>
                   )
               )}
@@ -273,60 +299,49 @@ const Task = ({ task }: { task: ITask }) => {
             <>
               {canModify && (
                 <>
-                  <Tippy content='Delete Task'>
-                    <button
-                      onClick={() => {
-                        setOptionsModal(false);
+                  <Button
+                    tooltip='Delete Task'
+                    className='bg-red-600'
+                    Icon={MdDelete}
+                    onClick={() => {
+                      setOptionsModal(false);
 
-                        setTimeout(() => {
-                          setDelModal(true);
-                        }, 500);
-                      }}
-                      type='button'
-                      className='task-option-btn bg-red-600 text-white'
-                    >
-                      <MdDelete />
-                    </button>
-                  </Tippy>
+                      setTimeout(() => {
+                        setDelModal(true);
+                      }, 500);
+                    }}
+                  />
 
-                  <Tippy content='Edit Task'>
-                    <button
-                      onClick={() => {
-                        setOptionsModal(false);
+                  <Button
+                    tooltip='Edit Task'
+                    className='bg-blue-600'
+                    Icon={MdEdit}
+                    onClick={() => {
+                      setOptionsModal(false);
 
-                        setTimeout(() => {
-                          setEditModal(true);
-                        }, 500);
-                      }}
-                      type='button'
-                      className='task-option-btn bg-blue-600 text-white'
-                    >
-                      <MdEdit />
-                    </button>
-                  </Tippy>
+                      setTimeout(() => {
+                        setEditModal(true);
+                      }, 500);
+                    }}
+                  />
                 </>
               )}
 
               {task.url && (
-                <Tippy content='Visit URL'>
-                  <button
-                    onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
-                    type='button'
-                    className='task-option-btn bg-amber-500 text-white'
-                  >
-                    <MdLink />
-                  </button>
-                </Tippy>
+                <Button
+                  tooltip='Visit URL'
+                  className='bg-amber-500'
+                  Icon={MdLink}
+                  onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
+                />
               )}
-              <Tippy content={completedByUser ? 'Undo Task' : 'Complete Task'}>
-                <button
-                  onClick={taskDone}
-                  type='button'
-                  className='task-option-btn bg-green-600 text-white'
-                >
-                  {completedByUser ? <MdUndo /> : <MdCheck />}
-                </button>
-              </Tippy>
+
+              <Button
+                tooltip={completedByUser ? 'Undo Task' : 'Complete Task'}
+                className='bg-green-600'
+                Icon={completedByUser ? MdUndo : MdCheck}
+                onClick={taskDone}
+              />
             </>
           }
         />
