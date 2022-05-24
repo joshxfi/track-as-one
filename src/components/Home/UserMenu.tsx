@@ -8,15 +8,12 @@ import { db } from '@/config/firebase';
 import { MenuBtn } from '@/components/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, updateDoc } from 'firebase/firestore';
-import { useDoc } from '@/hooks';
 
 const RoomMenu = () => {
   const {
     user,
-    data: { userTag, invites },
+    data: { userTag, username, invites },
   } = useAuth();
-
-  const [{ username }] = useDoc<IUser>(doc(db, `users/${user?.uid}`));
 
   const [editModal, setEditModal] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
@@ -33,11 +30,11 @@ const RoomMenu = () => {
     }
 
     try {
+      setEditModal(false);
       await updateDoc(doc(db, `users/${user?.uid}`), {
         username: newUsername,
       });
       toast.success('Username updated');
-      setEditModal(false);
     } catch (e: any) {
       toast.error(e.message);
     }
