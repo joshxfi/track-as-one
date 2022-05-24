@@ -14,7 +14,7 @@ const Index: NextPageWithLayout = () => {
   return (
     <>
       <section className='mt-20 flex flex-col items-center text-center'>
-        <div className='text-5xl font-semibold md:text-6xl lg:text-7xl'>
+        <div className='text-[10vw] font-semibold leading-none sm:text-6xl lg:text-7xl'>
           <h1 className='mb-2 font-serif'>A Collaborative</h1>
           <h1 className='font-serif'>Task Tracker</h1>
         </div>
