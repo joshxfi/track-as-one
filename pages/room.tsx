@@ -54,9 +54,12 @@ const Room: NextPageWithLayout = () => {
   const sortedTasks = useMemo(() => {
     return tasks
       ?.filter((task) => {
+        const completedByUser = task.completedBy.includes(userTag);
         if (filterBy === 'Completed') return task.completedBy.includes(userTag);
-        if (filterBy === 'Almost Due') return isNearDeadline(task.dueDate);
-        if (filterBy === 'Past Due') return isPastDeadline(task.dueDate);
+        if (filterBy === 'Almost Due')
+          return isNearDeadline(task.dueDate) && !completedByUser;
+        if (filterBy === 'Past Due')
+          return isPastDeadline(task.dueDate) && !completedByUser;
 
         return true;
       })
