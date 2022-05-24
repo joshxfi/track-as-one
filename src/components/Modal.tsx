@@ -54,7 +54,7 @@ const Modal = ({
             <div
               className={`max-w-md ${
                 containerStyle || 'w-[350px] p-6 md:w-full'
-              } transform rounded-xl bg-white text-left shadow-xl transition-all`}
+              } transform rounded-md bg-white text-left shadow-xl transition-all`}
             >
               <Dialog.Title
                 as='h3'

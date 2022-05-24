@@ -1,7 +1,7 @@
 import React from 'react';
-import { collection, query, where } from 'firebase/firestore';
+import { collection, doc, query, where } from 'firebase/firestore';
 
-import { useCol } from '@/hooks';
+import { useCol, useDoc } from '@/hooks';
 import { db } from '@/config/firebase';
 import { useCreatedRooms } from '@/services';
 import { defaultPic } from '@/utils/constants';
@@ -11,7 +11,8 @@ import { Badges, ImageFill, Indicator, Layout } from '@/components';
 
 const Homepage: React.FC = () => {
   const {
-    data: { username, photoURL, userTag, roles, invites },
+    user,
+    data: { photoURL, userTag, roles, invites },
   } = useAuth();
   const [createdRooms, crLoading] = useCreatedRooms(userTag);
   const [joinedRooms, jrLoading] = useCol<IRoom>(
@@ -26,6 +27,8 @@ const Homepage: React.FC = () => {
       where('admin', 'array-contains', userTag ?? '')
     )
   );
+
+  const [{ username }] = useDoc<IUser>(doc(db, `users/${user?.uid}`));
 
   return (
     <Layout
