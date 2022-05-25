@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <>
       <NextSeo {...rest} />
-      <div className='bg-gradient-to-tr from-[#F2F1DD] to-f9'>
+      <div className='bg-gradient-to-br from-[#F2F1DD] to-f9'>
         <LoaderHandler loaders={loaders}>
           <Navbar />
           <main

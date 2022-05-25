@@ -5,6 +5,7 @@ import { modalTransitions } from '@/utils/constants';
 
 type Proceed = {
   action?: () => void;
+  onSubmit?: () => void;
   href?: string;
   text?: string;
   style?: string;
@@ -54,7 +55,7 @@ const Modal = ({
             <div
               className={`max-w-md ${
                 containerStyle || 'w-[350px] p-6 md:w-full'
-              } transform rounded-xl bg-white text-left shadow-xl transition-all`}
+              } transform rounded-md bg-white text-left shadow-xl transition-all`}
             >
               <Dialog.Title
                 as='h3'
@@ -66,49 +67,66 @@ const Modal = ({
                   <IoMdCloseCircle />
                 </button>
               </Dialog.Title>
-
-              {description ? (
-                <p className='break-words text-sm text-gray-500 md:text-base'>
-                  {description}
-                </p>
-              ) : (
-                body
-              )}
-
-              <div className='mt-4 flex flex-wrap justify-end space-x-3'>
-                {proceed && (
-                  <button
-                    type='button'
-                    onClick={dismiss}
-                    className='mr-4 text-sm font-medium text-gray-800'
-                  >
-                    Cancel
-                  </button>
+              <form
+                onSubmit={(e) => {
+                  if (proceed?.onSubmit) {
+                    e.preventDefault();
+                    proceed?.onSubmit?.();
+                  }
+                }}
+              >
+                {description ? (
+                  <p className='break-words text-sm text-gray-500 md:text-base'>
+                    {description}
+                  </p>
+                ) : (
+                  body
                 )}
 
-                {proceed?.href && (
-                  <a
-                    href={proceed.href}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
-                  >
-                    {proceed.text ?? 'Continue'}
-                  </a>
-                )}
+                <div className='mt-4 flex flex-wrap justify-end space-x-3'>
+                  {proceed && (
+                    <button
+                      type='button'
+                      onClick={dismiss}
+                      className='mr-4 text-sm font-medium text-gray-800'
+                    >
+                      Cancel
+                    </button>
+                  )}
 
-                {proceed?.action && (
-                  <button
-                    type='button'
-                    className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
-                    onClick={proceed.action}
-                  >
-                    {proceed.text ?? 'Continue'}
-                  </button>
-                )}
+                  {proceed?.href && (
+                    <a
+                      href={proceed.href}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
+                    >
+                      {proceed.text ?? 'Continue'}
+                    </a>
+                  )}
 
-                {buttons}
-              </div>
+                  {proceed?.action && (
+                    <button
+                      type='button'
+                      className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
+                      onClick={proceed.action}
+                    >
+                      {proceed.text ?? 'Continue'}
+                    </button>
+                  )}
+
+                  {proceed?.onSubmit && (
+                    <button
+                      type='submit'
+                      className={`modal-btn ${proceed.style ?? 'bg-green-500'}`}
+                    >
+                      {proceed.text ?? 'Save'}
+                    </button>
+                  )}
+
+                  {buttons}
+                </div>
+              </form>
             </div>
           </Transition.Child>
         </div>

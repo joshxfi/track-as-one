@@ -8,3 +8,4 @@ export { default as InfoMember } from './InfoMember';
 export { default as TaskFields } from './TaskFields';
 export { default as InfoSection } from './InfoSection';
 export { default as UserRequest } from './UserRequest';
+export { default as CompletedUser } from './CompletedUser';

@@ -25,6 +25,8 @@ import {
   isPastDeadline,
   timeoutModal,
 } from '@/utils/functions';
+import { IconType } from 'react-icons';
+import { IoMdEye } from 'react-icons/io';
 import { useUserByTag } from '@/services';
 import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/contexts/AuthContext';
@@ -33,17 +35,25 @@ import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
-import { TaskFields, TaskLoader } from '@/components/Room';
+import { CompletedUser, TaskFields, TaskLoader } from '@/components/Room';
 import ImageFill from '../ImageFill';
+
+interface ButtonProps {
+  onClick: () => void;
+  className: string;
+  tooltip: string;
+  Icon: IconType;
+}
 
 const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
   const [urlModal, setUrlModal] = useState(false);
-  const [optionsModal, setOptionsModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
   const [imgModal, setImgModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [optionsModal, setOptionsModal] = useState(false);
+  const [completedByModal, setCompletedByModal] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   const [displayImage, setDisplayImage] = useState('');
   const [displayImageModal, setDisplayImageModal] = useState(false);
 
@@ -140,9 +150,9 @@ const Task = ({ task }: { task: ITask }) => {
   };
 
   const taskDel = () => {
-    try {
-      setDelModal(false);
-      setTimeout(async () => {
+    setDelModal(false);
+    setTimeout(async () => {
+      try {
         await deleteDoc(taskRef);
         toast.success('Task Deleted');
 
@@ -151,10 +161,10 @@ const Task = ({ task }: { task: ITask }) => {
             await deleteObject(ref(storage, url));
           });
         }
-      }, 300);
-    } catch (e: any) {
-      toast.error(e.message);
-    }
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    }, 300);
   };
 
   const taskInfo = useMemo(
@@ -194,6 +204,21 @@ const Task = ({ task }: { task: ITask }) => {
     if (nearDeadline) return 'bg-secondary';
     return 'bg-gray-400';
   }, [userTag, task.completedBy, pastDeadline, nearDeadline]);
+
+  const Button = ({ tooltip, onClick, className, Icon }: ButtonProps) =>
+    useMemo(() => {
+      return (
+        <Tippy content={tooltip}>
+          <button
+            onClick={onClick}
+            type='button'
+            className={`task-option-btn text-white ${className}`}
+          >
+            <Icon />
+          </button>
+        </Tippy>
+      );
+    }, []);
 
   return (
     <div className='flex flex-col'>
@@ -248,6 +273,22 @@ const Task = ({ task }: { task: ITask }) => {
         />
 
         <Modal
+          title='Completed By'
+          body={
+            <>
+              <hr className='my-4' />
+              <div className='max-h-[425px] overflow-y-scroll'>
+                {task.completedBy.map((tag) => (
+                  <CompletedUser userTag={tag} />
+                ))}
+              </div>
+            </>
+          }
+          setIsOpen={setCompletedByModal}
+          isOpen={completedByModal}
+        />
+
+        <Modal
           title='Task Info'
           isOpen={optionsModal}
           setIsOpen={setOptionsModal}
@@ -256,14 +297,17 @@ const Task = ({ task }: { task: ITask }) => {
               <hr className='my-4' />
 
               {taskInfo.map(
-                (val) =>
+                (val, i) =>
                   val.info && (
-                    <div
-                      key={nanoid()}
-                      className='flex justify-between space-x-4 text-right'
-                    >
-                      <p>{val.title}: </p>
-                      <p>{val.info}</p>
+                    <div>
+                      {i === 2 && <hr className='my-5' />}
+                      <div
+                        key={nanoid()}
+                        className='flex justify-between space-x-4 text-right'
+                      >
+                        <p>{val.title}: </p>
+                        <p>{val.info}</p>
+                      </div>
                     </div>
                   )
               )}
@@ -273,60 +317,61 @@ const Task = ({ task }: { task: ITask }) => {
             <>
               {canModify && (
                 <>
-                  <Tippy content='Delete Task'>
-                    <button
-                      onClick={() => {
-                        setOptionsModal(false);
+                  <Button
+                    tooltip='Delete Task'
+                    className='bg-red-600'
+                    Icon={MdDelete}
+                    onClick={() => {
+                      setOptionsModal(false);
 
-                        setTimeout(() => {
-                          setDelModal(true);
-                        }, 500);
-                      }}
-                      type='button'
-                      className='task-option-btn bg-red-600 text-white'
-                    >
-                      <MdDelete />
-                    </button>
-                  </Tippy>
+                      setTimeout(() => {
+                        setDelModal(true);
+                      }, 500);
+                    }}
+                  />
 
-                  <Tippy content='Edit Task'>
-                    <button
-                      onClick={() => {
-                        setOptionsModal(false);
+                  <Button
+                    tooltip='Edit Task'
+                    className='bg-blue-600'
+                    Icon={MdEdit}
+                    onClick={() => {
+                      setOptionsModal(false);
 
-                        setTimeout(() => {
-                          setEditModal(true);
-                        }, 500);
-                      }}
-                      type='button'
-                      className='task-option-btn bg-blue-600 text-white'
-                    >
-                      <MdEdit />
-                    </button>
-                  </Tippy>
+                      setTimeout(() => {
+                        setEditModal(true);
+                      }, 500);
+                    }}
+                  />
                 </>
               )}
-
               {task.url && (
-                <Tippy content='Visit URL'>
-                  <button
-                    onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
-                    type='button'
-                    className='task-option-btn bg-amber-500 text-white'
-                  >
-                    <MdLink />
-                  </button>
-                </Tippy>
+                <Button
+                  tooltip='Visit URL'
+                  className='bg-amber-500'
+                  Icon={MdLink}
+                  onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
+                />
               )}
-              <Tippy content={completedByUser ? 'Undo Task' : 'Complete Task'}>
-                <button
-                  onClick={taskDone}
-                  type='button'
-                  className='task-option-btn bg-green-600 text-white'
-                >
-                  {completedByUser ? <MdUndo /> : <MdCheck />}
-                </button>
-              </Tippy>
+              {task.completedBy.length > 0 && (
+                <Button
+                  tooltip='Comleted By'
+                  className='bg-violet-600'
+                  Icon={IoMdEye}
+                  onClick={() => {
+                    setOptionsModal(false);
+
+                    setTimeout(() => {
+                      setCompletedByModal(true);
+                    }, 500);
+                  }}
+                />
+              )}
+              <Button
+                tooltip={completedByUser ? 'Undo Task' : 'Complete Task'}
+                className='bg-green-600'
+                Icon={completedByUser ? MdUndo : MdCheck}
+                onClick={taskDone}
+              />
             </>
           }
         />

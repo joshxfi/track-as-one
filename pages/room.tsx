@@ -54,9 +54,12 @@ const Room: NextPageWithLayout = () => {
   const sortedTasks = useMemo(() => {
     return tasks
       ?.filter((task) => {
+        const completedByUser = task.completedBy.includes(userTag);
         if (filterBy === 'Completed') return task.completedBy.includes(userTag);
-        if (filterBy === 'Almost Due') return isNearDeadline(task.dueDate);
-        if (filterBy === 'Past Due') return isPastDeadline(task.dueDate);
+        if (filterBy === 'Almost Due')
+          return isNearDeadline(task.dueDate) && !completedByUser;
+        if (filterBy === 'Past Due')
+          return isPastDeadline(task.dueDate) && !completedByUser;
 
         return true;
       })
@@ -88,8 +91,8 @@ const Room: NextPageWithLayout = () => {
   const addTask = async () => {
     try {
       if (url && !urlRegExp.test(url)) toast.error('Invalid URL');
-      else if (tasks && tasks.length >= 20)
-        toast.error('Task limit reached (20)');
+      else if (tasks && tasks.length >= 100)
+        toast.error('Task limit reached (100)');
       else if (!description) toast.error('Task description is required');
       else {
         setAddTaskModal(false);

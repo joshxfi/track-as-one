@@ -12,10 +12,10 @@ import {
   signInWithPopup,
   User,
 } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
+import { useDoc } from '@/hooks';
 import { useRouter } from 'next/router';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-
 import { auth, db } from '../config/firebase';
 
 interface AuthContextValues {
@@ -38,9 +38,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const { push, asPath } = useRouter();
 
   const [userLoading, setUserLoading] = useState(false);
-  const [dataLoading, setDataLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({} as IUser);
 
   useEffect(() => {
     setUserLoading(() => true);
@@ -82,20 +80,10 @@ const AuthProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    setDataLoading(() => true);
-    const getUserData = async () => {
-      if (user) {
-        const res = await getDoc(doc(db, 'users', user.uid));
-        setData({ ...res.data(), id: res.id } as IUser);
-
-        if (asPath === '/') push('/home');
-      }
-
-      setDataLoading(() => false);
-    };
-
-    getUserData();
+    if (user && asPath === '/') push('/home');
   }, [user]);
+
+  const [data, dataLoading] = useDoc<IUser>(doc(db, `users/${user?.uid}`));
 
   useEffect(() => {
     if (userLoading || dataLoading) setLoading(() => true);
