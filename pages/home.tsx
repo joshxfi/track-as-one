@@ -29,7 +29,7 @@ const Homepage: React.FC = () => {
 
   return (
     <Layout wide loaders={[crLoading, jrLoading, jraLoading]}>
-      <section className='flex flex-col justify-between py-16 lg:flex-row lg:space-x-40'>
+      <section className='flex flex-col justify-between pt-10 pb-20 md:py-16 lg:flex-row lg:space-x-40'>
         <div className='flex flex-col items-center space-y-4'>
           <ImageFill
             src={photoURL || defaultPic}

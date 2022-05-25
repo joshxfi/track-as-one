@@ -6,7 +6,7 @@ import { footerLinks } from '@/utils/constants';
 const Footer: React.FC = () => {
   return (
     <footer className='w-full'>
-      <div className='h-24 w-full overflow-hidden lg:hidden'>
+      <div className='h-24 w-full overflow-hidden md:hidden'>
         <Image src={doodle} alt='doodle pattern' objectFit='contain' />
       </div>
 
