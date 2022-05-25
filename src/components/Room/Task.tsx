@@ -26,6 +26,7 @@ import {
   timeoutModal,
 } from '@/utils/functions';
 import { IconType } from 'react-icons';
+import { IoMdEye } from 'react-icons/io';
 import { useUserByTag } from '@/services';
 import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/contexts/AuthContext';
@@ -34,7 +35,7 @@ import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
-import { TaskFields, TaskLoader } from '@/components/Room';
+import { CompletedUser, TaskFields, TaskLoader } from '@/components/Room';
 import ImageFill from '../ImageFill';
 
 interface ButtonProps {
@@ -47,11 +48,12 @@ interface ButtonProps {
 const Task = ({ task }: { task: ITask }) => {
   const [delModal, setDelModal] = useState(false);
   const [urlModal, setUrlModal] = useState(false);
-  const [optionsModal, setOptionsModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
   const [imgModal, setImgModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [optionsModal, setOptionsModal] = useState(false);
+  const [completedByModal, setCompletedByModal] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   const [displayImage, setDisplayImage] = useState('');
   const [displayImageModal, setDisplayImageModal] = useState(false);
 
@@ -148,9 +150,9 @@ const Task = ({ task }: { task: ITask }) => {
   };
 
   const taskDel = () => {
-    try {
-      setDelModal(false);
-      setTimeout(async () => {
+    setDelModal(false);
+    setTimeout(async () => {
+      try {
         await deleteDoc(taskRef);
         toast.success('Task Deleted');
 
@@ -159,10 +161,10 @@ const Task = ({ task }: { task: ITask }) => {
             await deleteObject(ref(storage, url));
           });
         }
-      }, 300);
-    } catch (e: any) {
-      toast.error(e.message);
-    }
+      } catch (e: any) {
+        toast.error(e.message);
+      }
+    }, 300);
   };
 
   const taskInfo = useMemo(
@@ -271,6 +273,22 @@ const Task = ({ task }: { task: ITask }) => {
         />
 
         <Modal
+          title='Completed By'
+          body={
+            <>
+              <hr className='my-4' />
+              <div className='max-h-[425px] overflow-y-scroll'>
+                {task.completedBy.map((tag) => (
+                  <CompletedUser userTag={tag} />
+                ))}
+              </div>
+            </>
+          }
+          setIsOpen={setCompletedByModal}
+          isOpen={completedByModal}
+        />
+
+        <Modal
           title='Task Info'
           isOpen={optionsModal}
           setIsOpen={setOptionsModal}
@@ -326,7 +344,6 @@ const Task = ({ task }: { task: ITask }) => {
                   />
                 </>
               )}
-
               {task.url && (
                 <Button
                   tooltip='Visit URL'
@@ -335,7 +352,20 @@ const Task = ({ task }: { task: ITask }) => {
                   onClick={() => timeoutModal(setOptionsModal, setUrlModal)}
                 />
               )}
+              {task.completedBy.length > 0 && (
+                <Button
+                  tooltip='Comleted By'
+                  className='bg-violet-600'
+                  Icon={IoMdEye}
+                  onClick={() => {
+                    setOptionsModal(false);
 
+                    setTimeout(() => {
+                      setCompletedByModal(true);
+                    }, 500);
+                  }}
+                />
+              )}
               <Button
                 tooltip={completedByUser ? 'Undo Task' : 'Complete Task'}
                 className='bg-green-600'

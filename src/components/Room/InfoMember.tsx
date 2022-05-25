@@ -152,7 +152,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
       />
       <div className='flex'>
         <ImageFill
-          className='mr-4 h-9 w-9 rounded-full bg-secondary'
+          className='mr-4 h-10 w-10 rounded-full bg-secondary'
           src={photoURL ?? ''}
           alt={`${username} profile`}
         />
