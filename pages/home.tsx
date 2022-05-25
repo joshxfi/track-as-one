@@ -31,13 +31,11 @@ const Homepage: React.FC = () => {
     <Layout wide loaders={[crLoading, jrLoading, jraLoading]}>
       <section className='flex flex-col justify-between py-16 lg:flex-row lg:space-x-40'>
         <div className='flex flex-col items-center space-y-4'>
-          <div className='rounded-full bg-primary p-1'>
-            <ImageFill
-              src={photoURL ?? defaultPic}
-              className='h-[150px] w-[150px] rounded-full'
-              alt='profile picture'
-            />
-          </div>
+          <ImageFill
+            src={photoURL || defaultPic}
+            className='h-[150px] w-[150px] rounded-full'
+            alt='profile picture'
+          />
 
           <div className='relative inline-block'>
             <h1 className='text-2xl font-semibold'>{username}</h1>
