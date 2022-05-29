@@ -32,13 +32,15 @@ const Homepage: React.FC = () => {
       className='max-w-screen-sm'
       loaders={[crLoading, jrLoading, jraLoading]}
     >
-      <section className='flex flex-col justify-between pt-10 pb-20 md:py-16'>
+      <section className='flex flex-col justify-between pt-10 pb-20'>
         <div className='flex flex-col items-center space-y-4'>
-          <ImageFill
-            src={photoURL || defaultPic}
-            className='h-[120px] w-[120px] rounded-full'
-            alt='profile picture'
-          />
+          <div className='primary-gradient rounded-full p-2'>
+            <ImageFill
+              src={photoURL || defaultPic}
+              className='h-[120px] w-[120px] rounded-full'
+              alt='profile picture'
+            />
+          </div>
 
           <div className='relative inline-block'>
             <h1 className='text-2xl font-semibold'>{username}</h1>
