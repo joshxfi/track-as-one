@@ -1,13 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { NavMenu } from '@/components/Nav';
 import { FaSignInAlt } from 'react-icons/fa';
+
+import { Indicator } from '@/components';
+import { NavMenu } from '@/components/Nav';
+import { UserMenu } from '@/components/Home';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const { asPath } = useRouter();
-  const { user, signIn, signOut } = useAuth();
+  const {
+    user,
+    signIn,
+    signOut,
+    data: { invites },
+  } = useAuth();
 
   return (
     <nav
@@ -25,20 +33,30 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        <div className='flex items-center space-x-6'>
-          <NavMenu />
+        <div className='flex items-center'>
           <a
             href='https://github.com/joshxfi/trackAsOne'
             rel='noopener noreferrer'
             target='_blank'
-            className='hidden text-f9 hover:underline md:block'
+            className='mr-4 hidden text-f9 hover:underline md:block'
           >
             GitHub
           </a>
+
+          {user && (
+            <div className='relative mr-2'>
+              <UserMenu />
+              {invites?.length > 0 && (
+                <Indicator className=' absolute -top-[3px] right-0 rounded-full bg-red-500 p-[3px]' />
+              )}
+            </div>
+          )}
+
+          <NavMenu />
           <button
             type='button'
             onClick={user ? signOut : signIn}
-            className='hidden items-center rounded bg-secondary px-4 py-2 font-medium text-primary transition-colors hover:bg-secondary/90 md:flex'
+            className='hidden h-[35px] items-center rounded bg-secondary px-4 font-medium text-primary transition-colors hover:bg-secondary/90 md:flex'
           >
             <p suppressHydrationWarning className='mr-2 text-sm'>
               {user ? 'Sign Out' : 'Login'}

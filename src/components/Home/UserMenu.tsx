@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import toast from 'react-hot-toast';
+import { AiOutlineSetting } from 'react-icons/ai';
 import { Popover, Transition } from '@headlessui/react';
 import { HiClipboardCopy, HiEye, HiPencil } from 'react-icons/hi';
 
@@ -45,8 +46,8 @@ const RoomMenu = () => {
       <Popover className='relative z-40'>
         {() => (
           <>
-            <Popover.Button className='border-effect w-full justify-center rounded border-primary bg-lighter px-4 py-2 text-sm font-medium md:text-base'>
-              My Profile
+            <Popover.Button className='grid h-[35px] w-[35px] place-items-center rounded bg-secondary p-2 text-xl text-primary transition-colors hover:bg-secondary/90'>
+              <AiOutlineSetting />
             </Popover.Button>
 
             <Transition
@@ -73,7 +74,7 @@ const RoomMenu = () => {
                   label='View Invites'
                   Icon={HiEye}
                   route='invites'
-                  indicator={invites.length > 0}
+                  indicator={invites && invites.length > 0}
                 />
               </Popover.Panel>
             </Transition>

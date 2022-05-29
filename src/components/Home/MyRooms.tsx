@@ -21,7 +21,7 @@ const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
         />
 
         {createdRooms?.length ? (
-          <div className='grid gap-2 md:grid-cols-2 xl:grid-cols-3'>
+          <div className='space-y-2'>
             {createdRooms?.map((room) => (
               <ListRooms key={room.id} room={room} />
             ))}
@@ -39,7 +39,7 @@ const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
         />
 
         {joinedRooms?.length ? (
-          <div className='grid gap-3 md:grid-cols-2 xl:grid-cols-3'>
+          <div className='space-y-2'>
             {joinedRooms?.map((room) => (
               <ListRooms key={room.id} room={room} />
             ))}
