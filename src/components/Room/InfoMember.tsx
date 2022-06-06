@@ -156,14 +156,14 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
           src={photoURL ?? ''}
           alt={`${username} profile`}
         />
-        <div className='leading-5'>
-          <div className='relative'>
-            <p className='text-f9'>{username}</p>
-            <Badges roles={member?.roles} />
-          </div>
-          <p className='text-sm'>{type}</p>
+
+        <div className='relative'>
+          <p className='text-f9'>{username}</p>
+          <Badges roles={member?.roles} />
+          <p className='absolute text-sm'>{type}</p>
         </div>
       </div>
+
       <div className='icon text-xl'>{Icon}</div>
     </button>
   );
