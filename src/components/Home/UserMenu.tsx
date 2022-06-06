@@ -92,7 +92,7 @@ const RoomMenu = () => {
               className='room-input'
               type='text'
               value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={(e) => setNewUsername(e.target.value.trim())}
               minLength={4}
               maxLength={12}
             />

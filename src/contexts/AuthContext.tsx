@@ -67,7 +67,10 @@ const AuthProvider: React.FC = ({ children }) => {
           photoURL,
           invites: [],
           dateJoined: metadata.creationTime,
-          username: email?.split('@')[0].toLowerCase(),
+          username:
+            email && email.split('@')[0].split('').length > 12
+              ? email?.split('@')[0].substring(0, 12)
+              : email?.split('@')[0],
         };
 
         await setDoc(doc(db, 'users', uid), payload);
