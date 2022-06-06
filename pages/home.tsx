@@ -28,10 +28,7 @@ const Homepage: React.FC = () => {
   );
 
   return (
-    <Layout
-      className='max-w-screen-sm'
-      loaders={[crLoading, jrLoading, jraLoading]}
-    >
+    <Layout loaders={[crLoading, jrLoading, jraLoading]}>
       <section className='flex flex-col justify-between pt-10 pb-20'>
         <div className='flex flex-col items-center space-y-4'>
           <div className='primary-gradient rounded-full p-2'>
@@ -48,7 +45,7 @@ const Homepage: React.FC = () => {
           </div>
         </div>
 
-        <div className='mt-12 w-full'>
+        <div className='mt-10 w-full'>
           <MyRooms
             createdRooms={createdRooms}
             joinedRooms={[

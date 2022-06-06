@@ -12,7 +12,7 @@ interface MyRoomsProps {
 
 const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
   return (
-    <div className='w-full space-y-16'>
+    <div className='mx-auto w-full max-w-screen-sm space-y-16'>
       <section>
         <RoomLabel
           label='Create'
