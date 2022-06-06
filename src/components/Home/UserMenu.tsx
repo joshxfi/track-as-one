@@ -43,7 +43,7 @@ const RoomMenu = () => {
 
   return (
     <>
-      <Popover className='relative z-40'>
+      <Popover className='relative z-50'>
         {() => (
           <>
             <Popover.Button className='grid h-[35px] w-[35px] place-items-center rounded bg-secondary p-2 text-xl text-primary transition-colors hover:bg-secondary/90'>
