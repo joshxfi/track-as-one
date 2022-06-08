@@ -16,7 +16,7 @@ const MyRooms = ({ createdRooms, joinedRooms }: MyRoomsProps) => {
       <section>
         <RoomLabel
           label='Create'
-          text={`${createdRooms?.length} out of 6 rooms`}
+          text={`${createdRooms?.length} out of 5 rooms`}
           Icon={BsFillPlusCircleFill}
         />
 
