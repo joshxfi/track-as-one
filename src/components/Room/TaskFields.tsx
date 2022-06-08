@@ -59,13 +59,13 @@ const TaskFields = ({
           }
         }
 
-        if (files.length > 3) {
-          toast.error('You can only upload up to 3 images');
+        if (files.length > 5) {
+          toast.error('You can only upload up to 5 images');
           return;
         }
 
         if (files.length === 1) {
-          if (images.length === 3) {
+          if (images.length === 5) {
             setImages((prev) => {
               const copy = prev.map((p) => p);
               // eslint-disable-next-line prefer-destructuring
@@ -105,7 +105,7 @@ const TaskFields = ({
         title='Task'
         onDismiss={revokeImages}
         body={
-          <div className='mt-4 flex flex-col space-y-4'>
+          <div className='mt-4 flex max-h-[430px] flex-col space-y-4 overflow-y-scroll'>
             <div className='room-input-container'>
               <textarea
                 maxLength={500}
@@ -143,7 +143,7 @@ const TaskFields = ({
             <hr />
             <p className='text-sm text-gray-600'>Add Images (optional)</p>
 
-            <div className='flex justify-between space-x-4 md:justify-start'>
+            <div className='flex flex-wrap gap-4'>
               {imgUrls.map((url, i) => (
                 <button
                   key={nanoid()}
@@ -157,7 +157,7 @@ const TaskFields = ({
                 </button>
               ))}
 
-              {Array(3 - images.length)
+              {Array(5 - images.length)
                 .fill(0)
                 .map(() => (
                   <button

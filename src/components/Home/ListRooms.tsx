@@ -23,7 +23,7 @@ const ListRooms: React.FC<ListRoomsProps> = ({ room }) => {
         </p>
       </div>
 
-      <BiDoorOpen className='icon md:hidden' />
+      <BiDoorOpen className='icon' />
       {room.requests.length > 0 && <Indicator className='top-2 right-2' />}
     </button>
   );

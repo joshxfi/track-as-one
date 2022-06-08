@@ -3,6 +3,8 @@ import Image from 'next/image';
 import doodle from '@/assets/doodle.svg';
 import { footerLinks } from '@/utils/constants';
 
+const version = process.env.NEXT_PUBLIC_VERSION ?? 'v0.0.0';
+
 const Footer: React.FC = () => {
   return (
     <footer className='w-full'>
@@ -42,23 +44,15 @@ const Footer: React.FC = () => {
           <div className='my-8 h-[1px] w-full bg-gray-500' />
 
           <div className='mx-auto flex items-center justify-center text-secondary md:justify-between'>
-            <p className='mr-1 md:mr-0'>
-              {process.env.NEXT_PUBLIC_VERSION ?? 'v0.0.0'}
-            </p>
+            <a
+              href={`https://github.com/joshxfi/trackAsOne/releases/tag/${version}`}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='mr-1 md:mr-0'
+            >
+              {version}
+            </a>
             <p>💛 trackAsOne © 2022</p>
-            {/* <div className='flex space-x-4 text-base lg:text-xl'>
-             *   {socials.map(({ Icon, link }) => (
-             *     <a
-             *       className='transition-colors hover:text-secondary'
-             *       key={Icon.toString()}
-             *       target='_blank'
-             *       rel='noopener noreferrer'
-             *       href={link}
-             *     >
-             *       <Icon />
-             *     </a>
-             *   ))}
-             * </div> */}
           </div>
         </div>
       </div>

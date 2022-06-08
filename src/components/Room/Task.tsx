@@ -30,13 +30,12 @@ import { IoMdEye } from 'react-icons/io';
 import { useUserByTag } from '@/services';
 import { db, storage } from '@/config/firebase';
 import { useAuth } from '@/contexts/AuthContext';
-import { Modal, EmptyModal } from '@/components';
 import { useTaskFields, useUpload } from '@/hooks';
 import { deleteObject, ref } from 'firebase/storage';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { defaultPic, urlRegExp } from '@/utils/constants';
+import { Modal, EmptyModal, ImageFill } from '@/components';
 import { CompletedUser, TaskFields, TaskLoader } from '@/components/Room';
-import ImageFill from '../ImageFill';
 
 interface ButtonProps {
   onClick: () => void;
@@ -277,7 +276,7 @@ const Task = ({ task }: { task: ITask }) => {
           body={
             <>
               <hr className='my-4' />
-              <div className='max-h-[425px] overflow-y-scroll'>
+              <div className='max-h-[425px] overflow-x-hidden overflow-y-scroll'>
                 {task.completedBy.map((tag) => (
                   <CompletedUser userTag={tag} />
                 ))}

@@ -1,7 +1,8 @@
 import React, { useState, Fragment } from 'react';
 import toast from 'react-hot-toast';
+import { AiOutlineSetting } from 'react-icons/ai';
 import { Popover, Transition } from '@headlessui/react';
-import { HiClipboardCopy, HiEye, HiPencil } from 'react-icons/hi';
+import { HiEye, HiPencil, HiTag } from 'react-icons/hi';
 
 import { Modal } from '@/components';
 import { db } from '@/config/firebase';
@@ -42,11 +43,11 @@ const RoomMenu = () => {
 
   return (
     <>
-      <Popover className='relative z-40'>
+      <Popover className='relative z-50'>
         {() => (
           <>
-            <Popover.Button className='border-effect w-full justify-center rounded border-primary bg-lighter px-4 py-2 text-sm font-medium md:text-base'>
-              My Profile
+            <Popover.Button className='grid h-[35px] w-[35px] place-items-center rounded bg-secondary p-2 text-xl text-primary transition-colors hover:bg-secondary/90'>
+              <AiOutlineSetting />
             </Popover.Button>
 
             <Transition
@@ -59,11 +60,7 @@ const RoomMenu = () => {
               leaveTo='opacity-0 translate-y-1'
             >
               <Popover.Panel className='absolute top-14 right-0 flex w-[180px] flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
-                <MenuBtn
-                  label={userTag}
-                  Icon={HiClipboardCopy}
-                  onClick={copyTag}
-                />
+                <MenuBtn label='Copy User Tag' Icon={HiTag} onClick={copyTag} />
                 <MenuBtn
                   label='Edit Username'
                   Icon={HiPencil}
@@ -73,7 +70,7 @@ const RoomMenu = () => {
                   label='View Invites'
                   Icon={HiEye}
                   route='invites'
-                  indicator={invites.length > 0}
+                  indicator={invites && invites.length > 0}
                 />
               </Popover.Panel>
             </Transition>
@@ -91,7 +88,7 @@ const RoomMenu = () => {
               className='room-input'
               type='text'
               value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={(e) => setNewUsername(e.target.value.trim())}
               minLength={4}
               maxLength={12}
             />

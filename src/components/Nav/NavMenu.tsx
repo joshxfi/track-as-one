@@ -39,7 +39,7 @@ const NavMenu = () => {
     <Popover className='relative z-50'>
       {() => (
         <>
-          <Popover.Button className='items-center rounded bg-secondary py-2 px-4 text-sm font-medium text-primary shadow-sm transition-opacity hover:bg-secondary/90 hover:shadow-lg md:hidden'>
+          <Popover.Button className='h-[35px] items-center rounded bg-secondary px-4 text-sm font-medium text-primary shadow-sm transition-opacity hover:bg-secondary/90 hover:shadow-lg md:hidden'>
             Menu
           </Popover.Button>
 
