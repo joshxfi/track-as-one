@@ -7,7 +7,6 @@ interface IUser {
   userTag: string;
   username?: string;
   photoURL?: string | null;
-  email?: string | null;
   invites: string[];
   dateJoined: any;
   roles?: IRoles[];
