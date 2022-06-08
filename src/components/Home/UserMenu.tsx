@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import toast from 'react-hot-toast';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { Popover, Transition } from '@headlessui/react';
-import { HiClipboardCopy, HiEye, HiPencil } from 'react-icons/hi';
+import { HiEye, HiPencil, HiTag } from 'react-icons/hi';
 
 import { Modal } from '@/components';
 import { db } from '@/config/firebase';
@@ -60,11 +60,7 @@ const RoomMenu = () => {
               leaveTo='opacity-0 translate-y-1'
             >
               <Popover.Panel className='absolute top-14 right-0 flex w-[180px] flex-col space-y-4 overflow-hidden rounded bg-white p-2 text-sm text-primary shadow-md ring-1 ring-black ring-opacity-5'>
-                <MenuBtn
-                  label={userTag}
-                  Icon={HiClipboardCopy}
-                  onClick={copyTag}
-                />
+                <MenuBtn label='Copy User Tag' Icon={HiTag} onClick={copyTag} />
                 <MenuBtn
                   label='Edit Username'
                   Icon={HiPencil}
