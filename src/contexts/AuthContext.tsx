@@ -12,7 +12,7 @@ import {
   signInWithPopup,
   User,
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 import { useDoc } from '@/hooks';
 import { useRouter } from 'next/router';
@@ -31,6 +31,22 @@ const AuthContext = createContext<AuthContextValues>({} as AuthContextValues);
 const useAuth = () => {
   const data = useContext(AuthContext);
   return { ...data };
+};
+
+const userPayload = (user: User) => {
+  const { email, metadata, photoURL } = user;
+  const userTag = `user:${nanoid(5)}`;
+
+  return {
+    userTag,
+    photoURL,
+    invites: [],
+    dateJoined: metadata.creationTime,
+    username:
+      email && email.split('@')[0].split('').length > 12
+        ? email?.split('@')[0].substring(0, 12)
+        : email?.split('@')[0],
+  };
 };
 
 const AuthProvider: React.FC = ({ children }) => {
@@ -59,21 +75,7 @@ const AuthProvider: React.FC = ({ children }) => {
       const moreInfo = getAdditionalUserInfo(_user);
 
       if (moreInfo?.isNewUser) {
-        const { uid, email, metadata, photoURL } = _user.user;
-        const userTag = `user:${nanoid(5)}`;
-
-        const payload: IUser = {
-          userTag,
-          photoURL,
-          invites: [],
-          dateJoined: metadata.creationTime,
-          username:
-            email && email.split('@')[0].split('').length > 12
-              ? email?.split('@')[0].substring(0, 12)
-              : email?.split('@')[0],
-        };
-
-        await setDoc(doc(db, 'users', uid), payload);
+        await setDoc(doc(db, 'users', _user.user.uid), userPayload(_user.user));
       }
 
       push('/home');
@@ -83,6 +85,17 @@ const AuthProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
+    const checkUserDocument = async () => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (!userDoc.exists) {
+          await setDoc(doc(db, 'users', user.uid), userPayload(user));
+        }
+      }
+    };
+
+    checkUserDocument();
+
     if (user && asPath === '/') push('/home');
   }, [user]);
 
