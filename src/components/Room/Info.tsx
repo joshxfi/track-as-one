@@ -19,7 +19,7 @@ const Info: React.FC = () => {
   const { data } = useAuth();
   const { push } = useRouter();
   const { room, tasks } = useRoomContext();
-  const { creator, dateAdded, members, admin } = room;
+  const { creator, dateAdded, members, admin, isPublic } = room;
 
   const roomRef = doc(db, `rooms/${room.id}`);
 
@@ -57,6 +57,18 @@ const Info: React.FC = () => {
         toast.error(e.message);
       }
     }, 300);
+  };
+
+  const setRoomVisibility = async () => {
+    try {
+      await updateDoc(roomRef, {
+        isPublic: !isPublic,
+      });
+
+      toast.success(`Room is now ${isPublic ? 'private' : 'public'}`);
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
   const copyRoomID = () => {
@@ -126,18 +138,18 @@ const Info: React.FC = () => {
 
         <div className='flex justify-end'>
           {creator === data.userTag ? (
-            <>
+            <div className='space-x-2'>
               <Button
-                className=''
-                name='Make Public'
-                onClick={() => setDeleteModal(true)}
+                className='rounded bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-600/90'
+                name={`Make ${isPublic ? 'Private' : 'Public'}`}
+                onClick={setRoomVisibility}
               />
               <Button
                 className='red-btn'
                 name='Delete Room'
                 onClick={() => setDeleteModal(true)}
               />
-            </>
+            </div>
           ) : (
             <Button
               className='red-btn'
