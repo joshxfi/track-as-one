@@ -6,7 +6,7 @@ service cloud.firestore {
     }
   
   	function isAdmin(userId) {
-   		return docExists('admins', userId);
+    	return docExists('admins', userId);
     }
     
     function currentUser() {
@@ -56,8 +56,8 @@ service cloud.firestore {
       allow create: if !docExists('rooms', roomId);
       allow update: if (allowedFields(!(userTag() in members(false)), ['requests']) 
       							&& members(true).hasAll(members(false)))
-      							|| allowedFields(isCreator(), ['name', 'admin', 'members', 'requests'])
-      					    || allowedFields(isRoomAdmin(), ['members', 'requests'])
+      							|| allowedFields(isCreator(), ['name', 'admin', 'members', 'requests', 'isPublic'])
+      					    || allowedFields(isRoomAdmin(), ['members', 'requests', 'isPublic'])
                     || (allowedFields(isMember(), ['members']) 
                     && !(userTag() in members(true))
                     && members(true).hasAll(members(false).removeAll([userTag()])));
@@ -87,4 +87,4 @@ service cloud.firestore {
       }
     }
   }
-} 
+}
