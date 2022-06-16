@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 
 import { db } from '@/config/firebase';
-import { InfoBtn } from '@/components/Button';
+import { Button } from '@/components/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRoomContext } from '@/contexts/RoomContext';
 import { Layout, Header, Error, Modal } from '@/components';
@@ -126,14 +126,23 @@ const Info: React.FC = () => {
 
         <div className='flex justify-end'>
           {creator === data.userTag ? (
-            <InfoBtn
-              title='Delete Room'
-              handleClick={() => setDeleteModal(true)}
-            />
+            <>
+              <Button
+                className=''
+                name='Make Public'
+                onClick={() => setDeleteModal(true)}
+              />
+              <Button
+                className='red-btn'
+                name='Delete Room'
+                onClick={() => setDeleteModal(true)}
+              />
+            </>
           ) : (
-            <InfoBtn
-              title='Leave Room'
-              handleClick={() => setLeaveModal(true)}
+            <Button
+              className='red-btn'
+              name='Leave Room'
+              onClick={() => setLeaveModal(true)}
             />
           )}
         </div>
