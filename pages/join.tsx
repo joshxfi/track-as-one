@@ -2,7 +2,13 @@ import React, { ReactElement, useState } from 'react';
 
 import toast from 'react-hot-toast';
 import { BiDoorOpen } from 'react-icons/bi';
-import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
 
 import { db } from '@/config/firebase';
 import Layout from '@/components/Layout';
@@ -13,7 +19,6 @@ import { userInRoom } from '@/utils/functions';
 
 const Join: NextPageWithLayout = () => {
   const [roomId, setRoomID] = useState<string>('');
-
   const {
     data: { userTag },
   } = useAuth();
@@ -29,12 +34,22 @@ const Join: NextPageWithLayout = () => {
       const _room: IRoom = room.data() as IRoom;
 
       if (!room.exists()) toast.error('Room Does Not Exist');
-      else if (userInRoom(userTag, _room))
-        toast.error('You are already a member');
-      else if (_room.requests.includes(userTag))
-        toast.error('You already sent a request');
       else if (_room.creator === userTag)
         toast.error('You are the owner of the room');
+      else if (userInRoom(userTag, _room))
+        toast.error('You are already a member');
+      else if (_room.isPublic) {
+        try {
+          await updateDoc(roomRef, {
+            requests: arrayRemove(userTag),
+            members: arrayUnion(userTag),
+          });
+          toast.success('Room Joined');
+        } catch (e: any) {
+          toast.error(e.message);
+        }
+      } else if (_room.requests.includes(userTag))
+        toast.error('You already sent a request');
       else {
         await updateDoc(roomRef, {
           requests: arrayUnion(userTag),

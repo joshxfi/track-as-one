@@ -20,6 +20,7 @@ interface IRoom {
   members: string[];
   dateAdded: any;
   requests: string[];
+  isPublic: boolean;
 }
 
 interface ITask {
