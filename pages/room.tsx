@@ -56,7 +56,7 @@ const Room: NextPageWithLayout = () => {
     return tasks
       ?.filter((task) => {
         const completedByUser = task.completedBy.includes(userTag);
-        if (filterBy === 'Completed') return !!completedByUser;
+        if (filterBy === 'Completed') return completedByUser;
         if (filterBy === 'Almost Due')
           return isNearDeadline(task.dueDate) && !completedByUser;
         if (filterBy === 'Past Due')
