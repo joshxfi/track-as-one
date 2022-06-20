@@ -27,6 +27,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tippy.js/dist/tippy.css';
 import { isNearDeadline, isPastDeadline } from '@/utils/functions';
+import Confetti from 'react-confetti';
 
 type SortDate =
   | 'date_added_asc'
@@ -55,7 +56,7 @@ const Room: NextPageWithLayout = () => {
     return tasks
       ?.filter((task) => {
         const completedByUser = task.completedBy.includes(userTag);
-        if (filterBy === 'Completed') return task.completedBy.includes(userTag);
+        if (filterBy === 'Completed') return completedByUser;
         if (filterBy === 'Almost Due')
           return isNearDeadline(task.dueDate) && !completedByUser;
         if (filterBy === 'Past Due')
@@ -191,8 +192,18 @@ const Room: NextPageWithLayout = () => {
   if (tab === 'invite') return <InviteUser />;
   if (tab === 'requests') return <Requests />;
 
+  // for (let i = 0; i <= (tasks ?? []).length; i++) {
+  //   let completedByUser = false;
+  //   if (tasks![i].completedBy.includes(userTag))
+  //     return (completedByUser = true);
+  // }
+
+  const displayConfetti =
+    tasks?.find((task) => task.completedBy.includes(userTag)) ?? false;
+
   return (
     <>
+      {displayConfetti && <Confetti />}
       {loading && (
         <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
       )}
