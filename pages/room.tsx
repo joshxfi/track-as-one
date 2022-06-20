@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
@@ -192,14 +192,14 @@ const Room: NextPageWithLayout = () => {
   if (tab === 'invite') return <InviteUser />;
   if (tab === 'requests') return <Requests />;
 
-  // for (let i = 0; i <= (tasks ?? []).length; i++) {
-  //   let completedByUser = false;
-  //   if (tasks![i].completedBy.includes(userTag))
-  //     return (completedByUser = true);
-  // }
+  const [displayConfetti, setDisplayConfetti] = useState(false);
 
-  const displayConfetti =
-    tasks?.find((task) => task.completedBy.includes(userTag)) ?? false;
+  useEffect(() => {
+    setDisplayConfetti(
+      !!tasks?.find((task) => task.completedBy.includes(userTag)) ?? false
+    );
+    // setTimeout(() => setDisplayConfetti(false), 200);
+  }, [tasks]);
 
   return (
     <>
