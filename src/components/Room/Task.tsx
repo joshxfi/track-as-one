@@ -353,7 +353,7 @@ const Task = ({ task }: { task: ITask }) => {
               )}
               {task.completedBy.length > 0 && (
                 <Button
-                  tooltip='Comleted By'
+                  tooltip='Completed By'
                   className='bg-violet-600'
                   Icon={IoMdEye}
                   onClick={() => {
