@@ -2,8 +2,17 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import Tippy from '@tippyjs/react';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { MdOutlineCategory } from 'react-icons/md';
+import {
+  doc,
+  addDoc,
+  arrayUnion,
+  updateDoc,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { BsCheckCircleFill, BsInfoCircleFill, BsFilter } from 'react-icons/bs';
 
 import { db } from '@/config/firebase';
@@ -16,6 +25,7 @@ import { useNextQuery, useTaskFields, useUpload } from '@/hooks';
 import { RoomProvider, useRoomContext } from '@/contexts/RoomContext';
 import {
   Info,
+  InfoSection,
   InviteUser,
   RoomMenu,
   Requests,
@@ -27,6 +37,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'tippy.js/dist/tippy.css';
 import { isNearDeadline, isPastDeadline } from '@/utils/functions';
+import { BiPieChart } from 'react-icons/bi';
 
 type SortDate =
   | 'date_added_asc'
@@ -42,14 +53,17 @@ const Room: NextPageWithLayout = () => {
 
   const [addTaskModal, setAddTaskModal] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
+  const [addSectionModal, setAddSectionModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [sortBy, setSortBy] = useState<SortDate>('date_added_desc');
   const [filterBy, setFilterBy] = useState<FilterStatus>('All');
+  const [sectionName, setSectionName] = useState<string>('');
 
+  const { push } = useRouter();
   const { data } = useAuth();
   const { userTag } = data;
-  const { room, tasks, tasksLoading } = useRoomContext();
+  const { room, tasks, tasksLoading, roomSection } = useRoomContext();
 
   const sortedTasks = useMemo(() => {
     return tasks
@@ -75,8 +89,13 @@ const Room: NextPageWithLayout = () => {
         }
 
         return 0;
+      })
+      ?.filter((task) => {
+        if (roomSection === task.section) return task;
+        if (!roomSection) return task.section === '';
+        return false;
       });
-  }, [tasks, sortBy, filterBy]);
+  }, [tasks, sortBy, filterBy, roomSection]);
 
   // eslint-disable-next-line prefer-destructuring
   const tab = useNextQuery('tab');
@@ -106,6 +125,7 @@ const Room: NextPageWithLayout = () => {
           dateAdded: serverTimestamp(),
           dueDate,
           url,
+          section: roomSection ?? '',
         };
 
         if (images.length > 0) {
@@ -125,6 +145,38 @@ const Room: NextPageWithLayout = () => {
       }
     } catch (e: any) {
       toast.error(e.message);
+    }
+  };
+
+  const addSection = async () => {
+    try {
+      if (!sectionName) toast.error('Section Name is required.');
+      else {
+        setAddSectionModal(false);
+        setLoading(true);
+
+        const roomRef = doc(db, `rooms/${room.id}`);
+        if (room.sections?.length >= 4) {
+          toast.error('Max sections reached (4)');
+          setLoading(false);
+        } else if (sectionName) {
+          await updateDoc(roomRef, {
+            sections: arrayUnion(sectionName),
+          });
+          toast.success('Section Added');
+          push({
+            pathname: '/room',
+            query: { id: room.id, section: sectionName },
+          });
+          setTimeout(() => {
+            setLoading(false);
+            setSectionName('');
+          }, 300);
+        }
+      }
+    } catch (e: any) {
+      toast.error(e.message);
+      setLoading(false);
     }
   };
 
@@ -191,14 +243,29 @@ const Room: NextPageWithLayout = () => {
   if (tab === 'invite') return <InviteUser />;
   if (tab === 'requests') return <Requests />;
 
+  let loaderMessage;
+  if (uploading) loaderMessage = 'Uploading Image(s)';
+  else if (sectionName) loaderMessage = 'Adding Section';
+  else loaderMessage = 'Adding Task';
+
   return (
     <>
-      {loading && (
-        <TaskLoader msg={uploading ? 'Uploading Image(s)' : 'Adding Task'} />
-      )}
+      {loading && <TaskLoader msg={loaderMessage} />}
       <div className='my-4 flex items-center justify-between font-medium'>
         <div className='flex items-center space-x-2'>
-          <h2 className='text-sm'>{room.name}</h2>
+          <button
+            type='button'
+            onClick={() => push({ pathname: '/room', query: { id: room.id } })}
+            className='flex cursor-pointer'
+          >
+            <h2 className='text-sm'>{room.name}</h2>
+          </button>
+          {roomSection && (
+            <>
+              <div className='h-[15px] w-[1px] bg-gray-400' />
+              <h2 className='text-sm'>{roomSection.replaceAll('+', ' ')}</h2>
+            </>
+          )}
           <Tippy
             placement='bottom'
             content={
@@ -223,6 +290,12 @@ const Room: NextPageWithLayout = () => {
           </Tippy>
         </div>
         <div className='flex space-x-2'>
+          <Button
+            type='button'
+            Icon={MdOutlineCategory}
+            onClick={() => setAddSectionModal(true)}
+            className='room-btn'
+          />
           <Button
             type='button'
             Icon={AiOutlinePlus}
@@ -286,6 +359,56 @@ const Room: NextPageWithLayout = () => {
               </div>
             </div>
             <hr className='my-4' />
+          </div>
+        }
+      />
+
+      <Modal
+        isOpen={addSectionModal}
+        setIsOpen={setAddSectionModal}
+        title='Sections'
+        proceed={{
+          action: addSection,
+          text: 'Add Section',
+          style: 'bg-blue-500',
+        }}
+        body={
+          <div>
+            {room.sections?.length > 0 && (
+              <>
+                <p className='my-2 text-sm text-gray-600'>
+                  {room.sections.length} out of 4 sections
+                </p>
+
+                {room.sections.map((name) => (
+                  <InfoSection
+                    key={name}
+                    title={name}
+                    label='Section'
+                    onClick={() => {
+                      push({
+                        pathname: '/room',
+                        query: { id: room.id, section: name },
+                      });
+                      setAddSectionModal(false);
+                    }}
+                    Icon={BiPieChart}
+                  />
+                ))}
+                <hr className='my-4' />
+              </>
+            )}
+
+            <p className='text-sm text-gray-600'>Add New Section</p>
+            <div className='room-input-container my-4'>
+              <input
+                onChange={(e) => setSectionName(e.target.value)}
+                value={sectionName}
+                type='text'
+                placeholder='Section Name'
+                className='room-input'
+              />
+            </div>
           </div>
         }
       />

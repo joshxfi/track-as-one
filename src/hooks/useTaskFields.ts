@@ -7,16 +7,19 @@ const useTaskFields = (task?: ITask) => {
   );
   const [images, setImages] = useState<File[]>([]);
   const [url, setUrl] = useState(task?.url ?? '');
+  const [section, setSection] = useState(task?.section ?? '');
 
   const props = {
     description,
     dueDate,
     images,
     url,
+    section,
     setDesc,
     setDueDate,
     setImages,
     setUrl,
+    setSection,
   };
 
   const reset = () => {
@@ -24,6 +27,7 @@ const useTaskFields = (task?: ITask) => {
     setDueDate(task?.dueDate ? task.dueDate.toDate() : null);
     setImages([]);
     setUrl(task?.url ?? '');
+    setSection(task?.section ?? '');
   };
 
   return { props, reset };

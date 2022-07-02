@@ -12,6 +12,7 @@ interface RoomContextValues {
   isAdmin: boolean;
   roomLoading: boolean;
   tasksLoading: boolean;
+  roomSection: string;
 }
 
 const RoomContext = createContext({} as RoomContextValues);
@@ -25,6 +26,7 @@ const RoomProvider: React.FC = ({ children }) => {
     data: { userTag },
   } = useAuth();
   const roomId = useNextQuery('id');
+  const roomSection = useNextQuery('section') ?? '';
   const [room, roomLoading] = useRoom(roomId);
 
   const [tasks, tasksLoading] = useCol<ITask>(
@@ -37,8 +39,8 @@ const RoomProvider: React.FC = ({ children }) => {
   );
 
   const contextValues = useMemo(
-    () => ({ room, tasks, isAdmin, roomLoading, tasksLoading }),
-    [room, tasks, roomLoading, tasksLoading]
+    () => ({ room, tasks, isAdmin, roomLoading, tasksLoading, roomSection }),
+    [room, tasks, roomLoading, tasksLoading, roomSection]
   );
 
   return (
