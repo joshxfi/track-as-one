@@ -34,6 +34,7 @@ const Create: NextPageWithLayout = () => {
         members: [],
         dateAdded: serverTimestamp(),
         requests: [],
+        sections: [],
       };
 
       setRoomName('');

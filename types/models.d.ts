@@ -20,6 +20,7 @@ interface IRoom {
   members: string[];
   dateAdded: any;
   requests: string[];
+  sections: string[];
 }
 
 interface ITask {
@@ -33,4 +34,5 @@ interface ITask {
   dueDate?: any;
   completedBy: string[];
   imgUrls?: string[];
+  section?: string;
 }

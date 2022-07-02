@@ -20,6 +20,8 @@ interface TaskFieldsProps extends Omit<ModalProps, 'body' | 'title'> {
   setUrl: SetState;
   images: File[];
   setImages: SetState<File[]>;
+  section: string;
+  setSection: SetState;
 }
 
 const TaskFields = ({
@@ -31,6 +33,8 @@ const TaskFields = ({
   setUrl,
   images,
   setImages,
+  section,
+  setSection,
   ...rest
 }: TaskFieldsProps) => {
   const [imgUrls, setImgUrls] = useState(['']);
