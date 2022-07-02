@@ -21,6 +21,7 @@ interface IRoom {
   dateAdded: any;
   requests: string[];
   sections: string[];
+  isPublic: boolean;
 }
 
 interface ITask {

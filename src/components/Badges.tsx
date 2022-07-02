@@ -21,18 +21,29 @@ const style = (role: IRoles) => {
   }
 };
 
-const Badges = ({ roles }: { roles?: IRoles[] }) => {
+const Badges = ({
+  roles,
+  tooltip = true,
+}: {
+  roles?: IRoles[];
+  tooltip?: boolean;
+}) => {
   return (
     <div className='absolute top-0 -right-[105px] flex w-[100px] items-center space-x-[2px]'>
       {_badges.map(({ role, Icon }) => {
         return (
-          roles?.includes(role) && (
+          roles?.includes(role) &&
+          (tooltip ? (
             <Tippy key={role} content={role}>
               <div className={style(role)}>
                 <Icon />
               </div>
             </Tippy>
-          )
+          ) : (
+            <div className={style(role)}>
+              <Icon />
+            </div>
+          ))
         );
       })}
     </div>

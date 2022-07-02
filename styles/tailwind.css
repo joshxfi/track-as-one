@@ -116,4 +116,8 @@
   .border-btn-parent {
     @apply rounded bg-primary transition-all hover:bg-opacity-0;
   }
+
+  .red-btn {
+    @apply rounded bg-red-600 px-4 py-2 text-sm text-white transition-colors hover:bg-red-600/90;
+  }
 }

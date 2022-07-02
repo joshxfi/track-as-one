@@ -159,7 +159,7 @@ const InfoMember = ({ memberId, type }: InfoSectionProps) => {
 
         <div className='relative'>
           <p className='text-f9'>{username}</p>
-          <Badges roles={member?.roles} />
+          <Badges tooltip={false} roles={member?.roles} />
           <p className='absolute text-sm'>{type}</p>
         </div>
       </div>
