@@ -9,7 +9,14 @@
 You can use this application using your browser, visit [trackasone.me](https://trackasone.me) or [dev.trackasone.me](https://dev.trackasone.me) (pre-release). This project is a Progressive Web App (**PWA**) and you can install it as a mobile or desktop app. [Installation Guide](https://support.google.com/chrome/answer/9658361) (optional)
 
 ## Contributing
-If you want to contribute, make sure to review our [CODE OF CONDUCT](https://github.com/joshxfi/trackAsOne/blob/main/CODE_OF_CONDUCT.md). For bugs and feature requests, feel free to [open an issue](https://github.com/joshxfi/trackAsOne/issues).
+If you like this project, please consider giving it a star! 🌠 Make sure to review our [CODE OF CONDUCT](https://github.com/joshxfi/trackAsOne/blob/main/CODE_OF_CONDUCT.md). For bugs and feature requests, feel free to [open an issue](https://github.com/joshxfi/trackAsOne/issues). 
+
+### Contributor List
+<a href="https://github.com/joshxfi/trackAsOne/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=joshxfi/trackAsOne" />
+</a>
+
+### Contributing Guide
 
 1. Fork this [repository](https://github.com/joshxfi/trackAsOne) and clone your fork.
 3. Create a new branch for your changes:
