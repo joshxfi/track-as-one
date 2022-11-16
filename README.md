@@ -3,10 +3,10 @@
 </div>
 
 ## About
-[trackAsOne](https://trackasone.me) is a collaborative platform for tracking school activities or homework along with your friends or classmates. You can create up to 5 rooms and invite your friends! Add due dates, URLs, and images to your tasks for your convenience. You can also assign room admins to help you manage your room.
+[trackAsOne](https://tao.joshxfi.tech/) is a collaborative platform for tracking school activities or homework along with your friends or classmates. You can create up to 5 rooms and invite your friends! Add due dates, URLs, and images to your tasks for your convenience. You can also assign room admins to help you manage your room.
 
 ## Installation
-You can use this application using your browser, visit [trackasone.me](https://trackasone.me) or [dev.trackasone.me](https://dev.trackasone.me) (pre-release). This project is a Progressive Web App (**PWA**) and you can install it as a mobile or desktop app. [Installation Guide](https://support.google.com/chrome/answer/9658361) (optional)
+You can use this application using your browser, visit [tao.joshxfi.tech](https://tao.joshxfi.tech/). This project is a Progressive Web App (**PWA**) and you can install it as a mobile or desktop app. [Installation Guide](https://support.google.com/chrome/answer/9658361) (optional)
 
 ## Contributing
 If you want to contribute, make sure to review our [CODE OF CONDUCT](https://github.com/joshxfi/trackAsOne/blob/main/CODE_OF_CONDUCT.md). For bugs and feature requests, feel free to [open an issue](https://github.com/joshxfi/trackAsOne/issues).
